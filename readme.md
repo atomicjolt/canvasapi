@@ -5,6 +5,9 @@ go build
 
 go build --race
 # Run all Tests:
+create a .env file and add a valid Canvas API Token
+`CANVAS_API_TOKEN=a valid token`
+
 gotest ./... -v
 
 # Find bad stuff
