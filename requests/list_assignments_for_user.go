@@ -1,0 +1,65 @@
+package requests
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/atomicjolt/canvasapi"
+)
+
+// ListAssignmentsForUser Returns the paginated list of assignments for the specified user if the current user has rights to view.
+// See {api:AssignmentsApiController#index List assignments} for valid arguments.
+// https://canvas.instructure.com/doc/api/assignments.html
+//
+// Path Parameters:
+// # UserID (Required) ID
+// # CourseID (Required) ID
+//
+type ListAssignmentsForUser struct {
+	Path struct {
+		UserID   string `json:"user_id"`   //  (Required)
+		CourseID string `json:"course_id"` //  (Required)
+	} `json:"path"`
+}
+
+func (t *ListAssignmentsForUser) GetMethod() string {
+	return "GET"
+}
+
+func (t *ListAssignmentsForUser) GetURLPath() string {
+	path := "users/{user_id}/courses/{course_id}/assignments"
+	path = strings.ReplaceAll(path, "{user_id}", fmt.Sprintf("%v", t.Path.UserID))
+	path = strings.ReplaceAll(path, "{course_id}", fmt.Sprintf("%v", t.Path.CourseID))
+	return path
+}
+
+func (t *ListAssignmentsForUser) GetQuery() (string, error) {
+	return "", nil
+}
+
+func (t *ListAssignmentsForUser) GetBody() (string, error) {
+	return "", nil
+}
+
+func (t *ListAssignmentsForUser) HasErrors() error {
+	errs := []string{}
+	if t.Path.UserID == "" {
+		errs = append(errs, "'UserID' is required")
+	}
+	if t.Path.CourseID == "" {
+		errs = append(errs, "'CourseID' is required")
+	}
+	if len(errs) > 0 {
+		return fmt.Errorf(strings.Join(errs, ", "))
+	}
+	return nil
+}
+
+func (t *ListAssignmentsForUser) Do(c *canvasapi.Canvas) error {
+	_, err := c.SendRequest(t)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
