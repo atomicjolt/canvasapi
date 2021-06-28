@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -21,11 +23,11 @@ import (
 //
 type AddAllowedDomainToAccount struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Domain string `json:"domain"` //  (Required)
+		Domain string `json:"domain" url:"domain,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -43,12 +45,16 @@ func (t *AddAllowedDomainToAccount) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *AddAllowedDomainToAccount) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *AddAllowedDomainToAccount) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *AddAllowedDomainToAccount) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *AddAllowedDomainToAccount) HasErrors() error {

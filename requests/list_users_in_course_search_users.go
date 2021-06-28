@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -66,19 +67,19 @@ import (
 //
 type ListUsersInCourseSearchUsers struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		SearchTerm       string   `json:"search_term"`        //  (Optional)
-		Sort             string   `json:"sort"`               //  (Optional) . Must be one of username, last_login, email, sis_id
-		EnrollmentType   []string `json:"enrollment_type"`    //  (Optional) . Must be one of teacher, student, student_view, ta, observer, designer
-		EnrollmentRole   string   `json:"enrollment_role"`    //  (Optional)
-		EnrollmentRoleID int64    `json:"enrollment_role_id"` //  (Optional)
-		Include          []string `json:"include"`            //  (Optional) . Must be one of enrollments, locked, avatar_url, test_student, bio, custom_links, current_grading_period_scores, uuid
-		UserID           string   `json:"user_id"`            //  (Optional)
-		UserIDs          []int64  `json:"user_ids"`           //  (Optional)
-		EnrollmentState  []string `json:"enrollment_state"`   //  (Optional) . Must be one of active, invited, rejected, completed, inactive
+		SearchTerm       string   `json:"search_term" url:"search_term,omitempty"`               //  (Optional)
+		Sort             string   `json:"sort" url:"sort,omitempty"`                             //  (Optional) . Must be one of username, last_login, email, sis_id
+		EnrollmentType   []string `json:"enrollment_type" url:"enrollment_type,omitempty"`       //  (Optional) . Must be one of teacher, student, student_view, ta, observer, designer
+		EnrollmentRole   string   `json:"enrollment_role" url:"enrollment_role,omitempty"`       //  (Optional)
+		EnrollmentRoleID int64    `json:"enrollment_role_id" url:"enrollment_role_id,omitempty"` //  (Optional)
+		Include          []string `json:"include" url:"include,omitempty"`                       //  (Optional) . Must be one of enrollments, locked, avatar_url, test_student, bio, custom_links, current_grading_period_scores, uuid
+		UserID           string   `json:"user_id" url:"user_id,omitempty"`                       //  (Optional)
+		UserIDs          []int64  `json:"user_ids" url:"user_ids,omitempty"`                     //  (Optional)
+		EnrollmentState  []string `json:"enrollment_state" url:"enrollment_state,omitempty"`     //  (Optional) . Must be one of active, invited, rejected, completed, inactive
 	} `json:"query"`
 }
 
@@ -100,8 +101,12 @@ func (t *ListUsersInCourseSearchUsers) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListUsersInCourseSearchUsers) GetBody() (string, error) {
-	return "", nil
+func (t *ListUsersInCourseSearchUsers) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListUsersInCourseSearchUsers) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListUsersInCourseSearchUsers) HasErrors() error {
@@ -109,21 +114,21 @@ func (t *ListUsersInCourseSearchUsers) HasErrors() error {
 	if t.Path.CourseID == "" {
 		errs = append(errs, "'CourseID' is required")
 	}
-	if !string_utils.Include([]string{"username", "last_login", "email", "sis_id"}, t.Query.Sort) {
+	if t.Query.Sort != "" && !string_utils.Include([]string{"username", "last_login", "email", "sis_id"}, t.Query.Sort) {
 		errs = append(errs, "Sort must be one of username, last_login, email, sis_id")
 	}
 	for _, v := range t.Query.EnrollmentType {
-		if !string_utils.Include([]string{"teacher", "student", "student_view", "ta", "observer", "designer"}, v) {
+		if v != "" && !string_utils.Include([]string{"teacher", "student", "student_view", "ta", "observer", "designer"}, v) {
 			errs = append(errs, "EnrollmentType must be one of teacher, student, student_view, ta, observer, designer")
 		}
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"enrollments", "locked", "avatar_url", "test_student", "bio", "custom_links", "current_grading_period_scores", "uuid"}, v) {
+		if v != "" && !string_utils.Include([]string{"enrollments", "locked", "avatar_url", "test_student", "bio", "custom_links", "current_grading_period_scores", "uuid"}, v) {
 			errs = append(errs, "Include must be one of enrollments, locked, avatar_url, test_student, bio, custom_links, current_grading_period_scores, uuid")
 		}
 	}
 	for _, v := range t.Query.EnrollmentState {
-		if !string_utils.Include([]string{"active", "invited", "rejected", "completed", "inactive"}, v) {
+		if v != "" && !string_utils.Include([]string{"active", "invited", "rejected", "completed", "inactive"}, v) {
 			errs = append(errs, "EnrollmentState must be one of active, invited, rejected, completed, inactive")
 		}
 	}

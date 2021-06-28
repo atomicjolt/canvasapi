@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -15,7 +16,7 @@ import (
 //
 type ExportGroupsInAndUsersInCategory struct {
 	Path struct {
-		GroupCategoryID string `json:"group_category_id"` //  (Required)
+		GroupCategoryID string `json:"group_category_id" url:"group_category_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -33,8 +34,12 @@ func (t *ExportGroupsInAndUsersInCategory) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ExportGroupsInAndUsersInCategory) GetBody() (string, error) {
-	return "", nil
+func (t *ExportGroupsInAndUsersInCategory) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ExportGroupsInAndUsersInCategory) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ExportGroupsInAndUsersInCategory) HasErrors() error {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -20,8 +21,8 @@ import (
 //
 type EditAssignmentGroup struct {
 	Path struct {
-		CourseID          string `json:"course_id"`           //  (Required)
-		AssignmentGroupID string `json:"assignment_group_id"` //  (Required)
+		CourseID          string `json:"course_id" url:"course_id,omitempty"`                     //  (Required)
+		AssignmentGroupID string `json:"assignment_group_id" url:"assignment_group_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -40,8 +41,12 @@ func (t *EditAssignmentGroup) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *EditAssignmentGroup) GetBody() (string, error) {
-	return "", nil
+func (t *EditAssignmentGroup) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *EditAssignmentGroup) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *EditAssignmentGroup) HasErrors() error {

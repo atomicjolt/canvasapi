@@ -3,6 +3,7 @@ package requests
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/url"
 
 	"github.com/atomicjolt/canvasapi"
 	"github.com/atomicjolt/canvasapi/models"
@@ -27,8 +28,12 @@ func (t *ListCoursesWithTheirLatestEpubExport) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListCoursesWithTheirLatestEpubExport) GetBody() (string, error) {
-	return "", nil
+func (t *ListCoursesWithTheirLatestEpubExport) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListCoursesWithTheirLatestEpubExport) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListCoursesWithTheirLatestEpubExport) HasErrors() error {

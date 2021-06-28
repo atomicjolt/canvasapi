@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -44,17 +45,17 @@ import (
 //
 type ListDiscussionTopicsCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include                          []string `json:"include"`                              //  (Optional) . Must be one of all_dates, sections, sections_user_count, overrides
-		OrderBy                          string   `json:"order_by"`                             //  (Optional) . Must be one of position, recent_activity, title
-		Scope                            string   `json:"scope"`                                //  (Optional) . Must be one of locked, unlocked, pinned, unpinned
-		OnlyAnnouncements                bool     `json:"only_announcements"`                   //  (Optional)
-		FilterBy                         string   `json:"filter_by"`                            //  (Optional) . Must be one of all, unread
-		SearchTerm                       string   `json:"search_term"`                          //  (Optional)
-		ExcludeContextModuleLockedTopics bool     `json:"exclude_context_module_locked_topics"` //  (Optional)
+		Include                          []string `json:"include" url:"include,omitempty"`                                                           //  (Optional) . Must be one of all_dates, sections, sections_user_count, overrides
+		OrderBy                          string   `json:"order_by" url:"order_by,omitempty"`                                                         //  (Optional) . Must be one of position, recent_activity, title
+		Scope                            string   `json:"scope" url:"scope,omitempty"`                                                               //  (Optional) . Must be one of locked, unlocked, pinned, unpinned
+		OnlyAnnouncements                bool     `json:"only_announcements" url:"only_announcements,omitempty"`                                     //  (Optional)
+		FilterBy                         string   `json:"filter_by" url:"filter_by,omitempty"`                                                       //  (Optional) . Must be one of all, unread
+		SearchTerm                       string   `json:"search_term" url:"search_term,omitempty"`                                                   //  (Optional)
+		ExcludeContextModuleLockedTopics bool     `json:"exclude_context_module_locked_topics" url:"exclude_context_module_locked_topics,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -76,8 +77,12 @@ func (t *ListDiscussionTopicsCourses) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListDiscussionTopicsCourses) GetBody() (string, error) {
-	return "", nil
+func (t *ListDiscussionTopicsCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListDiscussionTopicsCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListDiscussionTopicsCourses) HasErrors() error {
@@ -86,17 +91,17 @@ func (t *ListDiscussionTopicsCourses) HasErrors() error {
 		errs = append(errs, "'CourseID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"all_dates", "sections", "sections_user_count", "overrides"}, v) {
+		if v != "" && !string_utils.Include([]string{"all_dates", "sections", "sections_user_count", "overrides"}, v) {
 			errs = append(errs, "Include must be one of all_dates, sections, sections_user_count, overrides")
 		}
 	}
-	if !string_utils.Include([]string{"position", "recent_activity", "title"}, t.Query.OrderBy) {
+	if t.Query.OrderBy != "" && !string_utils.Include([]string{"position", "recent_activity", "title"}, t.Query.OrderBy) {
 		errs = append(errs, "OrderBy must be one of position, recent_activity, title")
 	}
-	if !string_utils.Include([]string{"locked", "unlocked", "pinned", "unpinned"}, t.Query.Scope) {
+	if t.Query.Scope != "" && !string_utils.Include([]string{"locked", "unlocked", "pinned", "unpinned"}, t.Query.Scope) {
 		errs = append(errs, "Scope must be one of locked, unlocked, pinned, unpinned")
 	}
-	if !string_utils.Include([]string{"all", "unread"}, t.Query.FilterBy) {
+	if t.Query.FilterBy != "" && !string_utils.Include([]string{"all", "unread"}, t.Query.FilterBy) {
 		errs = append(errs, "FilterBy must be one of all, unread")
 	}
 	if len(errs) > 0 {

@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -20,11 +22,11 @@ import (
 //
 type UpdateMediaObject struct {
 	Path struct {
-		MediaObjectID string `json:"media_object_id"` //  (Required)
+		MediaObjectID string `json:"media_object_id" url:"media_object_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		UserEnteredTitle string `json:"user_entered_title"` //  (Optional)
+		UserEnteredTitle string `json:"user_entered_title" url:"user_entered_title,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -42,12 +44,16 @@ func (t *UpdateMediaObject) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateMediaObject) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateMediaObject) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateMediaObject) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateMediaObject) HasErrors() error {

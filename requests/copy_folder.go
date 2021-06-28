@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -30,11 +31,11 @@ import (
 //
 type CopyFolder struct {
 	Path struct {
-		DestFolderID string `json:"dest_folder_id"` //  (Required)
+		DestFolderID string `json:"dest_folder_id" url:"dest_folder_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		SourceFolderID string `json:"source_folder_id"` //  (Required)
+		SourceFolderID string `json:"source_folder_id" url:"source_folder_id,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -52,12 +53,16 @@ func (t *CopyFolder) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CopyFolder) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CopyFolder) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CopyFolder) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CopyFolder) HasErrors() error {

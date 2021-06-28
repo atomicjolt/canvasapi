@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -63,25 +64,25 @@ import (
 //
 type EnrollUserSections struct {
 	Path struct {
-		SectionID string `json:"section_id"` //  (Required)
+		SectionID string `json:"section_id" url:"section_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Enrollment struct {
-			StartAt                        time.Time `json:"start_at"`                           //  (Optional)
-			EndAt                          time.Time `json:"end_at"`                             //  (Optional)
-			UserID                         string    `json:"user_id"`                            //  (Required)
-			Type                           string    `json:"type"`                               //  (Required) . Must be one of StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollment
-			Role                           string    `json:"role"`                               //  (Optional)
-			RoleID                         int64     `json:"role_id"`                            //  (Optional)
-			EnrollmentState                string    `json:"enrollment_state"`                   //  (Optional) . Must be one of active, invited, inactive
-			CourseSectionID                int64     `json:"course_section_id"`                  //  (Optional)
-			LimitPrivilegesToCourseSection bool      `json:"limit_privileges_to_course_section"` //  (Optional)
-			Notify                         bool      `json:"notify"`                             //  (Optional)
-			SelfEnrollmentCode             string    `json:"self_enrollment_code"`               //  (Optional)
-			SelfEnrolled                   bool      `json:"self_enrolled"`                      //  (Optional)
-			AssociatedUserID               int64     `json:"associated_user_id"`                 //  (Optional)
-		} `json:"enrollment"`
+			StartAt                        time.Time `json:"start_at" url:"start_at,omitempty"`                                                     //  (Optional)
+			EndAt                          time.Time `json:"end_at" url:"end_at,omitempty"`                                                         //  (Optional)
+			UserID                         string    `json:"user_id" url:"user_id,omitempty"`                                                       //  (Required)
+			Type                           string    `json:"type" url:"type,omitempty"`                                                             //  (Required) . Must be one of StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollment
+			Role                           string    `json:"role" url:"role,omitempty"`                                                             //  (Optional)
+			RoleID                         int64     `json:"role_id" url:"role_id,omitempty"`                                                       //  (Optional)
+			EnrollmentState                string    `json:"enrollment_state" url:"enrollment_state,omitempty"`                                     //  (Optional) . Must be one of active, invited, inactive
+			CourseSectionID                int64     `json:"course_section_id" url:"course_section_id,omitempty"`                                   //  (Optional)
+			LimitPrivilegesToCourseSection bool      `json:"limit_privileges_to_course_section" url:"limit_privileges_to_course_section,omitempty"` //  (Optional)
+			Notify                         bool      `json:"notify" url:"notify,omitempty"`                                                         //  (Optional)
+			SelfEnrollmentCode             string    `json:"self_enrollment_code" url:"self_enrollment_code,omitempty"`                             //  (Optional)
+			SelfEnrolled                   bool      `json:"self_enrolled" url:"self_enrolled,omitempty"`                                           //  (Optional)
+			AssociatedUserID               int64     `json:"associated_user_id" url:"associated_user_id,omitempty"`                                 //  (Optional)
+		} `json:"enrollment" url:"enrollment,omitempty"`
 	} `json:"form"`
 }
 
@@ -99,12 +100,16 @@ func (t *EnrollUserSections) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *EnrollUserSections) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *EnrollUserSections) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *EnrollUserSections) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *EnrollUserSections) HasErrors() error {
@@ -118,10 +123,10 @@ func (t *EnrollUserSections) HasErrors() error {
 	if t.Form.Enrollment.Type == "" {
 		errs = append(errs, "'Enrollment' is required")
 	}
-	if !string_utils.Include([]string{"StudentEnrollment", "TeacherEnrollment", "TaEnrollment", "ObserverEnrollment", "DesignerEnrollment"}, t.Form.Enrollment.Type) {
+	if t.Form.Enrollment.Type != "" && !string_utils.Include([]string{"StudentEnrollment", "TeacherEnrollment", "TaEnrollment", "ObserverEnrollment", "DesignerEnrollment"}, t.Form.Enrollment.Type) {
 		errs = append(errs, "Enrollment must be one of StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollment")
 	}
-	if !string_utils.Include([]string{"active", "invited", "inactive"}, t.Form.Enrollment.EnrollmentState) {
+	if t.Form.Enrollment.EnrollmentState != "" && !string_utils.Include([]string{"active", "invited", "inactive"}, t.Form.Enrollment.EnrollmentState) {
 		errs = append(errs, "Enrollment must be one of active, invited, inactive")
 	}
 	if len(errs) > 0 {

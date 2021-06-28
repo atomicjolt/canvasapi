@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 
 	"github.com/google/go-querystring/query"
 
@@ -21,7 +22,7 @@ import (
 //
 type GetNextAppointment struct {
 	Query struct {
-		AppointmentGroupIDs []string `json:"appointment_group_ids"` //  (Optional)
+		AppointmentGroupIDs []string `json:"appointment_group_ids" url:"appointment_group_ids,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -41,8 +42,12 @@ func (t *GetNextAppointment) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetNextAppointment) GetBody() (string, error) {
-	return "", nil
+func (t *GetNextAppointment) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetNextAppointment) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetNextAppointment) HasErrors() error {

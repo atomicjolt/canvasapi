@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,8 +20,8 @@ import (
 //
 type AddsLastAttendedDateToStudentEnrollmentInCourse struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		UserID   string `json:"user_id"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		UserID   string `json:"user_id" url:"user_id,omitempty"`     //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *AddsLastAttendedDateToStudentEnrollmentInCourse) GetQuery() (string, er
 	return "", nil
 }
 
-func (t *AddsLastAttendedDateToStudentEnrollmentInCourse) GetBody() (string, error) {
-	return "", nil
+func (t *AddsLastAttendedDateToStudentEnrollmentInCourse) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *AddsLastAttendedDateToStudentEnrollmentInCourse) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *AddsLastAttendedDateToStudentEnrollmentInCourse) HasErrors() error {

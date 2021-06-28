@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -25,12 +26,12 @@ import (
 //
 type QueryByAssignment struct {
 	Path struct {
-		AssignmentID string `json:"assignment_id"` //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		StartTime time.Time `json:"start_time"` //  (Optional)
-		EndTime   time.Time `json:"end_time"`   //  (Optional)
+		StartTime time.Time `json:"start_time" url:"start_time,omitempty"` //  (Optional)
+		EndTime   time.Time `json:"end_time" url:"end_time,omitempty"`     //  (Optional)
 	} `json:"query"`
 }
 
@@ -52,8 +53,12 @@ func (t *QueryByAssignment) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *QueryByAssignment) GetBody() (string, error) {
-	return "", nil
+func (t *QueryByAssignment) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *QueryByAssignment) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *QueryByAssignment) HasErrors() error {

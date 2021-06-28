@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -29,15 +30,15 @@ import (
 //
 type BeginMigrationToPushToAssociatedCourses struct {
 	Path struct {
-		CourseID   string `json:"course_id"`   //  (Required)
-		TemplateID string `json:"template_id"` //  (Required)
+		CourseID   string `json:"course_id" url:"course_id,omitempty"`     //  (Required)
+		TemplateID string `json:"template_id" url:"template_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Comment                 string `json:"comment"`                    //  (Optional)
-		SendNotification        bool   `json:"send_notification"`          //  (Optional)
-		CopySettings            bool   `json:"copy_settings"`              //  (Optional)
-		PublishAfterInitialSync bool   `json:"publish_after_initial_sync"` //  (Optional)
+		Comment                 string `json:"comment" url:"comment,omitempty"`                                       //  (Optional)
+		SendNotification        bool   `json:"send_notification" url:"send_notification,omitempty"`                   //  (Optional)
+		CopySettings            bool   `json:"copy_settings" url:"copy_settings,omitempty"`                           //  (Optional)
+		PublishAfterInitialSync bool   `json:"publish_after_initial_sync" url:"publish_after_initial_sync,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -56,12 +57,16 @@ func (t *BeginMigrationToPushToAssociatedCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *BeginMigrationToPushToAssociatedCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *BeginMigrationToPushToAssociatedCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *BeginMigrationToPushToAssociatedCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *BeginMigrationToPushToAssociatedCourses) HasErrors() error {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,12 +27,12 @@ import (
 //
 type ListGroupsAvailableInContextAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		OnlyOwnGroups bool     `json:"only_own_groups"` //  (Optional)
-		Include       []string `json:"include"`         //  (Optional) . Must be one of tabs
+		OnlyOwnGroups bool     `json:"only_own_groups" url:"only_own_groups,omitempty"` //  (Optional)
+		Include       []string `json:"include" url:"include,omitempty"`                 //  (Optional) . Must be one of tabs
 	} `json:"query"`
 }
 
@@ -53,8 +54,12 @@ func (t *ListGroupsAvailableInContextAccounts) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListGroupsAvailableInContextAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *ListGroupsAvailableInContextAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListGroupsAvailableInContextAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListGroupsAvailableInContextAccounts) HasErrors() error {
@@ -63,7 +68,7 @@ func (t *ListGroupsAvailableInContextAccounts) HasErrors() error {
 		errs = append(errs, "'AccountID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"tabs"}, v) {
+		if v != "" && !string_utils.Include([]string{"tabs"}, v) {
 			errs = append(errs, "Include must be one of tabs")
 		}
 	}

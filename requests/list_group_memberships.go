@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,11 +26,11 @@ import (
 //
 type ListGroupMemberships struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		FilterStates []string `json:"filter_states"` //  (Optional) . Must be one of accepted, invited, requested
+		FilterStates []string `json:"filter_states" url:"filter_states,omitempty"` //  (Optional) . Must be one of accepted, invited, requested
 	} `json:"query"`
 }
 
@@ -51,8 +52,12 @@ func (t *ListGroupMemberships) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListGroupMemberships) GetBody() (string, error) {
-	return "", nil
+func (t *ListGroupMemberships) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListGroupMemberships) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListGroupMemberships) HasErrors() error {
@@ -61,7 +66,7 @@ func (t *ListGroupMemberships) HasErrors() error {
 		errs = append(errs, "'GroupID' is required")
 	}
 	for _, v := range t.Query.FilterStates {
-		if !string_utils.Include([]string{"accepted", "invited", "requested"}, v) {
+		if v != "" && !string_utils.Include([]string{"accepted", "invited", "requested"}, v) {
 			errs = append(errs, "FilterStates must be one of accepted, invited, requested")
 		}
 	}

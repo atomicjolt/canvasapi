@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -34,20 +35,20 @@ import (
 //
 type UpdateModule struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Module struct {
-			Name                      string    `json:"name"`                        //  (Optional)
-			UnlockAt                  time.Time `json:"unlock_at"`                   //  (Optional)
-			Position                  int64     `json:"position"`                    //  (Optional)
-			RequireSequentialProgress bool      `json:"require_sequential_progress"` //  (Optional)
-			PrerequisiteModuleIDs     []string  `json:"prerequisite_module_ids"`     //  (Optional)
-			PublishFinalGrade         bool      `json:"publish_final_grade"`         //  (Optional)
-			Published                 bool      `json:"published"`                   //  (Optional)
-		} `json:"module"`
+			Name                      string    `json:"name" url:"name,omitempty"`                                               //  (Optional)
+			UnlockAt                  time.Time `json:"unlock_at" url:"unlock_at,omitempty"`                                     //  (Optional)
+			Position                  int64     `json:"position" url:"position,omitempty"`                                       //  (Optional)
+			RequireSequentialProgress bool      `json:"require_sequential_progress" url:"require_sequential_progress,omitempty"` //  (Optional)
+			PrerequisiteModuleIDs     []string  `json:"prerequisite_module_ids" url:"prerequisite_module_ids,omitempty"`         //  (Optional)
+			PublishFinalGrade         bool      `json:"publish_final_grade" url:"publish_final_grade,omitempty"`                 //  (Optional)
+			Published                 bool      `json:"published" url:"published,omitempty"`                                     //  (Optional)
+		} `json:"module" url:"module,omitempty"`
 	} `json:"form"`
 }
 
@@ -66,12 +67,16 @@ func (t *UpdateModule) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateModule) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateModule) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateModule) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateModule) HasErrors() error {

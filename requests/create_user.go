@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -102,44 +103,44 @@ import (
 //
 type CreateUser struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		User struct {
-			Name             string `json:"name"`              //  (Optional)
-			ShortName        string `json:"short_name"`        //  (Optional)
-			SortableName     string `json:"sortable_name"`     //  (Optional)
-			TimeZone         string `json:"time_zone"`         //  (Optional)
-			Locale           string `json:"locale"`            //  (Optional)
-			TermsOfUse       bool   `json:"terms_of_use"`      //  (Optional)
-			SkipRegistration bool   `json:"skip_registration"` //  (Optional)
-		} `json:"user"`
+			Name             string `json:"name" url:"name,omitempty"`                           //  (Optional)
+			ShortName        string `json:"short_name" url:"short_name,omitempty"`               //  (Optional)
+			SortableName     string `json:"sortable_name" url:"sortable_name,omitempty"`         //  (Optional)
+			TimeZone         string `json:"time_zone" url:"time_zone,omitempty"`                 //  (Optional)
+			Locale           string `json:"locale" url:"locale,omitempty"`                       //  (Optional)
+			TermsOfUse       bool   `json:"terms_of_use" url:"terms_of_use,omitempty"`           //  (Optional)
+			SkipRegistration bool   `json:"skip_registration" url:"skip_registration,omitempty"` //  (Optional)
+		} `json:"user" url:"user,omitempty"`
 
 		Pseudonym struct {
-			UniqueID                 string `json:"unique_id"`                  //  (Required)
-			Password                 string `json:"password"`                   //  (Optional)
-			SISUserID                string `json:"sis_user_id"`                //  (Optional)
-			IntegrationID            string `json:"integration_id"`             //  (Optional)
-			SendConfirmation         bool   `json:"send_confirmation"`          //  (Optional)
-			ForceSelfRegistration    bool   `json:"force_self_registration"`    //  (Optional)
-			AuthenticationProviderID string `json:"authentication_provider_id"` //  (Optional)
-		} `json:"pseudonym"`
+			UniqueID                 string `json:"unique_id" url:"unique_id,omitempty"`                                   //  (Required)
+			Password                 string `json:"password" url:"password,omitempty"`                                     //  (Optional)
+			SISUserID                string `json:"sis_user_id" url:"sis_user_id,omitempty"`                               //  (Optional)
+			IntegrationID            string `json:"integration_id" url:"integration_id,omitempty"`                         //  (Optional)
+			SendConfirmation         bool   `json:"send_confirmation" url:"send_confirmation,omitempty"`                   //  (Optional)
+			ForceSelfRegistration    bool   `json:"force_self_registration" url:"force_self_registration,omitempty"`       //  (Optional)
+			AuthenticationProviderID string `json:"authentication_provider_id" url:"authentication_provider_id,omitempty"` //  (Optional)
+		} `json:"pseudonym" url:"pseudonym,omitempty"`
 
 		CommunicationChannel struct {
-			Type             string `json:"type"`              //  (Optional)
-			Address          string `json:"address"`           //  (Optional)
-			ConfirmationUrl  bool   `json:"confirmation_url"`  //  (Optional)
-			SkipConfirmation bool   `json:"skip_confirmation"` //  (Optional)
-		} `json:"communication_channel"`
+			Type             string `json:"type" url:"type,omitempty"`                           //  (Optional)
+			Address          string `json:"address" url:"address,omitempty"`                     //  (Optional)
+			ConfirmationUrl  bool   `json:"confirmation_url" url:"confirmation_url,omitempty"`   //  (Optional)
+			SkipConfirmation bool   `json:"skip_confirmation" url:"skip_confirmation,omitempty"` //  (Optional)
+		} `json:"communication_channel" url:"communication_channel,omitempty"`
 
-		ForceValidations      bool   `json:"force_validations"`       //  (Optional)
-		EnableSISReactivation bool   `json:"enable_sis_reactivation"` //  (Optional)
-		Destination           string `json:"destination"`             //  (Optional)
-		InitialEnrollmentType string `json:"initial_enrollment_type"` //  (Optional)
+		ForceValidations      bool   `json:"force_validations" url:"force_validations,omitempty"`             //  (Optional)
+		EnableSISReactivation bool   `json:"enable_sis_reactivation" url:"enable_sis_reactivation,omitempty"` //  (Optional)
+		Destination           string `json:"destination" url:"destination,omitempty"`                         //  (Optional)
+		InitialEnrollmentType string `json:"initial_enrollment_type" url:"initial_enrollment_type,omitempty"` //  (Optional)
 		PairingCode           struct {
-			Code string `json:"code"` //  (Optional)
-		} `json:"pairing_code"`
+			Code string `json:"code" url:"code,omitempty"` //  (Optional)
+		} `json:"pairing_code" url:"pairing_code,omitempty"`
 	} `json:"form"`
 }
 
@@ -157,12 +158,16 @@ func (t *CreateUser) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateUser) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateUser) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateUser) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateUser) HasErrors() error {

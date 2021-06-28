@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -20,8 +21,8 @@ import (
 //
 type ListBlueprintMigrations struct {
 	Path struct {
-		CourseID   string `json:"course_id"`   //  (Required)
-		TemplateID string `json:"template_id"` //  (Required)
+		CourseID   string `json:"course_id" url:"course_id,omitempty"`     //  (Required)
+		TemplateID string `json:"template_id" url:"template_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -40,8 +41,12 @@ func (t *ListBlueprintMigrations) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListBlueprintMigrations) GetBody() (string, error) {
-	return "", nil
+func (t *ListBlueprintMigrations) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListBlueprintMigrations) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListBlueprintMigrations) HasErrors() error {

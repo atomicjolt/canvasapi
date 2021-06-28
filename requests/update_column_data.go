@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,15 +26,15 @@ import (
 //
 type UpdateColumnData struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
-		UserID   string `json:"user_id"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
+		UserID   string `json:"user_id" url:"user_id,omitempty"`     //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		ColumnData struct {
-			Content string `json:"content"` //  (Required)
-		} `json:"column_data"`
+			Content string `json:"content" url:"content,omitempty"` //  (Required)
+		} `json:"column_data" url:"column_data,omitempty"`
 	} `json:"form"`
 }
 
@@ -53,12 +54,16 @@ func (t *UpdateColumnData) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateColumnData) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateColumnData) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateColumnData) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateColumnData) HasErrors() error {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -29,12 +30,12 @@ import (
 //
 type GetCourseLevelStudentSummaryData struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		SortColumn string `json:"sort_column"` //  (Optional) . Must be one of name, name_descending, score, score_descending, participations, participations_descending, page_views, page_views_descending
-		StudentID  string `json:"student_id"`  //  (Optional)
+		SortColumn string `json:"sort_column" url:"sort_column,omitempty"` //  (Optional) . Must be one of name, name_descending, score, score_descending, participations, participations_descending, page_views, page_views_descending
+		StudentID  string `json:"student_id" url:"student_id,omitempty"`   //  (Optional)
 	} `json:"query"`
 }
 
@@ -56,8 +57,12 @@ func (t *GetCourseLevelStudentSummaryData) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetCourseLevelStudentSummaryData) GetBody() (string, error) {
-	return "", nil
+func (t *GetCourseLevelStudentSummaryData) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetCourseLevelStudentSummaryData) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetCourseLevelStudentSummaryData) HasErrors() error {
@@ -65,7 +70,7 @@ func (t *GetCourseLevelStudentSummaryData) HasErrors() error {
 	if t.Path.CourseID == "" {
 		errs = append(errs, "'CourseID' is required")
 	}
-	if !string_utils.Include([]string{"name", "name_descending", "score", "score_descending", "participations", "participations_descending", "page_views", "page_views_descending"}, t.Query.SortColumn) {
+	if t.Query.SortColumn != "" && !string_utils.Include([]string{"name", "name_descending", "score", "score_descending", "participations", "participations_descending", "page_views", "page_views_descending"}, t.Query.SortColumn) {
 		errs = append(errs, "SortColumn must be one of name, name_descending, score, score_descending, participations, participations_descending, page_views, page_views_descending")
 	}
 	if len(errs) > 0 {

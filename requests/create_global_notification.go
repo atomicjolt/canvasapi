@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -32,19 +34,19 @@ import (
 //
 type CreateGlobalNotification struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		AccountNotification struct {
-			Subject string    `json:"subject"`  //  (Required)
-			Message string    `json:"message"`  //  (Required)
-			StartAt time.Time `json:"start_at"` //  (Required)
-			EndAt   time.Time `json:"end_at"`   //  (Required)
-			Icon    string    `json:"icon"`     //  (Optional) . Must be one of warning, information, question, error, calendar
-		} `json:"account_notification"`
+			Subject string    `json:"subject" url:"subject,omitempty"`   //  (Required)
+			Message string    `json:"message" url:"message,omitempty"`   //  (Required)
+			StartAt time.Time `json:"start_at" url:"start_at,omitempty"` //  (Required)
+			EndAt   time.Time `json:"end_at" url:"end_at,omitempty"`     //  (Required)
+			Icon    string    `json:"icon" url:"icon,omitempty"`         //  (Optional) . Must be one of warning, information, question, error, calendar
+		} `json:"account_notification" url:"account_notification,omitempty"`
 
-		AccountNotificationRoles []string `json:"account_notification_roles"` //  (Optional)
+		AccountNotificationRoles []string `json:"account_notification_roles" url:"account_notification_roles,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -62,12 +64,16 @@ func (t *CreateGlobalNotification) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateGlobalNotification) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateGlobalNotification) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateGlobalNotification) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateGlobalNotification) HasErrors() error {
@@ -87,7 +93,7 @@ func (t *CreateGlobalNotification) HasErrors() error {
 	if t.Form.AccountNotification.EndAt.IsZero() {
 		errs = append(errs, "'AccountNotification' is required")
 	}
-	if !string_utils.Include([]string{"warning", "information", "question", "error", "calendar"}, t.Form.AccountNotification.Icon) {
+	if t.Form.AccountNotification.Icon != "" && !string_utils.Include([]string{"warning", "information", "question", "error", "calendar"}, t.Form.AccountNotification.Icon) {
 		errs = append(errs, "AccountNotification must be one of warning, information, question, error, calendar")
 	}
 	if len(errs) > 0 {

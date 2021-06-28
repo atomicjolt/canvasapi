@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,11 +24,11 @@ import (
 //
 type ListAvailableTabsForCourseOrGroupAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of course_subject_tabs
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of course_subject_tabs
 	} `json:"query"`
 }
 
@@ -49,8 +50,12 @@ func (t *ListAvailableTabsForCourseOrGroupAccounts) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListAvailableTabsForCourseOrGroupAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *ListAvailableTabsForCourseOrGroupAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListAvailableTabsForCourseOrGroupAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListAvailableTabsForCourseOrGroupAccounts) HasErrors() error {
@@ -59,7 +64,7 @@ func (t *ListAvailableTabsForCourseOrGroupAccounts) HasErrors() error {
 		errs = append(errs, "'AccountID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"course_subject_tabs"}, v) {
+		if v != "" && !string_utils.Include([]string{"course_subject_tabs"}, v) {
 			errs = append(errs, "Include must be one of course_subject_tabs")
 		}
 	}

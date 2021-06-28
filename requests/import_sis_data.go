@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -120,26 +121,26 @@ import (
 //
 type ImportSISData struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ImportType                    string `json:"import_type"`                       //  (Optional)
-		Attachment                    string `json:"attachment"`                        //  (Optional)
-		Extension                     string `json:"extension"`                         //  (Optional)
-		BatchMode                     bool   `json:"batch_mode"`                        //  (Optional)
-		BatchModeTermID               string `json:"batch_mode_term_id"`                //  (Optional)
-		MultiTermBatchMode            bool   `json:"multi_term_batch_mode"`             //  (Optional)
-		SkipDeletes                   bool   `json:"skip_deletes"`                      //  (Optional)
-		OverrideSISStickiness         bool   `json:"override_sis_stickiness"`           //  (Optional)
-		AddSISStickiness              bool   `json:"add_sis_stickiness"`                //  (Optional)
-		ClearSISStickiness            bool   `json:"clear_sis_stickiness"`              //  (Optional)
-		DiffingDataSetIDentifier      string `json:"diffing_data_set_identifier"`       //  (Optional)
-		DiffingRemasterDataSet        bool   `json:"diffing_remaster_data_set"`         //  (Optional)
-		DiffingDropStatus             string `json:"diffing_drop_status"`               //  (Optional) . Must be one of deleted, completed, inactive
-		BatchModeEnrollmentDropStatus string `json:"batch_mode_enrollment_drop_status"` //  (Optional) . Must be one of deleted, completed, inactive
-		ChangeThreshold               int64  `json:"change_threshold"`                  //  (Optional)
-		DiffRowCountThreshold         int64  `json:"diff_row_count_threshold"`          //  (Optional)
+		ImportType                    string `json:"import_type" url:"import_type,omitempty"`                                             //  (Optional)
+		Attachment                    string `json:"attachment" url:"attachment,omitempty"`                                               //  (Optional)
+		Extension                     string `json:"extension" url:"extension,omitempty"`                                                 //  (Optional)
+		BatchMode                     bool   `json:"batch_mode" url:"batch_mode,omitempty"`                                               //  (Optional)
+		BatchModeTermID               string `json:"batch_mode_term_id" url:"batch_mode_term_id,omitempty"`                               //  (Optional)
+		MultiTermBatchMode            bool   `json:"multi_term_batch_mode" url:"multi_term_batch_mode,omitempty"`                         //  (Optional)
+		SkipDeletes                   bool   `json:"skip_deletes" url:"skip_deletes,omitempty"`                                           //  (Optional)
+		OverrideSISStickiness         bool   `json:"override_sis_stickiness" url:"override_sis_stickiness,omitempty"`                     //  (Optional)
+		AddSISStickiness              bool   `json:"add_sis_stickiness" url:"add_sis_stickiness,omitempty"`                               //  (Optional)
+		ClearSISStickiness            bool   `json:"clear_sis_stickiness" url:"clear_sis_stickiness,omitempty"`                           //  (Optional)
+		DiffingDataSetIDentifier      string `json:"diffing_data_set_identifier" url:"diffing_data_set_identifier,omitempty"`             //  (Optional)
+		DiffingRemasterDataSet        bool   `json:"diffing_remaster_data_set" url:"diffing_remaster_data_set,omitempty"`                 //  (Optional)
+		DiffingDropStatus             string `json:"diffing_drop_status" url:"diffing_drop_status,omitempty"`                             //  (Optional) . Must be one of deleted, completed, inactive
+		BatchModeEnrollmentDropStatus string `json:"batch_mode_enrollment_drop_status" url:"batch_mode_enrollment_drop_status,omitempty"` //  (Optional) . Must be one of deleted, completed, inactive
+		ChangeThreshold               int64  `json:"change_threshold" url:"change_threshold,omitempty"`                                   //  (Optional)
+		DiffRowCountThreshold         int64  `json:"diff_row_count_threshold" url:"diff_row_count_threshold,omitempty"`                   //  (Optional)
 	} `json:"form"`
 }
 
@@ -157,12 +158,16 @@ func (t *ImportSISData) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ImportSISData) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *ImportSISData) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *ImportSISData) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *ImportSISData) HasErrors() error {
@@ -170,10 +175,10 @@ func (t *ImportSISData) HasErrors() error {
 	if t.Path.AccountID == "" {
 		errs = append(errs, "'AccountID' is required")
 	}
-	if !string_utils.Include([]string{"deleted", "completed", "inactive"}, t.Form.DiffingDropStatus) {
+	if t.Form.DiffingDropStatus != "" && !string_utils.Include([]string{"deleted", "completed", "inactive"}, t.Form.DiffingDropStatus) {
 		errs = append(errs, "DiffingDropStatus must be one of deleted, completed, inactive")
 	}
-	if !string_utils.Include([]string{"deleted", "completed", "inactive"}, t.Form.BatchModeEnrollmentDropStatus) {
+	if t.Form.BatchModeEnrollmentDropStatus != "" && !string_utils.Include([]string{"deleted", "completed", "inactive"}, t.Form.BatchModeEnrollmentDropStatus) {
 		errs = append(errs, "BatchModeEnrollmentDropStatus must be one of deleted, completed, inactive")
 	}
 	if len(errs) > 0 {

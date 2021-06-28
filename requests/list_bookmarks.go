@@ -3,6 +3,7 @@ package requests
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/url"
 
 	"github.com/atomicjolt/canvasapi"
 	"github.com/atomicjolt/canvasapi/models"
@@ -26,8 +27,12 @@ func (t *ListBookmarks) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListBookmarks) GetBody() (string, error) {
-	return "", nil
+func (t *ListBookmarks) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListBookmarks) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListBookmarks) HasErrors() error {

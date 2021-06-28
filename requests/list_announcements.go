@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -50,12 +51,12 @@ import (
 //
 type ListAnnouncements struct {
 	Query struct {
-		ContextCodes []string  `json:"context_codes"` //  (Required)
-		StartDate    time.Time `json:"start_date"`    //  (Optional)
-		EndDate      time.Time `json:"end_date"`      //  (Optional)
-		ActiveOnly   bool      `json:"active_only"`   //  (Optional)
-		LatestOnly   bool      `json:"latest_only"`   //  (Optional)
-		Include      string    `json:"include"`       //  (Optional)
+		ContextCodes []string  `json:"context_codes" url:"context_codes,omitempty"` //  (Required)
+		StartDate    time.Time `json:"start_date" url:"start_date,omitempty"`       //  (Optional)
+		EndDate      time.Time `json:"end_date" url:"end_date,omitempty"`           //  (Optional)
+		ActiveOnly   bool      `json:"active_only" url:"active_only,omitempty"`     //  (Optional)
+		LatestOnly   bool      `json:"latest_only" url:"latest_only,omitempty"`     //  (Optional)
+		Include      string    `json:"include" url:"include,omitempty"`             //  (Optional)
 	} `json:"query"`
 }
 
@@ -75,8 +76,12 @@ func (t *ListAnnouncements) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListAnnouncements) GetBody() (string, error) {
-	return "", nil
+func (t *ListAnnouncements) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListAnnouncements) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListAnnouncements) HasErrors() error {

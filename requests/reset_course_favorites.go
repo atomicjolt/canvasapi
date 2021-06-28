@@ -1,6 +1,8 @@
 package requests
 
 import (
+	"net/url"
+
 	"github.com/atomicjolt/canvasapi"
 )
 
@@ -23,8 +25,12 @@ func (t *ResetCourseFavorites) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ResetCourseFavorites) GetBody() (string, error) {
-	return "", nil
+func (t *ResetCourseFavorites) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ResetCourseFavorites) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ResetCourseFavorites) HasErrors() error {

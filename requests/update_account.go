@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -59,66 +60,66 @@ import (
 //
 type UpdateAccount struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Account struct {
-			Name                       string `json:"name"`                           //  (Optional)
-			SISAccountID               string `json:"sis_account_id"`                 //  (Optional)
-			DefaultTimeZone            string `json:"default_time_zone"`              //  (Optional)
-			DefaultStorageQuotaMb      int64  `json:"default_storage_quota_mb"`       //  (Optional)
-			DefaultUserStorageQuotaMb  int64  `json:"default_user_storage_quota_mb"`  //  (Optional)
-			DefaultGroupStorageQuotaMb int64  `json:"default_group_storage_quota_mb"` //  (Optional)
-			CourseTemplateID           int64  `json:"course_template_id"`             //  (Optional)
+			Name                       string `json:"name" url:"name,omitempty"`                                                     //  (Optional)
+			SISAccountID               string `json:"sis_account_id" url:"sis_account_id,omitempty"`                                 //  (Optional)
+			DefaultTimeZone            string `json:"default_time_zone" url:"default_time_zone,omitempty"`                           //  (Optional)
+			DefaultStorageQuotaMb      int64  `json:"default_storage_quota_mb" url:"default_storage_quota_mb,omitempty"`             //  (Optional)
+			DefaultUserStorageQuotaMb  int64  `json:"default_user_storage_quota_mb" url:"default_user_storage_quota_mb,omitempty"`   //  (Optional)
+			DefaultGroupStorageQuotaMb int64  `json:"default_group_storage_quota_mb" url:"default_group_storage_quota_mb,omitempty"` //  (Optional)
+			CourseTemplateID           int64  `json:"course_template_id" url:"course_template_id,omitempty"`                         //  (Optional)
 			Settings                   struct {
 				RestrictStudentPastView struct {
-					Value  bool `json:"value"`  //  (Optional)
-					Locked bool `json:"locked"` //  (Optional)
-				} `json:"restrict_student_past_view"`
+					Value  bool `json:"value" url:"value,omitempty"`   //  (Optional)
+					Locked bool `json:"locked" url:"locked,omitempty"` //  (Optional)
+				} `json:"restrict_student_past_view" url:"restrict_student_past_view,omitempty"`
 
 				RestrictStudentFutureView struct {
-					Value  bool `json:"value"`  //  (Optional)
-					Locked bool `json:"locked"` //  (Optional)
-				} `json:"restrict_student_future_view"`
+					Value  bool `json:"value" url:"value,omitempty"`   //  (Optional)
+					Locked bool `json:"locked" url:"locked,omitempty"` //  (Optional)
+				} `json:"restrict_student_future_view" url:"restrict_student_future_view,omitempty"`
 
-				MicrosoftSyncEnabled        bool   `json:"microsoft_sync_enabled"`         //  (Optional)
-				MicrosoftSyncTenant         string `json:"microsoft_sync_tenant"`          //  (Optional)
-				MicrosoftSyncLoginAttribute string `json:"microsoft_sync_login_attribute"` //  (Optional)
+				MicrosoftSyncEnabled        bool   `json:"microsoft_sync_enabled" url:"microsoft_sync_enabled,omitempty"`                 //  (Optional)
+				MicrosoftSyncTenant         string `json:"microsoft_sync_tenant" url:"microsoft_sync_tenant,omitempty"`                   //  (Optional)
+				MicrosoftSyncLoginAttribute string `json:"microsoft_sync_login_attribute" url:"microsoft_sync_login_attribute,omitempty"` //  (Optional)
 				LockAllAnnouncements        struct {
-					Value  bool `json:"value"`  //  (Optional)
-					Locked bool `json:"locked"` //  (Optional)
-				} `json:"lock_all_announcements"`
+					Value  bool `json:"value" url:"value,omitempty"`   //  (Optional)
+					Locked bool `json:"locked" url:"locked,omitempty"` //  (Optional)
+				} `json:"lock_all_announcements" url:"lock_all_announcements,omitempty"`
 
 				UsageRightsRequired struct {
-					Value  bool `json:"value"`  //  (Optional)
-					Locked bool `json:"locked"` //  (Optional)
-				} `json:"usage_rights_required"`
+					Value  bool `json:"value" url:"value,omitempty"`   //  (Optional)
+					Locked bool `json:"locked" url:"locked,omitempty"` //  (Optional)
+				} `json:"usage_rights_required" url:"usage_rights_required,omitempty"`
 
 				RestrictStudentFutureListing struct {
-					Value  bool `json:"value"`  //  (Optional)
-					Locked bool `json:"locked"` //  (Optional)
-				} `json:"restrict_student_future_listing"`
+					Value  bool `json:"value" url:"value,omitempty"`   //  (Optional)
+					Locked bool `json:"locked" url:"locked,omitempty"` //  (Optional)
+				} `json:"restrict_student_future_listing" url:"restrict_student_future_listing,omitempty"`
 
 				LockOutcomeProficiency struct {
-					Value bool `json:"value"` //  (Optional)
-				} `json:"lock_outcome_proficiency"`
+					Value bool `json:"value" url:"value,omitempty"` //  (Optional)
+				} `json:"lock_outcome_proficiency" url:"lock_outcome_proficiency,omitempty"`
 
 				LockProficiencyCalculation struct {
-					Value bool `json:"value"` //  (Optional)
-				} `json:"lock_proficiency_calculation"`
-			} `json:"settings"`
+					Value bool `json:"value" url:"value,omitempty"` //  (Optional)
+				} `json:"lock_proficiency_calculation" url:"lock_proficiency_calculation,omitempty"`
+			} `json:"settings" url:"settings,omitempty"`
 
 			LockOutcomeProficiency struct {
-				Locked bool `json:"locked"` //  (Optional)
-			} `json:"lock_outcome_proficiency"`
+				Locked bool `json:"locked" url:"locked,omitempty"` //  (Optional)
+			} `json:"lock_outcome_proficiency" url:"lock_outcome_proficiency,omitempty"`
 
 			LockProficiencyCalculation struct {
-				Locked bool `json:"locked"` //  (Optional)
-			} `json:"lock_proficiency_calculation"`
+				Locked bool `json:"locked" url:"locked,omitempty"` //  (Optional)
+			} `json:"lock_proficiency_calculation" url:"lock_proficiency_calculation,omitempty"`
 
-			Services string `json:"services"` //  (Optional)
-		} `json:"account"`
+			Services string `json:"services" url:"services,omitempty"` //  (Optional)
+		} `json:"account" url:"account,omitempty"`
 	} `json:"form"`
 }
 
@@ -136,12 +137,16 @@ func (t *UpdateAccount) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateAccount) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateAccount) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateAccount) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateAccount) HasErrors() error {

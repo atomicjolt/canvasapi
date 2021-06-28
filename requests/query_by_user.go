@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -23,12 +24,12 @@ import (
 //
 type QueryByUser struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		StartTime time.Time `json:"start_time"` //  (Optional)
-		EndTime   time.Time `json:"end_time"`   //  (Optional)
+		StartTime time.Time `json:"start_time" url:"start_time,omitempty"` //  (Optional)
+		EndTime   time.Time `json:"end_time" url:"end_time,omitempty"`     //  (Optional)
 	} `json:"query"`
 }
 
@@ -50,8 +51,12 @@ func (t *QueryByUser) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *QueryByUser) GetBody() (string, error) {
-	return "", nil
+func (t *QueryByUser) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *QueryByUser) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *QueryByUser) HasErrors() error {

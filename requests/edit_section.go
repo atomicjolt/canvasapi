@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -29,18 +30,18 @@ import (
 //
 type EditSection struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		CourseSection struct {
-			Name                              string    `json:"name"`                                  //  (Optional)
-			SISSectionID                      string    `json:"sis_section_id"`                        //  (Optional)
-			IntegrationID                     string    `json:"integration_id"`                        //  (Optional)
-			StartAt                           time.Time `json:"start_at"`                              //  (Optional)
-			EndAt                             time.Time `json:"end_at"`                                //  (Optional)
-			RestrictEnrollmentsToSectionDates bool      `json:"restrict_enrollments_to_section_dates"` //  (Optional)
-		} `json:"course_section"`
+			Name                              string    `json:"name" url:"name,omitempty"`                                                                   //  (Optional)
+			SISSectionID                      string    `json:"sis_section_id" url:"sis_section_id,omitempty"`                                               //  (Optional)
+			IntegrationID                     string    `json:"integration_id" url:"integration_id,omitempty"`                                               //  (Optional)
+			StartAt                           time.Time `json:"start_at" url:"start_at,omitempty"`                                                           //  (Optional)
+			EndAt                             time.Time `json:"end_at" url:"end_at,omitempty"`                                                               //  (Optional)
+			RestrictEnrollmentsToSectionDates bool      `json:"restrict_enrollments_to_section_dates" url:"restrict_enrollments_to_section_dates,omitempty"` //  (Optional)
+		} `json:"course_section" url:"course_section,omitempty"`
 	} `json:"form"`
 }
 
@@ -58,12 +59,16 @@ func (t *EditSection) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *EditSection) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *EditSection) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *EditSection) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *EditSection) HasErrors() error {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -21,11 +22,11 @@ import (
 //
 type DeleteConcludeCourse struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Event string `json:"event"` //  (Required) . Must be one of delete, conclude
+		Event string `json:"event" url:"event,omitempty"` //  (Required) . Must be one of delete, conclude
 	} `json:"query"`
 }
 
@@ -47,8 +48,12 @@ func (t *DeleteConcludeCourse) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *DeleteConcludeCourse) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteConcludeCourse) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteConcludeCourse) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteConcludeCourse) HasErrors() error {
@@ -59,7 +64,7 @@ func (t *DeleteConcludeCourse) HasErrors() error {
 	if t.Query.Event == "" {
 		errs = append(errs, "'Event' is required")
 	}
-	if !string_utils.Include([]string{"delete", "conclude"}, t.Query.Event) {
+	if t.Query.Event != "" && !string_utils.Include([]string{"delete", "conclude"}, t.Query.Event) {
 		errs = append(errs, "Event must be one of delete, conclude")
 	}
 	if len(errs) > 0 {

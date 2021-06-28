@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -22,7 +23,7 @@ import (
 //
 type GetUploadedMediaFolderForUserGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -40,8 +41,12 @@ func (t *GetUploadedMediaFolderForUserGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetUploadedMediaFolderForUserGroups) GetBody() (string, error) {
-	return "", nil
+func (t *GetUploadedMediaFolderForUserGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetUploadedMediaFolderForUserGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetUploadedMediaFolderForUserGroups) HasErrors() error {

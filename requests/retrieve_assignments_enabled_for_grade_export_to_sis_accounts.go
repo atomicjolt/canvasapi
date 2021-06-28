@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -48,14 +49,14 @@ import (
 //
 type RetrieveAssignmentsEnabledForGradeExportToSISAccounts struct {
 	Path struct {
-		AccountID int64 `json:"account_id"` //  (Required)
+		AccountID int64 `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		CourseID     int64     `json:"course_id"`     //  (Optional)
-		StartsBefore time.Time `json:"starts_before"` //  (Optional)
-		EndsAfter    time.Time `json:"ends_after"`    //  (Optional)
-		Include      string    `json:"include"`       //  (Optional) . Must be one of student_overrides
+		CourseID     int64     `json:"course_id" url:"course_id,omitempty"`         //  (Optional)
+		StartsBefore time.Time `json:"starts_before" url:"starts_before,omitempty"` //  (Optional)
+		EndsAfter    time.Time `json:"ends_after" url:"ends_after,omitempty"`       //  (Optional)
+		Include      string    `json:"include" url:"include,omitempty"`             //  (Optional) . Must be one of student_overrides
 	} `json:"query"`
 }
 
@@ -77,13 +78,17 @@ func (t *RetrieveAssignmentsEnabledForGradeExportToSISAccounts) GetQuery() (stri
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *RetrieveAssignmentsEnabledForGradeExportToSISAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *RetrieveAssignmentsEnabledForGradeExportToSISAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RetrieveAssignmentsEnabledForGradeExportToSISAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RetrieveAssignmentsEnabledForGradeExportToSISAccounts) HasErrors() error {
 	errs := []string{}
-	if !string_utils.Include([]string{"student_overrides"}, t.Query.Include) {
+	if t.Query.Include != "" && !string_utils.Include([]string{"student_overrides"}, t.Query.Include) {
 		errs = append(errs, "Include must be one of student_overrides")
 	}
 	if len(errs) > 0 {

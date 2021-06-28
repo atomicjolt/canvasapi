@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -20,11 +21,11 @@ import (
 //
 type RemoveDomainFromAccount struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Domain string `json:"domain"` //  (Required)
+		Domain string `json:"domain" url:"domain,omitempty"` //  (Required)
 	} `json:"query"`
 }
 
@@ -46,8 +47,12 @@ func (t *RemoveDomainFromAccount) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *RemoveDomainFromAccount) GetBody() (string, error) {
-	return "", nil
+func (t *RemoveDomainFromAccount) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RemoveDomainFromAccount) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RemoveDomainFromAccount) HasErrors() error {

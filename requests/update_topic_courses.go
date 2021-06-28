@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -59,29 +61,29 @@ import (
 //
 type UpdateTopicCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		TopicID  string `json:"topic_id"`  //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		TopicID  string `json:"topic_id" url:"topic_id,omitempty"`   //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Title                  string    `json:"title"`                     //  (Optional)
-		Message                string    `json:"message"`                   //  (Optional)
-		DiscussionType         string    `json:"discussion_type"`           //  (Optional) . Must be one of side_comment, threaded
-		Published              bool      `json:"published"`                 //  (Optional)
-		DelayedPostAt          time.Time `json:"delayed_post_at"`           //  (Optional)
-		LockAt                 time.Time `json:"lock_at"`                   //  (Optional)
-		PodcastEnabled         bool      `json:"podcast_enabled"`           //  (Optional)
-		PodcastHasStudentPosts bool      `json:"podcast_has_student_posts"` //  (Optional)
-		RequireInitialPost     bool      `json:"require_initial_post"`      //  (Optional)
-		Assignment             string    `json:"assignment"`                //  (Optional)
-		IsAnnouncement         bool      `json:"is_announcement"`           //  (Optional)
-		Pinned                 bool      `json:"pinned"`                    //  (Optional)
-		PositionAfter          string    `json:"position_after"`            //  (Optional)
-		GroupCategoryID        int64     `json:"group_category_id"`         //  (Optional)
-		AllowRating            bool      `json:"allow_rating"`              //  (Optional)
-		OnlyGradersCanRate     bool      `json:"only_graders_can_rate"`     //  (Optional)
-		SortByRating           bool      `json:"sort_by_rating"`            //  (Optional)
-		SpecificSections       string    `json:"specific_sections"`         //  (Optional)
+		Title                  string    `json:"title" url:"title,omitempty"`                                         //  (Optional)
+		Message                string    `json:"message" url:"message,omitempty"`                                     //  (Optional)
+		DiscussionType         string    `json:"discussion_type" url:"discussion_type,omitempty"`                     //  (Optional) . Must be one of side_comment, threaded
+		Published              bool      `json:"published" url:"published,omitempty"`                                 //  (Optional)
+		DelayedPostAt          time.Time `json:"delayed_post_at" url:"delayed_post_at,omitempty"`                     //  (Optional)
+		LockAt                 time.Time `json:"lock_at" url:"lock_at,omitempty"`                                     //  (Optional)
+		PodcastEnabled         bool      `json:"podcast_enabled" url:"podcast_enabled,omitempty"`                     //  (Optional)
+		PodcastHasStudentPosts bool      `json:"podcast_has_student_posts" url:"podcast_has_student_posts,omitempty"` //  (Optional)
+		RequireInitialPost     bool      `json:"require_initial_post" url:"require_initial_post,omitempty"`           //  (Optional)
+		Assignment             string    `json:"assignment" url:"assignment,omitempty"`                               //  (Optional)
+		IsAnnouncement         bool      `json:"is_announcement" url:"is_announcement,omitempty"`                     //  (Optional)
+		Pinned                 bool      `json:"pinned" url:"pinned,omitempty"`                                       //  (Optional)
+		PositionAfter          string    `json:"position_after" url:"position_after,omitempty"`                       //  (Optional)
+		GroupCategoryID        int64     `json:"group_category_id" url:"group_category_id,omitempty"`                 //  (Optional)
+		AllowRating            bool      `json:"allow_rating" url:"allow_rating,omitempty"`                           //  (Optional)
+		OnlyGradersCanRate     bool      `json:"only_graders_can_rate" url:"only_graders_can_rate,omitempty"`         //  (Optional)
+		SortByRating           bool      `json:"sort_by_rating" url:"sort_by_rating,omitempty"`                       //  (Optional)
+		SpecificSections       string    `json:"specific_sections" url:"specific_sections,omitempty"`                 //  (Optional)
 	} `json:"form"`
 }
 
@@ -100,12 +102,16 @@ func (t *UpdateTopicCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateTopicCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateTopicCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateTopicCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateTopicCourses) HasErrors() error {
@@ -116,7 +122,7 @@ func (t *UpdateTopicCourses) HasErrors() error {
 	if t.Path.TopicID == "" {
 		errs = append(errs, "'TopicID' is required")
 	}
-	if !string_utils.Include([]string{"side_comment", "threaded"}, t.Form.DiscussionType) {
+	if t.Form.DiscussionType != "" && !string_utils.Include([]string{"side_comment", "threaded"}, t.Form.DiscussionType) {
 		errs = append(errs, "DiscussionType must be one of side_comment, threaded")
 	}
 	if len(errs) > 0 {

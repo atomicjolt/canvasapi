@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,8 +20,8 @@ import (
 //
 type EnrollmentByID struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        int64  `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        int64  `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *EnrollmentByID) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *EnrollmentByID) GetBody() (string, error) {
-	return "", nil
+func (t *EnrollmentByID) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *EnrollmentByID) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *EnrollmentByID) HasErrors() error {

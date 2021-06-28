@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -40,26 +42,26 @@ import (
 //
 type UpdateSingleRubric struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       int64  `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       int64  `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		RubricAssociationID int64 `json:"rubric_association_id"` //  (Optional)
+		RubricAssociationID int64 `json:"rubric_association_id" url:"rubric_association_id,omitempty"` //  (Optional)
 		Rubric              struct {
-			Title                      string `json:"title"`                         //  (Optional)
-			FreeFormCriterionComments  bool   `json:"free_form_criterion_comments"`  //  (Optional)
-			SkipUpdatingPointsPossible bool   `json:"skip_updating_points_possible"` //  (Optional)
-			Criteria                   string `json:"criteria"`                      //  (Optional)
-		} `json:"rubric"`
+			Title                      string `json:"title" url:"title,omitempty"`                                                 //  (Optional)
+			FreeFormCriterionComments  bool   `json:"free_form_criterion_comments" url:"free_form_criterion_comments,omitempty"`   //  (Optional)
+			SkipUpdatingPointsPossible bool   `json:"skip_updating_points_possible" url:"skip_updating_points_possible,omitempty"` //  (Optional)
+			Criteria                   string `json:"criteria" url:"criteria,omitempty"`                                           //  (Optional)
+		} `json:"rubric" url:"rubric,omitempty"`
 
 		RubricAssociation struct {
-			AssociationID   int64  `json:"association_id"`   //  (Optional)
-			AssociationType string `json:"association_type"` //  (Optional) . Must be one of Assignment, Course, Account
-			UseForGrading   bool   `json:"use_for_grading"`  //  (Optional)
-			HideScoreTotal  bool   `json:"hide_score_total"` //  (Optional)
-			Purpose         string `json:"purpose"`          //  (Optional) . Must be one of grading, bookmark
-		} `json:"rubric_association"`
+			AssociationID   int64  `json:"association_id" url:"association_id,omitempty"`     //  (Optional)
+			AssociationType string `json:"association_type" url:"association_type,omitempty"` //  (Optional) . Must be one of Assignment, Course, Account
+			UseForGrading   bool   `json:"use_for_grading" url:"use_for_grading,omitempty"`   //  (Optional)
+			HideScoreTotal  bool   `json:"hide_score_total" url:"hide_score_total,omitempty"` //  (Optional)
+			Purpose         string `json:"purpose" url:"purpose,omitempty"`                   //  (Optional) . Must be one of grading, bookmark
+		} `json:"rubric_association" url:"rubric_association,omitempty"`
 	} `json:"form"`
 }
 
@@ -78,12 +80,16 @@ func (t *UpdateSingleRubric) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateSingleRubric) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateSingleRubric) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateSingleRubric) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateSingleRubric) HasErrors() error {
@@ -91,10 +97,10 @@ func (t *UpdateSingleRubric) HasErrors() error {
 	if t.Path.CourseID == "" {
 		errs = append(errs, "'CourseID' is required")
 	}
-	if !string_utils.Include([]string{"Assignment", "Course", "Account"}, t.Form.RubricAssociation.AssociationType) {
+	if t.Form.RubricAssociation.AssociationType != "" && !string_utils.Include([]string{"Assignment", "Course", "Account"}, t.Form.RubricAssociation.AssociationType) {
 		errs = append(errs, "RubricAssociation must be one of Assignment, Course, Account")
 	}
-	if !string_utils.Include([]string{"grading", "bookmark"}, t.Form.RubricAssociation.Purpose) {
+	if t.Form.RubricAssociation.Purpose != "" && !string_utils.Include([]string{"grading", "bookmark"}, t.Form.RubricAssociation.Purpose) {
 		errs = append(errs, "RubricAssociation must be one of grading, bookmark")
 	}
 	if len(errs) > 0 {

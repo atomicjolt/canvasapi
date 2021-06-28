@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -39,17 +40,17 @@ import (
 //
 type ListFilesFolders struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		ContentTypes        []string `json:"content_types"`         //  (Optional)
-		ExcludeContentTypes []string `json:"exclude_content_types"` //  (Optional)
-		SearchTerm          string   `json:"search_term"`           //  (Optional)
-		Include             []string `json:"include"`               //  (Optional) . Must be one of user
-		Only                []string `json:"only"`                  //  (Optional)
-		Sort                string   `json:"sort"`                  //  (Optional) . Must be one of name, size, created_at, updated_at, content_type, user
-		Order               string   `json:"order"`                 //  (Optional) . Must be one of asc, desc
+		ContentTypes        []string `json:"content_types" url:"content_types,omitempty"`                 //  (Optional)
+		ExcludeContentTypes []string `json:"exclude_content_types" url:"exclude_content_types,omitempty"` //  (Optional)
+		SearchTerm          string   `json:"search_term" url:"search_term,omitempty"`                     //  (Optional)
+		Include             []string `json:"include" url:"include,omitempty"`                             //  (Optional) . Must be one of user
+		Only                []string `json:"only" url:"only,omitempty"`                                   //  (Optional)
+		Sort                string   `json:"sort" url:"sort,omitempty"`                                   //  (Optional) . Must be one of name, size, created_at, updated_at, content_type, user
+		Order               string   `json:"order" url:"order,omitempty"`                                 //  (Optional) . Must be one of asc, desc
 	} `json:"query"`
 }
 
@@ -71,8 +72,12 @@ func (t *ListFilesFolders) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListFilesFolders) GetBody() (string, error) {
-	return "", nil
+func (t *ListFilesFolders) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListFilesFolders) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListFilesFolders) HasErrors() error {
@@ -81,14 +86,14 @@ func (t *ListFilesFolders) HasErrors() error {
 		errs = append(errs, "'ID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"user"}, v) {
+		if v != "" && !string_utils.Include([]string{"user"}, v) {
 			errs = append(errs, "Include must be one of user")
 		}
 	}
-	if !string_utils.Include([]string{"name", "size", "created_at", "updated_at", "content_type", "user"}, t.Query.Sort) {
+	if t.Query.Sort != "" && !string_utils.Include([]string{"name", "size", "created_at", "updated_at", "content_type", "user"}, t.Query.Sort) {
 		errs = append(errs, "Sort must be one of name, size, created_at, updated_at, content_type, user")
 	}
-	if !string_utils.Include([]string{"asc", "desc"}, t.Query.Order) {
+	if t.Query.Order != "" && !string_utils.Include([]string{"asc", "desc"}, t.Query.Order) {
 		errs = append(errs, "Order must be one of asc, desc")
 	}
 	if len(errs) > 0 {

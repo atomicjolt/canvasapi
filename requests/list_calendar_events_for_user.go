@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -47,19 +48,19 @@ import (
 //
 type ListCalendarEventsForUser struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Type                   string    `json:"type"`                     //  (Optional) . Must be one of event, assignment
-		StartDate              time.Time `json:"start_date"`               //  (Optional)
-		EndDate                time.Time `json:"end_date"`                 //  (Optional)
-		Undated                bool      `json:"undated"`                  //  (Optional)
-		AllEvents              bool      `json:"all_events"`               //  (Optional)
-		ContextCodes           []string  `json:"context_codes"`            //  (Optional)
-		Excludes               []string  `json:"excludes"`                 //  (Optional)
-		SubmissionTypes        []string  `json:"submission_types"`         //  (Optional)
-		ExcludeSubmissionTypes []string  `json:"exclude_submission_types"` //  (Optional)
+		Type                   string    `json:"type" url:"type,omitempty"`                                         //  (Optional) . Must be one of event, assignment
+		StartDate              time.Time `json:"start_date" url:"start_date,omitempty"`                             //  (Optional)
+		EndDate                time.Time `json:"end_date" url:"end_date,omitempty"`                                 //  (Optional)
+		Undated                bool      `json:"undated" url:"undated,omitempty"`                                   //  (Optional)
+		AllEvents              bool      `json:"all_events" url:"all_events,omitempty"`                             //  (Optional)
+		ContextCodes           []string  `json:"context_codes" url:"context_codes,omitempty"`                       //  (Optional)
+		Excludes               []string  `json:"excludes" url:"excludes,omitempty"`                                 //  (Optional)
+		SubmissionTypes        []string  `json:"submission_types" url:"submission_types,omitempty"`                 //  (Optional)
+		ExcludeSubmissionTypes []string  `json:"exclude_submission_types" url:"exclude_submission_types,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -81,8 +82,12 @@ func (t *ListCalendarEventsForUser) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListCalendarEventsForUser) GetBody() (string, error) {
-	return "", nil
+func (t *ListCalendarEventsForUser) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListCalendarEventsForUser) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListCalendarEventsForUser) HasErrors() error {
@@ -90,7 +95,7 @@ func (t *ListCalendarEventsForUser) HasErrors() error {
 	if t.Path.UserID == "" {
 		errs = append(errs, "'UserID' is required")
 	}
-	if !string_utils.Include([]string{"event", "assignment"}, t.Query.Type) {
+	if t.Query.Type != "" && !string_utils.Include([]string{"event", "assignment"}, t.Query.Type) {
 		errs = append(errs, "Type must be one of event, assignment")
 	}
 	if len(errs) > 0 {

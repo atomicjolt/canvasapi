@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -37,12 +39,12 @@ import (
 //
 type SendMessageToUnsubmittedOrSubmittedUsersForQuiz struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Conversations string `json:"conversations"` //  (Optional)
+		Conversations string `json:"conversations" url:"conversations,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -61,12 +63,16 @@ func (t *SendMessageToUnsubmittedOrSubmittedUsersForQuiz) GetQuery() (string, er
 	return "", nil
 }
 
-func (t *SendMessageToUnsubmittedOrSubmittedUsersForQuiz) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *SendMessageToUnsubmittedOrSubmittedUsersForQuiz) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *SendMessageToUnsubmittedOrSubmittedUsersForQuiz) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *SendMessageToUnsubmittedOrSubmittedUsersForQuiz) HasErrors() error {

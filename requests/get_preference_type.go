@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -21,10 +22,10 @@ import (
 //
 type GetPreferenceType struct {
 	Path struct {
-		UserID       string `json:"user_id"`      //  (Required)
-		Type         string `json:"type"`         //  (Required)
-		Address      string `json:"address"`      //  (Required)
-		Notification string `json:"notification"` //  (Required)
+		UserID       string `json:"user_id" url:"user_id,omitempty"`           //  (Required)
+		Type         string `json:"type" url:"type,omitempty"`                 //  (Required)
+		Address      string `json:"address" url:"address,omitempty"`           //  (Required)
+		Notification string `json:"notification" url:"notification,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -45,8 +46,12 @@ func (t *GetPreferenceType) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetPreferenceType) GetBody() (string, error) {
-	return "", nil
+func (t *GetPreferenceType) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetPreferenceType) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetPreferenceType) HasErrors() error {

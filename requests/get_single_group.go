@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -28,11 +29,11 @@ import (
 //
 type GetSingleGroup struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of permissions, tabs
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of permissions, tabs
 	} `json:"query"`
 }
 
@@ -54,8 +55,12 @@ func (t *GetSingleGroup) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSingleGroup) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleGroup) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleGroup) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleGroup) HasErrors() error {
@@ -64,7 +69,7 @@ func (t *GetSingleGroup) HasErrors() error {
 		errs = append(errs, "'GroupID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"permissions", "tabs"}, v) {
+		if v != "" && !string_utils.Include([]string{"permissions", "tabs"}, v) {
 			errs = append(errs, "Include must be one of permissions, tabs")
 		}
 	}

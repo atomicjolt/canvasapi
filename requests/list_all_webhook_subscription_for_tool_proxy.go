@@ -1,6 +1,8 @@
 package requests
 
 import (
+	"net/url"
+
 	"github.com/atomicjolt/canvasapi"
 )
 
@@ -27,8 +29,12 @@ func (t *ListAllWebhookSubscriptionForToolProxy) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListAllWebhookSubscriptionForToolProxy) GetBody() (string, error) {
-	return "", nil
+func (t *ListAllWebhookSubscriptionForToolProxy) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListAllWebhookSubscriptionForToolProxy) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListAllWebhookSubscriptionForToolProxy) HasErrors() error {

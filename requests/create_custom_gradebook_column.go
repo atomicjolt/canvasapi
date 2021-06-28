@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -28,17 +29,17 @@ import (
 //
 type CreateCustomGradebookColumn struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Column struct {
-			Title        string `json:"title"`         //  (Required)
-			Position     int64  `json:"position"`      //  (Optional)
-			Hidden       bool   `json:"hidden"`        //  (Optional)
-			TeacherNotes bool   `json:"teacher_notes"` //  (Optional)
-			ReadOnly     bool   `json:"read_only"`     //  (Optional)
-		} `json:"column"`
+			Title        string `json:"title" url:"title,omitempty"`                 //  (Required)
+			Position     int64  `json:"position" url:"position,omitempty"`           //  (Optional)
+			Hidden       bool   `json:"hidden" url:"hidden,omitempty"`               //  (Optional)
+			TeacherNotes bool   `json:"teacher_notes" url:"teacher_notes,omitempty"` //  (Optional)
+			ReadOnly     bool   `json:"read_only" url:"read_only,omitempty"`         //  (Optional)
+		} `json:"column" url:"column,omitempty"`
 	} `json:"form"`
 }
 
@@ -56,12 +57,16 @@ func (t *CreateCustomGradebookColumn) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateCustomGradebookColumn) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateCustomGradebookColumn) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateCustomGradebookColumn) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateCustomGradebookColumn) HasErrors() error {

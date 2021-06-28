@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -31,18 +32,18 @@ import (
 //
 type CreateFolderFolders struct {
 	Path struct {
-		FolderID string `json:"folder_id"` //  (Required)
+		FolderID string `json:"folder_id" url:"folder_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Name             string    `json:"name"`               //  (Required)
-		ParentFolderID   string    `json:"parent_folder_id"`   //  (Optional)
-		ParentFolderPath string    `json:"parent_folder_path"` //  (Optional)
-		LockAt           time.Time `json:"lock_at"`            //  (Optional)
-		UnlockAt         time.Time `json:"unlock_at"`          //  (Optional)
-		Locked           bool      `json:"locked"`             //  (Optional)
-		Hidden           bool      `json:"hidden"`             //  (Optional)
-		Position         int64     `json:"position"`           //  (Optional)
+		Name             string    `json:"name" url:"name,omitempty"`                             //  (Required)
+		ParentFolderID   string    `json:"parent_folder_id" url:"parent_folder_id,omitempty"`     //  (Optional)
+		ParentFolderPath string    `json:"parent_folder_path" url:"parent_folder_path,omitempty"` //  (Optional)
+		LockAt           time.Time `json:"lock_at" url:"lock_at,omitempty"`                       //  (Optional)
+		UnlockAt         time.Time `json:"unlock_at" url:"unlock_at,omitempty"`                   //  (Optional)
+		Locked           bool      `json:"locked" url:"locked,omitempty"`                         //  (Optional)
+		Hidden           bool      `json:"hidden" url:"hidden,omitempty"`                         //  (Optional)
+		Position         int64     `json:"position" url:"position,omitempty"`                     //  (Optional)
 	} `json:"form"`
 }
 
@@ -60,12 +61,16 @@ func (t *CreateFolderFolders) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateFolderFolders) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateFolderFolders) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateFolderFolders) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateFolderFolders) HasErrors() error {

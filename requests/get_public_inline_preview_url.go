@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -22,11 +23,11 @@ import (
 //
 type GetPublicInlinePreviewUrl struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		SubmissionID int64 `json:"submission_id"` //  (Optional)
+		SubmissionID int64 `json:"submission_id" url:"submission_id,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -48,8 +49,12 @@ func (t *GetPublicInlinePreviewUrl) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetPublicInlinePreviewUrl) GetBody() (string, error) {
-	return "", nil
+func (t *GetPublicInlinePreviewUrl) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetPublicInlinePreviewUrl) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetPublicInlinePreviewUrl) HasErrors() error {

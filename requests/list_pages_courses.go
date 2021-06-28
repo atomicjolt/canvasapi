@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -28,14 +29,14 @@ import (
 //
 type ListPagesCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Sort       string `json:"sort"`        //  (Optional) . Must be one of title, created_at, updated_at
-		Order      string `json:"order"`       //  (Optional) . Must be one of asc, desc
-		SearchTerm string `json:"search_term"` //  (Optional)
-		Published  bool   `json:"published"`   //  (Optional)
+		Sort       string `json:"sort" url:"sort,omitempty"`               //  (Optional) . Must be one of title, created_at, updated_at
+		Order      string `json:"order" url:"order,omitempty"`             //  (Optional) . Must be one of asc, desc
+		SearchTerm string `json:"search_term" url:"search_term,omitempty"` //  (Optional)
+		Published  bool   `json:"published" url:"published,omitempty"`     //  (Optional)
 	} `json:"query"`
 }
 
@@ -57,8 +58,12 @@ func (t *ListPagesCourses) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListPagesCourses) GetBody() (string, error) {
-	return "", nil
+func (t *ListPagesCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListPagesCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListPagesCourses) HasErrors() error {
@@ -66,10 +71,10 @@ func (t *ListPagesCourses) HasErrors() error {
 	if t.Path.CourseID == "" {
 		errs = append(errs, "'CourseID' is required")
 	}
-	if !string_utils.Include([]string{"title", "created_at", "updated_at"}, t.Query.Sort) {
+	if t.Query.Sort != "" && !string_utils.Include([]string{"title", "created_at", "updated_at"}, t.Query.Sort) {
 		errs = append(errs, "Sort must be one of title, created_at, updated_at")
 	}
-	if !string_utils.Include([]string{"asc", "desc"}, t.Query.Order) {
+	if t.Query.Order != "" && !string_utils.Include([]string{"asc", "desc"}, t.Query.Order) {
 		errs = append(errs, "Order must be one of asc, desc")
 	}
 	if len(errs) > 0 {

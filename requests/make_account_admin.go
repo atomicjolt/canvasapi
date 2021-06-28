@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -29,14 +30,14 @@ import (
 //
 type MakeAccountAdmin struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		UserID           int64  `json:"user_id"`           //  (Required)
-		Role             string `json:"role"`              //  (Optional)
-		RoleID           int64  `json:"role_id"`           //  (Optional)
-		SendConfirmation bool   `json:"send_confirmation"` //  (Optional)
+		UserID           int64  `json:"user_id" url:"user_id,omitempty"`                     //  (Required)
+		Role             string `json:"role" url:"role,omitempty"`                           //  (Optional)
+		RoleID           int64  `json:"role_id" url:"role_id,omitempty"`                     //  (Optional)
+		SendConfirmation bool   `json:"send_confirmation" url:"send_confirmation,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -54,12 +55,16 @@ func (t *MakeAccountAdmin) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *MakeAccountAdmin) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *MakeAccountAdmin) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *MakeAccountAdmin) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *MakeAccountAdmin) HasErrors() error {

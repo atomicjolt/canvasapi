@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"time"
 
 	"github.com/google/go-querystring/query"
@@ -28,12 +29,12 @@ import (
 //
 type AdvancedQuery struct {
 	Query struct {
-		CourseID     int64     `json:"course_id"`     //  (Optional)
-		AssignmentID int64     `json:"assignment_id"` //  (Optional)
-		StudentID    int64     `json:"student_id"`    //  (Optional)
-		GraderID     int64     `json:"grader_id"`     //  (Optional)
-		StartTime    time.Time `json:"start_time"`    //  (Optional)
-		EndTime      time.Time `json:"end_time"`      //  (Optional)
+		CourseID     int64     `json:"course_id" url:"course_id,omitempty"`         //  (Optional)
+		AssignmentID int64     `json:"assignment_id" url:"assignment_id,omitempty"` //  (Optional)
+		StudentID    int64     `json:"student_id" url:"student_id,omitempty"`       //  (Optional)
+		GraderID     int64     `json:"grader_id" url:"grader_id,omitempty"`         //  (Optional)
+		StartTime    time.Time `json:"start_time" url:"start_time,omitempty"`       //  (Optional)
+		EndTime      time.Time `json:"end_time" url:"end_time,omitempty"`           //  (Optional)
 	} `json:"query"`
 }
 
@@ -53,8 +54,12 @@ func (t *AdvancedQuery) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *AdvancedQuery) GetBody() (string, error) {
-	return "", nil
+func (t *AdvancedQuery) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *AdvancedQuery) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *AdvancedQuery) HasErrors() error {

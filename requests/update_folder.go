@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -30,17 +31,17 @@ import (
 //
 type UpdateFolder struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Name           string    `json:"name"`             //  (Optional)
-		ParentFolderID string    `json:"parent_folder_id"` //  (Optional)
-		LockAt         time.Time `json:"lock_at"`          //  (Optional)
-		UnlockAt       time.Time `json:"unlock_at"`        //  (Optional)
-		Locked         bool      `json:"locked"`           //  (Optional)
-		Hidden         bool      `json:"hidden"`           //  (Optional)
-		Position       int64     `json:"position"`         //  (Optional)
+		Name           string    `json:"name" url:"name,omitempty"`                         //  (Optional)
+		ParentFolderID string    `json:"parent_folder_id" url:"parent_folder_id,omitempty"` //  (Optional)
+		LockAt         time.Time `json:"lock_at" url:"lock_at,omitempty"`                   //  (Optional)
+		UnlockAt       time.Time `json:"unlock_at" url:"unlock_at,omitempty"`               //  (Optional)
+		Locked         bool      `json:"locked" url:"locked,omitempty"`                     //  (Optional)
+		Hidden         bool      `json:"hidden" url:"hidden,omitempty"`                     //  (Optional)
+		Position       int64     `json:"position" url:"position,omitempty"`                 //  (Optional)
 	} `json:"form"`
 }
 
@@ -58,12 +59,16 @@ func (t *UpdateFolder) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateFolder) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateFolder) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateFolder) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateFolder) HasErrors() error {

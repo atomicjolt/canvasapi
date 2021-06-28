@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -34,21 +35,21 @@ import (
 //
 type UpdateRubricassociation struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       int64  `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       int64  `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		RubricAssociation struct {
-			RubricID        int64  `json:"rubric_id"`        //  (Optional)
-			AssociationID   int64  `json:"association_id"`   //  (Optional)
-			AssociationType string `json:"association_type"` //  (Optional) . Must be one of Assignment, Course, Account
-			Title           string `json:"title"`            //  (Optional)
-			UseForGrading   bool   `json:"use_for_grading"`  //  (Optional)
-			HideScoreTotal  bool   `json:"hide_score_total"` //  (Optional)
-			Purpose         string `json:"purpose"`          //  (Optional) . Must be one of grading, bookmark
-			Bookmarked      bool   `json:"bookmarked"`       //  (Optional)
-		} `json:"rubric_association"`
+			RubricID        int64  `json:"rubric_id" url:"rubric_id,omitempty"`               //  (Optional)
+			AssociationID   int64  `json:"association_id" url:"association_id,omitempty"`     //  (Optional)
+			AssociationType string `json:"association_type" url:"association_type,omitempty"` //  (Optional) . Must be one of Assignment, Course, Account
+			Title           string `json:"title" url:"title,omitempty"`                       //  (Optional)
+			UseForGrading   bool   `json:"use_for_grading" url:"use_for_grading,omitempty"`   //  (Optional)
+			HideScoreTotal  bool   `json:"hide_score_total" url:"hide_score_total,omitempty"` //  (Optional)
+			Purpose         string `json:"purpose" url:"purpose,omitempty"`                   //  (Optional) . Must be one of grading, bookmark
+			Bookmarked      bool   `json:"bookmarked" url:"bookmarked,omitempty"`             //  (Optional)
+		} `json:"rubric_association" url:"rubric_association,omitempty"`
 	} `json:"form"`
 }
 
@@ -67,12 +68,16 @@ func (t *UpdateRubricassociation) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateRubricassociation) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateRubricassociation) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateRubricassociation) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateRubricassociation) HasErrors() error {
@@ -80,10 +85,10 @@ func (t *UpdateRubricassociation) HasErrors() error {
 	if t.Path.CourseID == "" {
 		errs = append(errs, "'CourseID' is required")
 	}
-	if !string_utils.Include([]string{"Assignment", "Course", "Account"}, t.Form.RubricAssociation.AssociationType) {
+	if t.Form.RubricAssociation.AssociationType != "" && !string_utils.Include([]string{"Assignment", "Course", "Account"}, t.Form.RubricAssociation.AssociationType) {
 		errs = append(errs, "RubricAssociation must be one of Assignment, Course, Account")
 	}
-	if !string_utils.Include([]string{"grading", "bookmark"}, t.Form.RubricAssociation.Purpose) {
+	if t.Form.RubricAssociation.Purpose != "" && !string_utils.Include([]string{"grading", "bookmark"}, t.Form.RubricAssociation.Purpose) {
 		errs = append(errs, "RubricAssociation must be one of grading, bookmark")
 	}
 	if len(errs) > 0 {

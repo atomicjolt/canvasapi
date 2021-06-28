@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,14 +26,14 @@ import (
 //
 type ShareBrandconfigTheme struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		SharedBrandConfig struct {
-			Name           string `json:"name"`             //  (Required)
-			BrandConfigMd5 string `json:"brand_config_md5"` //  (Required)
-		} `json:"shared_brand_config"`
+			Name           string `json:"name" url:"name,omitempty"`                         //  (Required)
+			BrandConfigMd5 string `json:"brand_config_md5" url:"brand_config_md5,omitempty"` //  (Required)
+		} `json:"shared_brand_config" url:"shared_brand_config,omitempty"`
 	} `json:"form"`
 }
 
@@ -50,12 +51,16 @@ func (t *ShareBrandconfigTheme) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ShareBrandconfigTheme) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *ShareBrandconfigTheme) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *ShareBrandconfigTheme) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *ShareBrandconfigTheme) HasErrors() error {

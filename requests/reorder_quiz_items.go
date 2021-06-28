@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,15 +27,15 @@ import (
 //
 type ReorderQuizItems struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Order struct {
-			ID   []int64  `json:"id"`   //  (Required)
-			Type []string `json:"type"` //  (Optional) . Must be one of question, group
-		} `json:"order"`
+			ID   []int64  `json:"id" url:"id,omitempty"`     //  (Required)
+			Type []string `json:"type" url:"type,omitempty"` //  (Optional) . Must be one of question, group
+		} `json:"order" url:"order,omitempty"`
 	} `json:"form"`
 }
 
@@ -52,12 +54,16 @@ func (t *ReorderQuizItems) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ReorderQuizItems) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *ReorderQuizItems) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *ReorderQuizItems) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *ReorderQuizItems) HasErrors() error {
@@ -72,7 +78,7 @@ func (t *ReorderQuizItems) HasErrors() error {
 		errs = append(errs, "'Order' is required")
 	}
 	for _, v := range t.Form.Order.Type {
-		if !string_utils.Include([]string{"question", "group"}, v) {
+		if v != "" && !string_utils.Include([]string{"question", "group"}, v) {
 			errs = append(errs, "Order must be one of question, group")
 		}
 	}

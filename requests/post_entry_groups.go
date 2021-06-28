@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,13 +27,13 @@ import (
 //
 type PostEntryGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
-		TopicID string `json:"topic_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
+		TopicID string `json:"topic_id" url:"topic_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Message    string `json:"message"`    //  (Optional)
-		Attachment string `json:"attachment"` //  (Optional)
+		Message    string `json:"message" url:"message,omitempty"`       //  (Optional)
+		Attachment string `json:"attachment" url:"attachment,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -50,12 +52,16 @@ func (t *PostEntryGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *PostEntryGroups) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *PostEntryGroups) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *PostEntryGroups) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *PostEntryGroups) HasErrors() error {

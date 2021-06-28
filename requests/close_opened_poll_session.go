@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -16,8 +17,8 @@ import (
 //
 type CloseOpenedPollSession struct {
 	Path struct {
-		PollID string `json:"poll_id"` //  (Required)
-		ID     string `json:"id"`      //  (Required)
+		PollID string `json:"poll_id" url:"poll_id,omitempty"` //  (Required)
+		ID     string `json:"id" url:"id,omitempty"`           //  (Required)
 	} `json:"path"`
 }
 
@@ -36,8 +37,12 @@ func (t *CloseOpenedPollSession) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CloseOpenedPollSession) GetBody() (string, error) {
-	return "", nil
+func (t *CloseOpenedPollSession) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *CloseOpenedPollSession) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *CloseOpenedPollSession) HasErrors() error {

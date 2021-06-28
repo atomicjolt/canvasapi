@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,12 +27,12 @@ import (
 //
 type MarkAllEntriesAsUnreadGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
-		TopicID string `json:"topic_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
+		TopicID string `json:"topic_id" url:"topic_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		ForcedReadState bool `json:"forced_read_state"` //  (Optional)
+		ForcedReadState bool `json:"forced_read_state" url:"forced_read_state,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -54,8 +55,12 @@ func (t *MarkAllEntriesAsUnreadGroups) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *MarkAllEntriesAsUnreadGroups) GetBody() (string, error) {
-	return "", nil
+func (t *MarkAllEntriesAsUnreadGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *MarkAllEntriesAsUnreadGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *MarkAllEntriesAsUnreadGroups) HasErrors() error {

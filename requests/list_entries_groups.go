@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,12 +27,12 @@ import (
 //
 type ListEntriesGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
-		TopicID string `json:"topic_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
+		TopicID string `json:"topic_id" url:"topic_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		IDs []string `json:"ids"` //  (Optional)
+		IDs []string `json:"ids" url:"ids,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -54,8 +55,12 @@ func (t *ListEntriesGroups) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListEntriesGroups) GetBody() (string, error) {
-	return "", nil
+func (t *ListEntriesGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListEntriesGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListEntriesGroups) HasErrors() error {

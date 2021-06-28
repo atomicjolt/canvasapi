@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -16,8 +17,8 @@ import (
 //
 type GetSingleSubmission struct {
 	Path struct {
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		SubmissionID string `json:"submission_id"` //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		SubmissionID string `json:"submission_id" url:"submission_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -36,8 +37,12 @@ func (t *GetSingleSubmission) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetSingleSubmission) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleSubmission) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleSubmission) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleSubmission) HasErrors() error {

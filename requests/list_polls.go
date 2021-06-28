@@ -1,6 +1,8 @@
 package requests
 
 import (
+	"net/url"
+
 	"github.com/atomicjolt/canvasapi"
 )
 
@@ -22,8 +24,12 @@ func (t *ListPolls) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListPolls) GetBody() (string, error) {
-	return "", nil
+func (t *ListPolls) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListPolls) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListPolls) HasErrors() error {

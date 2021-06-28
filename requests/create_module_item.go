@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -44,25 +45,25 @@ import (
 //
 type CreateModuleItem struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ModuleID string `json:"module_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ModuleID string `json:"module_id" url:"module_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		ModuleItem struct {
-			Title                 string `json:"title"`        //  (Optional)
-			Type                  string `json:"type"`         //  (Required) . Must be one of File, Page, Discussion, Assignment, Quiz, SubHeader, ExternalUrl, ExternalTool
-			ContentID             string `json:"content_id"`   //  (Required)
-			Position              int64  `json:"position"`     //  (Optional)
-			Indent                int64  `json:"indent"`       //  (Optional)
-			PageUrl               string `json:"page_url"`     //  (Optional)
-			ExternalUrl           string `json:"external_url"` //  (Optional)
-			NewTab                bool   `json:"new_tab"`      //  (Optional)
+			Title                 string `json:"title" url:"title,omitempty"`               //  (Optional)
+			Type                  string `json:"type" url:"type,omitempty"`                 //  (Required) . Must be one of File, Page, Discussion, Assignment, Quiz, SubHeader, ExternalUrl, ExternalTool
+			ContentID             string `json:"content_id" url:"content_id,omitempty"`     //  (Required)
+			Position              int64  `json:"position" url:"position,omitempty"`         //  (Optional)
+			Indent                int64  `json:"indent" url:"indent,omitempty"`             //  (Optional)
+			PageUrl               string `json:"page_url" url:"page_url,omitempty"`         //  (Optional)
+			ExternalUrl           string `json:"external_url" url:"external_url,omitempty"` //  (Optional)
+			NewTab                bool   `json:"new_tab" url:"new_tab,omitempty"`           //  (Optional)
 			CompletionRequirement struct {
-				Type     string `json:"type"`      //  (Optional) . Must be one of must_view, must_contribute, must_submit, must_mark_done
-				MinScore int64  `json:"min_score"` //  (Optional)
-			} `json:"completion_requirement"`
-		} `json:"module_item"`
+				Type     string `json:"type" url:"type,omitempty"`           //  (Optional) . Must be one of must_view, must_contribute, must_submit, must_mark_done
+				MinScore int64  `json:"min_score" url:"min_score,omitempty"` //  (Optional)
+			} `json:"completion_requirement" url:"completion_requirement,omitempty"`
+		} `json:"module_item" url:"module_item,omitempty"`
 	} `json:"form"`
 }
 
@@ -81,12 +82,16 @@ func (t *CreateModuleItem) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateModuleItem) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateModuleItem) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateModuleItem) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateModuleItem) HasErrors() error {
@@ -100,13 +105,13 @@ func (t *CreateModuleItem) HasErrors() error {
 	if t.Form.ModuleItem.Type == "" {
 		errs = append(errs, "'ModuleItem' is required")
 	}
-	if !string_utils.Include([]string{"File", "Page", "Discussion", "Assignment", "Quiz", "SubHeader", "ExternalUrl", "ExternalTool"}, t.Form.ModuleItem.Type) {
+	if t.Form.ModuleItem.Type != "" && !string_utils.Include([]string{"File", "Page", "Discussion", "Assignment", "Quiz", "SubHeader", "ExternalUrl", "ExternalTool"}, t.Form.ModuleItem.Type) {
 		errs = append(errs, "ModuleItem must be one of File, Page, Discussion, Assignment, Quiz, SubHeader, ExternalUrl, ExternalTool")
 	}
 	if t.Form.ModuleItem.ContentID == "" {
 		errs = append(errs, "'ModuleItem' is required")
 	}
-	if !string_utils.Include([]string{"must_view", "must_contribute", "must_submit", "must_mark_done"}, t.Form.ModuleItem.CompletionRequirement.Type) {
+	if t.Form.ModuleItem.CompletionRequirement.Type != "" && !string_utils.Include([]string{"must_view", "must_contribute", "must_submit", "must_mark_done"}, t.Form.ModuleItem.CompletionRequirement.Type) {
 		errs = append(errs, "ModuleItem must be one of must_view, must_contribute, must_submit, must_mark_done")
 	}
 	if len(errs) > 0 {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -25,7 +26,7 @@ import (
 //
 type GetDepartmentLevelGradeDataCurrent struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -43,8 +44,12 @@ func (t *GetDepartmentLevelGradeDataCurrent) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetDepartmentLevelGradeDataCurrent) GetBody() (string, error) {
-	return "", nil
+func (t *GetDepartmentLevelGradeDataCurrent) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetDepartmentLevelGradeDataCurrent) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetDepartmentLevelGradeDataCurrent) HasErrors() error {

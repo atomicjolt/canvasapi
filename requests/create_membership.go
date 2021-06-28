@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,11 +26,11 @@ import (
 //
 type CreateMembership struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		UserID string `json:"user_id"` //  (Optional)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -47,12 +48,16 @@ func (t *CreateMembership) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateMembership) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateMembership) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateMembership) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateMembership) HasErrors() error {

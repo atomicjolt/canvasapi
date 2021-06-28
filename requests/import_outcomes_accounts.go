@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -58,13 +59,13 @@ import (
 //
 type ImportOutcomesAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ImportType string `json:"import_type"` //  (Optional)
-		Attachment string `json:"attachment"`  //  (Optional)
-		Extension  string `json:"extension"`   //  (Optional)
+		ImportType string `json:"import_type" url:"import_type,omitempty"` //  (Optional)
+		Attachment string `json:"attachment" url:"attachment,omitempty"`   //  (Optional)
+		Extension  string `json:"extension" url:"extension,omitempty"`     //  (Optional)
 	} `json:"form"`
 }
 
@@ -82,12 +83,16 @@ func (t *ImportOutcomesAccounts) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ImportOutcomesAccounts) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *ImportOutcomesAccounts) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *ImportOutcomesAccounts) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *ImportOutcomesAccounts) HasErrors() error {

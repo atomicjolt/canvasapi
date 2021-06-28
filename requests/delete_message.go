@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -22,11 +24,11 @@ import (
 //
 type DeleteMessage struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Remove []string `json:"remove"` //  (Required)
+		Remove []string `json:"remove" url:"remove,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -44,12 +46,16 @@ func (t *DeleteMessage) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteMessage) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *DeleteMessage) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *DeleteMessage) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *DeleteMessage) HasErrors() error {

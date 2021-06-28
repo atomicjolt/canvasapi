@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -63,19 +64,19 @@ import (
 //
 type CreateScore struct {
 	Path struct {
-		CourseID   string `json:"course_id"`    //  (Required)
-		LineItemID string `json:"line_item_id"` //  (Required)
+		CourseID   string `json:"course_id" url:"course_id,omitempty"`       //  (Required)
+		LineItemID string `json:"line_item_id" url:"line_item_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		UserID              string  `json:"user_id"`                                       //  (Required)
-		ActivityProgress    string  `json:"activity_progress"`                             //  (Required)
-		GradingProgress     string  `json:"grading_progress"`                              //  (Required)
-		Timestamp           string  `json:"timestamp"`                                     //  (Required)
-		ScoreGiven          float64 `json:"score_given"`                                   //  (Optional)
-		ScoreMaximum        float64 `json:"score_maximum"`                                 //  (Optional)
-		Comment             string  `json:"comment"`                                       //  (Optional)
-		CanvasLTISubmission string  `json:"https://canvas.instructure.com/lti/submission"` //  (Optional)
+		UserID              string  `json:"user_id" url:"user_id,omitempty"`                                                                             //  (Required)
+		ActivityProgress    string  `json:"activity_progress" url:"activity_progress,omitempty"`                                                         //  (Required)
+		GradingProgress     string  `json:"grading_progress" url:"grading_progress,omitempty"`                                                           //  (Required)
+		Timestamp           string  `json:"timestamp" url:"timestamp,omitempty"`                                                                         //  (Required)
+		ScoreGiven          float64 `json:"score_given" url:"score_given,omitempty"`                                                                     //  (Optional)
+		ScoreMaximum        float64 `json:"score_maximum" url:"score_maximum,omitempty"`                                                                 //  (Optional)
+		Comment             string  `json:"comment" url:"comment,omitempty"`                                                                             //  (Optional)
+		CanvasLTISubmission string  `json:"https://canvas.instructure.com/lti/submission" url:"https://canvas.instructure.com/lti/submission,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -94,12 +95,16 @@ func (t *CreateScore) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateScore) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateScore) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateScore) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateScore) HasErrors() error {

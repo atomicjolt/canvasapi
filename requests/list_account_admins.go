@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,11 +24,11 @@ import (
 //
 type ListAccountAdmins struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		UserID []int `json:"user_id"` //  (Optional)
+		UserID []int `json:"user_id" url:"user_id,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -49,8 +50,12 @@ func (t *ListAccountAdmins) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListAccountAdmins) GetBody() (string, error) {
-	return "", nil
+func (t *ListAccountAdmins) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListAccountAdmins) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListAccountAdmins) HasErrors() error {

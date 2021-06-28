@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 
 	"github.com/google/go-querystring/query"
 
@@ -22,7 +23,7 @@ import (
 //
 type ListFavoriteCourses struct {
 	Query struct {
-		ExcludeBlueprintCourses bool `json:"exclude_blueprint_courses"` //  (Optional)
+		ExcludeBlueprintCourses bool `json:"exclude_blueprint_courses" url:"exclude_blueprint_courses,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -42,8 +43,12 @@ func (t *ListFavoriteCourses) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListFavoriteCourses) GetBody() (string, error) {
-	return "", nil
+func (t *ListFavoriteCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListFavoriteCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListFavoriteCourses) HasErrors() error {

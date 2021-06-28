@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -20,11 +21,11 @@ import (
 //
 type DeleteCalendarEvent struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		CancelReason string `json:"cancel_reason"` //  (Optional)
+		CancelReason string `json:"cancel_reason" url:"cancel_reason,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -46,8 +47,12 @@ func (t *DeleteCalendarEvent) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *DeleteCalendarEvent) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteCalendarEvent) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteCalendarEvent) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteCalendarEvent) HasErrors() error {

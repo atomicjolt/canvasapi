@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -29,12 +30,12 @@ import (
 //
 type SetFeatureFlagCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		Feature  string `json:"feature"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		Feature  string `json:"feature" url:"feature,omitempty"`     //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		State string `json:"state"` //  (Optional) . Must be one of off, allowed, on
+		State string `json:"state" url:"state,omitempty"` //  (Optional) . Must be one of off, allowed, on
 	} `json:"form"`
 }
 
@@ -53,12 +54,16 @@ func (t *SetFeatureFlagCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *SetFeatureFlagCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *SetFeatureFlagCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *SetFeatureFlagCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *SetFeatureFlagCourses) HasErrors() error {
@@ -69,7 +74,7 @@ func (t *SetFeatureFlagCourses) HasErrors() error {
 	if t.Path.Feature == "" {
 		errs = append(errs, "'Feature' is required")
 	}
-	if !string_utils.Include([]string{"off", "allowed", "on"}, t.Form.State) {
+	if t.Form.State != "" && !string_utils.Include([]string{"off", "allowed", "on"}, t.Form.State) {
 		errs = append(errs, "State must be one of off, allowed, on")
 	}
 	if len(errs) > 0 {

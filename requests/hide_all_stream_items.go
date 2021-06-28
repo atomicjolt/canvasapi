@@ -1,6 +1,8 @@
 package requests
 
 import (
+	"net/url"
+
 	"github.com/atomicjolt/canvasapi"
 )
 
@@ -22,8 +24,12 @@ func (t *HideAllStreamItems) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *HideAllStreamItems) GetBody() (string, error) {
-	return "", nil
+func (t *HideAllStreamItems) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *HideAllStreamItems) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *HideAllStreamItems) HasErrors() error {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,13 +27,13 @@ import (
 //
 type CreateContentShare struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ReceiverIDs string `json:"receiver_ids"` //  (Required)
-		ContentType string `json:"content_type"` //  (Required) . Must be one of assignment, discussion_topic, page, quiz, module, module_item
-		ContentID   int64  `json:"content_id"`   //  (Required)
+		ReceiverIDs string `json:"receiver_ids" url:"receiver_ids,omitempty"` //  (Required)
+		ContentType string `json:"content_type" url:"content_type,omitempty"` //  (Required) . Must be one of assignment, discussion_topic, page, quiz, module, module_item
+		ContentID   int64  `json:"content_id" url:"content_id,omitempty"`     //  (Required)
 	} `json:"form"`
 }
 
@@ -50,12 +51,16 @@ func (t *CreateContentShare) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateContentShare) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateContentShare) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateContentShare) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateContentShare) HasErrors() error {
@@ -69,7 +74,7 @@ func (t *CreateContentShare) HasErrors() error {
 	if t.Form.ContentType == "" {
 		errs = append(errs, "'ContentType' is required")
 	}
-	if !string_utils.Include([]string{"assignment", "discussion_topic", "page", "quiz", "module", "module_item"}, t.Form.ContentType) {
+	if t.Form.ContentType != "" && !string_utils.Include([]string{"assignment", "discussion_topic", "page", "quiz", "module", "module_item"}, t.Form.ContentType) {
 		errs = append(errs, "ContentType must be one of assignment, discussion_topic, page, quiz, module, module_item")
 	}
 	if len(errs) > 0 {

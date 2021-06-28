@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -15,7 +16,7 @@ import (
 //
 type ListPollChoicesInPoll struct {
 	Path struct {
-		PollID string `json:"poll_id"` //  (Required)
+		PollID string `json:"poll_id" url:"poll_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -33,8 +34,12 @@ func (t *ListPollChoicesInPoll) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListPollChoicesInPoll) GetBody() (string, error) {
-	return "", nil
+func (t *ListPollChoicesInPoll) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListPollChoicesInPoll) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListPollChoicesInPoll) HasErrors() error {

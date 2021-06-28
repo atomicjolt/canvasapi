@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,7 +24,7 @@ import (
 //
 type GetVisibleCourseNavigationTools struct {
 	Query struct {
-		ContextCodes []string `json:"context_codes"` //  (Required)
+		ContextCodes []string `json:"context_codes" url:"context_codes,omitempty"` //  (Required)
 	} `json:"query"`
 }
 
@@ -43,8 +44,12 @@ func (t *GetVisibleCourseNavigationTools) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetVisibleCourseNavigationTools) GetBody() (string, error) {
-	return "", nil
+func (t *GetVisibleCourseNavigationTools) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetVisibleCourseNavigationTools) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetVisibleCourseNavigationTools) HasErrors() error {

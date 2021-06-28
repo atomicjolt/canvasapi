@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -21,7 +22,7 @@ import (
 //
 type GetFolderFolders struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *GetFolderFolders) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetFolderFolders) GetBody() (string, error) {
-	return "", nil
+func (t *GetFolderFolders) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetFolderFolders) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetFolderFolders) HasErrors() error {

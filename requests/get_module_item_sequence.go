@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -28,12 +29,12 @@ import (
 //
 type GetModuleItemSequence struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		AssetType string `json:"asset_type"` //  (Optional) . Must be one of ModuleItem, File, Page, Discussion, Assignment, Quiz, ExternalTool
-		AssetID   int64  `json:"asset_id"`   //  (Optional)
+		AssetType string `json:"asset_type" url:"asset_type,omitempty"` //  (Optional) . Must be one of ModuleItem, File, Page, Discussion, Assignment, Quiz, ExternalTool
+		AssetID   int64  `json:"asset_id" url:"asset_id,omitempty"`     //  (Optional)
 	} `json:"query"`
 }
 
@@ -55,8 +56,12 @@ func (t *GetModuleItemSequence) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetModuleItemSequence) GetBody() (string, error) {
-	return "", nil
+func (t *GetModuleItemSequence) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetModuleItemSequence) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetModuleItemSequence) HasErrors() error {
@@ -64,7 +69,7 @@ func (t *GetModuleItemSequence) HasErrors() error {
 	if t.Path.CourseID == "" {
 		errs = append(errs, "'CourseID' is required")
 	}
-	if !string_utils.Include([]string{"ModuleItem", "File", "Page", "Discussion", "Assignment", "Quiz", "ExternalTool"}, t.Query.AssetType) {
+	if t.Query.AssetType != "" && !string_utils.Include([]string{"ModuleItem", "File", "Page", "Discussion", "Assignment", "Quiz", "ExternalTool"}, t.Query.AssetType) {
 		errs = append(errs, "AssetType must be one of ModuleItem, File, Page, Discussion, Assignment, Quiz, ExternalTool")
 	}
 	if len(errs) > 0 {

@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -39,15 +41,15 @@ import (
 //
 type CompleteQuizSubmissionTurnItIn struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Attempt         int64  `json:"attempt"`          //  (Required)
-		ValidationToken string `json:"validation_token"` //  (Required)
-		AccessCode      string `json:"access_code"`      //  (Optional)
+		Attempt         int64  `json:"attempt" url:"attempt,omitempty"`                   //  (Required)
+		ValidationToken string `json:"validation_token" url:"validation_token,omitempty"` //  (Required)
+		AccessCode      string `json:"access_code" url:"access_code,omitempty"`           //  (Optional)
 	} `json:"form"`
 }
 
@@ -67,12 +69,16 @@ func (t *CompleteQuizSubmissionTurnItIn) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CompleteQuizSubmissionTurnItIn) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CompleteQuizSubmissionTurnItIn) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CompleteQuizSubmissionTurnItIn) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CompleteQuizSubmissionTurnItIn) HasErrors() error {

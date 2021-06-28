@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -19,9 +21,9 @@ import (
 type CreateSinglePoll struct {
 	Form struct {
 		Polls struct {
-			Question    []string `json:"question"`    //  (Required)
-			Description []string `json:"description"` //  (Optional)
-		} `json:"polls"`
+			Question    []string `json:"question" url:"question,omitempty"`       //  (Required)
+			Description []string `json:"description" url:"description,omitempty"` //  (Optional)
+		} `json:"polls" url:"polls,omitempty"`
 	} `json:"form"`
 }
 
@@ -37,12 +39,16 @@ func (t *CreateSinglePoll) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateSinglePoll) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateSinglePoll) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateSinglePoll) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateSinglePoll) HasErrors() error {

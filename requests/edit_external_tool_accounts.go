@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -16,8 +17,8 @@ import (
 //
 type EditExternalToolAccounts struct {
 	Path struct {
-		AccountID      string `json:"account_id"`       //  (Required)
-		ExternalToolID string `json:"external_tool_id"` //  (Required)
+		AccountID      string `json:"account_id" url:"account_id,omitempty"`             //  (Required)
+		ExternalToolID string `json:"external_tool_id" url:"external_tool_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -36,8 +37,12 @@ func (t *EditExternalToolAccounts) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *EditExternalToolAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *EditExternalToolAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *EditExternalToolAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *EditExternalToolAccounts) HasErrors() error {

@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -21,14 +23,14 @@ import (
 //
 type CreateSinglePollSubmission struct {
 	Path struct {
-		PollID        string `json:"poll_id"`         //  (Required)
-		PollSessionID string `json:"poll_session_id"` //  (Required)
+		PollID        string `json:"poll_id" url:"poll_id,omitempty"`                 //  (Required)
+		PollSessionID string `json:"poll_session_id" url:"poll_session_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		PollSubmissions struct {
-			PollChoiceID []int64 `json:"poll_choice_id"` //  (Required)
-		} `json:"poll_submissions"`
+			PollChoiceID []int64 `json:"poll_choice_id" url:"poll_choice_id,omitempty"` //  (Required)
+		} `json:"poll_submissions" url:"poll_submissions,omitempty"`
 	} `json:"form"`
 }
 
@@ -47,12 +49,16 @@ func (t *CreateSinglePollSubmission) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateSinglePollSubmission) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateSinglePollSubmission) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateSinglePollSubmission) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateSinglePollSubmission) HasErrors() error {

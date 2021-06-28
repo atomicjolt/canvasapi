@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -28,12 +29,12 @@ import (
 //
 type ConcludeDeactivateOrDeleteEnrollment struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Task string `json:"task"` //  (Optional) . Must be one of conclude, delete, inactivate, deactivate
+		Task string `json:"task" url:"task,omitempty"` //  (Optional) . Must be one of conclude, delete, inactivate, deactivate
 	} `json:"query"`
 }
 
@@ -56,8 +57,12 @@ func (t *ConcludeDeactivateOrDeleteEnrollment) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ConcludeDeactivateOrDeleteEnrollment) GetBody() (string, error) {
-	return "", nil
+func (t *ConcludeDeactivateOrDeleteEnrollment) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ConcludeDeactivateOrDeleteEnrollment) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ConcludeDeactivateOrDeleteEnrollment) HasErrors() error {
@@ -68,7 +73,7 @@ func (t *ConcludeDeactivateOrDeleteEnrollment) HasErrors() error {
 	if t.Path.ID == "" {
 		errs = append(errs, "'ID' is required")
 	}
-	if !string_utils.Include([]string{"conclude", "delete", "inactivate", "deactivate"}, t.Query.Task) {
+	if t.Query.Task != "" && !string_utils.Include([]string{"conclude", "delete", "inactivate", "deactivate"}, t.Query.Task) {
 		errs = append(errs, "Task must be one of conclude, delete, inactivate, deactivate")
 	}
 	if len(errs) > 0 {

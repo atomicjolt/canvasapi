@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -23,7 +24,7 @@ import (
 //
 type ResolvePathGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -41,8 +42,12 @@ func (t *ResolvePathGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ResolvePathGroups) GetBody() (string, error) {
-	return "", nil
+func (t *ResolvePathGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ResolvePathGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ResolvePathGroups) HasErrors() error {

@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -31,13 +33,13 @@ import (
 //
 type CopyCourseContent struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		SourceCourse string   `json:"source_course"` //  (Optional)
-		Except       []string `json:"except"`        //  (Optional) . Must be one of course_settings, assignments, external_tools, files, topics, calendar_events, quizzes, wiki_pages, modules, outcomes
-		Only         []string `json:"only"`          //  (Optional) . Must be one of course_settings, assignments, external_tools, files, topics, calendar_events, quizzes, wiki_pages, modules, outcomes
+		SourceCourse string   `json:"source_course" url:"source_course,omitempty"` //  (Optional)
+		Except       []string `json:"except" url:"except,omitempty"`               //  (Optional) . Must be one of course_settings, assignments, external_tools, files, topics, calendar_events, quizzes, wiki_pages, modules, outcomes
+		Only         []string `json:"only" url:"only,omitempty"`                   //  (Optional) . Must be one of course_settings, assignments, external_tools, files, topics, calendar_events, quizzes, wiki_pages, modules, outcomes
 	} `json:"form"`
 }
 
@@ -55,12 +57,16 @@ func (t *CopyCourseContent) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CopyCourseContent) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CopyCourseContent) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CopyCourseContent) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CopyCourseContent) HasErrors() error {
@@ -69,12 +75,12 @@ func (t *CopyCourseContent) HasErrors() error {
 		errs = append(errs, "'CourseID' is required")
 	}
 	for _, v := range t.Form.Except {
-		if !string_utils.Include([]string{"course_settings", "assignments", "external_tools", "files", "topics", "calendar_events", "quizzes", "wiki_pages", "modules", "outcomes"}, v) {
+		if v != "" && !string_utils.Include([]string{"course_settings", "assignments", "external_tools", "files", "topics", "calendar_events", "quizzes", "wiki_pages", "modules", "outcomes"}, v) {
 			errs = append(errs, "Except must be one of course_settings, assignments, external_tools, files, topics, calendar_events, quizzes, wiki_pages, modules, outcomes")
 		}
 	}
 	for _, v := range t.Form.Only {
-		if !string_utils.Include([]string{"course_settings", "assignments", "external_tools", "files", "topics", "calendar_events", "quizzes", "wiki_pages", "modules", "outcomes"}, v) {
+		if v != "" && !string_utils.Include([]string{"course_settings", "assignments", "external_tools", "files", "topics", "calendar_events", "quizzes", "wiki_pages", "modules", "outcomes"}, v) {
 			errs = append(errs, "Only must be one of course_settings, assignments, external_tools, files, topics, calendar_events, quizzes, wiki_pages, modules, outcomes")
 		}
 	}

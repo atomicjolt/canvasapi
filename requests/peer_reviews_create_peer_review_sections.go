@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,13 +26,13 @@ import (
 //
 type PeerReviewsCreatePeerReviewSections struct {
 	Path struct {
-		SectionID    string `json:"section_id"`    //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		SubmissionID string `json:"submission_id"` //  (Required)
+		SectionID    string `json:"section_id" url:"section_id,omitempty"`       //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		SubmissionID string `json:"submission_id" url:"submission_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		UserID int64 `json:"user_id"` //  (Required)
+		UserID int64 `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -51,12 +52,16 @@ func (t *PeerReviewsCreatePeerReviewSections) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *PeerReviewsCreatePeerReviewSections) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *PeerReviewsCreatePeerReviewSections) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *PeerReviewsCreatePeerReviewSections) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *PeerReviewsCreatePeerReviewSections) HasErrors() error {

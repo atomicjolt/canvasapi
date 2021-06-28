@@ -1,8 +1,8 @@
 package models
 
 type ColumnDatum struct {
-	Content string `json:"content"` // Example: Nut allergy
-	UserID  int64  `json:"user_id"` // Example: 2
+	Content string `json:"content" url:"content,omitempty"` // Example: Nut allergy
+	UserID  int64  `json:"user_id" url:"user_id,omitempty"` // Example: 2
 }
 
 func (t *ColumnDatum) HasError() error {

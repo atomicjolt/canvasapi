@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -37,27 +38,27 @@ import (
 //
 type DeprecatedSelfRegisterUser struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		User struct {
-			Name         string `json:"name"`          //  (Required)
-			ShortName    string `json:"short_name"`    //  (Optional)
-			SortableName string `json:"sortable_name"` //  (Optional)
-			TimeZone     string `json:"time_zone"`     //  (Optional)
-			Locale       string `json:"locale"`        //  (Optional)
-			TermsOfUse   bool   `json:"terms_of_use"`  //  (Required)
-		} `json:"user"`
+			Name         string `json:"name" url:"name,omitempty"`                   //  (Required)
+			ShortName    string `json:"short_name" url:"short_name,omitempty"`       //  (Optional)
+			SortableName string `json:"sortable_name" url:"sortable_name,omitempty"` //  (Optional)
+			TimeZone     string `json:"time_zone" url:"time_zone,omitempty"`         //  (Optional)
+			Locale       string `json:"locale" url:"locale,omitempty"`               //  (Optional)
+			TermsOfUse   bool   `json:"terms_of_use" url:"terms_of_use,omitempty"`   //  (Required)
+		} `json:"user" url:"user,omitempty"`
 
 		Pseudonym struct {
-			UniqueID string `json:"unique_id"` //  (Required)
-		} `json:"pseudonym"`
+			UniqueID string `json:"unique_id" url:"unique_id,omitempty"` //  (Required)
+		} `json:"pseudonym" url:"pseudonym,omitempty"`
 
 		CommunicationChannel struct {
-			Type    string `json:"type"`    //  (Optional)
-			Address string `json:"address"` //  (Optional)
-		} `json:"communication_channel"`
+			Type    string `json:"type" url:"type,omitempty"`       //  (Optional)
+			Address string `json:"address" url:"address,omitempty"` //  (Optional)
+		} `json:"communication_channel" url:"communication_channel,omitempty"`
 	} `json:"form"`
 }
 
@@ -75,12 +76,16 @@ func (t *DeprecatedSelfRegisterUser) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeprecatedSelfRegisterUser) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *DeprecatedSelfRegisterUser) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *DeprecatedSelfRegisterUser) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *DeprecatedSelfRegisterUser) HasErrors() error {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,11 +27,11 @@ import (
 //
 type ListMediaTracksForMediaObject struct {
 	Path struct {
-		MediaObjectID string `json:"media_object_id"` //  (Required)
+		MediaObjectID string `json:"media_object_id" url:"media_object_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of content, webvtt_content, updated_at, created_at
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of content, webvtt_content, updated_at, created_at
 	} `json:"query"`
 }
 
@@ -52,8 +53,12 @@ func (t *ListMediaTracksForMediaObject) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListMediaTracksForMediaObject) GetBody() (string, error) {
-	return "", nil
+func (t *ListMediaTracksForMediaObject) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListMediaTracksForMediaObject) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListMediaTracksForMediaObject) HasErrors() error {
@@ -62,7 +67,7 @@ func (t *ListMediaTracksForMediaObject) HasErrors() error {
 		errs = append(errs, "'MediaObjectID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"content", "webvtt_content", "updated_at", "created_at"}, v) {
+		if v != "" && !string_utils.Include([]string{"content", "webvtt_content", "updated_at", "created_at"}, v) {
 			errs = append(errs, "Include must be one of content, webvtt_content, updated_at, created_at")
 		}
 	}

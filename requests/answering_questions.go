@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -32,14 +33,14 @@ import (
 //
 type AnsweringQuestions struct {
 	Path struct {
-		QuizSubmissionID string `json:"quiz_submission_id"` //  (Required)
+		QuizSubmissionID string `json:"quiz_submission_id" url:"quiz_submission_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Attempt         int64                            `json:"attempt"`          //  (Required)
-		ValidationToken string                           `json:"validation_token"` //  (Required)
-		AccessCode      string                           `json:"access_code"`      //  (Optional)
-		QuizQuestions   []*models.QuizSubmissionQuestion `json:"quiz_questions"`   //  (Optional)
+		Attempt         int64                            `json:"attempt" url:"attempt,omitempty"`                   //  (Required)
+		ValidationToken string                           `json:"validation_token" url:"validation_token,omitempty"` //  (Required)
+		AccessCode      string                           `json:"access_code" url:"access_code,omitempty"`           //  (Optional)
+		QuizQuestions   []*models.QuizSubmissionQuestion `json:"quiz_questions" url:"quiz_questions,omitempty"`     //  (Optional)
 	} `json:"form"`
 }
 
@@ -57,12 +58,16 @@ func (t *AnsweringQuestions) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *AnsweringQuestions) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *AnsweringQuestions) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *AnsweringQuestions) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *AnsweringQuestions) HasErrors() error {

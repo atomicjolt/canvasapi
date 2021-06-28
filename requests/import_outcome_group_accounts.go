@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -41,13 +42,13 @@ import (
 //
 type ImportOutcomeGroupAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		SourceOutcomeGroupID int64 `json:"source_outcome_group_id"` //  (Required)
-		Async                bool  `json:"async"`                   //  (Optional)
+		SourceOutcomeGroupID int64 `json:"source_outcome_group_id" url:"source_outcome_group_id,omitempty"` //  (Required)
+		Async                bool  `json:"async" url:"async,omitempty"`                                     //  (Optional)
 	} `json:"form"`
 }
 
@@ -66,12 +67,16 @@ func (t *ImportOutcomeGroupAccounts) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ImportOutcomeGroupAccounts) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *ImportOutcomeGroupAccounts) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *ImportOutcomeGroupAccounts) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *ImportOutcomeGroupAccounts) HasErrors() error {

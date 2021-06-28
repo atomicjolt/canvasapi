@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -31,15 +32,15 @@ import (
 //
 type UpdateLineItem struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ScoreMaximum float64 `json:"score_maximum"` //  (Optional)
-		Label        string  `json:"label"`         //  (Optional)
-		ResourceID   string  `json:"resource_id"`   //  (Optional)
-		Tag          string  `json:"tag"`           //  (Optional)
+		ScoreMaximum float64 `json:"score_maximum" url:"score_maximum,omitempty"` //  (Optional)
+		Label        string  `json:"label" url:"label,omitempty"`                 //  (Optional)
+		ResourceID   string  `json:"resource_id" url:"resource_id,omitempty"`     //  (Optional)
+		Tag          string  `json:"tag" url:"tag,omitempty"`                     //  (Optional)
 	} `json:"form"`
 }
 
@@ -58,12 +59,16 @@ func (t *UpdateLineItem) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateLineItem) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateLineItem) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateLineItem) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateLineItem) HasErrors() error {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -38,8 +39,8 @@ import (
 //
 type GetDepartmentLevelParticipationDataTerms struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		TermID    string `json:"term_id"`    //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		TermID    string `json:"term_id" url:"term_id,omitempty"`       //  (Required)
 	} `json:"path"`
 }
 
@@ -58,8 +59,12 @@ func (t *GetDepartmentLevelParticipationDataTerms) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetDepartmentLevelParticipationDataTerms) GetBody() (string, error) {
-	return "", nil
+func (t *GetDepartmentLevelParticipationDataTerms) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetDepartmentLevelParticipationDataTerms) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetDepartmentLevelParticipationDataTerms) HasErrors() error {

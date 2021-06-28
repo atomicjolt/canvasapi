@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -17,7 +18,7 @@ import (
 //
 type FindImages struct {
 	Query struct {
-		Query string `json:"query"` //  (Required)
+		Query string `json:"query" url:"query,omitempty"` //  (Required)
 	} `json:"query"`
 }
 
@@ -37,8 +38,12 @@ func (t *FindImages) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *FindImages) GetBody() (string, error) {
-	return "", nil
+func (t *FindImages) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *FindImages) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *FindImages) HasErrors() error {

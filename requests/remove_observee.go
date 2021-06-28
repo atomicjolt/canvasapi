@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,12 +25,12 @@ import (
 //
 type RemoveObservee struct {
 	Path struct {
-		UserID     string `json:"user_id"`     //  (Required)
-		ObserveeID string `json:"observee_id"` //  (Required)
+		UserID     string `json:"user_id" url:"user_id,omitempty"`         //  (Required)
+		ObserveeID string `json:"observee_id" url:"observee_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		RootAccountID int64 `json:"root_account_id"` //  (Optional)
+		RootAccountID int64 `json:"root_account_id" url:"root_account_id,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -52,8 +53,12 @@ func (t *RemoveObservee) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *RemoveObservee) GetBody() (string, error) {
-	return "", nil
+func (t *RemoveObservee) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RemoveObservee) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RemoveObservee) HasErrors() error {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -33,10 +34,10 @@ import (
 //
 type ListPlannerItemsPlanner struct {
 	Query struct {
-		StartDate    time.Time `json:"start_date"`    //  (Optional)
-		EndDate      time.Time `json:"end_date"`      //  (Optional)
-		ContextCodes []string  `json:"context_codes"` //  (Optional)
-		Filter       string    `json:"filter"`        //  (Optional) . Must be one of new_activity
+		StartDate    time.Time `json:"start_date" url:"start_date,omitempty"`       //  (Optional)
+		EndDate      time.Time `json:"end_date" url:"end_date,omitempty"`           //  (Optional)
+		ContextCodes []string  `json:"context_codes" url:"context_codes,omitempty"` //  (Optional)
+		Filter       string    `json:"filter" url:"filter,omitempty"`               //  (Optional) . Must be one of new_activity
 	} `json:"query"`
 }
 
@@ -56,13 +57,17 @@ func (t *ListPlannerItemsPlanner) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListPlannerItemsPlanner) GetBody() (string, error) {
-	return "", nil
+func (t *ListPlannerItemsPlanner) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListPlannerItemsPlanner) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListPlannerItemsPlanner) HasErrors() error {
 	errs := []string{}
-	if !string_utils.Include([]string{"new_activity"}, t.Query.Filter) {
+	if t.Query.Filter != "" && !string_utils.Include([]string{"new_activity"}, t.Query.Filter) {
 		errs = append(errs, "Filter must be one of new_activity")
 	}
 	if len(errs) > 0 {

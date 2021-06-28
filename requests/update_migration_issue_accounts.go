@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,13 +27,13 @@ import (
 //
 type UpdateMigrationIssueAccounts struct {
 	Path struct {
-		AccountID          string `json:"account_id"`           //  (Required)
-		ContentMigrationID string `json:"content_migration_id"` //  (Required)
-		ID                 string `json:"id"`                   //  (Required)
+		AccountID          string `json:"account_id" url:"account_id,omitempty"`                     //  (Required)
+		ContentMigrationID string `json:"content_migration_id" url:"content_migration_id,omitempty"` //  (Required)
+		ID                 string `json:"id" url:"id,omitempty"`                                     //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		WorkflowState string `json:"workflow_state"` //  (Required) . Must be one of active, resolved
+		WorkflowState string `json:"workflow_state" url:"workflow_state,omitempty"` //  (Required) . Must be one of active, resolved
 	} `json:"form"`
 }
 
@@ -52,12 +53,16 @@ func (t *UpdateMigrationIssueAccounts) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateMigrationIssueAccounts) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateMigrationIssueAccounts) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateMigrationIssueAccounts) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateMigrationIssueAccounts) HasErrors() error {
@@ -74,7 +79,7 @@ func (t *UpdateMigrationIssueAccounts) HasErrors() error {
 	if t.Form.WorkflowState == "" {
 		errs = append(errs, "'WorkflowState' is required")
 	}
-	if !string_utils.Include([]string{"active", "resolved"}, t.Form.WorkflowState) {
+	if t.Form.WorkflowState != "" && !string_utils.Include([]string{"active", "resolved"}, t.Form.WorkflowState) {
 		errs = append(errs, "WorkflowState must be one of active, resolved")
 	}
 	if len(errs) > 0 {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -22,8 +23,8 @@ import (
 //
 type PublishProvisionalGradesForAssignment struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -42,8 +43,12 @@ func (t *PublishProvisionalGradesForAssignment) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *PublishProvisionalGradesForAssignment) GetBody() (string, error) {
-	return "", nil
+func (t *PublishProvisionalGradesForAssignment) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *PublishProvisionalGradesForAssignment) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *PublishProvisionalGradesForAssignment) HasErrors() error {

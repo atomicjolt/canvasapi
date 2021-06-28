@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -21,14 +23,14 @@ import (
 //
 type UpdatePreferencesByCategory struct {
 	Path struct {
-		CommunicationChannelID string `json:"communication_channel_id"` //  (Required)
-		Category               string `json:"category"`                 //  (Required)
+		CommunicationChannelID string `json:"communication_channel_id" url:"communication_channel_id,omitempty"` //  (Required)
+		Category               string `json:"category" url:"category,omitempty"`                                 //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		NotificationPreferences struct {
-			Frequency string `json:"frequency"` //  (Required)
-		} `json:"notification_preferences"`
+			Frequency string `json:"frequency" url:"frequency,omitempty"` //  (Required)
+		} `json:"notification_preferences" url:"notification_preferences,omitempty"`
 	} `json:"form"`
 }
 
@@ -47,12 +49,16 @@ func (t *UpdatePreferencesByCategory) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdatePreferencesByCategory) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdatePreferencesByCategory) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdatePreferencesByCategory) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdatePreferencesByCategory) HasErrors() error {

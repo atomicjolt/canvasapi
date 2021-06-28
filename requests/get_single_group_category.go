@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,7 +20,7 @@ import (
 //
 type GetSingleGroupCategory struct {
 	Path struct {
-		GroupCategoryID string `json:"group_category_id"` //  (Required)
+		GroupCategoryID string `json:"group_category_id" url:"group_category_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -37,8 +38,12 @@ func (t *GetSingleGroupCategory) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetSingleGroupCategory) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleGroupCategory) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleGroupCategory) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleGroupCategory) HasErrors() error {

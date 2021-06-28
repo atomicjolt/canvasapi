@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -28,12 +29,12 @@ import (
 //
 type ListEnrollmentTerms struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		WorkflowState []string `json:"workflow_state"` //  (Optional) . Must be one of active, deleted, all
-		Include       []string `json:"include"`        //  (Optional) . Must be one of overrides
+		WorkflowState []string `json:"workflow_state" url:"workflow_state,omitempty"` //  (Optional) . Must be one of active, deleted, all
+		Include       []string `json:"include" url:"include,omitempty"`               //  (Optional) . Must be one of overrides
 	} `json:"query"`
 }
 
@@ -55,8 +56,12 @@ func (t *ListEnrollmentTerms) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListEnrollmentTerms) GetBody() (string, error) {
-	return "", nil
+func (t *ListEnrollmentTerms) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListEnrollmentTerms) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListEnrollmentTerms) HasErrors() error {
@@ -65,12 +70,12 @@ func (t *ListEnrollmentTerms) HasErrors() error {
 		errs = append(errs, "'AccountID' is required")
 	}
 	for _, v := range t.Query.WorkflowState {
-		if !string_utils.Include([]string{"active", "deleted", "all"}, v) {
+		if v != "" && !string_utils.Include([]string{"active", "deleted", "all"}, v) {
 			errs = append(errs, "WorkflowState must be one of active, deleted, all")
 		}
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"overrides"}, v) {
+		if v != "" && !string_utils.Include([]string{"overrides"}, v) {
 			errs = append(errs, "Include must be one of overrides")
 		}
 	}

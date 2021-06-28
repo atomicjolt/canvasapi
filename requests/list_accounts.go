@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,7 +28,7 @@ import (
 //
 type ListAccounts struct {
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of lti_guid, registration_settings, services
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of lti_guid, registration_settings, services
 	} `json:"query"`
 }
 
@@ -47,14 +48,18 @@ func (t *ListAccounts) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *ListAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListAccounts) HasErrors() error {
 	errs := []string{}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"lti_guid", "registration_settings", "services"}, v) {
+		if v != "" && !string_utils.Include([]string{"lti_guid", "registration_settings", "services"}, v) {
 			errs = append(errs, "Include must be one of lti_guid, registration_settings, services")
 		}
 	}

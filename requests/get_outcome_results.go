@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -34,14 +35,14 @@ import (
 //
 type GetOutcomeResults struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		UserIDs       []int64  `json:"user_ids"`       //  (Optional)
-		OutcomeIDs    []int64  `json:"outcome_ids"`    //  (Optional)
-		Include       []string `json:"include"`        //  (Optional)
-		IncludeHidden bool     `json:"include_hidden"` //  (Optional)
+		UserIDs       []int64  `json:"user_ids" url:"user_ids,omitempty"`             //  (Optional)
+		OutcomeIDs    []int64  `json:"outcome_ids" url:"outcome_ids,omitempty"`       //  (Optional)
+		Include       []string `json:"include" url:"include,omitempty"`               //  (Optional)
+		IncludeHidden bool     `json:"include_hidden" url:"include_hidden,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -63,8 +64,12 @@ func (t *GetOutcomeResults) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetOutcomeResults) GetBody() (string, error) {
-	return "", nil
+func (t *GetOutcomeResults) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetOutcomeResults) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetOutcomeResults) HasErrors() error {

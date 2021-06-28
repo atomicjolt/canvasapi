@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -23,8 +24,8 @@ import (
 //
 type GetFeatureFlagUsers struct {
 	Path struct {
-		UserID  string `json:"user_id"` //  (Required)
-		Feature string `json:"feature"` //  (Required)
+		UserID  string `json:"user_id" url:"user_id,omitempty"` //  (Required)
+		Feature string `json:"feature" url:"feature,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -43,8 +44,12 @@ func (t *GetFeatureFlagUsers) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetFeatureFlagUsers) GetBody() (string, error) {
-	return "", nil
+func (t *GetFeatureFlagUsers) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetFeatureFlagUsers) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetFeatureFlagUsers) HasErrors() error {

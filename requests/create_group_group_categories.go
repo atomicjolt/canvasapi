@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -31,16 +32,16 @@ import (
 //
 type CreateGroupGroupCategories struct {
 	Path struct {
-		GroupCategoryID string `json:"group_category_id"` //  (Required)
+		GroupCategoryID string `json:"group_category_id" url:"group_category_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Name           string `json:"name"`             //  (Optional)
-		Description    string `json:"description"`      //  (Optional)
-		IsPublic       bool   `json:"is_public"`        //  (Optional)
-		JoinLevel      string `json:"join_level"`       //  (Optional) . Must be one of parent_context_auto_join, parent_context_request, invitation_only
-		StorageQuotaMb int64  `json:"storage_quota_mb"` //  (Optional)
-		SISGroupID     string `json:"sis_group_id"`     //  (Optional)
+		Name           string `json:"name" url:"name,omitempty"`                         //  (Optional)
+		Description    string `json:"description" url:"description,omitempty"`           //  (Optional)
+		IsPublic       bool   `json:"is_public" url:"is_public,omitempty"`               //  (Optional)
+		JoinLevel      string `json:"join_level" url:"join_level,omitempty"`             //  (Optional) . Must be one of parent_context_auto_join, parent_context_request, invitation_only
+		StorageQuotaMb int64  `json:"storage_quota_mb" url:"storage_quota_mb,omitempty"` //  (Optional)
+		SISGroupID     string `json:"sis_group_id" url:"sis_group_id,omitempty"`         //  (Optional)
 	} `json:"form"`
 }
 
@@ -58,12 +59,16 @@ func (t *CreateGroupGroupCategories) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateGroupGroupCategories) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateGroupGroupCategories) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateGroupGroupCategories) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateGroupGroupCategories) HasErrors() error {
@@ -71,7 +76,7 @@ func (t *CreateGroupGroupCategories) HasErrors() error {
 	if t.Path.GroupCategoryID == "" {
 		errs = append(errs, "'GroupCategoryID' is required")
 	}
-	if !string_utils.Include([]string{"parent_context_auto_join", "parent_context_request", "invitation_only"}, t.Form.JoinLevel) {
+	if t.Form.JoinLevel != "" && !string_utils.Include([]string{"parent_context_auto_join", "parent_context_request", "invitation_only"}, t.Form.JoinLevel) {
 		errs = append(errs, "JoinLevel must be one of parent_context_auto_join, parent_context_request, invitation_only")
 	}
 	if len(errs) > 0 {

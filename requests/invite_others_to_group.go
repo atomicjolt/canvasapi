@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -21,11 +23,11 @@ import (
 //
 type InviteOthersToGroup struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Invitees []string `json:"invitees"` //  (Required)
+		Invitees []string `json:"invitees" url:"invitees,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -43,12 +45,16 @@ func (t *InviteOthersToGroup) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *InviteOthersToGroup) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *InviteOthersToGroup) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *InviteOthersToGroup) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *InviteOthersToGroup) HasErrors() error {

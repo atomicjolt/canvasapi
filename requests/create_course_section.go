@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -30,20 +31,20 @@ import (
 //
 type CreateCourseSection struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		CourseSection struct {
-			Name                              string    `json:"name"`                                  //  (Optional)
-			SISSectionID                      string    `json:"sis_section_id"`                        //  (Optional)
-			IntegrationID                     string    `json:"integration_id"`                        //  (Optional)
-			StartAt                           time.Time `json:"start_at"`                              //  (Optional)
-			EndAt                             time.Time `json:"end_at"`                                //  (Optional)
-			RestrictEnrollmentsToSectionDates bool      `json:"restrict_enrollments_to_section_dates"` //  (Optional)
-		} `json:"course_section"`
+			Name                              string    `json:"name" url:"name,omitempty"`                                                                   //  (Optional)
+			SISSectionID                      string    `json:"sis_section_id" url:"sis_section_id,omitempty"`                                               //  (Optional)
+			IntegrationID                     string    `json:"integration_id" url:"integration_id,omitempty"`                                               //  (Optional)
+			StartAt                           time.Time `json:"start_at" url:"start_at,omitempty"`                                                           //  (Optional)
+			EndAt                             time.Time `json:"end_at" url:"end_at,omitempty"`                                                               //  (Optional)
+			RestrictEnrollmentsToSectionDates bool      `json:"restrict_enrollments_to_section_dates" url:"restrict_enrollments_to_section_dates,omitempty"` //  (Optional)
+		} `json:"course_section" url:"course_section,omitempty"`
 
-		EnableSISReactivation bool `json:"enable_sis_reactivation"` //  (Optional)
+		EnableSISReactivation bool `json:"enable_sis_reactivation" url:"enable_sis_reactivation,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -61,12 +62,16 @@ func (t *CreateCourseSection) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateCourseSection) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateCourseSection) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateCourseSection) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateCourseSection) HasErrors() error {

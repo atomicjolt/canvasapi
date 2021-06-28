@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -41,17 +43,17 @@ import (
 //
 type AddMessage struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Body             string   `json:"body"`               //  (Required)
-		AttachmentIDs    []string `json:"attachment_ids"`     //  (Optional)
-		MediaCommentID   string   `json:"media_comment_id"`   //  (Optional)
-		MediaCommentType string   `json:"media_comment_type"` //  (Optional) . Must be one of audio, video
-		Recipients       []string `json:"recipients"`         //  (Optional)
-		IncludedMessages []string `json:"included_messages"`  //  (Optional)
-		UserNote         bool     `json:"user_note"`          //  (Optional)
+		Body             string   `json:"body" url:"body,omitempty"`                             //  (Required)
+		AttachmentIDs    []string `json:"attachment_ids" url:"attachment_ids,omitempty"`         //  (Optional)
+		MediaCommentID   string   `json:"media_comment_id" url:"media_comment_id,omitempty"`     //  (Optional)
+		MediaCommentType string   `json:"media_comment_type" url:"media_comment_type,omitempty"` //  (Optional) . Must be one of audio, video
+		Recipients       []string `json:"recipients" url:"recipients,omitempty"`                 //  (Optional)
+		IncludedMessages []string `json:"included_messages" url:"included_messages,omitempty"`   //  (Optional)
+		UserNote         bool     `json:"user_note" url:"user_note,omitempty"`                   //  (Optional)
 	} `json:"form"`
 }
 
@@ -69,12 +71,16 @@ func (t *AddMessage) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *AddMessage) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *AddMessage) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *AddMessage) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *AddMessage) HasErrors() error {
@@ -85,7 +91,7 @@ func (t *AddMessage) HasErrors() error {
 	if t.Form.Body == "" {
 		errs = append(errs, "'Body' is required")
 	}
-	if !string_utils.Include([]string{"audio", "video"}, t.Form.MediaCommentType) {
+	if t.Form.MediaCommentType != "" && !string_utils.Include([]string{"audio", "video"}, t.Form.MediaCommentType) {
 		errs = append(errs, "MediaCommentType must be one of audio, video")
 	}
 	if len(errs) > 0 {

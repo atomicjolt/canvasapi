@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,12 +25,12 @@ import (
 //
 type SelectStudentsForModeration struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		StudentIDs []float64 `json:"student_ids"` //  (Optional)
+		StudentIDs []float64 `json:"student_ids" url:"student_ids,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -48,12 +49,16 @@ func (t *SelectStudentsForModeration) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *SelectStudentsForModeration) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *SelectStudentsForModeration) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *SelectStudentsForModeration) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *SelectStudentsForModeration) HasErrors() error {

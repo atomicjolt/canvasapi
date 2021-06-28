@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -125,49 +126,49 @@ import (
 //
 type CreateAssignment struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Assignment struct {
-			Name                             string                       `json:"name"`                                  //  (Required)
-			Position                         int64                        `json:"position"`                              //  (Optional)
-			SubmissionTypes                  []string                     `json:"submission_types"`                      //  (Optional) . Must be one of online_quiz, none, on_paper, discussion_topic, external_tool, online_upload, online_text_entry, online_url, media_recording, student_annotation
-			AllowedExtensions                []string                     `json:"allowed_extensions"`                    //  (Optional)
-			TurnitinEnabled                  bool                         `json:"turnitin_enabled"`                      //  (Optional)
-			VericiteEnabled                  bool                         `json:"vericite_enabled"`                      //  (Optional)
-			TurnitinSettings                 string                       `json:"turnitin_settings"`                     //  (Optional)
-			IntegrationData                  string                       `json:"integration_data"`                      //  (Optional)
-			IntegrationID                    string                       `json:"integration_id"`                        //  (Optional)
-			PeerReviews                      bool                         `json:"peer_reviews"`                          //  (Optional)
-			AutomaticPeerReviews             bool                         `json:"automatic_peer_reviews"`                //  (Optional)
-			NotifyOfUpdate                   bool                         `json:"notify_of_update"`                      //  (Optional)
-			GroupCategoryID                  int64                        `json:"group_category_id"`                     //  (Optional)
-			GradeGroupStudentsIndividually   int64                        `json:"grade_group_students_individually"`     //  (Optional)
-			ExternalToolTagAttributes        string                       `json:"external_tool_tag_attributes"`          //  (Optional)
-			PointsPossible                   float64                      `json:"points_possible"`                       //  (Optional)
-			GradingType                      string                       `json:"grading_type"`                          //  (Optional) . Must be one of pass_fail, percent, letter_grade, gpa_scale, points, not_graded
-			DueAt                            time.Time                    `json:"due_at"`                                //  (Optional)
-			LockAt                           time.Time                    `json:"lock_at"`                               //  (Optional)
-			UnlockAt                         time.Time                    `json:"unlock_at"`                             //  (Optional)
-			Description                      string                       `json:"description"`                           //  (Optional)
-			AssignmentGroupID                int64                        `json:"assignment_group_id"`                   //  (Optional)
-			AssignmentOverrides              []*models.AssignmentOverride `json:"assignment_overrides"`                  //  (Optional)
-			OnlyVisibleToOverrides           bool                         `json:"only_visible_to_overrides"`             //  (Optional)
-			Published                        bool                         `json:"published"`                             //  (Optional)
-			GradingStandardID                int64                        `json:"grading_standard_id"`                   //  (Optional)
-			OmitFromFinalGrade               bool                         `json:"omit_from_final_grade"`                 //  (Optional)
-			QuizLti                          bool                         `json:"quiz_lti"`                              //  (Optional)
-			ModeratedGrading                 bool                         `json:"moderated_grading"`                     //  (Optional)
-			GraderCount                      int64                        `json:"grader_count"`                          //  (Optional)
-			FinalGraderID                    int64                        `json:"final_grader_id"`                       //  (Optional)
-			GraderCommentsVisibleToGraders   bool                         `json:"grader_comments_visible_to_graders"`    //  (Optional)
-			GradersAnonymousToGraders        bool                         `json:"graders_anonymous_to_graders"`          //  (Optional)
-			GradersNamesVisibleToFinalGrader bool                         `json:"graders_names_visible_to_final_grader"` //  (Optional)
-			AnonymousGrading                 bool                         `json:"anonymous_grading"`                     //  (Optional)
-			AllowedAttempts                  int64                        `json:"allowed_attempts"`                      //  (Optional)
-			AnnotatableAttachmentID          int64                        `json:"annotatable_attachment_id"`             //  (Optional)
-		} `json:"assignment"`
+			Name                             string                       `json:"name" url:"name,omitempty"`                                                                   //  (Required)
+			Position                         int64                        `json:"position" url:"position,omitempty"`                                                           //  (Optional)
+			SubmissionTypes                  []string                     `json:"submission_types" url:"submission_types,omitempty"`                                           //  (Optional) . Must be one of online_quiz, none, on_paper, discussion_topic, external_tool, online_upload, online_text_entry, online_url, media_recording, student_annotation
+			AllowedExtensions                []string                     `json:"allowed_extensions" url:"allowed_extensions,omitempty"`                                       //  (Optional)
+			TurnitinEnabled                  bool                         `json:"turnitin_enabled" url:"turnitin_enabled,omitempty"`                                           //  (Optional)
+			VericiteEnabled                  bool                         `json:"vericite_enabled" url:"vericite_enabled,omitempty"`                                           //  (Optional)
+			TurnitinSettings                 string                       `json:"turnitin_settings" url:"turnitin_settings,omitempty"`                                         //  (Optional)
+			IntegrationData                  string                       `json:"integration_data" url:"integration_data,omitempty"`                                           //  (Optional)
+			IntegrationID                    string                       `json:"integration_id" url:"integration_id,omitempty"`                                               //  (Optional)
+			PeerReviews                      bool                         `json:"peer_reviews" url:"peer_reviews,omitempty"`                                                   //  (Optional)
+			AutomaticPeerReviews             bool                         `json:"automatic_peer_reviews" url:"automatic_peer_reviews,omitempty"`                               //  (Optional)
+			NotifyOfUpdate                   bool                         `json:"notify_of_update" url:"notify_of_update,omitempty"`                                           //  (Optional)
+			GroupCategoryID                  int64                        `json:"group_category_id" url:"group_category_id,omitempty"`                                         //  (Optional)
+			GradeGroupStudentsIndividually   int64                        `json:"grade_group_students_individually" url:"grade_group_students_individually,omitempty"`         //  (Optional)
+			ExternalToolTagAttributes        string                       `json:"external_tool_tag_attributes" url:"external_tool_tag_attributes,omitempty"`                   //  (Optional)
+			PointsPossible                   float64                      `json:"points_possible" url:"points_possible,omitempty"`                                             //  (Optional)
+			GradingType                      string                       `json:"grading_type" url:"grading_type,omitempty"`                                                   //  (Optional) . Must be one of pass_fail, percent, letter_grade, gpa_scale, points, not_graded
+			DueAt                            time.Time                    `json:"due_at" url:"due_at,omitempty"`                                                               //  (Optional)
+			LockAt                           time.Time                    `json:"lock_at" url:"lock_at,omitempty"`                                                             //  (Optional)
+			UnlockAt                         time.Time                    `json:"unlock_at" url:"unlock_at,omitempty"`                                                         //  (Optional)
+			Description                      string                       `json:"description" url:"description,omitempty"`                                                     //  (Optional)
+			AssignmentGroupID                int64                        `json:"assignment_group_id" url:"assignment_group_id,omitempty"`                                     //  (Optional)
+			AssignmentOverrides              []*models.AssignmentOverride `json:"assignment_overrides" url:"assignment_overrides,omitempty"`                                   //  (Optional)
+			OnlyVisibleToOverrides           bool                         `json:"only_visible_to_overrides" url:"only_visible_to_overrides,omitempty"`                         //  (Optional)
+			Published                        bool                         `json:"published" url:"published,omitempty"`                                                         //  (Optional)
+			GradingStandardID                int64                        `json:"grading_standard_id" url:"grading_standard_id,omitempty"`                                     //  (Optional)
+			OmitFromFinalGrade               bool                         `json:"omit_from_final_grade" url:"omit_from_final_grade,omitempty"`                                 //  (Optional)
+			QuizLti                          bool                         `json:"quiz_lti" url:"quiz_lti,omitempty"`                                                           //  (Optional)
+			ModeratedGrading                 bool                         `json:"moderated_grading" url:"moderated_grading,omitempty"`                                         //  (Optional)
+			GraderCount                      int64                        `json:"grader_count" url:"grader_count,omitempty"`                                                   //  (Optional)
+			FinalGraderID                    int64                        `json:"final_grader_id" url:"final_grader_id,omitempty"`                                             //  (Optional)
+			GraderCommentsVisibleToGraders   bool                         `json:"grader_comments_visible_to_graders" url:"grader_comments_visible_to_graders,omitempty"`       //  (Optional)
+			GradersAnonymousToGraders        bool                         `json:"graders_anonymous_to_graders" url:"graders_anonymous_to_graders,omitempty"`                   //  (Optional)
+			GradersNamesVisibleToFinalGrader bool                         `json:"graders_names_visible_to_final_grader" url:"graders_names_visible_to_final_grader,omitempty"` //  (Optional)
+			AnonymousGrading                 bool                         `json:"anonymous_grading" url:"anonymous_grading,omitempty"`                                         //  (Optional)
+			AllowedAttempts                  int64                        `json:"allowed_attempts" url:"allowed_attempts,omitempty"`                                           //  (Optional)
+			AnnotatableAttachmentID          int64                        `json:"annotatable_attachment_id" url:"annotatable_attachment_id,omitempty"`                         //  (Optional)
+		} `json:"assignment" url:"assignment,omitempty"`
 	} `json:"form"`
 }
 
@@ -185,12 +186,16 @@ func (t *CreateAssignment) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateAssignment) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateAssignment) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateAssignment) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateAssignment) HasErrors() error {
@@ -202,11 +207,11 @@ func (t *CreateAssignment) HasErrors() error {
 		errs = append(errs, "'Assignment' is required")
 	}
 	for _, v := range t.Form.Assignment.SubmissionTypes {
-		if !string_utils.Include([]string{"online_quiz", "none", "on_paper", "discussion_topic", "external_tool", "online_upload", "online_text_entry", "online_url", "media_recording", "student_annotation"}, v) {
+		if v != "" && !string_utils.Include([]string{"online_quiz", "none", "on_paper", "discussion_topic", "external_tool", "online_upload", "online_text_entry", "online_url", "media_recording", "student_annotation"}, v) {
 			errs = append(errs, "Assignment must be one of online_quiz, none, on_paper, discussion_topic, external_tool, online_upload, online_text_entry, online_url, media_recording, student_annotation")
 		}
 	}
-	if !string_utils.Include([]string{"pass_fail", "percent", "letter_grade", "gpa_scale", "points", "not_graded"}, t.Form.Assignment.GradingType) {
+	if t.Form.Assignment.GradingType != "" && !string_utils.Include([]string{"pass_fail", "percent", "letter_grade", "gpa_scale", "points", "not_graded"}, t.Form.Assignment.GradingType) {
 		errs = append(errs, "Assignment must be one of pass_fail, percent, letter_grade, gpa_scale, points, not_graded")
 	}
 	if len(errs) > 0 {

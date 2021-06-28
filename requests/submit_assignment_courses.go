@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -65,26 +67,26 @@ import (
 //
 type SubmitAssignmentCourses struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Comment struct {
-			TextComment string `json:"text_comment"` //  (Optional)
-		} `json:"comment"`
+			TextComment string `json:"text_comment" url:"text_comment,omitempty"` //  (Optional)
+		} `json:"comment" url:"comment,omitempty"`
 
 		Submission struct {
-			SubmissionType          string    `json:"submission_type"`           //  (Required) . Must be one of online_text_entry, online_url, online_upload, media_recording, basic_lti_launch, student_annotation
-			Body                    string    `json:"body"`                      //  (Optional)
-			Url                     string    `json:"url"`                       //  (Optional)
-			FileIDs                 []int64   `json:"file_ids"`                  //  (Optional)
-			MediaCommentID          string    `json:"media_comment_id"`          //  (Optional)
-			MediaCommentType        string    `json:"media_comment_type"`        //  (Optional) . Must be one of audio, video
-			UserID                  int64     `json:"user_id"`                   //  (Optional)
-			AnnotatableAttachmentID int64     `json:"annotatable_attachment_id"` //  (Optional)
-			SubmittedAt             time.Time `json:"submitted_at"`              //  (Optional)
-		} `json:"submission"`
+			SubmissionType          string    `json:"submission_type" url:"submission_type,omitempty"`                     //  (Required) . Must be one of online_text_entry, online_url, online_upload, media_recording, basic_lti_launch, student_annotation
+			Body                    string    `json:"body" url:"body,omitempty"`                                           //  (Optional)
+			Url                     string    `json:"url" url:"url,omitempty"`                                             //  (Optional)
+			FileIDs                 []int64   `json:"file_ids" url:"file_ids,omitempty"`                                   //  (Optional)
+			MediaCommentID          string    `json:"media_comment_id" url:"media_comment_id,omitempty"`                   //  (Optional)
+			MediaCommentType        string    `json:"media_comment_type" url:"media_comment_type,omitempty"`               //  (Optional) . Must be one of audio, video
+			UserID                  int64     `json:"user_id" url:"user_id,omitempty"`                                     //  (Optional)
+			AnnotatableAttachmentID int64     `json:"annotatable_attachment_id" url:"annotatable_attachment_id,omitempty"` //  (Optional)
+			SubmittedAt             time.Time `json:"submitted_at" url:"submitted_at,omitempty"`                           //  (Optional)
+		} `json:"submission" url:"submission,omitempty"`
 	} `json:"form"`
 }
 
@@ -103,12 +105,16 @@ func (t *SubmitAssignmentCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *SubmitAssignmentCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *SubmitAssignmentCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *SubmitAssignmentCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *SubmitAssignmentCourses) HasErrors() error {
@@ -122,10 +128,10 @@ func (t *SubmitAssignmentCourses) HasErrors() error {
 	if t.Form.Submission.SubmissionType == "" {
 		errs = append(errs, "'Submission' is required")
 	}
-	if !string_utils.Include([]string{"online_text_entry", "online_url", "online_upload", "media_recording", "basic_lti_launch", "student_annotation"}, t.Form.Submission.SubmissionType) {
+	if t.Form.Submission.SubmissionType != "" && !string_utils.Include([]string{"online_text_entry", "online_url", "online_upload", "media_recording", "basic_lti_launch", "student_annotation"}, t.Form.Submission.SubmissionType) {
 		errs = append(errs, "Submission must be one of online_text_entry, online_url, online_upload, media_recording, basic_lti_launch, student_annotation")
 	}
-	if !string_utils.Include([]string{"audio", "video"}, t.Form.Submission.MediaCommentType) {
+	if t.Form.Submission.MediaCommentType != "" && !string_utils.Include([]string{"audio", "video"}, t.Form.Submission.MediaCommentType) {
 		errs = append(errs, "Submission must be one of audio, video")
 	}
 	if len(errs) > 0 {

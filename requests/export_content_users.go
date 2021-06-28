@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -45,13 +46,13 @@ import (
 //
 type ExportContentUsers struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ExportType        string `json:"export_type"`        //  (Required) . Must be one of common_cartridge, qti, zip
-		SkipNotifications bool   `json:"skip_notifications"` //  (Optional)
-		Select            string `json:"select"`             //  (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics
+		ExportType        string `json:"export_type" url:"export_type,omitempty"`               //  (Required) . Must be one of common_cartridge, qti, zip
+		SkipNotifications bool   `json:"skip_notifications" url:"skip_notifications,omitempty"` //  (Optional)
+		Select            string `json:"select" url:"select,omitempty"`                         //  (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics
 	} `json:"form"`
 }
 
@@ -69,12 +70,16 @@ func (t *ExportContentUsers) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ExportContentUsers) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *ExportContentUsers) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *ExportContentUsers) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *ExportContentUsers) HasErrors() error {
@@ -85,10 +90,10 @@ func (t *ExportContentUsers) HasErrors() error {
 	if t.Form.ExportType == "" {
 		errs = append(errs, "'ExportType' is required")
 	}
-	if !string_utils.Include([]string{"common_cartridge", "qti", "zip"}, t.Form.ExportType) {
+	if t.Form.ExportType != "" && !string_utils.Include([]string{"common_cartridge", "qti", "zip"}, t.Form.ExportType) {
 		errs = append(errs, "ExportType must be one of common_cartridge, qti, zip")
 	}
-	if !string_utils.Include([]string{"folders", "files", "attachments", "quizzes", "assignments", "announcements", "calendar_events", "discussion_topics", "modules", "module_items", "pages", "rubrics"}, t.Form.Select) {
+	if t.Form.Select != "" && !string_utils.Include([]string{"folders", "files", "attachments", "quizzes", "assignments", "announcements", "calendar_events", "discussion_topics", "modules", "module_items", "pages", "rubrics"}, t.Form.Select) {
 		errs = append(errs, "Select must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics")
 	}
 	if len(errs) > 0 {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,13 +28,13 @@ import (
 //
 type MarkEntryAsUnreadCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		TopicID  string `json:"topic_id"`  //  (Required)
-		EntryID  string `json:"entry_id"`  //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		TopicID  string `json:"topic_id" url:"topic_id,omitempty"`   //  (Required)
+		EntryID  string `json:"entry_id" url:"entry_id,omitempty"`   //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		ForcedReadState bool `json:"forced_read_state"` //  (Optional)
+		ForcedReadState bool `json:"forced_read_state" url:"forced_read_state,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -57,8 +58,12 @@ func (t *MarkEntryAsUnreadCourses) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *MarkEntryAsUnreadCourses) GetBody() (string, error) {
-	return "", nil
+func (t *MarkEntryAsUnreadCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *MarkEntryAsUnreadCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *MarkEntryAsUnreadCourses) HasErrors() error {

@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,12 +29,12 @@ import (
 //
 type UpdateCustomColor struct {
 	Path struct {
-		ID          string `json:"id"`           //  (Required)
-		AssetString string `json:"asset_string"` //  (Required)
+		ID          string `json:"id" url:"id,omitempty"`                     //  (Required)
+		AssetString string `json:"asset_string" url:"asset_string,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Hexcode string `json:"hexcode"` //  (Optional)
+		Hexcode string `json:"hexcode" url:"hexcode,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -51,12 +53,16 @@ func (t *UpdateCustomColor) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateCustomColor) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateCustomColor) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateCustomColor) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateCustomColor) HasErrors() error {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -29,16 +30,16 @@ import (
 //
 type CreateAssignmentGroup struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Name            string  `json:"name"`             //  (Optional)
-		Position        int64   `json:"position"`         //  (Optional)
-		GroupWeight     float64 `json:"group_weight"`     //  (Optional)
-		SISSourceID     string  `json:"sis_source_id"`    //  (Optional)
-		IntegrationData string  `json:"integration_data"` //  (Optional)
-		Rules           string  `json:"rules"`            //  (Optional)
+		Name            string  `json:"name" url:"name,omitempty"`                         //  (Optional)
+		Position        int64   `json:"position" url:"position,omitempty"`                 //  (Optional)
+		GroupWeight     float64 `json:"group_weight" url:"group_weight,omitempty"`         //  (Optional)
+		SISSourceID     string  `json:"sis_source_id" url:"sis_source_id,omitempty"`       //  (Optional)
+		IntegrationData string  `json:"integration_data" url:"integration_data,omitempty"` //  (Optional)
+		Rules           string  `json:"rules" url:"rules,omitempty"`                       //  (Optional)
 	} `json:"form"`
 }
 
@@ -56,12 +57,16 @@ func (t *CreateAssignmentGroup) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateAssignmentGroup) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateAssignmentGroup) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateAssignmentGroup) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateAssignmentGroup) HasErrors() error {

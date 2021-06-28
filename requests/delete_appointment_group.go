@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -21,11 +22,11 @@ import (
 //
 type DeleteAppointmentGroup struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		CancelReason string `json:"cancel_reason"` //  (Optional)
+		CancelReason string `json:"cancel_reason" url:"cancel_reason,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -47,8 +48,12 @@ func (t *DeleteAppointmentGroup) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *DeleteAppointmentGroup) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteAppointmentGroup) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteAppointmentGroup) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteAppointmentGroup) HasErrors() error {

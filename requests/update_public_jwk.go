@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -20,7 +21,7 @@ import (
 //
 type UpdatePublicJwk struct {
 	Form struct {
-		PublicJwk string `json:"public_jwk"` //  (Required)
+		PublicJwk string `json:"public_jwk" url:"public_jwk,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -36,12 +37,16 @@ func (t *UpdatePublicJwk) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdatePublicJwk) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdatePublicJwk) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdatePublicJwk) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdatePublicJwk) HasErrors() error {

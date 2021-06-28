@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,11 +27,11 @@ import (
 //
 type GetSingleAppointmentGroup struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of child_events, appointments, all_context_codes
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of child_events, appointments, all_context_codes
 	} `json:"query"`
 }
 
@@ -52,8 +53,12 @@ func (t *GetSingleAppointmentGroup) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSingleAppointmentGroup) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleAppointmentGroup) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleAppointmentGroup) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleAppointmentGroup) HasErrors() error {
@@ -62,7 +67,7 @@ func (t *GetSingleAppointmentGroup) HasErrors() error {
 		errs = append(errs, "'ID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"child_events", "appointments", "all_context_codes"}, v) {
+		if v != "" && !string_utils.Include([]string{"child_events", "appointments", "all_context_codes"}, v) {
 			errs = append(errs, "Include must be one of child_events, appointments, all_context_codes")
 		}
 	}

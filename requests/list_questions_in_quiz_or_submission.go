@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -30,13 +31,13 @@ import (
 //
 type ListQuestionsInQuizOrSubmission struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		QuizSubmissionID      int64 `json:"quiz_submission_id"`      //  (Optional)
-		QuizSubmissionAttempt int64 `json:"quiz_submission_attempt"` //  (Optional)
+		QuizSubmissionID      int64 `json:"quiz_submission_id" url:"quiz_submission_id,omitempty"`           //  (Optional)
+		QuizSubmissionAttempt int64 `json:"quiz_submission_attempt" url:"quiz_submission_attempt,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -59,8 +60,12 @@ func (t *ListQuestionsInQuizOrSubmission) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListQuestionsInQuizOrSubmission) GetBody() (string, error) {
-	return "", nil
+func (t *ListQuestionsInQuizOrSubmission) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListQuestionsInQuizOrSubmission) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListQuestionsInQuizOrSubmission) HasErrors() error {

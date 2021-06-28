@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -38,11 +39,11 @@ import (
 //
 type BulkUpdateColumnData struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ColumnData []string `json:"column_data"` //  (Required)
+		ColumnData []string `json:"column_data" url:"column_data,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -60,12 +61,16 @@ func (t *BulkUpdateColumnData) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *BulkUpdateColumnData) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *BulkUpdateColumnData) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *BulkUpdateColumnData) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *BulkUpdateColumnData) HasErrors() error {

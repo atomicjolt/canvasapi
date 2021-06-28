@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -32,12 +33,12 @@ import (
 //
 type GetSingleTopicGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
-		TopicID string `json:"topic_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
+		TopicID string `json:"topic_id" url:"topic_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of all_dates, sections, sections_user_count, overrides
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of all_dates, sections, sections_user_count, overrides
 	} `json:"query"`
 }
 
@@ -60,8 +61,12 @@ func (t *GetSingleTopicGroups) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSingleTopicGroups) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleTopicGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleTopicGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleTopicGroups) HasErrors() error {
@@ -73,7 +78,7 @@ func (t *GetSingleTopicGroups) HasErrors() error {
 		errs = append(errs, "'TopicID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"all_dates", "sections", "sections_user_count", "overrides"}, v) {
+		if v != "" && !string_utils.Include([]string{"all_dates", "sections", "sections_user_count", "overrides"}, v) {
 			errs = append(errs, "Include must be one of all_dates, sections, sections_user_count, overrides")
 		}
 	}

@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -37,22 +39,22 @@ import (
 //
 type UpdateCalendarEvent struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		CalendarEvent struct {
-			ContextCode     string                                       `json:"context_code"`     //  (Optional)
-			Title           string                                       `json:"title"`            //  (Optional)
-			Description     string                                       `json:"description"`      //  (Optional)
-			StartAt         time.Time                                    `json:"start_at"`         //  (Optional)
-			EndAt           time.Time                                    `json:"end_at"`           //  (Optional)
-			LocationName    string                                       `json:"location_name"`    //  (Optional)
-			LocationAddress string                                       `json:"location_address"` //  (Optional)
-			TimeZoneEdited  string                                       `json:"time_zone_edited"` //  (Optional)
-			AllDay          bool                                         `json:"all_day"`          //  (Optional)
-			ChildEventData  map[string]UpdateCalendarEventChildEventData `json:"child_event_data"` //  (Optional)
-		} `json:"calendar_event"`
+			ContextCode     string                                       `json:"context_code" url:"context_code,omitempty"`         //  (Optional)
+			Title           string                                       `json:"title" url:"title,omitempty"`                       //  (Optional)
+			Description     string                                       `json:"description" url:"description,omitempty"`           //  (Optional)
+			StartAt         time.Time                                    `json:"start_at" url:"start_at,omitempty"`                 //  (Optional)
+			EndAt           time.Time                                    `json:"end_at" url:"end_at,omitempty"`                     //  (Optional)
+			LocationName    string                                       `json:"location_name" url:"location_name,omitempty"`       //  (Optional)
+			LocationAddress string                                       `json:"location_address" url:"location_address,omitempty"` //  (Optional)
+			TimeZoneEdited  string                                       `json:"time_zone_edited" url:"time_zone_edited,omitempty"` //  (Optional)
+			AllDay          bool                                         `json:"all_day" url:"all_day,omitempty"`                   //  (Optional)
+			ChildEventData  map[string]UpdateCalendarEventChildEventData `json:"child_event_data" url:"child_event_data,omitempty"` //  (Optional)
+		} `json:"calendar_event" url:"calendar_event,omitempty"`
 	} `json:"form"`
 }
 
@@ -70,12 +72,16 @@ func (t *UpdateCalendarEvent) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateCalendarEvent) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateCalendarEvent) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateCalendarEvent) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateCalendarEvent) HasErrors() error {
@@ -99,7 +105,7 @@ func (t *UpdateCalendarEvent) Do(c *canvasapi.Canvas) error {
 }
 
 type UpdateCalendarEventChildEventData struct {
-	StartAt     time.Time `json:"start_at"`     //  (Optional)
-	EndAt       time.Time `json:"end_at"`       //  (Optional)
-	ContextCode string    `json:"context_code"` //  (Optional)
+	StartAt     time.Time `json:"start_at" url:"start_at,omitempty"`         //  (Optional)
+	EndAt       time.Time `json:"end_at" url:"end_at,omitempty"`             //  (Optional)
+	ContextCode string    `json:"context_code" url:"context_code,omitempty"` //  (Optional)
 }

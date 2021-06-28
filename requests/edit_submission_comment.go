@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,14 +27,14 @@ import (
 //
 type EditSubmissionComment struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		UserID       string `json:"user_id"`       //  (Required)
-		ID           string `json:"id"`            //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		UserID       string `json:"user_id" url:"user_id,omitempty"`             //  (Required)
+		ID           string `json:"id" url:"id,omitempty"`                       //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Comment string `json:"comment"` //  (Optional)
+		Comment string `json:"comment" url:"comment,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -54,12 +55,16 @@ func (t *EditSubmissionComment) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *EditSubmissionComment) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *EditSubmissionComment) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *EditSubmissionComment) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *EditSubmissionComment) HasErrors() error {

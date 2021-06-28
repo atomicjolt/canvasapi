@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,9 +20,9 @@ import (
 //
 type MarkSubmissionAsReadCourses struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		UserID       string `json:"user_id"`       //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		UserID       string `json:"user_id" url:"user_id,omitempty"`             //  (Required)
 	} `json:"path"`
 }
 
@@ -41,8 +42,12 @@ func (t *MarkSubmissionAsReadCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *MarkSubmissionAsReadCourses) GetBody() (string, error) {
-	return "", nil
+func (t *MarkSubmissionAsReadCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *MarkSubmissionAsReadCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *MarkSubmissionAsReadCourses) HasErrors() error {

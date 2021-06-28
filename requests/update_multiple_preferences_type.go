@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -21,8 +23,8 @@ import (
 //
 type UpdateMultiplePreferencesType struct {
 	Path struct {
-		Type    string `json:"type"`    //  (Required)
-		Address string `json:"address"` //  (Required)
+		Type    string `json:"type" url:"type,omitempty"`       //  (Required)
+		Address string `json:"address" url:"address,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
@@ -45,12 +47,16 @@ func (t *UpdateMultiplePreferencesType) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateMultiplePreferencesType) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateMultiplePreferencesType) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateMultiplePreferencesType) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateMultiplePreferencesType) HasErrors() error {
@@ -80,5 +86,5 @@ func (t *UpdateMultiplePreferencesType) Do(c *canvasapi.Canvas) error {
 }
 
 type UpdateMultiplePreferencesTypeNotificationPreferences struct {
-	Frequency string `json:"frequency"` //  (Required)
+	Frequency string `json:"frequency" url:"frequency,omitempty"` //  (Required)
 }

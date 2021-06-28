@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,11 +24,11 @@ import (
 //
 type GetAlignedAssignmentsForOutcomeInCourseForParticularStudent struct {
 	Path struct {
-		CourseID int64 `json:"course_id"` //  (Required)
+		CourseID int64 `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		StudentID int64 `json:"student_id"` //  (Optional)
+		StudentID int64 `json:"student_id" url:"student_id,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -49,8 +50,12 @@ func (t *GetAlignedAssignmentsForOutcomeInCourseForParticularStudent) GetQuery()
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetAlignedAssignmentsForOutcomeInCourseForParticularStudent) GetBody() (string, error) {
-	return "", nil
+func (t *GetAlignedAssignmentsForOutcomeInCourseForParticularStudent) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetAlignedAssignmentsForOutcomeInCourseForParticularStudent) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetAlignedAssignmentsForOutcomeInCourseForParticularStudent) HasErrors() error {

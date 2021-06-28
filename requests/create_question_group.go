@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,17 +28,17 @@ import (
 //
 type CreateQuestionGroup struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		QuizGroups struct {
-			Name                     []string `json:"name"`                        //  (Optional)
-			PickCount                []int64  `json:"pick_count"`                  //  (Optional)
-			QuestionPoints           []int64  `json:"question_points"`             //  (Optional)
-			AssessmentQuestionBankID []int64  `json:"assessment_question_bank_id"` //  (Optional)
-		} `json:"quiz_groups"`
+			Name                     []string `json:"name" url:"name,omitempty"`                                               //  (Optional)
+			PickCount                []int64  `json:"pick_count" url:"pick_count,omitempty"`                                   //  (Optional)
+			QuestionPoints           []int64  `json:"question_points" url:"question_points,omitempty"`                         //  (Optional)
+			AssessmentQuestionBankID []int64  `json:"assessment_question_bank_id" url:"assessment_question_bank_id,omitempty"` //  (Optional)
+		} `json:"quiz_groups" url:"quiz_groups,omitempty"`
 	} `json:"form"`
 }
 
@@ -55,12 +57,16 @@ func (t *CreateQuestionGroup) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateQuestionGroup) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateQuestionGroup) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateQuestionGroup) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateQuestionGroup) HasErrors() error {

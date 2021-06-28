@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -27,12 +28,12 @@ import (
 //
 type ListUserPageViews struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		StartTime time.Time `json:"start_time"` //  (Optional)
-		EndTime   time.Time `json:"end_time"`   //  (Optional)
+		StartTime time.Time `json:"start_time" url:"start_time,omitempty"` //  (Optional)
+		EndTime   time.Time `json:"end_time" url:"end_time,omitempty"`     //  (Optional)
 	} `json:"query"`
 }
 
@@ -54,8 +55,12 @@ func (t *ListUserPageViews) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListUserPageViews) GetBody() (string, error) {
-	return "", nil
+func (t *ListUserPageViews) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListUserPageViews) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListUserPageViews) HasErrors() error {

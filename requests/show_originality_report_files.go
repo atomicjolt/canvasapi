@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,8 +20,8 @@ import (
 //
 type ShowOriginalityReportFiles struct {
 	Path struct {
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		FileID       string `json:"file_id"`       //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		FileID       string `json:"file_id" url:"file_id,omitempty"`             //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *ShowOriginalityReportFiles) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ShowOriginalityReportFiles) GetBody() (string, error) {
-	return "", nil
+func (t *ShowOriginalityReportFiles) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ShowOriginalityReportFiles) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ShowOriginalityReportFiles) HasErrors() error {

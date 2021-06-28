@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -18,7 +19,7 @@ import (
 //
 type GetBookmark struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -36,8 +37,12 @@ func (t *GetBookmark) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetBookmark) GetBody() (string, error) {
-	return "", nil
+func (t *GetBookmark) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetBookmark) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetBookmark) HasErrors() error {

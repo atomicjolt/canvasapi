@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,12 +25,12 @@ import (
 //
 type GetQuizSubmission struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of submission, quiz, user
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of submission, quiz, user
 	} `json:"query"`
 }
 
@@ -52,8 +53,12 @@ func (t *GetQuizSubmission) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetQuizSubmission) GetBody() (string, error) {
-	return "", nil
+func (t *GetQuizSubmission) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetQuizSubmission) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetQuizSubmission) HasErrors() error {
@@ -65,7 +70,7 @@ func (t *GetQuizSubmission) HasErrors() error {
 		errs = append(errs, "'QuizID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"submission", "quiz", "user"}, v) {
+		if v != "" && !string_utils.Include([]string{"submission", "quiz", "user"}, v) {
 			errs = append(errs, "Include must be one of submission, quiz, user")
 		}
 	}

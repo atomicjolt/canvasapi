@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -18,7 +19,7 @@ import (
 //
 type ListGroupCategoriesForContextAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -36,8 +37,12 @@ func (t *ListGroupCategoriesForContextAccounts) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListGroupCategoriesForContextAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *ListGroupCategoriesForContextAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListGroupCategoriesForContextAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListGroupCategoriesForContextAccounts) HasErrors() error {

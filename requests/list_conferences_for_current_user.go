@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 
 	"github.com/google/go-querystring/query"
 
@@ -25,7 +26,7 @@ import (
 //
 type ListConferencesForCurrentUser struct {
 	Query struct {
-		State string `json:"state"` //  (Optional)
+		State string `json:"state" url:"state,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -45,8 +46,12 @@ func (t *ListConferencesForCurrentUser) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListConferencesForCurrentUser) GetBody() (string, error) {
-	return "", nil
+func (t *ListConferencesForCurrentUser) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListConferencesForCurrentUser) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListConferencesForCurrentUser) HasErrors() error {

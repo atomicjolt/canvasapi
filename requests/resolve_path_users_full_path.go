@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -23,7 +24,7 @@ import (
 //
 type ResolvePathUsersFullPath struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -41,8 +42,12 @@ func (t *ResolvePathUsersFullPath) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ResolvePathUsersFullPath) GetBody() (string, error) {
-	return "", nil
+func (t *ResolvePathUsersFullPath) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ResolvePathUsersFullPath) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ResolvePathUsersFullPath) HasErrors() error {

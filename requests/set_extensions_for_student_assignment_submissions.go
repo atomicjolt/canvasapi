@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,15 +29,15 @@ import (
 //
 type SetExtensionsForStudentAssignmentSubmissions struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		AssignmentExtensions struct {
-			UserID        []int64 `json:"user_id"`        //  (Required)
-			ExtraAttempts []int64 `json:"extra_attempts"` //  (Required)
-		} `json:"assignment_extensions"`
+			UserID        []int64 `json:"user_id" url:"user_id,omitempty"`               //  (Required)
+			ExtraAttempts []int64 `json:"extra_attempts" url:"extra_attempts,omitempty"` //  (Required)
+		} `json:"assignment_extensions" url:"assignment_extensions,omitempty"`
 	} `json:"form"`
 }
 
@@ -54,12 +56,16 @@ func (t *SetExtensionsForStudentAssignmentSubmissions) GetQuery() (string, error
 	return "", nil
 }
 
-func (t *SetExtensionsForStudentAssignmentSubmissions) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *SetExtensionsForStudentAssignmentSubmissions) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *SetExtensionsForStudentAssignmentSubmissions) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *SetExtensionsForStudentAssignmentSubmissions) HasErrors() error {

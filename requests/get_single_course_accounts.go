@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -37,13 +38,13 @@ import (
 //
 type GetSingleCourseAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include      []string `json:"include"`       //  (Optional) . Must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, all_courses, permissions, observed_users, course_image, concluded
-		TeacherLimit int64    `json:"teacher_limit"` //  (Optional)
+		Include      []string `json:"include" url:"include,omitempty"`             //  (Optional) . Must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, all_courses, permissions, observed_users, course_image, concluded
+		TeacherLimit int64    `json:"teacher_limit" url:"teacher_limit,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -66,8 +67,12 @@ func (t *GetSingleCourseAccounts) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSingleCourseAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleCourseAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleCourseAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleCourseAccounts) HasErrors() error {
@@ -79,7 +84,7 @@ func (t *GetSingleCourseAccounts) HasErrors() error {
 		errs = append(errs, "'ID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"needs_grading_count", "syllabus_body", "public_description", "total_scores", "current_grading_period_scores", "term", "account", "course_progress", "sections", "storage_quota_used_mb", "total_students", "passback_status", "favorites", "teachers", "observed_users", "all_courses", "permissions", "observed_users", "course_image", "concluded"}, v) {
+		if v != "" && !string_utils.Include([]string{"needs_grading_count", "syllabus_body", "public_description", "total_scores", "current_grading_period_scores", "term", "account", "course_progress", "sections", "storage_quota_used_mb", "total_students", "passback_status", "favorites", "teachers", "observed_users", "all_courses", "permissions", "observed_users", "course_image", "concluded"}, v) {
 			errs = append(errs, "Include must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, all_courses, permissions, observed_users, course_image, concluded")
 		}
 	}

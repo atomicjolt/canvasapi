@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -72,22 +73,22 @@ import (
 //
 type ListEnrollmentsCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Type             []string `json:"type"`               //  (Optional)
-		Role             []string `json:"role"`               //  (Optional)
-		State            []string `json:"state"`              //  (Optional) . Must be one of active, invited, creation_pending, deleted, rejected, completed, inactive, current_and_invited, current_and_future, current_and_concluded
-		Include          []string `json:"include"`            //  (Optional) . Must be one of avatar_url, group_ids, locked, observed_users, can_be_removed, uuid, current_points
-		UserID           string   `json:"user_id"`            //  (Optional)
-		GradingPeriodID  int64    `json:"grading_period_id"`  //  (Optional)
-		EnrollmentTermID int64    `json:"enrollment_term_id"` //  (Optional)
-		SISAccountID     []string `json:"sis_account_id"`     //  (Optional)
-		SISCourseID      []string `json:"sis_course_id"`      //  (Optional)
-		SISSectionID     []string `json:"sis_section_id"`     //  (Optional)
-		SISUserID        []string `json:"sis_user_id"`        //  (Optional)
-		CreatedForSISID  []bool   `json:"created_for_sis_id"` //  (Optional)
+		Type             []string `json:"type" url:"type,omitempty"`                             //  (Optional)
+		Role             []string `json:"role" url:"role,omitempty"`                             //  (Optional)
+		State            []string `json:"state" url:"state,omitempty"`                           //  (Optional) . Must be one of active, invited, creation_pending, deleted, rejected, completed, inactive, current_and_invited, current_and_future, current_and_concluded
+		Include          []string `json:"include" url:"include,omitempty"`                       //  (Optional) . Must be one of avatar_url, group_ids, locked, observed_users, can_be_removed, uuid, current_points
+		UserID           string   `json:"user_id" url:"user_id,omitempty"`                       //  (Optional)
+		GradingPeriodID  int64    `json:"grading_period_id" url:"grading_period_id,omitempty"`   //  (Optional)
+		EnrollmentTermID int64    `json:"enrollment_term_id" url:"enrollment_term_id,omitempty"` //  (Optional)
+		SISAccountID     []string `json:"sis_account_id" url:"sis_account_id,omitempty"`         //  (Optional)
+		SISCourseID      []string `json:"sis_course_id" url:"sis_course_id,omitempty"`           //  (Optional)
+		SISSectionID     []string `json:"sis_section_id" url:"sis_section_id,omitempty"`         //  (Optional)
+		SISUserID        []string `json:"sis_user_id" url:"sis_user_id,omitempty"`               //  (Optional)
+		CreatedForSISID  []bool   `json:"created_for_sis_id" url:"created_for_sis_id,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -109,8 +110,12 @@ func (t *ListEnrollmentsCourses) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListEnrollmentsCourses) GetBody() (string, error) {
-	return "", nil
+func (t *ListEnrollmentsCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListEnrollmentsCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListEnrollmentsCourses) HasErrors() error {
@@ -119,12 +124,12 @@ func (t *ListEnrollmentsCourses) HasErrors() error {
 		errs = append(errs, "'CourseID' is required")
 	}
 	for _, v := range t.Query.State {
-		if !string_utils.Include([]string{"active", "invited", "creation_pending", "deleted", "rejected", "completed", "inactive", "current_and_invited", "current_and_future", "current_and_concluded"}, v) {
+		if v != "" && !string_utils.Include([]string{"active", "invited", "creation_pending", "deleted", "rejected", "completed", "inactive", "current_and_invited", "current_and_future", "current_and_concluded"}, v) {
 			errs = append(errs, "State must be one of active, invited, creation_pending, deleted, rejected, completed, inactive, current_and_invited, current_and_future, current_and_concluded")
 		}
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"avatar_url", "group_ids", "locked", "observed_users", "can_be_removed", "uuid", "current_points"}, v) {
+		if v != "" && !string_utils.Include([]string{"avatar_url", "group_ids", "locked", "observed_users", "can_be_removed", "uuid", "current_points"}, v) {
 			errs = append(errs, "Include must be one of avatar_url, group_ids, locked, observed_users, can_be_removed, uuid, current_points")
 		}
 	}

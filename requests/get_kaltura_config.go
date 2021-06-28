@@ -1,6 +1,8 @@
 package requests
 
 import (
+	"net/url"
+
 	"github.com/atomicjolt/canvasapi"
 )
 
@@ -22,8 +24,12 @@ func (t *GetKalturaConfig) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetKalturaConfig) GetBody() (string, error) {
-	return "", nil
+func (t *GetKalturaConfig) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetKalturaConfig) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetKalturaConfig) HasErrors() error {

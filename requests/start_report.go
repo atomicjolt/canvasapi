@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -37,12 +38,12 @@ import (
 //
 type StartReport struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		Report    string `json:"report"`     //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		Report    string `json:"report" url:"report,omitempty"`         //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Parameters string `json:"parameters"` //  (Optional)
+		Parameters string `json:"parameters" url:"parameters,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -61,12 +62,16 @@ func (t *StartReport) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *StartReport) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *StartReport) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *StartReport) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *StartReport) HasErrors() error {

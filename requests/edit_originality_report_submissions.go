@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -44,24 +45,24 @@ import (
 //
 type EditOriginalityReportSubmissions struct {
 	Path struct {
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		SubmissionID string `json:"submission_id"` //  (Required)
-		ID           string `json:"id"`            //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		SubmissionID string `json:"submission_id" url:"submission_id,omitempty"` //  (Required)
+		ID           string `json:"id" url:"id,omitempty"`                       //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		OriginalityReport struct {
-			OriginalityScore        float64 `json:"originality_score"`          //  (Optional)
-			OriginalityReportUrl    string  `json:"originality_report_url"`     //  (Optional)
-			OriginalityReportFileID int64   `json:"originality_report_file_id"` //  (Optional)
+			OriginalityScore        float64 `json:"originality_score" url:"originality_score,omitempty"`                   //  (Optional)
+			OriginalityReportUrl    string  `json:"originality_report_url" url:"originality_report_url,omitempty"`         //  (Optional)
+			OriginalityReportFileID int64   `json:"originality_report_file_id" url:"originality_report_file_id,omitempty"` //  (Optional)
 			ToolSetting             struct {
-				ResourceTypeCode string `json:"resource_type_code"` //  (Optional)
-				ResourceUrl      string `json:"resource_url"`       //  (Optional)
-			} `json:"tool_setting"`
+				ResourceTypeCode string `json:"resource_type_code" url:"resource_type_code,omitempty"` //  (Optional)
+				ResourceUrl      string `json:"resource_url" url:"resource_url,omitempty"`             //  (Optional)
+			} `json:"tool_setting" url:"tool_setting,omitempty"`
 
-			WorkflowState string `json:"workflow_state"` //  (Optional)
-			ErrorMessage  string `json:"error_message"`  //  (Optional)
-		} `json:"originality_report"`
+			WorkflowState string `json:"workflow_state" url:"workflow_state,omitempty"` //  (Optional)
+			ErrorMessage  string `json:"error_message" url:"error_message,omitempty"`   //  (Optional)
+		} `json:"originality_report" url:"originality_report,omitempty"`
 	} `json:"form"`
 }
 
@@ -81,12 +82,16 @@ func (t *EditOriginalityReportSubmissions) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *EditOriginalityReportSubmissions) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *EditOriginalityReportSubmissions) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *EditOriginalityReportSubmissions) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *EditOriginalityReportSubmissions) HasErrors() error {

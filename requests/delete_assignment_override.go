@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -20,9 +21,9 @@ import (
 //
 type DeleteAssignmentOverride struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		ID           string `json:"id"`            //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		ID           string `json:"id" url:"id,omitempty"`                       //  (Required)
 	} `json:"path"`
 }
 
@@ -42,8 +43,12 @@ func (t *DeleteAssignmentOverride) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteAssignmentOverride) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteAssignmentOverride) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteAssignmentOverride) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteAssignmentOverride) HasErrors() error {

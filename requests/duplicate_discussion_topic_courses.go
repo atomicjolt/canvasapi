@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,8 +20,8 @@ import (
 //
 type DuplicateDiscussionTopicCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		TopicID  string `json:"topic_id"`  //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		TopicID  string `json:"topic_id" url:"topic_id,omitempty"`   //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *DuplicateDiscussionTopicCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DuplicateDiscussionTopicCourses) GetBody() (string, error) {
-	return "", nil
+func (t *DuplicateDiscussionTopicCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DuplicateDiscussionTopicCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DuplicateDiscussionTopicCourses) HasErrors() error {

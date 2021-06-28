@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -43,17 +44,17 @@ import (
 //
 type UpdateGroupCategory struct {
 	Path struct {
-		GroupCategoryID string `json:"group_category_id"` //  (Required)
+		GroupCategoryID string `json:"group_category_id" url:"group_category_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Name               string `json:"name"`                  //  (Optional)
-		SelfSignup         string `json:"self_signup"`           //  (Optional) . Must be one of enabled, restricted
-		AutoLeader         string `json:"auto_leader"`           //  (Optional) . Must be one of first, random
-		GroupLimit         int64  `json:"group_limit"`           //  (Optional)
-		SISGroupCategoryID string `json:"sis_group_category_id"` //  (Optional)
-		CreateGroupCount   int64  `json:"create_group_count"`    //  (Optional)
-		SplitGroupCount    string `json:"split_group_count"`     //  (Optional)
+		Name               string `json:"name" url:"name,omitempty"`                                   //  (Optional)
+		SelfSignup         string `json:"self_signup" url:"self_signup,omitempty"`                     //  (Optional) . Must be one of enabled, restricted
+		AutoLeader         string `json:"auto_leader" url:"auto_leader,omitempty"`                     //  (Optional) . Must be one of first, random
+		GroupLimit         int64  `json:"group_limit" url:"group_limit,omitempty"`                     //  (Optional)
+		SISGroupCategoryID string `json:"sis_group_category_id" url:"sis_group_category_id,omitempty"` //  (Optional)
+		CreateGroupCount   int64  `json:"create_group_count" url:"create_group_count,omitempty"`       //  (Optional)
+		SplitGroupCount    string `json:"split_group_count" url:"split_group_count,omitempty"`         //  (Optional)
 	} `json:"form"`
 }
 
@@ -71,12 +72,16 @@ func (t *UpdateGroupCategory) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateGroupCategory) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateGroupCategory) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateGroupCategory) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateGroupCategory) HasErrors() error {
@@ -84,10 +89,10 @@ func (t *UpdateGroupCategory) HasErrors() error {
 	if t.Path.GroupCategoryID == "" {
 		errs = append(errs, "'GroupCategoryID' is required")
 	}
-	if !string_utils.Include([]string{"enabled", "restricted"}, t.Form.SelfSignup) {
+	if t.Form.SelfSignup != "" && !string_utils.Include([]string{"enabled", "restricted"}, t.Form.SelfSignup) {
 		errs = append(errs, "SelfSignup must be one of enabled, restricted")
 	}
-	if !string_utils.Include([]string{"first", "random"}, t.Form.AutoLeader) {
+	if t.Form.AutoLeader != "" && !string_utils.Include([]string{"first", "random"}, t.Form.AutoLeader) {
 		errs = append(errs, "AutoLeader must be one of first, random")
 	}
 	if len(errs) > 0 {

@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -37,19 +39,19 @@ import (
 //
 type QuizExtensionsSetExtensionsForStudentQuizSubmissions struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		QuizExtensions struct {
-			UserID           []int64 `json:"user_id"`            //  (Required)
-			ExtraAttempts    []int64 `json:"extra_attempts"`     //  (Optional)
-			ExtraTime        []int64 `json:"extra_time"`         //  (Optional)
-			ManuallyUnlocked []bool  `json:"manually_unlocked"`  //  (Optional)
-			ExtendFromNow    []int64 `json:"extend_from_now"`    //  (Optional)
-			ExtendFromEndAt  []int64 `json:"extend_from_end_at"` //  (Optional)
-		} `json:"quiz_extensions"`
+			UserID           []int64 `json:"user_id" url:"user_id,omitempty"`                       //  (Required)
+			ExtraAttempts    []int64 `json:"extra_attempts" url:"extra_attempts,omitempty"`         //  (Optional)
+			ExtraTime        []int64 `json:"extra_time" url:"extra_time,omitempty"`                 //  (Optional)
+			ManuallyUnlocked []bool  `json:"manually_unlocked" url:"manually_unlocked,omitempty"`   //  (Optional)
+			ExtendFromNow    []int64 `json:"extend_from_now" url:"extend_from_now,omitempty"`       //  (Optional)
+			ExtendFromEndAt  []int64 `json:"extend_from_end_at" url:"extend_from_end_at,omitempty"` //  (Optional)
+		} `json:"quiz_extensions" url:"quiz_extensions,omitempty"`
 	} `json:"form"`
 }
 
@@ -68,12 +70,16 @@ func (t *QuizExtensionsSetExtensionsForStudentQuizSubmissions) GetQuery() (strin
 	return "", nil
 }
 
-func (t *QuizExtensionsSetExtensionsForStudentQuizSubmissions) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *QuizExtensionsSetExtensionsForStudentQuizSubmissions) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *QuizExtensionsSetExtensionsForStudentQuizSubmissions) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *QuizExtensionsSetExtensionsForStudentQuizSubmissions) HasErrors() error {

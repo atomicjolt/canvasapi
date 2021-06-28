@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -31,18 +32,18 @@ import (
 //
 type CreateFolderGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Name             string    `json:"name"`               //  (Required)
-		ParentFolderID   string    `json:"parent_folder_id"`   //  (Optional)
-		ParentFolderPath string    `json:"parent_folder_path"` //  (Optional)
-		LockAt           time.Time `json:"lock_at"`            //  (Optional)
-		UnlockAt         time.Time `json:"unlock_at"`          //  (Optional)
-		Locked           bool      `json:"locked"`             //  (Optional)
-		Hidden           bool      `json:"hidden"`             //  (Optional)
-		Position         int64     `json:"position"`           //  (Optional)
+		Name             string    `json:"name" url:"name,omitempty"`                             //  (Required)
+		ParentFolderID   string    `json:"parent_folder_id" url:"parent_folder_id,omitempty"`     //  (Optional)
+		ParentFolderPath string    `json:"parent_folder_path" url:"parent_folder_path,omitempty"` //  (Optional)
+		LockAt           time.Time `json:"lock_at" url:"lock_at,omitempty"`                       //  (Optional)
+		UnlockAt         time.Time `json:"unlock_at" url:"unlock_at,omitempty"`                   //  (Optional)
+		Locked           bool      `json:"locked" url:"locked,omitempty"`                         //  (Optional)
+		Hidden           bool      `json:"hidden" url:"hidden,omitempty"`                         //  (Optional)
+		Position         int64     `json:"position" url:"position,omitempty"`                     //  (Optional)
 	} `json:"form"`
 }
 
@@ -60,12 +61,16 @@ func (t *CreateFolderGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateFolderGroups) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateFolderGroups) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateFolderGroups) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateFolderGroups) HasErrors() error {

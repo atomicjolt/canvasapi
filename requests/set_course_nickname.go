@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,11 +26,11 @@ import (
 //
 type SetCourseNickname struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Nickname string `json:"nickname"` //  (Required)
+		Nickname string `json:"nickname" url:"nickname,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -47,12 +48,16 @@ func (t *SetCourseNickname) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *SetCourseNickname) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *SetCourseNickname) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *SetCourseNickname) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *SetCourseNickname) HasErrors() error {

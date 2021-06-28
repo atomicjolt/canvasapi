@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -23,8 +24,8 @@ import (
 //
 type GetSISImportStatus struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 }
 
@@ -43,8 +44,12 @@ func (t *GetSISImportStatus) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetSISImportStatus) GetBody() (string, error) {
-	return "", nil
+func (t *GetSISImportStatus) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSISImportStatus) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSISImportStatus) HasErrors() error {

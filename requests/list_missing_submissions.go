@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -30,13 +31,13 @@ import (
 //
 type ListMissingSubmissions struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include   []string `json:"include"`    //  (Optional) . Must be one of planner_overrides, course
-		Filter    []string `json:"filter"`     //  (Optional) . Must be one of submittable
-		CourseIDs []string `json:"course_ids"` //  (Optional)
+		Include   []string `json:"include" url:"include,omitempty"`       //  (Optional) . Must be one of planner_overrides, course
+		Filter    []string `json:"filter" url:"filter,omitempty"`         //  (Optional) . Must be one of submittable
+		CourseIDs []string `json:"course_ids" url:"course_ids,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -58,8 +59,12 @@ func (t *ListMissingSubmissions) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListMissingSubmissions) GetBody() (string, error) {
-	return "", nil
+func (t *ListMissingSubmissions) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListMissingSubmissions) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListMissingSubmissions) HasErrors() error {
@@ -68,12 +73,12 @@ func (t *ListMissingSubmissions) HasErrors() error {
 		errs = append(errs, "'UserID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"planner_overrides", "course"}, v) {
+		if v != "" && !string_utils.Include([]string{"planner_overrides", "course"}, v) {
 			errs = append(errs, "Include must be one of planner_overrides, course")
 		}
 	}
 	for _, v := range t.Query.Filter {
-		if !string_utils.Include([]string{"submittable"}, v) {
+		if v != "" && !string_utils.Include([]string{"submittable"}, v) {
 			errs = append(errs, "Filter must be one of submittable")
 		}
 	}

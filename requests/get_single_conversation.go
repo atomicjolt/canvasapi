@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -34,15 +35,15 @@ import (
 //
 type GetSingleConversation struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		InterleaveSubmissions bool     `json:"interleave_submissions"` //  (Optional)
-		Scope                 string   `json:"scope"`                  //  (Optional) . Must be one of unread, starred, archived
-		Filter                []string `json:"filter"`                 //  (Optional)
-		FilterMode            string   `json:"filter_mode"`            //  (Optional) . Must be one of and, or, default or
-		AutoMarkAsRead        bool     `json:"auto_mark_as_read"`      //  (Optional)
+		InterleaveSubmissions bool     `json:"interleave_submissions" url:"interleave_submissions,omitempty"` //  (Optional)
+		Scope                 string   `json:"scope" url:"scope,omitempty"`                                   //  (Optional) . Must be one of unread, starred, archived
+		Filter                []string `json:"filter" url:"filter,omitempty"`                                 //  (Optional)
+		FilterMode            string   `json:"filter_mode" url:"filter_mode,omitempty"`                       //  (Optional) . Must be one of and, or, default or
+		AutoMarkAsRead        bool     `json:"auto_mark_as_read" url:"auto_mark_as_read,omitempty"`           //  (Optional)
 	} `json:"query"`
 }
 
@@ -64,8 +65,12 @@ func (t *GetSingleConversation) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSingleConversation) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleConversation) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleConversation) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleConversation) HasErrors() error {
@@ -73,10 +78,10 @@ func (t *GetSingleConversation) HasErrors() error {
 	if t.Path.ID == "" {
 		errs = append(errs, "'ID' is required")
 	}
-	if !string_utils.Include([]string{"unread", "starred", "archived"}, t.Query.Scope) {
+	if t.Query.Scope != "" && !string_utils.Include([]string{"unread", "starred", "archived"}, t.Query.Scope) {
 		errs = append(errs, "Scope must be one of unread, starred, archived")
 	}
-	if !string_utils.Include([]string{"and", "or", "default or"}, t.Query.FilterMode) {
+	if t.Query.FilterMode != "" && !string_utils.Include([]string{"and", "or", "default or"}, t.Query.FilterMode) {
 		errs = append(errs, "FilterMode must be one of and, or, default or")
 	}
 	if len(errs) > 0 {

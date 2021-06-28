@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -45,15 +46,15 @@ import (
 //
 type CreateNewGradingStandardAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Title              string `json:"title"` //  (Required)
+		Title              string `json:"title" url:"title,omitempty"` //  (Required)
 		GradingSchemeEntry struct {
-			Name  []string `json:"name"`  //  (Required)
-			Value []int64  `json:"value"` //  (Required)
-		} `json:"grading_scheme_entry"`
+			Name  []string `json:"name" url:"name,omitempty"`   //  (Required)
+			Value []int64  `json:"value" url:"value,omitempty"` //  (Required)
+		} `json:"grading_scheme_entry" url:"grading_scheme_entry,omitempty"`
 	} `json:"form"`
 }
 
@@ -71,12 +72,16 @@ func (t *CreateNewGradingStandardAccounts) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateNewGradingStandardAccounts) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateNewGradingStandardAccounts) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateNewGradingStandardAccounts) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateNewGradingStandardAccounts) HasErrors() error {

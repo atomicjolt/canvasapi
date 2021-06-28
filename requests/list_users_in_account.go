@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -41,14 +42,14 @@ import (
 //
 type ListUsersInAccount struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		SearchTerm     string `json:"search_term"`     //  (Optional)
-		EnrollmentType string `json:"enrollment_type"` //  (Optional)
-		Sort           string `json:"sort"`            //  (Optional) . Must be one of username, email, sis_id, last_login
-		Order          string `json:"order"`           //  (Optional) . Must be one of asc, desc
+		SearchTerm     string `json:"search_term" url:"search_term,omitempty"`         //  (Optional)
+		EnrollmentType string `json:"enrollment_type" url:"enrollment_type,omitempty"` //  (Optional)
+		Sort           string `json:"sort" url:"sort,omitempty"`                       //  (Optional) . Must be one of username, email, sis_id, last_login
+		Order          string `json:"order" url:"order,omitempty"`                     //  (Optional) . Must be one of asc, desc
 	} `json:"query"`
 }
 
@@ -70,8 +71,12 @@ func (t *ListUsersInAccount) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListUsersInAccount) GetBody() (string, error) {
-	return "", nil
+func (t *ListUsersInAccount) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListUsersInAccount) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListUsersInAccount) HasErrors() error {
@@ -79,10 +84,10 @@ func (t *ListUsersInAccount) HasErrors() error {
 	if t.Path.AccountID == "" {
 		errs = append(errs, "'AccountID' is required")
 	}
-	if !string_utils.Include([]string{"username", "email", "sis_id", "last_login"}, t.Query.Sort) {
+	if t.Query.Sort != "" && !string_utils.Include([]string{"username", "email", "sis_id", "last_login"}, t.Query.Sort) {
 		errs = append(errs, "Sort must be one of username, email, sis_id, last_login")
 	}
-	if !string_utils.Include([]string{"asc", "desc"}, t.Query.Order) {
+	if t.Query.Order != "" && !string_utils.Include([]string{"asc", "desc"}, t.Query.Order) {
 		errs = append(errs, "Order must be one of asc, desc")
 	}
 	if len(errs) > 0 {

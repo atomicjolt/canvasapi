@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -80,7 +81,7 @@ import (
 //
 type SplitMergedUsersIntoSeparateUsers struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -98,8 +99,12 @@ func (t *SplitMergedUsersIntoSeparateUsers) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *SplitMergedUsersIntoSeparateUsers) GetBody() (string, error) {
-	return "", nil
+func (t *SplitMergedUsersIntoSeparateUsers) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *SplitMergedUsersIntoSeparateUsers) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *SplitMergedUsersIntoSeparateUsers) HasErrors() error {

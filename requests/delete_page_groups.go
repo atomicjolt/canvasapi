@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,8 +20,8 @@ import (
 //
 type DeletePageGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
-		Url     string `json:"url"`      //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
+		Url     string `json:"url" url:"url,omitempty"`           //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *DeletePageGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeletePageGroups) GetBody() (string, error) {
-	return "", nil
+func (t *DeletePageGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeletePageGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeletePageGroups) HasErrors() error {

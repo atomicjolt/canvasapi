@@ -1,6 +1,8 @@
 package requests
 
 import (
+	"net/url"
+
 	"github.com/atomicjolt/canvasapi"
 )
 
@@ -24,8 +26,12 @@ func (t *ListEnvironmentFeatures) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListEnvironmentFeatures) GetBody() (string, error) {
-	return "", nil
+func (t *ListEnvironmentFeatures) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListEnvironmentFeatures) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListEnvironmentFeatures) HasErrors() error {

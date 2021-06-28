@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,12 +27,12 @@ import (
 //
 type ListUsersInGroupCategory struct {
 	Path struct {
-		GroupCategoryID string `json:"group_category_id"` //  (Required)
+		GroupCategoryID string `json:"group_category_id" url:"group_category_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		SearchTerm string `json:"search_term"` //  (Optional)
-		Unassigned bool   `json:"unassigned"`  //  (Optional)
+		SearchTerm string `json:"search_term" url:"search_term,omitempty"` //  (Optional)
+		Unassigned bool   `json:"unassigned" url:"unassigned,omitempty"`   //  (Optional)
 	} `json:"query"`
 }
 
@@ -53,8 +54,12 @@ func (t *ListUsersInGroupCategory) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListUsersInGroupCategory) GetBody() (string, error) {
-	return "", nil
+func (t *ListUsersInGroupCategory) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListUsersInGroupCategory) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListUsersInGroupCategory) HasErrors() error {

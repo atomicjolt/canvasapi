@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -38,18 +39,18 @@ import (
 //
 type ListAssignmentsAssignments struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include                    []string `json:"include"`                        //  (Optional) . Must be one of submission, assignment_visibility, all_dates, overrides, observed_users, can_edit, score_statistics
-		SearchTerm                 string   `json:"search_term"`                    //  (Optional)
-		OverrideAssignmentDates    bool     `json:"override_assignment_dates"`      //  (Optional)
-		NeedsGradingCountBySection bool     `json:"needs_grading_count_by_section"` //  (Optional)
-		Bucket                     string   `json:"bucket"`                         //  (Optional) . Must be one of past, overdue, undated, ungraded, unsubmitted, upcoming, future
-		AssignmentIDs              []string `json:"assignment_ids"`                 //  (Optional)
-		OrderBy                    string   `json:"order_by"`                       //  (Optional) . Must be one of position, name, due_at
-		PostToSIS                  bool     `json:"post_to_sis"`                    //  (Optional)
+		Include                    []string `json:"include" url:"include,omitempty"`                                               //  (Optional) . Must be one of submission, assignment_visibility, all_dates, overrides, observed_users, can_edit, score_statistics
+		SearchTerm                 string   `json:"search_term" url:"search_term,omitempty"`                                       //  (Optional)
+		OverrideAssignmentDates    bool     `json:"override_assignment_dates" url:"override_assignment_dates,omitempty"`           //  (Optional)
+		NeedsGradingCountBySection bool     `json:"needs_grading_count_by_section" url:"needs_grading_count_by_section,omitempty"` //  (Optional)
+		Bucket                     string   `json:"bucket" url:"bucket,omitempty"`                                                 //  (Optional) . Must be one of past, overdue, undated, ungraded, unsubmitted, upcoming, future
+		AssignmentIDs              []string `json:"assignment_ids" url:"assignment_ids,omitempty"`                                 //  (Optional)
+		OrderBy                    string   `json:"order_by" url:"order_by,omitempty"`                                             //  (Optional) . Must be one of position, name, due_at
+		PostToSIS                  bool     `json:"post_to_sis" url:"post_to_sis,omitempty"`                                       //  (Optional)
 	} `json:"query"`
 }
 
@@ -71,8 +72,12 @@ func (t *ListAssignmentsAssignments) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListAssignmentsAssignments) GetBody() (string, error) {
-	return "", nil
+func (t *ListAssignmentsAssignments) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListAssignmentsAssignments) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListAssignmentsAssignments) HasErrors() error {
@@ -81,14 +86,14 @@ func (t *ListAssignmentsAssignments) HasErrors() error {
 		errs = append(errs, "'CourseID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"submission", "assignment_visibility", "all_dates", "overrides", "observed_users", "can_edit", "score_statistics"}, v) {
+		if v != "" && !string_utils.Include([]string{"submission", "assignment_visibility", "all_dates", "overrides", "observed_users", "can_edit", "score_statistics"}, v) {
 			errs = append(errs, "Include must be one of submission, assignment_visibility, all_dates, overrides, observed_users, can_edit, score_statistics")
 		}
 	}
-	if !string_utils.Include([]string{"past", "overdue", "undated", "ungraded", "unsubmitted", "upcoming", "future"}, t.Query.Bucket) {
+	if t.Query.Bucket != "" && !string_utils.Include([]string{"past", "overdue", "undated", "ungraded", "unsubmitted", "upcoming", "future"}, t.Query.Bucket) {
 		errs = append(errs, "Bucket must be one of past, overdue, undated, ungraded, unsubmitted, upcoming, future")
 	}
-	if !string_utils.Include([]string{"position", "name", "due_at"}, t.Query.OrderBy) {
+	if t.Query.OrderBy != "" && !string_utils.Include([]string{"position", "name", "due_at"}, t.Query.OrderBy) {
 		errs = append(errs, "OrderBy must be one of position, name, due_at")
 	}
 	if len(errs) > 0 {

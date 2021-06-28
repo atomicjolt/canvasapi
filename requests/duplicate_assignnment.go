@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -30,12 +31,12 @@ import (
 //
 type DuplicateAssignnment struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ResultType string `json:"result_type"` //  (Optional) . Must be one of Quiz
+		ResultType string `json:"result_type" url:"result_type,omitempty"` //  (Optional) . Must be one of Quiz
 	} `json:"form"`
 }
 
@@ -54,12 +55,16 @@ func (t *DuplicateAssignnment) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DuplicateAssignnment) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *DuplicateAssignnment) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *DuplicateAssignnment) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *DuplicateAssignnment) HasErrors() error {
@@ -70,7 +75,7 @@ func (t *DuplicateAssignnment) HasErrors() error {
 	if t.Path.AssignmentID == "" {
 		errs = append(errs, "'AssignmentID' is required")
 	}
-	if !string_utils.Include([]string{"Quiz"}, t.Form.ResultType) {
+	if t.Form.ResultType != "" && !string_utils.Include([]string{"Quiz"}, t.Form.ResultType) {
 		errs = append(errs, "ResultType must be one of Quiz")
 	}
 	if len(errs) > 0 {

@@ -3,6 +3,7 @@ package requests
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/url"
 
 	"github.com/atomicjolt/canvasapi"
 	"github.com/atomicjolt/canvasapi/models"
@@ -28,8 +29,12 @@ func (t *GetAccountsThatAdminsCanManage) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetAccountsThatAdminsCanManage) GetBody() (string, error) {
-	return "", nil
+func (t *GetAccountsThatAdminsCanManage) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetAccountsThatAdminsCanManage) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetAccountsThatAdminsCanManage) HasErrors() error {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -21,11 +22,11 @@ import (
 //
 type DeleteFolder struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Force bool `json:"force"` //  (Optional)
+		Force bool `json:"force" url:"force,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -47,8 +48,12 @@ func (t *DeleteFolder) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *DeleteFolder) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteFolder) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteFolder) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteFolder) HasErrors() error {

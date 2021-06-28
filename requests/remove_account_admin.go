@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,13 +28,13 @@ import (
 //
 type RemoveAccountAdmin struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		UserID    string `json:"user_id"`    //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		UserID    string `json:"user_id" url:"user_id,omitempty"`       //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Role   string `json:"role"`    //  (Optional)
-		RoleID int64  `json:"role_id"` //  (Optional)
+		Role   string `json:"role" url:"role,omitempty"`       //  (Optional)
+		RoleID int64  `json:"role_id" url:"role_id,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -56,8 +57,12 @@ func (t *RemoveAccountAdmin) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *RemoveAccountAdmin) GetBody() (string, error) {
-	return "", nil
+func (t *RemoveAccountAdmin) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RemoveAccountAdmin) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RemoveAccountAdmin) HasErrors() error {

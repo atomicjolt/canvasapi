@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -37,17 +38,17 @@ import (
 //
 type CreateQuizReport struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		QuizReport struct {
-			ReportType          string `json:"report_type"`           //  (Required) . Must be one of student_analysis, item_analysis
-			IncludesAllVersions bool   `json:"includes_all_versions"` //  (Optional)
-		} `json:"quiz_report"`
+			ReportType          string `json:"report_type" url:"report_type,omitempty"`                     //  (Required) . Must be one of student_analysis, item_analysis
+			IncludesAllVersions bool   `json:"includes_all_versions" url:"includes_all_versions,omitempty"` //  (Optional)
+		} `json:"quiz_report" url:"quiz_report,omitempty"`
 
-		Include string `json:"include"` //  (Optional) . Must be one of file, progress
+		Include string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of file, progress
 	} `json:"form"`
 }
 
@@ -66,12 +67,16 @@ func (t *CreateQuizReport) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateQuizReport) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateQuizReport) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateQuizReport) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateQuizReport) HasErrors() error {
@@ -85,10 +90,10 @@ func (t *CreateQuizReport) HasErrors() error {
 	if t.Form.QuizReport.ReportType == "" {
 		errs = append(errs, "'QuizReport' is required")
 	}
-	if !string_utils.Include([]string{"student_analysis", "item_analysis"}, t.Form.QuizReport.ReportType) {
+	if t.Form.QuizReport.ReportType != "" && !string_utils.Include([]string{"student_analysis", "item_analysis"}, t.Form.QuizReport.ReportType) {
 		errs = append(errs, "QuizReport must be one of student_analysis, item_analysis")
 	}
-	if !string_utils.Include([]string{"file", "progress"}, t.Form.Include) {
+	if t.Form.Include != "" && !string_utils.Include([]string{"file", "progress"}, t.Form.Include) {
 		errs = append(errs, "Include must be one of file, progress")
 	}
 	if len(errs) > 0 {

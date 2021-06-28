@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -29,8 +30,8 @@ import (
 //
 type ListTopicEntriesGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
-		TopicID string `json:"topic_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
+		TopicID string `json:"topic_id" url:"topic_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -49,8 +50,12 @@ func (t *ListTopicEntriesGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListTopicEntriesGroups) GetBody() (string, error) {
-	return "", nil
+func (t *ListTopicEntriesGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListTopicEntriesGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListTopicEntriesGroups) HasErrors() error {

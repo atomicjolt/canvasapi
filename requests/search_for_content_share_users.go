@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,11 +25,11 @@ import (
 //
 type SearchForContentShareUsers struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		SearchTerm string `json:"search_term"` //  (Required)
+		SearchTerm string `json:"search_term" url:"search_term,omitempty"` //  (Required)
 	} `json:"query"`
 }
 
@@ -50,8 +51,12 @@ func (t *SearchForContentShareUsers) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *SearchForContentShareUsers) GetBody() (string, error) {
-	return "", nil
+func (t *SearchForContentShareUsers) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *SearchForContentShareUsers) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *SearchForContentShareUsers) HasErrors() error {

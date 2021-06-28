@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -168,12 +170,12 @@ import (
 //
 type StoreCustomData struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Ns   string `json:"ns"`   //  (Required)
-		Data string `json:"data"` //  (Required)
+		Ns   string `json:"ns" url:"ns,omitempty"`     //  (Required)
+		Data string `json:"data" url:"data,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -191,12 +193,16 @@ func (t *StoreCustomData) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *StoreCustomData) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *StoreCustomData) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *StoreCustomData) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *StoreCustomData) HasErrors() error {

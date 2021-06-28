@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -20,7 +21,7 @@ import (
 //
 type UpdateDashboardPositions struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -38,8 +39,12 @@ func (t *UpdateDashboardPositions) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateDashboardPositions) GetBody() (string, error) {
-	return "", nil
+func (t *UpdateDashboardPositions) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *UpdateDashboardPositions) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *UpdateDashboardPositions) HasErrors() error {

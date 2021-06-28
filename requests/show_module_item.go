@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -30,14 +31,14 @@ import (
 //
 type ShowModuleItem struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ModuleID string `json:"module_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ModuleID string `json:"module_id" url:"module_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include   []string `json:"include"`    //  (Optional) . Must be one of content_details
-		StudentID string   `json:"student_id"` //  (Optional)
+		Include   []string `json:"include" url:"include,omitempty"`       //  (Optional) . Must be one of content_details
+		StudentID string   `json:"student_id" url:"student_id,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -61,8 +62,12 @@ func (t *ShowModuleItem) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ShowModuleItem) GetBody() (string, error) {
-	return "", nil
+func (t *ShowModuleItem) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ShowModuleItem) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ShowModuleItem) HasErrors() error {
@@ -77,7 +82,7 @@ func (t *ShowModuleItem) HasErrors() error {
 		errs = append(errs, "'ID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"content_details"}, v) {
+		if v != "" && !string_utils.Include([]string{"content_details"}, v) {
 			errs = append(errs, "Include must be one of content_details")
 		}
 	}

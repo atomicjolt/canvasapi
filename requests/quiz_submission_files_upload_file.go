@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,13 +29,13 @@ import (
 //
 type QuizSubmissionFilesUploadFile struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Name        string `json:"name"`         //  (Optional)
-		OnDuplicate string `json:"on_duplicate"` //  (Optional)
+		Name        string `json:"name" url:"name,omitempty"`                 //  (Optional)
+		OnDuplicate string `json:"on_duplicate" url:"on_duplicate,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -52,12 +54,16 @@ func (t *QuizSubmissionFilesUploadFile) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *QuizSubmissionFilesUploadFile) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *QuizSubmissionFilesUploadFile) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *QuizSubmissionFilesUploadFile) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *QuizSubmissionFilesUploadFile) HasErrors() error {

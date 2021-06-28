@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -37,19 +38,19 @@ import (
 //
 type UpdateCreatePageGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
-		Url     string `json:"url"`      //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
+		Url     string `json:"url" url:"url,omitempty"`           //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		WikiPage struct {
-			Title          string `json:"title"`            //  (Optional)
-			Body           string `json:"body"`             //  (Optional)
-			EditingRoles   string `json:"editing_roles"`    //  (Optional) . Must be one of teachers, students, members, public
-			NotifyOfUpdate bool   `json:"notify_of_update"` //  (Optional)
-			Published      bool   `json:"published"`        //  (Optional)
-			FrontPage      bool   `json:"front_page"`       //  (Optional)
-		} `json:"wiki_page"`
+			Title          string `json:"title" url:"title,omitempty"`                       //  (Optional)
+			Body           string `json:"body" url:"body,omitempty"`                         //  (Optional)
+			EditingRoles   string `json:"editing_roles" url:"editing_roles,omitempty"`       //  (Optional) . Must be one of teachers, students, members, public
+			NotifyOfUpdate bool   `json:"notify_of_update" url:"notify_of_update,omitempty"` //  (Optional)
+			Published      bool   `json:"published" url:"published,omitempty"`               //  (Optional)
+			FrontPage      bool   `json:"front_page" url:"front_page,omitempty"`             //  (Optional)
+		} `json:"wiki_page" url:"wiki_page,omitempty"`
 	} `json:"form"`
 }
 
@@ -68,12 +69,16 @@ func (t *UpdateCreatePageGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateCreatePageGroups) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateCreatePageGroups) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateCreatePageGroups) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateCreatePageGroups) HasErrors() error {
@@ -84,7 +89,7 @@ func (t *UpdateCreatePageGroups) HasErrors() error {
 	if t.Path.Url == "" {
 		errs = append(errs, "'Url' is required")
 	}
-	if !string_utils.Include([]string{"teachers", "students", "members", "public"}, t.Form.WikiPage.EditingRoles) {
+	if t.Form.WikiPage.EditingRoles != "" && !string_utils.Include([]string{"teachers", "students", "members", "public"}, t.Form.WikiPage.EditingRoles) {
 		errs = append(errs, "WikiPage must be one of teachers, students, members, public")
 	}
 	if len(errs) > 0 {

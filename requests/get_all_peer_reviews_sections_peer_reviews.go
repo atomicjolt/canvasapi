@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,12 +26,12 @@ import (
 //
 type GetAllPeerReviewsSectionsPeerReviews struct {
 	Path struct {
-		SectionID    string `json:"section_id"`    //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
+		SectionID    string `json:"section_id" url:"section_id,omitempty"`       //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of submission_comments, user
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of submission_comments, user
 	} `json:"query"`
 }
 
@@ -53,8 +54,12 @@ func (t *GetAllPeerReviewsSectionsPeerReviews) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetAllPeerReviewsSectionsPeerReviews) GetBody() (string, error) {
-	return "", nil
+func (t *GetAllPeerReviewsSectionsPeerReviews) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetAllPeerReviewsSectionsPeerReviews) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetAllPeerReviewsSectionsPeerReviews) HasErrors() error {
@@ -66,7 +71,7 @@ func (t *GetAllPeerReviewsSectionsPeerReviews) HasErrors() error {
 		errs = append(errs, "'AssignmentID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"submission_comments", "user"}, v) {
+		if v != "" && !string_utils.Include([]string{"submission_comments", "user"}, v) {
 			errs = append(errs, "Include must be one of submission_comments, user")
 		}
 	}

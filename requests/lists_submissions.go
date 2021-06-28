@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -21,10 +22,10 @@ import (
 //
 type ListsSubmissions struct {
 	Path struct {
-		CourseID     int64  `json:"course_id"`     //  (Required)
-		Date         string `json:"date"`          //  (Required)
-		GraderID     int64  `json:"grader_id"`     //  (Required)
-		AssignmentID int64  `json:"assignment_id"` //  (Required)
+		CourseID     int64  `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		Date         string `json:"date" url:"date,omitempty"`                   //  (Required)
+		GraderID     int64  `json:"grader_id" url:"grader_id,omitempty"`         //  (Required)
+		AssignmentID int64  `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -45,8 +46,12 @@ func (t *ListsSubmissions) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListsSubmissions) GetBody() (string, error) {
-	return "", nil
+func (t *ListsSubmissions) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListsSubmissions) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListsSubmissions) HasErrors() error {

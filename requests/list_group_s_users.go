@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -28,13 +29,13 @@ import (
 //
 type ListGroupSUsers struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		SearchTerm      string   `json:"search_term"`      //  (Optional)
-		Include         []string `json:"include"`          //  (Optional) . Must be one of avatar_url
-		ExcludeInactive bool     `json:"exclude_inactive"` //  (Optional)
+		SearchTerm      string   `json:"search_term" url:"search_term,omitempty"`           //  (Optional)
+		Include         []string `json:"include" url:"include,omitempty"`                   //  (Optional) . Must be one of avatar_url
+		ExcludeInactive bool     `json:"exclude_inactive" url:"exclude_inactive,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -56,8 +57,12 @@ func (t *ListGroupSUsers) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListGroupSUsers) GetBody() (string, error) {
-	return "", nil
+func (t *ListGroupSUsers) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListGroupSUsers) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListGroupSUsers) HasErrors() error {
@@ -66,7 +71,7 @@ func (t *ListGroupSUsers) HasErrors() error {
 		errs = append(errs, "'GroupID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"avatar_url"}, v) {
+		if v != "" && !string_utils.Include([]string{"avatar_url"}, v) {
 			errs = append(errs, "Include must be one of avatar_url")
 		}
 	}

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -56,24 +57,24 @@ import (
 //
 type CreateLinkOutcomeGlobalOutcomeID struct {
 	Path struct {
-		ID        string `json:"id"`         //  (Required)
-		OutcomeID int64  `json:"outcome_id"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
+		OutcomeID int64  `json:"outcome_id" url:"outcome_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		MoveFrom      int64  `json:"move_from"`      //  (Optional)
-		Title         string `json:"title"`          //  (Optional)
-		DisplayName   string `json:"display_name"`   //  (Optional)
-		Description   string `json:"description"`    //  (Optional)
-		VendorGuid    string `json:"vendor_guid"`    //  (Optional)
-		MasteryPoints int64  `json:"mastery_points"` //  (Optional)
+		MoveFrom      int64  `json:"move_from" url:"move_from,omitempty"`           //  (Optional)
+		Title         string `json:"title" url:"title,omitempty"`                   //  (Optional)
+		DisplayName   string `json:"display_name" url:"display_name,omitempty"`     //  (Optional)
+		Description   string `json:"description" url:"description,omitempty"`       //  (Optional)
+		VendorGuid    string `json:"vendor_guid" url:"vendor_guid,omitempty"`       //  (Optional)
+		MasteryPoints int64  `json:"mastery_points" url:"mastery_points,omitempty"` //  (Optional)
 		Ratings       struct {
-			Description []string `json:"description"` //  (Optional)
-			Points      []int64  `json:"points"`      //  (Optional)
-		} `json:"ratings"`
+			Description []string `json:"description" url:"description,omitempty"` //  (Optional)
+			Points      []int64  `json:"points" url:"points,omitempty"`           //  (Optional)
+		} `json:"ratings" url:"ratings,omitempty"`
 
-		CalculationMethod string `json:"calculation_method"` //  (Optional) . Must be one of decaying_average, n_mastery, latest, highest
-		CalculationInt    int64  `json:"calculation_int"`    //  (Optional)
+		CalculationMethod string `json:"calculation_method" url:"calculation_method,omitempty"` //  (Optional) . Must be one of decaying_average, n_mastery, latest, highest
+		CalculationInt    int64  `json:"calculation_int" url:"calculation_int,omitempty"`       //  (Optional)
 	} `json:"form"`
 }
 
@@ -92,12 +93,16 @@ func (t *CreateLinkOutcomeGlobalOutcomeID) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateLinkOutcomeGlobalOutcomeID) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateLinkOutcomeGlobalOutcomeID) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateLinkOutcomeGlobalOutcomeID) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateLinkOutcomeGlobalOutcomeID) HasErrors() error {
@@ -105,7 +110,7 @@ func (t *CreateLinkOutcomeGlobalOutcomeID) HasErrors() error {
 	if t.Path.ID == "" {
 		errs = append(errs, "'ID' is required")
 	}
-	if !string_utils.Include([]string{"decaying_average", "n_mastery", "latest", "highest"}, t.Form.CalculationMethod) {
+	if t.Form.CalculationMethod != "" && !string_utils.Include([]string{"decaying_average", "n_mastery", "latest", "highest"}, t.Form.CalculationMethod) {
 		errs = append(errs, "CalculationMethod must be one of decaying_average, n_mastery, latest, highest")
 	}
 	if len(errs) > 0 {

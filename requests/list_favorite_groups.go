@@ -3,6 +3,7 @@ package requests
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/url"
 
 	"github.com/atomicjolt/canvasapi"
 	"github.com/atomicjolt/canvasapi/models"
@@ -27,8 +28,12 @@ func (t *ListFavoriteGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListFavoriteGroups) GetBody() (string, error) {
-	return "", nil
+func (t *ListFavoriteGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListFavoriteGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListFavoriteGroups) HasErrors() error {

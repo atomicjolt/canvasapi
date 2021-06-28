@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -35,17 +36,17 @@ import (
 //
 type UpdateCreateFrontPageGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		WikiPage struct {
-			Title          string `json:"title"`            //  (Optional)
-			Body           string `json:"body"`             //  (Optional)
-			EditingRoles   string `json:"editing_roles"`    //  (Optional) . Must be one of teachers, students, members, public
-			NotifyOfUpdate bool   `json:"notify_of_update"` //  (Optional)
-			Published      bool   `json:"published"`        //  (Optional)
-		} `json:"wiki_page"`
+			Title          string `json:"title" url:"title,omitempty"`                       //  (Optional)
+			Body           string `json:"body" url:"body,omitempty"`                         //  (Optional)
+			EditingRoles   string `json:"editing_roles" url:"editing_roles,omitempty"`       //  (Optional) . Must be one of teachers, students, members, public
+			NotifyOfUpdate bool   `json:"notify_of_update" url:"notify_of_update,omitempty"` //  (Optional)
+			Published      bool   `json:"published" url:"published,omitempty"`               //  (Optional)
+		} `json:"wiki_page" url:"wiki_page,omitempty"`
 	} `json:"form"`
 }
 
@@ -63,12 +64,16 @@ func (t *UpdateCreateFrontPageGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateCreateFrontPageGroups) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateCreateFrontPageGroups) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateCreateFrontPageGroups) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateCreateFrontPageGroups) HasErrors() error {
@@ -76,7 +81,7 @@ func (t *UpdateCreateFrontPageGroups) HasErrors() error {
 	if t.Path.GroupID == "" {
 		errs = append(errs, "'GroupID' is required")
 	}
-	if !string_utils.Include([]string{"teachers", "students", "members", "public"}, t.Form.WikiPage.EditingRoles) {
+	if t.Form.WikiPage.EditingRoles != "" && !string_utils.Include([]string{"teachers", "students", "members", "public"}, t.Form.WikiPage.EditingRoles) {
 		errs = append(errs, "WikiPage must be one of teachers, students, members, public")
 	}
 	if len(errs) > 0 {

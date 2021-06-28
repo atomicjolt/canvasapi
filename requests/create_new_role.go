@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -38,13 +39,16 @@ import (
 //    permission names for <X> are:
 //
 //      [For Account-Level Roles Only]
+//      add_course_template              -- Course Templates - add
 //      become_user                      -- Users - act as
+//      delete_course_template           -- Course Templates - delete
+//      edit_course_template             -- Course Templates - edit
 //      import_sis                       -- SIS Data - import
 //      manage_account_memberships       -- Admins - add / remove
 //      manage_account_settings          -- Account-level settings - manage
 //      manage_alerts                    -- Global announcements - add / edit / delete
 //      manage_catalog                   -- Catalog - manage
-//      manage_courses                   -- Courses - add / edit / delete
+//      manage_courses_admin             -- Manage Courses - manage / update
 //      manage_developer_keys            -- Developer keys - manage
 //      manage_feature_flags             -- Feature Options - enable / disable
 //      manage_global_outcomes           -- Manage learning outcomes
@@ -74,7 +78,7 @@ import (
 //
 //      [For both Account-Level and Course-Level roles]
 //       Note: Applicable enrollment types for course-level roles are given in brackets:
-//             S = student, T = teacher, A = TA, D = designer, O = observer.
+//             S = student, T = teacher (instructor), A = TA, D = designer, O = observer.
 //             Lower-case letters indicate permissions that are off by default.
 //             A missing letter indicates the permission cannot be enabled for the role
 //             or any derived custom roles.
@@ -82,9 +86,8 @@ import (
 //      add_observer_to_course           -- [ Tad ] Add an observer enrollment to a course
 //      add_student_to_course            -- [ Tad ] Add a student enrollment to a course
 //      add_ta_to_course                 -- [ Tad ] Add a TA enrollment to a course
-//      add_teacher_to_course            -- [ Tad ] Add a Teacher enrollment to a course
+//      add_teacher_to_course            -- [ Tad ] Add a teacher enrollment to a course
 //      allow_course_admin_actions       -- [ Tad ] Perform miscellaneous course and enrollment admin actions
-//      change_course_state              -- [ TaD ] Course State - manage
 //      create_collaborations            -- [STADo] Student Collaborations - create
 //      create_conferences               -- [STADo] Web conferences - create
 //      create_forum                     -- [STADo] Discussions - create
@@ -93,10 +96,16 @@ import (
 //      lti_add_edit                     -- [ TAD ] LTI - add / edit / delete
 //      manage_admin_users               -- [ Tad ] Users - add / remove teachers, course designers, or TAs in courses
 //      manage_assignments               -- [ TADo] Assignments and Quizzes - add / edit / delete
-//      manage_calendar                  -- [sTADo] Course Calendar - add / edit / delete events
+//      manage_calendar                  -- [sTADo] Course Calendar - add / edit / delete
 //      manage_content                   -- [ TADo] Course Content - add / edit / delete
 //      manage_course_visibility         -- [ TAD ] Course - change visibility
-//      manage_files                     -- [ TADo] Course Files - add / edit / delete
+//      manage_courses_add               -- [sTADo] Courses - add
+//      manage_courses_conclude          -- [ TaD ] Courses - conclude
+//      manage_courses_delete            -- [ TaD ] Courses - delete
+//      manage_courses_publish           -- [ TaD ] Courses - publish
+//      manage_files_add                 -- [ TADo] Course Files - add
+//      manage_files_edit                -- [ TADo] Course Files - edit
+//      manage_files_delete              -- [ TADo] Course Files - delete
 //      manage_grades                    -- [ TA  ] Grades - edit
 //      manage_groups                    -- [ TAD ] Groups - add / edit / delete
 //      manage_interaction_alerts        -- [ Ta  ] Alerts - add / edit / delete
@@ -106,7 +115,6 @@ import (
 //      manage_sections_add              -- [ TaD ] Course Sections - add
 //      manage_sections_edit             -- [ TaD ] Course Sections - edit
 //      manage_sections_delete           -- [ TaD ] Course Sections - delete
-//      manage_students                  -- [ TAD ] Users - add / remove students in courses
 //      manage_user_notes                -- [ TA  ] Faculty Journal - manage entries
 //      manage_rubrics                   -- [ TAD ] Rubrics - add / edit / delete
 //      manage_wiki_create               -- [ TADo] Pages - create
@@ -140,21 +148,11 @@ import (
 //
 //    Additional permissions may exist based on installed plugins.
 //
-//    Note that the "manage_admin_users" permission will soon be deprecated by eleven new
-//    permissions which provide finer granularity in controlling the administration of
-//    courses and course enrollments. "manage_admin_users" OR the eleven new permissions
-//    will be available in the API, not both. The eleven new permissions are:
-//           allow_course_admin_actions
-//           add_designer_to_course
-//           add_observer_to_course
-//           add_student_to_course
-//           add_ta_to_course
-//           add_teacher_to_course
-//           remove_designer_from_course
-//           remove_observer_from_course
-//           remove_student_from_course
-//           remove_ta_from_course
-//           remove_teacher_from_course
+//    A comprehensive list of all permissions are available:
+//
+//    Course Permissions PDF: http://bit.ly/cnvs-course-permissions
+//
+//    Account Permissions PDF: http://bit.ly/cnvs-acct-permissions
 // # Permissions (Optional) If the value is 1, permission <X> will be locked downstream (new roles in
 //    subaccounts cannot override the setting). For any other value, permission
 //    <X> is left unlocked. Ignored if permission <X> is already locked
@@ -168,13 +166,13 @@ import (
 //
 type CreateNewRole struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Label        string `json:"label"`          //  (Required)
-		Role         string `json:"role"`           //  (Optional)
-		BaseRoleType string `json:"base_role_type"` //  (Optional) . Must be one of AccountMembership, StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollment
+		Label        string `json:"label" url:"label,omitempty"`                   //  (Required)
+		Role         string `json:"role" url:"role,omitempty"`                     //  (Optional)
+		BaseRoleType string `json:"base_role_type" url:"base_role_type,omitempty"` //  (Optional) . Must be one of AccountMembership, StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollment
 		Permissions  map[string]CreateNewRolePermissions
 	} `json:"form"`
 }
@@ -193,12 +191,16 @@ func (t *CreateNewRole) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateNewRole) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateNewRole) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateNewRole) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateNewRole) HasErrors() error {
@@ -209,7 +211,7 @@ func (t *CreateNewRole) HasErrors() error {
 	if t.Form.Label == "" {
 		errs = append(errs, "'Label' is required")
 	}
-	if !string_utils.Include([]string{"AccountMembership", "StudentEnrollment", "TeacherEnrollment", "TaEnrollment", "ObserverEnrollment", "DesignerEnrollment"}, t.Form.BaseRoleType) {
+	if t.Form.BaseRoleType != "" && !string_utils.Include([]string{"AccountMembership", "StudentEnrollment", "TeacherEnrollment", "TaEnrollment", "ObserverEnrollment", "DesignerEnrollment"}, t.Form.BaseRoleType) {
 		errs = append(errs, "BaseRoleType must be one of AccountMembership, StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollment")
 	}
 	if len(errs) > 0 {
@@ -239,9 +241,9 @@ func (t *CreateNewRole) Do(c *canvasapi.Canvas) (*models.Role, error) {
 }
 
 type CreateNewRolePermissions struct {
-	Explicit             bool `json:"explicit"`               //  (Optional)
-	Enabled              bool `json:"enabled"`                //  (Optional)
-	Locked               bool `json:"locked"`                 //  (Optional)
-	AppliesToSelf        bool `json:"applies_to_self"`        //  (Optional)
-	AppliesToDescendants bool `json:"applies_to_descendants"` //  (Optional)
+	Explicit             bool `json:"explicit" url:"explicit,omitempty"`                             //  (Optional)
+	Enabled              bool `json:"enabled" url:"enabled,omitempty"`                               //  (Optional)
+	Locked               bool `json:"locked" url:"locked,omitempty"`                                 //  (Optional)
+	AppliesToSelf        bool `json:"applies_to_self" url:"applies_to_self,omitempty"`               //  (Optional)
+	AppliesToDescendants bool `json:"applies_to_descendants" url:"applies_to_descendants,omitempty"` //  (Optional)
 }

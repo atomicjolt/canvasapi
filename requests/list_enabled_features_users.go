@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -16,7 +17,7 @@ import (
 //
 type ListEnabledFeaturesUsers struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -34,8 +35,12 @@ func (t *ListEnabledFeaturesUsers) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListEnabledFeaturesUsers) GetBody() (string, error) {
-	return "", nil
+func (t *ListEnabledFeaturesUsers) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListEnabledFeaturesUsers) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListEnabledFeaturesUsers) HasErrors() error {

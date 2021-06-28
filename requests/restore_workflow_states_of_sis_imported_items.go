@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -36,14 +37,14 @@ import (
 //
 type RestoreWorkflowStatesOfSISImportedItems struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		BatchMode      bool `json:"batch_mode"`      //  (Optional)
-		UndeleteOnly   bool `json:"undelete_only"`   //  (Optional)
-		UnconcludeOnly bool `json:"unconclude_only"` //  (Optional)
+		BatchMode      bool `json:"batch_mode" url:"batch_mode,omitempty"`           //  (Optional)
+		UndeleteOnly   bool `json:"undelete_only" url:"undelete_only,omitempty"`     //  (Optional)
+		UnconcludeOnly bool `json:"unconclude_only" url:"unconclude_only,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -62,12 +63,16 @@ func (t *RestoreWorkflowStatesOfSISImportedItems) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *RestoreWorkflowStatesOfSISImportedItems) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *RestoreWorkflowStatesOfSISImportedItems) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *RestoreWorkflowStatesOfSISImportedItems) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *RestoreWorkflowStatesOfSISImportedItems) HasErrors() error {

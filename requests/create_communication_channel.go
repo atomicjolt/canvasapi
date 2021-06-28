@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -37,17 +38,17 @@ import (
 //
 type CreateCommunicationChannel struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		CommunicationChannel struct {
-			Address string `json:"address"` //  (Required)
-			Type    string `json:"type"`    //  (Required) . Must be one of email, sms, push
-			Token   string `json:"token"`   //  (Optional)
-		} `json:"communication_channel"`
+			Address string `json:"address" url:"address,omitempty"` //  (Required)
+			Type    string `json:"type" url:"type,omitempty"`       //  (Required) . Must be one of email, sms, push
+			Token   string `json:"token" url:"token,omitempty"`     //  (Optional)
+		} `json:"communication_channel" url:"communication_channel,omitempty"`
 
-		SkipConfirmation bool `json:"skip_confirmation"` //  (Optional)
+		SkipConfirmation bool `json:"skip_confirmation" url:"skip_confirmation,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -65,12 +66,16 @@ func (t *CreateCommunicationChannel) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateCommunicationChannel) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateCommunicationChannel) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateCommunicationChannel) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateCommunicationChannel) HasErrors() error {
@@ -84,7 +89,7 @@ func (t *CreateCommunicationChannel) HasErrors() error {
 	if t.Form.CommunicationChannel.Type == "" {
 		errs = append(errs, "'CommunicationChannel' is required")
 	}
-	if !string_utils.Include([]string{"email", "sms", "push"}, t.Form.CommunicationChannel.Type) {
+	if t.Form.CommunicationChannel.Type != "" && !string_utils.Include([]string{"email", "sms", "push"}, t.Form.CommunicationChannel.Type) {
 		errs = append(errs, "CommunicationChannel must be one of email, sms, push")
 	}
 	if len(errs) > 0 {

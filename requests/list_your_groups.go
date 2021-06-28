@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,8 +24,8 @@ import (
 //
 type ListYourGroups struct {
 	Query struct {
-		ContextType string   `json:"context_type"` //  (Optional) . Must be one of Account, Course
-		Include     []string `json:"include"`      //  (Optional) . Must be one of tabs
+		ContextType string   `json:"context_type" url:"context_type,omitempty"` //  (Optional) . Must be one of Account, Course
+		Include     []string `json:"include" url:"include,omitempty"`           //  (Optional) . Must be one of tabs
 	} `json:"query"`
 }
 
@@ -44,17 +45,21 @@ func (t *ListYourGroups) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListYourGroups) GetBody() (string, error) {
-	return "", nil
+func (t *ListYourGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListYourGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListYourGroups) HasErrors() error {
 	errs := []string{}
-	if !string_utils.Include([]string{"Account", "Course"}, t.Query.ContextType) {
+	if t.Query.ContextType != "" && !string_utils.Include([]string{"Account", "Course"}, t.Query.ContextType) {
 		errs = append(errs, "ContextType must be one of Account, Course")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"tabs"}, v) {
+		if v != "" && !string_utils.Include([]string{"tabs"}, v) {
 			errs = append(errs, "Include must be one of tabs")
 		}
 	}

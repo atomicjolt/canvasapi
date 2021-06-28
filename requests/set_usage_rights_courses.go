@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -30,18 +31,18 @@ import (
 //
 type SetUsageRightsCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		FileIDs     []string `json:"file_ids"`   //  (Required)
-		FolderIDs   []string `json:"folder_ids"` //  (Optional)
-		Publish     bool     `json:"publish"`    //  (Optional)
+		FileIDs     []string `json:"file_ids" url:"file_ids,omitempty"`     //  (Required)
+		FolderIDs   []string `json:"folder_ids" url:"folder_ids,omitempty"` //  (Optional)
+		Publish     bool     `json:"publish" url:"publish,omitempty"`       //  (Optional)
 		UsageRights struct {
-			UseJustification string `json:"use_justification"` //  (Required) . Must be one of own_copyright, used_by_permission, fair_use, public_domain, creative_commons
-			LegalCopyright   string `json:"legal_copyright"`   //  (Optional)
-			License          string `json:"license"`           //  (Optional)
-		} `json:"usage_rights"`
+			UseJustification string `json:"use_justification" url:"use_justification,omitempty"` //  (Required) . Must be one of own_copyright, used_by_permission, fair_use, public_domain, creative_commons
+			LegalCopyright   string `json:"legal_copyright" url:"legal_copyright,omitempty"`     //  (Optional)
+			License          string `json:"license" url:"license,omitempty"`                     //  (Optional)
+		} `json:"usage_rights" url:"usage_rights,omitempty"`
 	} `json:"form"`
 }
 
@@ -59,12 +60,16 @@ func (t *SetUsageRightsCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *SetUsageRightsCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *SetUsageRightsCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *SetUsageRightsCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *SetUsageRightsCourses) HasErrors() error {
@@ -78,7 +83,7 @@ func (t *SetUsageRightsCourses) HasErrors() error {
 	if t.Form.UsageRights.UseJustification == "" {
 		errs = append(errs, "'UsageRights' is required")
 	}
-	if !string_utils.Include([]string{"own_copyright", "used_by_permission", "fair_use", "public_domain", "creative_commons"}, t.Form.UsageRights.UseJustification) {
+	if t.Form.UsageRights.UseJustification != "" && !string_utils.Include([]string{"own_copyright", "used_by_permission", "fair_use", "public_domain", "creative_commons"}, t.Form.UsageRights.UseJustification) {
 		errs = append(errs, "UsageRights must be one of own_copyright, used_by_permission, fair_use, public_domain, creative_commons")
 	}
 	if len(errs) > 0 {

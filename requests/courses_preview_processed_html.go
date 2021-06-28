@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -20,11 +22,11 @@ import (
 //
 type CoursesPreviewProcessedHtml struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Html string `json:"html"` //  (Optional)
+		Html string `json:"html" url:"html,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -42,12 +44,16 @@ func (t *CoursesPreviewProcessedHtml) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CoursesPreviewProcessedHtml) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CoursesPreviewProcessedHtml) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CoursesPreviewProcessedHtml) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CoursesPreviewProcessedHtml) HasErrors() error {

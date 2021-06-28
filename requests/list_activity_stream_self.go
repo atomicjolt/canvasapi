@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/google/go-querystring/query"
 
@@ -114,7 +115,7 @@ import (
 //
 type ListActivityStreamSelf struct {
 	Query struct {
-		OnlyActiveCourses bool `json:"only_active_courses"` //  (Optional)
+		OnlyActiveCourses bool `json:"only_active_courses" url:"only_active_courses,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -134,8 +135,12 @@ func (t *ListActivityStreamSelf) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListActivityStreamSelf) GetBody() (string, error) {
-	return "", nil
+func (t *ListActivityStreamSelf) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListActivityStreamSelf) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListActivityStreamSelf) HasErrors() error {

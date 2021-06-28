@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,11 +28,11 @@ import (
 //
 type GetFileFiles struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of user
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of user
 	} `json:"query"`
 }
 
@@ -53,8 +54,12 @@ func (t *GetFileFiles) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetFileFiles) GetBody() (string, error) {
-	return "", nil
+func (t *GetFileFiles) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetFileFiles) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetFileFiles) HasErrors() error {
@@ -63,7 +68,7 @@ func (t *GetFileFiles) HasErrors() error {
 		errs = append(errs, "'ID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"user"}, v) {
+		if v != "" && !string_utils.Include([]string{"user"}, v) {
 			errs = append(errs, "Include must be one of user")
 		}
 	}

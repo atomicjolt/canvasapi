@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -30,11 +32,11 @@ import (
 //
 type EnableDisableOrClearExplicitCspSettingCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Status string `json:"status"` //  (Required) . Must be one of enabled, disabled, inherited
+		Status string `json:"status" url:"status,omitempty"` //  (Required) . Must be one of enabled, disabled, inherited
 	} `json:"form"`
 }
 
@@ -52,12 +54,16 @@ func (t *EnableDisableOrClearExplicitCspSettingCourses) GetQuery() (string, erro
 	return "", nil
 }
 
-func (t *EnableDisableOrClearExplicitCspSettingCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *EnableDisableOrClearExplicitCspSettingCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *EnableDisableOrClearExplicitCspSettingCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *EnableDisableOrClearExplicitCspSettingCourses) HasErrors() error {
@@ -68,7 +74,7 @@ func (t *EnableDisableOrClearExplicitCspSettingCourses) HasErrors() error {
 	if t.Form.Status == "" {
 		errs = append(errs, "'Status' is required")
 	}
-	if !string_utils.Include([]string{"enabled", "disabled", "inherited"}, t.Form.Status) {
+	if t.Form.Status != "" && !string_utils.Include([]string{"enabled", "disabled", "inherited"}, t.Form.Status) {
 		errs = append(errs, "Status must be one of enabled, disabled, inherited")
 	}
 	if len(errs) > 0 {

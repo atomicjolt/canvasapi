@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,15 +28,15 @@ import (
 //
 type SetOrRemoveRestrictionsOnBlueprintCourseObject struct {
 	Path struct {
-		CourseID   string `json:"course_id"`   //  (Required)
-		TemplateID string `json:"template_id"` //  (Required)
+		CourseID   string `json:"course_id" url:"course_id,omitempty"`     //  (Required)
+		TemplateID string `json:"template_id" url:"template_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ContentType  string `json:"content_type"` //  (Optional) . Must be one of assignment, attachment, discussion_topic, external_tool, quiz, wiki_page
-		ContentID    int64  `json:"content_id"`   //  (Optional)
-		Restricted   bool   `json:"restricted"`   //  (Optional)
-		Restrictions string `json:"restrictions"` //  (Optional)
+		ContentType  string `json:"content_type" url:"content_type,omitempty"` //  (Optional) . Must be one of assignment, attachment, discussion_topic, external_tool, quiz, wiki_page
+		ContentID    int64  `json:"content_id" url:"content_id,omitempty"`     //  (Optional)
+		Restricted   bool   `json:"restricted" url:"restricted,omitempty"`     //  (Optional)
+		Restrictions string `json:"restrictions" url:"restrictions,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -53,12 +55,16 @@ func (t *SetOrRemoveRestrictionsOnBlueprintCourseObject) GetQuery() (string, err
 	return "", nil
 }
 
-func (t *SetOrRemoveRestrictionsOnBlueprintCourseObject) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *SetOrRemoveRestrictionsOnBlueprintCourseObject) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *SetOrRemoveRestrictionsOnBlueprintCourseObject) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *SetOrRemoveRestrictionsOnBlueprintCourseObject) HasErrors() error {
@@ -69,7 +75,7 @@ func (t *SetOrRemoveRestrictionsOnBlueprintCourseObject) HasErrors() error {
 	if t.Path.TemplateID == "" {
 		errs = append(errs, "'TemplateID' is required")
 	}
-	if !string_utils.Include([]string{"assignment", "attachment", "discussion_topic", "external_tool", "quiz", "wiki_page"}, t.Form.ContentType) {
+	if t.Form.ContentType != "" && !string_utils.Include([]string{"assignment", "attachment", "discussion_topic", "external_tool", "quiz", "wiki_page"}, t.Form.ContentType) {
 		errs = append(errs, "ContentType must be one of assignment, attachment, discussion_topic, external_tool, quiz, wiki_page")
 	}
 	if len(errs) > 0 {

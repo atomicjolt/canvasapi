@@ -1,6 +1,8 @@
 package requests
 
 import (
+	"net/url"
+
 	"github.com/atomicjolt/canvasapi"
 )
 
@@ -23,8 +25,12 @@ func (t *RedirectToRootOutcomeGroupForContextGlobal) GetQuery() (string, error) 
 	return "", nil
 }
 
-func (t *RedirectToRootOutcomeGroupForContextGlobal) GetBody() (string, error) {
-	return "", nil
+func (t *RedirectToRootOutcomeGroupForContextGlobal) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RedirectToRootOutcomeGroupForContextGlobal) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RedirectToRootOutcomeGroupForContextGlobal) HasErrors() error {

@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -28,19 +30,19 @@ import (
 //
 type CreateLatePolicy struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		LatePolicy struct {
-			MissingSubmissionDeductionEnabled   bool    `json:"missing_submission_deduction_enabled"`    //  (Optional)
-			MissingSubmissionDeduction          float64 `json:"missing_submission_deduction"`            //  (Optional)
-			LateSubmissionDeductionEnabled      bool    `json:"late_submission_deduction_enabled"`       //  (Optional)
-			LateSubmissionDeduction             float64 `json:"late_submission_deduction"`               //  (Optional)
-			LateSubmissionInterval              string  `json:"late_submission_interval"`                //  (Optional)
-			LateSubmissionMinimumPercentEnabled bool    `json:"late_submission_minimum_percent_enabled"` //  (Optional)
-			LateSubmissionMinimumPercent        float64 `json:"late_submission_minimum_percent"`         //  (Optional)
-		} `json:"late_policy"`
+			MissingSubmissionDeductionEnabled   bool    `json:"missing_submission_deduction_enabled" url:"missing_submission_deduction_enabled,omitempty"`       //  (Optional)
+			MissingSubmissionDeduction          float64 `json:"missing_submission_deduction" url:"missing_submission_deduction,omitempty"`                       //  (Optional)
+			LateSubmissionDeductionEnabled      bool    `json:"late_submission_deduction_enabled" url:"late_submission_deduction_enabled,omitempty"`             //  (Optional)
+			LateSubmissionDeduction             float64 `json:"late_submission_deduction" url:"late_submission_deduction,omitempty"`                             //  (Optional)
+			LateSubmissionInterval              string  `json:"late_submission_interval" url:"late_submission_interval,omitempty"`                               //  (Optional)
+			LateSubmissionMinimumPercentEnabled bool    `json:"late_submission_minimum_percent_enabled" url:"late_submission_minimum_percent_enabled,omitempty"` //  (Optional)
+			LateSubmissionMinimumPercent        float64 `json:"late_submission_minimum_percent" url:"late_submission_minimum_percent,omitempty"`                 //  (Optional)
+		} `json:"late_policy" url:"late_policy,omitempty"`
 	} `json:"form"`
 }
 
@@ -58,12 +60,16 @@ func (t *CreateLatePolicy) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateLatePolicy) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateLatePolicy) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateLatePolicy) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateLatePolicy) HasErrors() error {

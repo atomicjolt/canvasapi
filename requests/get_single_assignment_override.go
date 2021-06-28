@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -20,9 +21,9 @@ import (
 //
 type GetSingleAssignmentOverride struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		ID           string `json:"id"`            //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		ID           string `json:"id" url:"id,omitempty"`                       //  (Required)
 	} `json:"path"`
 }
 
@@ -42,8 +43,12 @@ func (t *GetSingleAssignmentOverride) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetSingleAssignmentOverride) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleAssignmentOverride) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleAssignmentOverride) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleAssignmentOverride) HasErrors() error {

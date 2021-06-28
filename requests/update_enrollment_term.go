@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -34,23 +35,23 @@ import (
 //
 type UpdateEnrollmentTerm struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		EnrollmentTerm struct {
-			Name      string    `json:"name"`        //  (Optional)
-			StartAt   time.Time `json:"start_at"`    //  (Optional)
-			EndAt     time.Time `json:"end_at"`      //  (Optional)
-			SISTermID string    `json:"sis_term_id"` //  (Optional)
+			Name      string    `json:"name" url:"name,omitempty"`               //  (Optional)
+			StartAt   time.Time `json:"start_at" url:"start_at,omitempty"`       //  (Optional)
+			EndAt     time.Time `json:"end_at" url:"end_at,omitempty"`           //  (Optional)
+			SISTermID string    `json:"sis_term_id" url:"sis_term_id,omitempty"` //  (Optional)
 			Overrides struct {
 				EnrollmentType struct {
-					StartAt time.Time `json:"start_at"` //  (Optional)
-					EndAt   time.Time `json:"end_at"`   //  (Optional)
-				} `json:"enrollment_type"`
-			} `json:"overrides"`
-		} `json:"enrollment_term"`
+					StartAt time.Time `json:"start_at" url:"start_at,omitempty"` //  (Optional)
+					EndAt   time.Time `json:"end_at" url:"end_at,omitempty"`     //  (Optional)
+				} `json:"enrollment_type" url:"enrollment_type,omitempty"`
+			} `json:"overrides" url:"overrides,omitempty"`
+		} `json:"enrollment_term" url:"enrollment_term,omitempty"`
 	} `json:"form"`
 }
 
@@ -69,12 +70,16 @@ func (t *UpdateEnrollmentTerm) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateEnrollmentTerm) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateEnrollmentTerm) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateEnrollmentTerm) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateEnrollmentTerm) HasErrors() error {

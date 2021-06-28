@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -32,15 +33,15 @@ import (
 //
 type UpdateOutcomeGroupCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Title                string `json:"title"`                   //  (Optional)
-		Description          string `json:"description"`             //  (Optional)
-		VendorGuid           string `json:"vendor_guid"`             //  (Optional)
-		ParentOutcomeGroupID int64  `json:"parent_outcome_group_id"` //  (Optional)
+		Title                string `json:"title" url:"title,omitempty"`                                     //  (Optional)
+		Description          string `json:"description" url:"description,omitempty"`                         //  (Optional)
+		VendorGuid           string `json:"vendor_guid" url:"vendor_guid,omitempty"`                         //  (Optional)
+		ParentOutcomeGroupID int64  `json:"parent_outcome_group_id" url:"parent_outcome_group_id,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -59,12 +60,16 @@ func (t *UpdateOutcomeGroupCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateOutcomeGroupCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateOutcomeGroupCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateOutcomeGroupCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateOutcomeGroupCourses) HasErrors() error {

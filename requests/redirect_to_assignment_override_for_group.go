@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -17,8 +18,8 @@ import (
 //
 type RedirectToAssignmentOverrideForGroup struct {
 	Path struct {
-		GroupID      string `json:"group_id"`      //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
+		GroupID      string `json:"group_id" url:"group_id,omitempty"`           //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -37,8 +38,12 @@ func (t *RedirectToAssignmentOverrideForGroup) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *RedirectToAssignmentOverrideForGroup) GetBody() (string, error) {
-	return "", nil
+func (t *RedirectToAssignmentOverrideForGroup) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RedirectToAssignmentOverrideForGroup) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RedirectToAssignmentOverrideForGroup) HasErrors() error {

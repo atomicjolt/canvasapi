@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -15,7 +16,7 @@ import (
 //
 type RetrieveReportedCspViolationsForAccount struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -33,8 +34,12 @@ func (t *RetrieveReportedCspViolationsForAccount) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *RetrieveReportedCspViolationsForAccount) GetBody() (string, error) {
-	return "", nil
+func (t *RetrieveReportedCspViolationsForAccount) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RetrieveReportedCspViolationsForAccount) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RetrieveReportedCspViolationsForAccount) HasErrors() error {

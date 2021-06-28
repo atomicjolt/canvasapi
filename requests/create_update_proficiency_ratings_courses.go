@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,16 +28,16 @@ import (
 //
 type CreateUpdateProficiencyRatingsCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Ratings struct {
-			Description []string `json:"description"` //  (Optional)
-			Points      []int64  `json:"points"`      //  (Optional)
-			Mastery     []int64  `json:"mastery"`     //  (Optional)
-			Color       []int64  `json:"color"`       //  (Optional)
-		} `json:"ratings"`
+			Description []string `json:"description" url:"description,omitempty"` //  (Optional)
+			Points      []int64  `json:"points" url:"points,omitempty"`           //  (Optional)
+			Mastery     []int64  `json:"mastery" url:"mastery,omitempty"`         //  (Optional)
+			Color       []int64  `json:"color" url:"color,omitempty"`             //  (Optional)
+		} `json:"ratings" url:"ratings,omitempty"`
 	} `json:"form"`
 }
 
@@ -54,12 +55,16 @@ func (t *CreateUpdateProficiencyRatingsCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateUpdateProficiencyRatingsCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateUpdateProficiencyRatingsCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateUpdateProficiencyRatingsCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateUpdateProficiencyRatingsCourses) HasErrors() error {

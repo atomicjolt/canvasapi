@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -16,7 +17,7 @@ import (
 //
 type RedirectToRootOutcomeGroupForContextAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -34,8 +35,12 @@ func (t *RedirectToRootOutcomeGroupForContextAccounts) GetQuery() (string, error
 	return "", nil
 }
 
-func (t *RedirectToRootOutcomeGroupForContextAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *RedirectToRootOutcomeGroupForContextAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RedirectToRootOutcomeGroupForContextAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RedirectToRootOutcomeGroupForContextAccounts) HasErrors() error {

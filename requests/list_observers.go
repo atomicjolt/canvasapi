@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -31,11 +32,11 @@ import (
 //
 type ListObservers struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of avatar_url
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of avatar_url
 	} `json:"query"`
 }
 
@@ -57,8 +58,12 @@ func (t *ListObservers) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListObservers) GetBody() (string, error) {
-	return "", nil
+func (t *ListObservers) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListObservers) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListObservers) HasErrors() error {
@@ -67,7 +72,7 @@ func (t *ListObservers) HasErrors() error {
 		errs = append(errs, "'UserID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"avatar_url"}, v) {
+		if v != "" && !string_utils.Include([]string{"avatar_url"}, v) {
 			errs = append(errs, "Include must be one of avatar_url")
 		}
 	}

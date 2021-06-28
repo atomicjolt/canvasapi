@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,8 +20,8 @@ import (
 //
 type ShowContentExportUsers struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
-		ID     string `json:"id"`      //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
+		ID     string `json:"id" url:"id,omitempty"`           //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *ShowContentExportUsers) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ShowContentExportUsers) GetBody() (string, error) {
-	return "", nil
+func (t *ShowContentExportUsers) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ShowContentExportUsers) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ShowContentExportUsers) HasErrors() error {

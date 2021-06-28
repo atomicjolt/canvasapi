@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -51,19 +52,19 @@ import (
 //
 type UpdateAssignmentOverride struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		ID           string `json:"id"`            //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		ID           string `json:"id" url:"id,omitempty"`                       //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		AssignmentOverride struct {
-			StudentIDs []int64   `json:"student_ids"` //  (Optional)
-			Title      string    `json:"title"`       //  (Optional)
-			DueAt      time.Time `json:"due_at"`      //  (Optional)
-			UnlockAt   time.Time `json:"unlock_at"`   //  (Optional)
-			LockAt     time.Time `json:"lock_at"`     //  (Optional)
-		} `json:"assignment_override"`
+			StudentIDs []int64   `json:"student_ids" url:"student_ids,omitempty"` //  (Optional)
+			Title      string    `json:"title" url:"title,omitempty"`             //  (Optional)
+			DueAt      time.Time `json:"due_at" url:"due_at,omitempty"`           //  (Optional)
+			UnlockAt   time.Time `json:"unlock_at" url:"unlock_at,omitempty"`     //  (Optional)
+			LockAt     time.Time `json:"lock_at" url:"lock_at,omitempty"`         //  (Optional)
+		} `json:"assignment_override" url:"assignment_override,omitempty"`
 	} `json:"form"`
 }
 
@@ -83,12 +84,16 @@ func (t *UpdateAssignmentOverride) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateAssignmentOverride) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateAssignmentOverride) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateAssignmentOverride) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateAssignmentOverride) HasErrors() error {

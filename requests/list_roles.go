@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,12 +28,12 @@ import (
 //
 type ListRoles struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		State         []string `json:"state"`          //  (Optional) . Must be one of active, inactive
-		ShowInherited bool     `json:"show_inherited"` //  (Optional)
+		State         []string `json:"state" url:"state,omitempty"`                   //  (Optional) . Must be one of active, inactive
+		ShowInherited bool     `json:"show_inherited" url:"show_inherited,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -54,8 +55,12 @@ func (t *ListRoles) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListRoles) GetBody() (string, error) {
-	return "", nil
+func (t *ListRoles) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListRoles) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListRoles) HasErrors() error {
@@ -64,7 +69,7 @@ func (t *ListRoles) HasErrors() error {
 		errs = append(errs, "'AccountID' is required")
 	}
 	for _, v := range t.Query.State {
-		if !string_utils.Include([]string{"active", "inactive"}, v) {
+		if v != "" && !string_utils.Include([]string{"active", "inactive"}, v) {
 			errs = append(errs, "State must be one of active, inactive")
 		}
 	}

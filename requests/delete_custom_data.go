@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -123,11 +124,11 @@ import (
 //
 type DeleteCustomData struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Ns string `json:"ns"` //  (Required)
+		Ns string `json:"ns" url:"ns,omitempty"` //  (Required)
 	} `json:"query"`
 }
 
@@ -149,8 +150,12 @@ func (t *DeleteCustomData) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *DeleteCustomData) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteCustomData) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteCustomData) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteCustomData) HasErrors() error {

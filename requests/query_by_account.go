@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -23,12 +24,12 @@ import (
 //
 type QueryByAccount struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		StartTime time.Time `json:"start_time"` //  (Optional)
-		EndTime   time.Time `json:"end_time"`   //  (Optional)
+		StartTime time.Time `json:"start_time" url:"start_time,omitempty"` //  (Optional)
+		EndTime   time.Time `json:"end_time" url:"end_time,omitempty"`     //  (Optional)
 	} `json:"query"`
 }
 
@@ -50,8 +51,12 @@ func (t *QueryByAccount) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *QueryByAccount) GetBody() (string, error) {
-	return "", nil
+func (t *QueryByAccount) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *QueryByAccount) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *QueryByAccount) HasErrors() error {

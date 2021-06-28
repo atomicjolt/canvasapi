@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,11 +25,11 @@ import (
 //
 type ListScopes struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		GroupBy string `json:"group_by"` //  (Optional) . Must be one of resource_name
+		GroupBy string `json:"group_by" url:"group_by,omitempty"` //  (Optional) . Must be one of resource_name
 	} `json:"query"`
 }
 
@@ -50,8 +51,12 @@ func (t *ListScopes) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListScopes) GetBody() (string, error) {
-	return "", nil
+func (t *ListScopes) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListScopes) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListScopes) HasErrors() error {
@@ -59,7 +64,7 @@ func (t *ListScopes) HasErrors() error {
 	if t.Path.AccountID == "" {
 		errs = append(errs, "'AccountID' is required")
 	}
-	if !string_utils.Include([]string{"resource_name"}, t.Query.GroupBy) {
+	if t.Query.GroupBy != "" && !string_utils.Include([]string{"resource_name"}, t.Query.GroupBy) {
 		errs = append(errs, "GroupBy must be one of resource_name")
 	}
 	if len(errs) > 0 {

@@ -3,6 +3,7 @@ package requests
 import (
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -16,7 +17,7 @@ import (
 //
 type AbortAllPendingSISImports struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -34,8 +35,12 @@ func (t *AbortAllPendingSISImports) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *AbortAllPendingSISImports) GetBody() (string, error) {
-	return "", nil
+func (t *AbortAllPendingSISImports) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *AbortAllPendingSISImports) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *AbortAllPendingSISImports) HasErrors() error {

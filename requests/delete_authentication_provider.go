@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -16,8 +17,8 @@ import (
 //
 type DeleteAuthenticationProvider struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 }
 
@@ -36,8 +37,12 @@ func (t *DeleteAuthenticationProvider) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteAuthenticationProvider) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteAuthenticationProvider) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteAuthenticationProvider) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteAuthenticationProvider) HasErrors() error {

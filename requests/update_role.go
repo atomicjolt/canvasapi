@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -42,12 +43,12 @@ import (
 //
 type UpdateRole struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Label       string `json:"label"` //  (Optional)
+		Label       string `json:"label" url:"label,omitempty"` //  (Optional)
 		Permissions map[string]UpdateRolePermissions
 	} `json:"form"`
 }
@@ -67,12 +68,16 @@ func (t *UpdateRole) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateRole) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateRole) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateRole) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateRole) HasErrors() error {
@@ -110,8 +115,8 @@ func (t *UpdateRole) Do(c *canvasapi.Canvas) (*models.Role, error) {
 }
 
 type UpdateRolePermissions struct {
-	Explicit             bool `json:"explicit"`               //  (Optional)
-	Enabled              bool `json:"enabled"`                //  (Optional)
-	AppliesToSelf        bool `json:"applies_to_self"`        //  (Optional)
-	AppliesToDescendants bool `json:"applies_to_descendants"` //  (Optional)
+	Explicit             bool `json:"explicit" url:"explicit,omitempty"`                             //  (Optional)
+	Enabled              bool `json:"enabled" url:"enabled,omitempty"`                               //  (Optional)
+	AppliesToSelf        bool `json:"applies_to_self" url:"applies_to_self,omitempty"`               //  (Optional)
+	AppliesToDescendants bool `json:"applies_to_descendants" url:"applies_to_descendants,omitempty"` //  (Optional)
 }

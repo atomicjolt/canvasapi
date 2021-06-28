@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,17 +28,17 @@ import (
 //
 type CreateNewSubAccount struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Account struct {
-			Name                       string `json:"name"`                           //  (Required)
-			SISAccountID               string `json:"sis_account_id"`                 //  (Optional)
-			DefaultStorageQuotaMb      int64  `json:"default_storage_quota_mb"`       //  (Optional)
-			DefaultUserStorageQuotaMb  int64  `json:"default_user_storage_quota_mb"`  //  (Optional)
-			DefaultGroupStorageQuotaMb int64  `json:"default_group_storage_quota_mb"` //  (Optional)
-		} `json:"account"`
+			Name                       string `json:"name" url:"name,omitempty"`                                                     //  (Required)
+			SISAccountID               string `json:"sis_account_id" url:"sis_account_id,omitempty"`                                 //  (Optional)
+			DefaultStorageQuotaMb      int64  `json:"default_storage_quota_mb" url:"default_storage_quota_mb,omitempty"`             //  (Optional)
+			DefaultUserStorageQuotaMb  int64  `json:"default_user_storage_quota_mb" url:"default_user_storage_quota_mb,omitempty"`   //  (Optional)
+			DefaultGroupStorageQuotaMb int64  `json:"default_group_storage_quota_mb" url:"default_group_storage_quota_mb,omitempty"` //  (Optional)
+		} `json:"account" url:"account,omitempty"`
 	} `json:"form"`
 }
 
@@ -55,12 +56,16 @@ func (t *CreateNewSubAccount) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateNewSubAccount) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateNewSubAccount) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateNewSubAccount) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateNewSubAccount) HasErrors() error {

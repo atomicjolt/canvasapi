@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -37,17 +39,17 @@ import (
 //
 type UpdateStudentQuestionScoresAndComments struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		QuizSubmissions struct {
-			Attempt     []int64                            `json:"attempt"`      //  (Required)
-			FudgePoints []float64                          `json:"fudge_points"` //  (Optional)
-			Questions   map[string]QuizSubmissionOverrides `json:"questions"`    //  (Optional)
-		} `json:"quiz_submissions"`
+			Attempt     []int64                            `json:"attempt" url:"attempt,omitempty"`           //  (Required)
+			FudgePoints []float64                          `json:"fudge_points" url:"fudge_points,omitempty"` //  (Optional)
+			Questions   map[string]QuizSubmissionOverrides `json:"questions" url:"questions,omitempty"`       //  (Optional)
+		} `json:"quiz_submissions" url:"quiz_submissions,omitempty"`
 	} `json:"form"`
 }
 
@@ -67,12 +69,16 @@ func (t *UpdateStudentQuestionScoresAndComments) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateStudentQuestionScoresAndComments) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateStudentQuestionScoresAndComments) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateStudentQuestionScoresAndComments) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateStudentQuestionScoresAndComments) HasErrors() error {
@@ -105,6 +111,6 @@ func (t *UpdateStudentQuestionScoresAndComments) Do(c *canvasapi.Canvas) error {
 }
 
 type QuizSubmissionOverrides struct {
-	Score   string `json:"score"`   //  (Optional)
-	Comment string `json:"comment"` //  (Optional)
+	Score   string `json:"score" url:"score,omitempty"`     //  (Optional)
+	Comment string `json:"comment" url:"comment,omitempty"` //  (Optional)
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"time"
 
 	"github.com/google/go-querystring/query"
@@ -35,9 +36,9 @@ import (
 //
 type ListPlannerNotes struct {
 	Query struct {
-		StartDate    time.Time `json:"start_date"`    //  (Optional)
-		EndDate      time.Time `json:"end_date"`      //  (Optional)
-		ContextCodes []string  `json:"context_codes"` //  (Optional)
+		StartDate    time.Time `json:"start_date" url:"start_date,omitempty"`       //  (Optional)
+		EndDate      time.Time `json:"end_date" url:"end_date,omitempty"`           //  (Optional)
+		ContextCodes []string  `json:"context_codes" url:"context_codes,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -57,8 +58,12 @@ func (t *ListPlannerNotes) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListPlannerNotes) GetBody() (string, error) {
-	return "", nil
+func (t *ListPlannerNotes) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListPlannerNotes) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListPlannerNotes) HasErrors() error {

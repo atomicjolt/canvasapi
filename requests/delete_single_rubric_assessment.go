@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -20,9 +21,9 @@ import (
 //
 type DeleteSingleRubricAssessment struct {
 	Path struct {
-		CourseID            string `json:"course_id"`             //  (Required)
-		RubricAssociationID string `json:"rubric_association_id"` //  (Required)
-		ID                  string `json:"id"`                    //  (Required)
+		CourseID            string `json:"course_id" url:"course_id,omitempty"`                         //  (Required)
+		RubricAssociationID string `json:"rubric_association_id" url:"rubric_association_id,omitempty"` //  (Required)
+		ID                  string `json:"id" url:"id,omitempty"`                                       //  (Required)
 	} `json:"path"`
 }
 
@@ -42,8 +43,12 @@ func (t *DeleteSingleRubricAssessment) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteSingleRubricAssessment) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteSingleRubricAssessment) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteSingleRubricAssessment) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteSingleRubricAssessment) HasErrors() error {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,8 +20,8 @@ import (
 //
 type ProgressQueryProgress struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *ProgressQueryProgress) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ProgressQueryProgress) GetBody() (string, error) {
-	return "", nil
+func (t *ProgressQueryProgress) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ProgressQueryProgress) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ProgressQueryProgress) HasErrors() error {

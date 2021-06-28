@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,7 +25,7 @@ import (
 //
 type RefreshJwt struct {
 	Form struct {
-		Jwt string `json:"jwt"` //  (Required)
+		Jwt string `json:"jwt" url:"jwt,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -40,12 +41,16 @@ func (t *RefreshJwt) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *RefreshJwt) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *RefreshJwt) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *RefreshJwt) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *RefreshJwt) HasErrors() error {

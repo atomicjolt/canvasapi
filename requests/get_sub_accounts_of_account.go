@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,11 +26,11 @@ import (
 //
 type GetSubAccountsOfAccount struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Recursive bool `json:"recursive"` //  (Optional)
+		Recursive bool `json:"recursive" url:"recursive,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -51,8 +52,12 @@ func (t *GetSubAccountsOfAccount) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSubAccountsOfAccount) GetBody() (string, error) {
-	return "", nil
+func (t *GetSubAccountsOfAccount) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSubAccountsOfAccount) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSubAccountsOfAccount) HasErrors() error {

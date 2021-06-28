@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,8 +20,8 @@ import (
 //
 type DeleteExternalFeedGroups struct {
 	Path struct {
-		GroupID        string `json:"group_id"`         //  (Required)
-		ExternalFeedID string `json:"external_feed_id"` //  (Required)
+		GroupID        string `json:"group_id" url:"group_id,omitempty"`                 //  (Required)
+		ExternalFeedID string `json:"external_feed_id" url:"external_feed_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *DeleteExternalFeedGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteExternalFeedGroups) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteExternalFeedGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteExternalFeedGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteExternalFeedGroups) HasErrors() error {

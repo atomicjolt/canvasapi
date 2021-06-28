@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -41,23 +43,23 @@ import (
 type CreateCalendarEvent struct {
 	Form struct {
 		CalendarEvent struct {
-			ContextCode     string                                       `json:"context_code"`     //  (Optional)
-			Title           string                                       `json:"title"`            //  (Optional)
-			Description     string                                       `json:"description"`      //  (Optional)
-			StartAt         time.Time                                    `json:"start_at"`         //  (Optional)
-			EndAt           time.Time                                    `json:"end_at"`           //  (Optional)
-			LocationName    string                                       `json:"location_name"`    //  (Optional)
-			LocationAddress string                                       `json:"location_address"` //  (Optional)
-			TimeZoneEdited  string                                       `json:"time_zone_edited"` //  (Optional)
-			AllDay          bool                                         `json:"all_day"`          //  (Optional)
-			ChildEventData  map[string]CreateCalendarEventChildEventData `json:"child_event_data"` //  (Optional)
+			ContextCode     string                                       `json:"context_code" url:"context_code,omitempty"`         //  (Optional)
+			Title           string                                       `json:"title" url:"title,omitempty"`                       //  (Optional)
+			Description     string                                       `json:"description" url:"description,omitempty"`           //  (Optional)
+			StartAt         time.Time                                    `json:"start_at" url:"start_at,omitempty"`                 //  (Optional)
+			EndAt           time.Time                                    `json:"end_at" url:"end_at,omitempty"`                     //  (Optional)
+			LocationName    string                                       `json:"location_name" url:"location_name,omitempty"`       //  (Optional)
+			LocationAddress string                                       `json:"location_address" url:"location_address,omitempty"` //  (Optional)
+			TimeZoneEdited  string                                       `json:"time_zone_edited" url:"time_zone_edited,omitempty"` //  (Optional)
+			AllDay          bool                                         `json:"all_day" url:"all_day,omitempty"`                   //  (Optional)
+			ChildEventData  map[string]CreateCalendarEventChildEventData `json:"child_event_data" url:"child_event_data,omitempty"` //  (Optional)
 			Duplicate       struct {
-				Count          float64 `json:"count"`           //  (Optional)
-				Interval       float64 `json:"interval"`        //  (Optional)
-				Frequency      string  `json:"frequency"`       //  (Optional) . Must be one of daily, weekly, monthly
-				AppendIterator bool    `json:"append_iterator"` //  (Optional)
-			} `json:"duplicate"`
-		} `json:"calendar_event"`
+				Count          float64 `json:"count" url:"count,omitempty"`                     //  (Optional)
+				Interval       float64 `json:"interval" url:"interval,omitempty"`               //  (Optional)
+				Frequency      string  `json:"frequency" url:"frequency,omitempty"`             //  (Optional) . Must be one of daily, weekly, monthly
+				AppendIterator bool    `json:"append_iterator" url:"append_iterator,omitempty"` //  (Optional)
+			} `json:"duplicate" url:"duplicate,omitempty"`
+		} `json:"calendar_event" url:"calendar_event,omitempty"`
 	} `json:"form"`
 }
 
@@ -73,12 +75,16 @@ func (t *CreateCalendarEvent) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateCalendarEvent) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateCalendarEvent) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateCalendarEvent) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateCalendarEvent) HasErrors() error {
@@ -86,7 +92,7 @@ func (t *CreateCalendarEvent) HasErrors() error {
 	if t.Form.CalendarEvent.ContextCode == "" {
 		errs = append(errs, "'CalendarEvent' is required")
 	}
-	if !string_utils.Include([]string{"daily", "weekly", "monthly"}, t.Form.CalendarEvent.Duplicate.Frequency) {
+	if t.Form.CalendarEvent.Duplicate.Frequency != "" && !string_utils.Include([]string{"daily", "weekly", "monthly"}, t.Form.CalendarEvent.Duplicate.Frequency) {
 		errs = append(errs, "CalendarEvent must be one of daily, weekly, monthly")
 	}
 	if len(errs) > 0 {
@@ -105,7 +111,7 @@ func (t *CreateCalendarEvent) Do(c *canvasapi.Canvas) error {
 }
 
 type CreateCalendarEventChildEventData struct {
-	StartAt     time.Time `json:"start_at"`     //  (Optional)
-	EndAt       time.Time `json:"end_at"`       //  (Optional)
-	ContextCode string    `json:"context_code"` //  (Optional)
+	StartAt     time.Time `json:"start_at" url:"start_at,omitempty"`         //  (Optional)
+	EndAt       time.Time `json:"end_at" url:"end_at,omitempty"`             //  (Optional)
+	ContextCode string    `json:"context_code" url:"context_code,omitempty"` //  (Optional)
 }

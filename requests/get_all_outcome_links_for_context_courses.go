@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,12 +27,12 @@ import (
 //
 type GetAllOutcomeLinksForContextCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		OutcomeStyle      string `json:"outcome_style"`       //  (Optional)
-		OutcomeGroupStyle string `json:"outcome_group_style"` //  (Optional)
+		OutcomeStyle      string `json:"outcome_style" url:"outcome_style,omitempty"`             //  (Optional)
+		OutcomeGroupStyle string `json:"outcome_group_style" url:"outcome_group_style,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -53,8 +54,12 @@ func (t *GetAllOutcomeLinksForContextCourses) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetAllOutcomeLinksForContextCourses) GetBody() (string, error) {
-	return "", nil
+func (t *GetAllOutcomeLinksForContextCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetAllOutcomeLinksForContextCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetAllOutcomeLinksForContextCourses) HasErrors() error {

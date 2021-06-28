@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,16 +25,16 @@ import (
 //
 type UpdateSinglePollSession struct {
 	Path struct {
-		PollID string `json:"poll_id"` //  (Required)
-		ID     string `json:"id"`      //  (Required)
+		PollID string `json:"poll_id" url:"poll_id,omitempty"` //  (Required)
+		ID     string `json:"id" url:"id,omitempty"`           //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		PollSessions struct {
-			CourseID         []int64 `json:"course_id"`          //  (Optional)
-			CourseSectionID  []int64 `json:"course_section_id"`  //  (Optional)
-			HasPublicResults []bool  `json:"has_public_results"` //  (Optional)
-		} `json:"poll_sessions"`
+			CourseID         []int64 `json:"course_id" url:"course_id,omitempty"`                   //  (Optional)
+			CourseSectionID  []int64 `json:"course_section_id" url:"course_section_id,omitempty"`   //  (Optional)
+			HasPublicResults []bool  `json:"has_public_results" url:"has_public_results,omitempty"` //  (Optional)
+		} `json:"poll_sessions" url:"poll_sessions,omitempty"`
 	} `json:"form"`
 }
 
@@ -51,12 +53,16 @@ func (t *UpdateSinglePollSession) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateSinglePollSession) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateSinglePollSession) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateSinglePollSession) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateSinglePollSession) HasErrors() error {

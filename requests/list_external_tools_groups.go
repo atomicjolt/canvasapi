@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,13 +24,13 @@ import (
 //
 type ListExternalToolsGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		SearchTerm     string `json:"search_term"`     //  (Optional)
-		Selectable     bool   `json:"selectable"`      //  (Optional)
-		IncludeParents bool   `json:"include_parents"` //  (Optional)
+		SearchTerm     string `json:"search_term" url:"search_term,omitempty"`         //  (Optional)
+		Selectable     bool   `json:"selectable" url:"selectable,omitempty"`           //  (Optional)
+		IncludeParents bool   `json:"include_parents" url:"include_parents,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -51,8 +52,12 @@ func (t *ListExternalToolsGroups) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListExternalToolsGroups) GetBody() (string, error) {
-	return "", nil
+func (t *ListExternalToolsGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListExternalToolsGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListExternalToolsGroups) HasErrors() error {

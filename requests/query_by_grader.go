@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -25,12 +26,12 @@ import (
 //
 type QueryByGrader struct {
 	Path struct {
-		GraderID string `json:"grader_id"` //  (Required)
+		GraderID string `json:"grader_id" url:"grader_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		StartTime time.Time `json:"start_time"` //  (Optional)
-		EndTime   time.Time `json:"end_time"`   //  (Optional)
+		StartTime time.Time `json:"start_time" url:"start_time,omitempty"` //  (Optional)
+		EndTime   time.Time `json:"end_time" url:"end_time,omitempty"`     //  (Optional)
 	} `json:"query"`
 }
 
@@ -52,8 +53,12 @@ func (t *QueryByGrader) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *QueryByGrader) GetBody() (string, error) {
-	return "", nil
+func (t *QueryByGrader) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *QueryByGrader) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *QueryByGrader) HasErrors() error {

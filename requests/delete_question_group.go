@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,9 +20,9 @@ import (
 //
 type DeleteQuestionGroup struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 }
 
@@ -41,8 +42,12 @@ func (t *DeleteQuestionGroup) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteQuestionGroup) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteQuestionGroup) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteQuestionGroup) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteQuestionGroup) HasErrors() error {

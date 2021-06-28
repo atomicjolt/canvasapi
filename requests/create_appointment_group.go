@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -45,22 +47,22 @@ import (
 type CreateAppointmentGroup struct {
 	Form struct {
 		AppointmentGroup struct {
-			ContextCodes                  []string `json:"context_codes"`                    //  (Required)
-			SubContextCodes               []string `json:"sub_context_codes"`                //  (Optional)
-			Title                         string   `json:"title"`                            //  (Required)
-			Description                   string   `json:"description"`                      //  (Optional)
-			LocationName                  string   `json:"location_name"`                    //  (Optional)
-			LocationAddress               string   `json:"location_address"`                 //  (Optional)
-			Publish                       bool     `json:"publish"`                          //  (Optional)
-			ParticipantsPerAppointment    int64    `json:"participants_per_appointment"`     //  (Optional)
-			MinAppointmentsPerParticipant int64    `json:"min_appointments_per_participant"` //  (Optional)
-			MaxAppointmentsPerParticipant int64    `json:"max_appointments_per_participant"` //  (Optional)
+			ContextCodes                  []string `json:"context_codes" url:"context_codes,omitempty"`                                       //  (Required)
+			SubContextCodes               []string `json:"sub_context_codes" url:"sub_context_codes,omitempty"`                               //  (Optional)
+			Title                         string   `json:"title" url:"title,omitempty"`                                                       //  (Required)
+			Description                   string   `json:"description" url:"description,omitempty"`                                           //  (Optional)
+			LocationName                  string   `json:"location_name" url:"location_name,omitempty"`                                       //  (Optional)
+			LocationAddress               string   `json:"location_address" url:"location_address,omitempty"`                                 //  (Optional)
+			Publish                       bool     `json:"publish" url:"publish,omitempty"`                                                   //  (Optional)
+			ParticipantsPerAppointment    int64    `json:"participants_per_appointment" url:"participants_per_appointment,omitempty"`         //  (Optional)
+			MinAppointmentsPerParticipant int64    `json:"min_appointments_per_participant" url:"min_appointments_per_participant,omitempty"` //  (Optional)
+			MaxAppointmentsPerParticipant int64    `json:"max_appointments_per_participant" url:"max_appointments_per_participant,omitempty"` //  (Optional)
 			NewAppointments               struct {
-				X []string `json:"x"` //  (Optional)
-			} `json:"new_appointments"`
+				X []string `json:"x" url:"x,omitempty"` //  (Optional)
+			} `json:"new_appointments" url:"new_appointments,omitempty"`
 
-			ParticipantVisibility string `json:"participant_visibility"` //  (Optional) . Must be one of private, protected
-		} `json:"appointment_group"`
+			ParticipantVisibility string `json:"participant_visibility" url:"participant_visibility,omitempty"` //  (Optional) . Must be one of private, protected
+		} `json:"appointment_group" url:"appointment_group,omitempty"`
 	} `json:"form"`
 }
 
@@ -76,12 +78,16 @@ func (t *CreateAppointmentGroup) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateAppointmentGroup) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateAppointmentGroup) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateAppointmentGroup) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateAppointmentGroup) HasErrors() error {
@@ -92,7 +98,7 @@ func (t *CreateAppointmentGroup) HasErrors() error {
 	if t.Form.AppointmentGroup.Title == "" {
 		errs = append(errs, "'AppointmentGroup' is required")
 	}
-	if !string_utils.Include([]string{"private", "protected"}, t.Form.AppointmentGroup.ParticipantVisibility) {
+	if t.Form.AppointmentGroup.ParticipantVisibility != "" && !string_utils.Include([]string{"private", "protected"}, t.Form.AppointmentGroup.ParticipantVisibility) {
 		errs = append(errs, "AppointmentGroup must be one of private, protected")
 	}
 	if len(errs) > 0 {

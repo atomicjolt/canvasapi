@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -75,43 +76,43 @@ import (
 //
 type CreateNewCourse struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Course struct {
-			Name                             string    `json:"name"`                                 //  (Optional)
-			CourseCode                       string    `json:"course_code"`                          //  (Optional)
-			StartAt                          time.Time `json:"start_at"`                             //  (Optional)
-			EndAt                            time.Time `json:"end_at"`                               //  (Optional)
-			License                          string    `json:"license"`                              //  (Optional)
-			IsPublic                         bool      `json:"is_public"`                            //  (Optional)
-			IsPublicToAuthUsers              bool      `json:"is_public_to_auth_users"`              //  (Optional)
-			PublicSyllabus                   bool      `json:"public_syllabus"`                      //  (Optional)
-			PublicSyllabusToAuth             bool      `json:"public_syllabus_to_auth"`              //  (Optional)
-			PublicDescription                string    `json:"public_description"`                   //  (Optional)
-			AllowStudentWikiEdits            bool      `json:"allow_student_wiki_edits"`             //  (Optional)
-			AllowWikiComments                bool      `json:"allow_wiki_comments"`                  //  (Optional)
-			AllowStudentForumAttachments     bool      `json:"allow_student_forum_attachments"`      //  (Optional)
-			OpenEnrollment                   bool      `json:"open_enrollment"`                      //  (Optional)
-			SelfEnrollment                   bool      `json:"self_enrollment"`                      //  (Optional)
-			RestrictEnrollmentsToCourseDates bool      `json:"restrict_enrollments_to_course_dates"` //  (Optional)
-			TermID                           string    `json:"term_id"`                              //  (Optional)
-			SISCourseID                      string    `json:"sis_course_id"`                        //  (Optional)
-			IntegrationID                    string    `json:"integration_id"`                       //  (Optional)
-			HideFinalGrades                  bool      `json:"hide_final_grades"`                    //  (Optional)
-			ApplyAssignmentGroupWeights      bool      `json:"apply_assignment_group_weights"`       //  (Optional)
-			TimeZone                         string    `json:"time_zone"`                            //  (Optional)
-			DefaultView                      string    `json:"default_view"`                         //  (Optional) . Must be one of feed, wiki, modules, syllabus, assignments
-			SyllabusBody                     string    `json:"syllabus_body"`                        //  (Optional)
-			GradingStandardID                int64     `json:"grading_standard_id"`                  //  (Optional)
-			GradePassbackSetting             string    `json:"grade_passback_setting"`               //  (Optional)
-			CourseFormat                     string    `json:"course_format"`                        //  (Optional)
-		} `json:"course"`
+			Name                             string    `json:"name" url:"name,omitempty"`                                                                 //  (Optional)
+			CourseCode                       string    `json:"course_code" url:"course_code,omitempty"`                                                   //  (Optional)
+			StartAt                          time.Time `json:"start_at" url:"start_at,omitempty"`                                                         //  (Optional)
+			EndAt                            time.Time `json:"end_at" url:"end_at,omitempty"`                                                             //  (Optional)
+			License                          string    `json:"license" url:"license,omitempty"`                                                           //  (Optional)
+			IsPublic                         bool      `json:"is_public" url:"is_public,omitempty"`                                                       //  (Optional)
+			IsPublicToAuthUsers              bool      `json:"is_public_to_auth_users" url:"is_public_to_auth_users,omitempty"`                           //  (Optional)
+			PublicSyllabus                   bool      `json:"public_syllabus" url:"public_syllabus,omitempty"`                                           //  (Optional)
+			PublicSyllabusToAuth             bool      `json:"public_syllabus_to_auth" url:"public_syllabus_to_auth,omitempty"`                           //  (Optional)
+			PublicDescription                string    `json:"public_description" url:"public_description,omitempty"`                                     //  (Optional)
+			AllowStudentWikiEdits            bool      `json:"allow_student_wiki_edits" url:"allow_student_wiki_edits,omitempty"`                         //  (Optional)
+			AllowWikiComments                bool      `json:"allow_wiki_comments" url:"allow_wiki_comments,omitempty"`                                   //  (Optional)
+			AllowStudentForumAttachments     bool      `json:"allow_student_forum_attachments" url:"allow_student_forum_attachments,omitempty"`           //  (Optional)
+			OpenEnrollment                   bool      `json:"open_enrollment" url:"open_enrollment,omitempty"`                                           //  (Optional)
+			SelfEnrollment                   bool      `json:"self_enrollment" url:"self_enrollment,omitempty"`                                           //  (Optional)
+			RestrictEnrollmentsToCourseDates bool      `json:"restrict_enrollments_to_course_dates" url:"restrict_enrollments_to_course_dates,omitempty"` //  (Optional)
+			TermID                           string    `json:"term_id" url:"term_id,omitempty"`                                                           //  (Optional)
+			SISCourseID                      string    `json:"sis_course_id" url:"sis_course_id,omitempty"`                                               //  (Optional)
+			IntegrationID                    string    `json:"integration_id" url:"integration_id,omitempty"`                                             //  (Optional)
+			HideFinalGrades                  bool      `json:"hide_final_grades" url:"hide_final_grades,omitempty"`                                       //  (Optional)
+			ApplyAssignmentGroupWeights      bool      `json:"apply_assignment_group_weights" url:"apply_assignment_group_weights,omitempty"`             //  (Optional)
+			TimeZone                         string    `json:"time_zone" url:"time_zone,omitempty"`                                                       //  (Optional)
+			DefaultView                      string    `json:"default_view" url:"default_view,omitempty"`                                                 //  (Optional) . Must be one of feed, wiki, modules, syllabus, assignments
+			SyllabusBody                     string    `json:"syllabus_body" url:"syllabus_body,omitempty"`                                               //  (Optional)
+			GradingStandardID                int64     `json:"grading_standard_id" url:"grading_standard_id,omitempty"`                                   //  (Optional)
+			GradePassbackSetting             string    `json:"grade_passback_setting" url:"grade_passback_setting,omitempty"`                             //  (Optional)
+			CourseFormat                     string    `json:"course_format" url:"course_format,omitempty"`                                               //  (Optional)
+		} `json:"course" url:"course,omitempty"`
 
-		Offer                 bool `json:"offer"`                   //  (Optional)
-		EnrollMe              bool `json:"enroll_me"`               //  (Optional)
-		EnableSISReactivation bool `json:"enable_sis_reactivation"` //  (Optional)
+		Offer                 bool `json:"offer" url:"offer,omitempty"`                                     //  (Optional)
+		EnrollMe              bool `json:"enroll_me" url:"enroll_me,omitempty"`                             //  (Optional)
+		EnableSISReactivation bool `json:"enable_sis_reactivation" url:"enable_sis_reactivation,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -129,12 +130,16 @@ func (t *CreateNewCourse) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateNewCourse) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateNewCourse) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateNewCourse) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateNewCourse) HasErrors() error {
@@ -142,7 +147,7 @@ func (t *CreateNewCourse) HasErrors() error {
 	if t.Path.AccountID == "" {
 		errs = append(errs, "'AccountID' is required")
 	}
-	if !string_utils.Include([]string{"feed", "wiki", "modules", "syllabus", "assignments"}, t.Form.Course.DefaultView) {
+	if t.Form.Course.DefaultView != "" && !string_utils.Include([]string{"feed", "wiki", "modules", "syllabus", "assignments"}, t.Form.Course.DefaultView) {
 		errs = append(errs, "Course must be one of feed, wiki, modules, syllabus, assignments")
 	}
 	if len(errs) > 0 {

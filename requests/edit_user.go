@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -49,26 +50,26 @@ import (
 //
 type EditUser struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		User struct {
-			Name         string `json:"name"`          //  (Optional)
-			ShortName    string `json:"short_name"`    //  (Optional)
-			SortableName string `json:"sortable_name"` //  (Optional)
-			TimeZone     string `json:"time_zone"`     //  (Optional)
-			Email        string `json:"email"`         //  (Optional)
-			Locale       string `json:"locale"`        //  (Optional)
+			Name         string `json:"name" url:"name,omitempty"`                   //  (Optional)
+			ShortName    string `json:"short_name" url:"short_name,omitempty"`       //  (Optional)
+			SortableName string `json:"sortable_name" url:"sortable_name,omitempty"` //  (Optional)
+			TimeZone     string `json:"time_zone" url:"time_zone,omitempty"`         //  (Optional)
+			Email        string `json:"email" url:"email,omitempty"`                 //  (Optional)
+			Locale       string `json:"locale" url:"locale,omitempty"`               //  (Optional)
 			Avatar       struct {
-				Token string `json:"token"` //  (Optional)
-				Url   string `json:"url"`   //  (Optional)
-			} `json:"avatar"`
+				Token string `json:"token" url:"token,omitempty"` //  (Optional)
+				Url   string `json:"url" url:"url,omitempty"`     //  (Optional)
+			} `json:"avatar" url:"avatar,omitempty"`
 
-			Title    string `json:"title"`    //  (Optional)
-			Bio      string `json:"bio"`      //  (Optional)
-			Pronouns string `json:"pronouns"` //  (Optional)
-		} `json:"user"`
+			Title    string `json:"title" url:"title,omitempty"`       //  (Optional)
+			Bio      string `json:"bio" url:"bio,omitempty"`           //  (Optional)
+			Pronouns string `json:"pronouns" url:"pronouns,omitempty"` //  (Optional)
+		} `json:"user" url:"user,omitempty"`
 	} `json:"form"`
 }
 
@@ -86,12 +87,16 @@ func (t *EditUser) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *EditUser) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *EditUser) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *EditUser) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *EditUser) HasErrors() error {

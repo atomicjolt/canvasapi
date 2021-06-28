@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -20,8 +21,8 @@ import (
 //
 type ShowGlobalNotification struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 }
 
@@ -40,8 +41,12 @@ func (t *ShowGlobalNotification) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ShowGlobalNotification) GetBody() (string, error) {
-	return "", nil
+func (t *ShowGlobalNotification) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ShowGlobalNotification) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ShowGlobalNotification) HasErrors() error {

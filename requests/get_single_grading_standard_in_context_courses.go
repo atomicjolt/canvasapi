@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,8 +20,8 @@ import (
 //
 type GetSingleGradingStandardInContextCourses struct {
 	Path struct {
-		CourseID          string `json:"course_id"`           //  (Required)
-		GradingStandardID string `json:"grading_standard_id"` //  (Required)
+		CourseID          string `json:"course_id" url:"course_id,omitempty"`                     //  (Required)
+		GradingStandardID string `json:"grading_standard_id" url:"grading_standard_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *GetSingleGradingStandardInContextCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetSingleGradingStandardInContextCourses) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleGradingStandardInContextCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleGradingStandardInContextCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleGradingStandardInContextCourses) HasErrors() error {

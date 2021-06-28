@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -30,14 +31,14 @@ import (
 //
 type UpdatePlannerNote struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Title    string    `json:"title"`     //  (Optional)
-		Details  string    `json:"details"`   //  (Optional)
-		TodoDate time.Time `json:"todo_date"` //  (Optional)
-		CourseID int64     `json:"course_id"` //  (Optional)
+		Title    string    `json:"title" url:"title,omitempty"`         //  (Optional)
+		Details  string    `json:"details" url:"details,omitempty"`     //  (Optional)
+		TodoDate time.Time `json:"todo_date" url:"todo_date,omitempty"` //  (Optional)
+		CourseID int64     `json:"course_id" url:"course_id,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -55,12 +56,16 @@ func (t *UpdatePlannerNote) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdatePlannerNote) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdatePlannerNote) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdatePlannerNote) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdatePlannerNote) HasErrors() error {

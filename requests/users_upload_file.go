@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -23,7 +24,7 @@ import (
 //
 type UsersUploadFile struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -41,8 +42,12 @@ func (t *UsersUploadFile) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UsersUploadFile) GetBody() (string, error) {
-	return "", nil
+func (t *UsersUploadFile) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *UsersUploadFile) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *UsersUploadFile) HasErrors() error {

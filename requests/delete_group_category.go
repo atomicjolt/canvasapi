@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -16,7 +17,7 @@ import (
 //
 type DeleteGroupCategory struct {
 	Path struct {
-		GroupCategoryID string `json:"group_category_id"` //  (Required)
+		GroupCategoryID string `json:"group_category_id" url:"group_category_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -34,8 +35,12 @@ func (t *DeleteGroupCategory) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteGroupCategory) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteGroupCategory) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteGroupCategory) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteGroupCategory) HasErrors() error {

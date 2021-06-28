@@ -1,6 +1,8 @@
 package requests
 
 import (
+	"net/url"
+
 	"github.com/atomicjolt/canvasapi"
 )
 
@@ -25,8 +27,12 @@ func (t *GetBrandConfigVariablesThatShouldBeUsedForThisDomain) GetQuery() (strin
 	return "", nil
 }
 
-func (t *GetBrandConfigVariablesThatShouldBeUsedForThisDomain) GetBody() (string, error) {
-	return "", nil
+func (t *GetBrandConfigVariablesThatShouldBeUsedForThisDomain) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetBrandConfigVariablesThatShouldBeUsedForThisDomain) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetBrandConfigVariablesThatShouldBeUsedForThisDomain) HasErrors() error {

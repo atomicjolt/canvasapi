@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -20,7 +22,7 @@ import (
 //
 type UpdateMultiplePreferencesCommunicationChannelID struct {
 	Path struct {
-		CommunicationChannelID string `json:"communication_channel_id"` //  (Required)
+		CommunicationChannelID string `json:"communication_channel_id" url:"communication_channel_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
@@ -42,12 +44,16 @@ func (t *UpdateMultiplePreferencesCommunicationChannelID) GetQuery() (string, er
 	return "", nil
 }
 
-func (t *UpdateMultiplePreferencesCommunicationChannelID) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateMultiplePreferencesCommunicationChannelID) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateMultiplePreferencesCommunicationChannelID) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateMultiplePreferencesCommunicationChannelID) HasErrors() error {
@@ -74,5 +80,5 @@ func (t *UpdateMultiplePreferencesCommunicationChannelID) Do(c *canvasapi.Canvas
 }
 
 type UpdateMultiplePreferencesCommunicationChannelIDNotificationPreferences struct {
-	Frequency string `json:"frequency"` //  (Required)
+	Frequency string `json:"frequency" url:"frequency,omitempty"` //  (Required)
 }

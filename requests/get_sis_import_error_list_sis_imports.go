@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -33,12 +34,12 @@ import (
 //
 type GetSISImportErrorListSISImports struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Failure bool `json:"failure"` //  (Optional)
+		Failure bool `json:"failure" url:"failure,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -61,8 +62,12 @@ func (t *GetSISImportErrorListSISImports) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSISImportErrorListSISImports) GetBody() (string, error) {
-	return "", nil
+func (t *GetSISImportErrorListSISImports) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSISImportErrorListSISImports) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSISImportErrorListSISImports) HasErrors() error {

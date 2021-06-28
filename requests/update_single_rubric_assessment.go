@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -37,16 +39,16 @@ import (
 //
 type UpdateSingleRubricAssessment struct {
 	Path struct {
-		ID                  int64 `json:"id"`                    //  (Required)
-		CourseID            int64 `json:"course_id"`             //  (Required)
-		RubricAssociationID int64 `json:"rubric_association_id"` //  (Required)
+		ID                  int64 `json:"id" url:"id,omitempty"`                                       //  (Required)
+		CourseID            int64 `json:"course_id" url:"course_id,omitempty"`                         //  (Required)
+		RubricAssociationID int64 `json:"rubric_association_id" url:"rubric_association_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Provisional       string `json:"provisional"`        //  (Optional)
-		Final             string `json:"final"`              //  (Optional)
-		GradedAnonymously bool   `json:"graded_anonymously"` //  (Optional)
-		RubricAssessment  string `json:"rubric_assessment"`  //  (Optional)
+		Provisional       string `json:"provisional" url:"provisional,omitempty"`               //  (Optional)
+		Final             string `json:"final" url:"final,omitempty"`                           //  (Optional)
+		GradedAnonymously bool   `json:"graded_anonymously" url:"graded_anonymously,omitempty"` //  (Optional)
+		RubricAssessment  string `json:"rubric_assessment" url:"rubric_assessment,omitempty"`   //  (Optional)
 	} `json:"form"`
 }
 
@@ -66,12 +68,16 @@ func (t *UpdateSingleRubricAssessment) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateSingleRubricAssessment) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateSingleRubricAssessment) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateSingleRubricAssessment) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateSingleRubricAssessment) HasErrors() error {

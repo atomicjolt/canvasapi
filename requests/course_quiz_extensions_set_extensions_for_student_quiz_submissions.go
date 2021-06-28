@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -36,16 +38,16 @@ import (
 //
 type CourseQuizExtensionsSetExtensionsForStudentQuizSubmissions struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		UserID           int64 `json:"user_id"`            //  (Required)
-		ExtraAttempts    int64 `json:"extra_attempts"`     //  (Optional)
-		ExtraTime        int64 `json:"extra_time"`         //  (Optional)
-		ManuallyUnlocked bool  `json:"manually_unlocked"`  //  (Optional)
-		ExtendFromNow    int64 `json:"extend_from_now"`    //  (Optional)
-		ExtendFromEndAt  int64 `json:"extend_from_end_at"` //  (Optional)
+		UserID           int64 `json:"user_id" url:"user_id,omitempty"`                       //  (Required)
+		ExtraAttempts    int64 `json:"extra_attempts" url:"extra_attempts,omitempty"`         //  (Optional)
+		ExtraTime        int64 `json:"extra_time" url:"extra_time,omitempty"`                 //  (Optional)
+		ManuallyUnlocked bool  `json:"manually_unlocked" url:"manually_unlocked,omitempty"`   //  (Optional)
+		ExtendFromNow    int64 `json:"extend_from_now" url:"extend_from_now,omitempty"`       //  (Optional)
+		ExtendFromEndAt  int64 `json:"extend_from_end_at" url:"extend_from_end_at,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -63,12 +65,16 @@ func (t *CourseQuizExtensionsSetExtensionsForStudentQuizSubmissions) GetQuery() 
 	return "", nil
 }
 
-func (t *CourseQuizExtensionsSetExtensionsForStudentQuizSubmissions) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CourseQuizExtensionsSetExtensionsForStudentQuizSubmissions) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CourseQuizExtensionsSetExtensionsForStudentQuizSubmissions) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CourseQuizExtensionsSetExtensionsForStudentQuizSubmissions) HasErrors() error {

@@ -1,13 +1,15 @@
 package canvasapi
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"path"
-	"strings"
+	"strconv"
 )
 
 type Canvas struct {
@@ -29,21 +31,10 @@ func (c *Canvas) SendRequest(canvasRequest CanvasRequest) (*http.Response, error
 	if err != nil {
 		return nil, err
 	}
+
 	query, err := canvasRequest.GetQuery()
 	if err != nil {
 		return nil, err
-	}
-
-	request := http.Request{
-		Method: canvasRequest.GetMethod(),
-		Proto:  "HTTP/1.1",
-		URL: &url.URL{
-			Host:     c.CanvasURL,
-			Scheme:   "https",
-			Path:     path.Join("/api/v1", canvasRequest.GetURLPath()),
-			RawQuery: query,
-		},
-		Header: http.Header{},
 	}
 
 	body, err := canvasRequest.GetBody()
@@ -51,9 +42,31 @@ func (c *Canvas) SendRequest(canvasRequest CanvasRequest) (*http.Response, error
 		return nil, err
 	}
 
-	if body != "" {
-		reqBody := ioutil.NopCloser(strings.NewReader(body))
-		request.Body = reqBody
+	canvasUrl := &url.URL{
+		Host:     c.CanvasURL,
+		Scheme:   "https",
+		Path:     path.Join("/api/v1", canvasRequest.GetURLPath()),
+		RawQuery: query,
+	}
+
+	request := http.Request{
+		Method: canvasRequest.GetMethod(),
+		Proto:  "HTTP/1.1",
+		URL:    canvasUrl,
+		Host:   canvasUrl.Host,
+		Header: http.Header{},
+	}
+
+	if body != nil {
+		// request.Form = body
+		// request.PostForm = body
+		encodedBody := body.Encode()
+		log.Printf("%v", encodedBody)
+		reqBody := bytes.NewBuffer([]byte(encodedBody))
+		request.Body = ioutil.NopCloser(reqBody)
+		request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+		request.Header.Add("Content-Length", strconv.Itoa(len(encodedBody)))
+		// request.Header.Add("Content-Type", "application/json")
 	}
 
 	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.AccessToken))

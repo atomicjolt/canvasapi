@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,13 +27,13 @@ import (
 //
 type CreateExternalFeedCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Url         string `json:"url"`          //  (Required)
-		HeaderMatch bool   `json:"header_match"` //  (Optional)
-		Verbosity   string `json:"verbosity"`    //  (Optional) . Must be one of full, truncate, link_only
+		Url         string `json:"url" url:"url,omitempty"`                   //  (Required)
+		HeaderMatch bool   `json:"header_match" url:"header_match,omitempty"` //  (Optional)
+		Verbosity   string `json:"verbosity" url:"verbosity,omitempty"`       //  (Optional) . Must be one of full, truncate, link_only
 	} `json:"form"`
 }
 
@@ -50,12 +51,16 @@ func (t *CreateExternalFeedCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateExternalFeedCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateExternalFeedCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateExternalFeedCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateExternalFeedCourses) HasErrors() error {
@@ -66,7 +71,7 @@ func (t *CreateExternalFeedCourses) HasErrors() error {
 	if t.Form.Url == "" {
 		errs = append(errs, "'Url' is required")
 	}
-	if !string_utils.Include([]string{"full", "truncate", "link_only"}, t.Form.Verbosity) {
+	if t.Form.Verbosity != "" && !string_utils.Include([]string{"full", "truncate", "link_only"}, t.Form.Verbosity) {
 		errs = append(errs, "Verbosity must be one of full, truncate, link_only")
 	}
 	if len(errs) > 0 {

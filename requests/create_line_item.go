@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -35,16 +36,16 @@ import (
 //
 type CreateLineItem struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ScoreMaximum            float64 `json:"score_maximum"`                                      //  (Required)
-		Label                   string  `json:"label"`                                              //  (Required)
-		ResourceID              string  `json:"resource_id"`                                        //  (Optional)
-		Tag                     string  `json:"tag"`                                                //  (Optional)
-		ResourceLinkID          string  `json:"resource_link_id"`                                   //  (Optional)
-		CanvasLTISubmissionType string  `json:"https://canvas.instructure.com/lti/submission_type"` //  (Optional)
+		ScoreMaximum            float64 `json:"score_maximum" url:"score_maximum,omitempty"`                                                                           //  (Required)
+		Label                   string  `json:"label" url:"label,omitempty"`                                                                                           //  (Required)
+		ResourceID              string  `json:"resource_id" url:"resource_id,omitempty"`                                                                               //  (Optional)
+		Tag                     string  `json:"tag" url:"tag,omitempty"`                                                                                               //  (Optional)
+		ResourceLinkID          string  `json:"resource_link_id" url:"resource_link_id,omitempty"`                                                                     //  (Optional)
+		CanvasLTISubmissionType string  `json:"https://canvas.instructure.com/lti/submission_type" url:"https://canvas.instructure.com/lti/submission_type,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -62,12 +63,16 @@ func (t *CreateLineItem) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateLineItem) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateLineItem) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateLineItem) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateLineItem) HasErrors() error {

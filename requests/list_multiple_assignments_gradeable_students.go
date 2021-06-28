@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,11 +24,11 @@ import (
 //
 type ListMultipleAssignmentsGradeableStudents struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		AssignmentIDs []string `json:"assignment_ids"` //  (Optional)
+		AssignmentIDs []string `json:"assignment_ids" url:"assignment_ids,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -49,8 +50,12 @@ func (t *ListMultipleAssignmentsGradeableStudents) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListMultipleAssignmentsGradeableStudents) GetBody() (string, error) {
-	return "", nil
+func (t *ListMultipleAssignmentsGradeableStudents) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListMultipleAssignmentsGradeableStudents) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListMultipleAssignmentsGradeableStudents) HasErrors() error {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -25,8 +26,8 @@ import (
 //
 type DeleteOutcomeGroupAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 }
 
@@ -45,8 +46,12 @@ func (t *DeleteOutcomeGroupAccounts) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteOutcomeGroupAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteOutcomeGroupAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteOutcomeGroupAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteOutcomeGroupAccounts) HasErrors() error {

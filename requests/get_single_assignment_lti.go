@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,11 +25,11 @@ import (
 //
 type GetSingleAssignmentLti struct {
 	Path struct {
-		AssignmentID string `json:"assignment_id"` //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		UserID string `json:"user_id"` //  (Optional)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -50,8 +51,12 @@ func (t *GetSingleAssignmentLti) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSingleAssignmentLti) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleAssignmentLti) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleAssignmentLti) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleAssignmentLti) HasErrors() error {

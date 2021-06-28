@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/google/go-querystring/query"
 
@@ -21,10 +22,10 @@ import (
 //
 type SearchAccountDomains struct {
 	Query struct {
-		Name      string  `json:"name"`      //  (Optional)
-		Domain    string  `json:"domain"`    //  (Optional)
-		Latitude  float64 `json:"latitude"`  //  (Optional)
-		Longitude float64 `json:"longitude"` //  (Optional)
+		Name      string  `json:"name" url:"name,omitempty"`           //  (Optional)
+		Domain    string  `json:"domain" url:"domain,omitempty"`       //  (Optional)
+		Latitude  float64 `json:"latitude" url:"latitude,omitempty"`   //  (Optional)
+		Longitude float64 `json:"longitude" url:"longitude,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -44,8 +45,12 @@ func (t *SearchAccountDomains) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *SearchAccountDomains) GetBody() (string, error) {
-	return "", nil
+func (t *SearchAccountDomains) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *SearchAccountDomains) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *SearchAccountDomains) HasErrors() error {

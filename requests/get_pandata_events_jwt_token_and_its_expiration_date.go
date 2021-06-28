@@ -1,7 +1,8 @@
 package requests
 
 import (
-	"fmt"
+	"encoding/json"
+	"net/url"
 
 	"github.com/google/go-querystring/query"
 
@@ -19,7 +20,7 @@ import (
 //
 type GetPandataEventsJwtTokenAndItsExpirationDate struct {
 	Form struct {
-		AppKey string `json:"app_key"` //  (Optional)
+		AppKey string `json:"app_key" url:"app_key,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -35,12 +36,16 @@ func (t *GetPandataEventsJwtTokenAndItsExpirationDate) GetQuery() (string, error
 	return "", nil
 }
 
-func (t *GetPandataEventsJwtTokenAndItsExpirationDate) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *GetPandataEventsJwtTokenAndItsExpirationDate) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *GetPandataEventsJwtTokenAndItsExpirationDate) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *GetPandataEventsJwtTokenAndItsExpirationDate) HasErrors() error {

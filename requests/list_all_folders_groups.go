@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,7 +20,7 @@ import (
 //
 type ListAllFoldersGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -37,8 +38,12 @@ func (t *ListAllFoldersGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListAllFoldersGroups) GetBody() (string, error) {
-	return "", nil
+func (t *ListAllFoldersGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListAllFoldersGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListAllFoldersGroups) HasErrors() error {

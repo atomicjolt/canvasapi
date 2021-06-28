@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,11 +27,11 @@ import (
 //
 type AssignUnassignedMembers struct {
 	Path struct {
-		GroupCategoryID string `json:"group_category_id"` //  (Required)
+		GroupCategoryID string `json:"group_category_id" url:"group_category_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Sync bool `json:"sync"` //  (Optional)
+		Sync bool `json:"sync" url:"sync,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -48,12 +49,16 @@ func (t *AssignUnassignedMembers) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *AssignUnassignedMembers) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *AssignUnassignedMembers) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *AssignUnassignedMembers) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *AssignUnassignedMembers) HasErrors() error {

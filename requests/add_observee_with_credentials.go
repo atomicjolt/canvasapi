@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -34,18 +35,18 @@ import (
 //
 type AddObserveeWithCredentials struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Observee struct {
-			UniqueID string `json:"unique_id"` //  (Optional)
-			Password string `json:"password"`  //  (Optional)
-		} `json:"observee"`
+			UniqueID string `json:"unique_id" url:"unique_id,omitempty"` //  (Optional)
+			Password string `json:"password" url:"password,omitempty"`   //  (Optional)
+		} `json:"observee" url:"observee,omitempty"`
 
-		AccessToken   string `json:"access_token"`    //  (Optional)
-		PairingCode   string `json:"pairing_code"`    //  (Optional)
-		RootAccountID int64  `json:"root_account_id"` //  (Optional)
+		AccessToken   string `json:"access_token" url:"access_token,omitempty"`       //  (Optional)
+		PairingCode   string `json:"pairing_code" url:"pairing_code,omitempty"`       //  (Optional)
+		RootAccountID int64  `json:"root_account_id" url:"root_account_id,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -63,12 +64,16 @@ func (t *AddObserveeWithCredentials) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *AddObserveeWithCredentials) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *AddObserveeWithCredentials) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *AddObserveeWithCredentials) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *AddObserveeWithCredentials) HasErrors() error {

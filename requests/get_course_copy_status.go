@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -18,8 +19,8 @@ import (
 //
 type GetCourseCopyStatus struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 }
 
@@ -38,8 +39,12 @@ func (t *GetCourseCopyStatus) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetCourseCopyStatus) GetBody() (string, error) {
-	return "", nil
+func (t *GetCourseCopyStatus) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetCourseCopyStatus) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetCourseCopyStatus) HasErrors() error {

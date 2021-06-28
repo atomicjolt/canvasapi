@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -75,8 +76,8 @@ import (
 //
 type MergeUserIntoAnotherUserDestinationUserID struct {
 	Path struct {
-		ID                string `json:"id"`                  //  (Required)
-		DestinationUserID string `json:"destination_user_id"` //  (Required)
+		ID                string `json:"id" url:"id,omitempty"`                                   //  (Required)
+		DestinationUserID string `json:"destination_user_id" url:"destination_user_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -95,8 +96,12 @@ func (t *MergeUserIntoAnotherUserDestinationUserID) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *MergeUserIntoAnotherUserDestinationUserID) GetBody() (string, error) {
-	return "", nil
+func (t *MergeUserIntoAnotherUserDestinationUserID) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *MergeUserIntoAnotherUserDestinationUserID) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *MergeUserIntoAnotherUserDestinationUserID) HasErrors() error {

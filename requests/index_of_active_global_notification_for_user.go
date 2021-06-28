@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,11 +26,11 @@ import (
 //
 type IndexOfActiveGlobalNotificationForUser struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		IncludePast bool `json:"include_past"` //  (Optional)
+		IncludePast bool `json:"include_past" url:"include_past,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -51,8 +52,12 @@ func (t *IndexOfActiveGlobalNotificationForUser) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *IndexOfActiveGlobalNotificationForUser) GetBody() (string, error) {
-	return "", nil
+func (t *IndexOfActiveGlobalNotificationForUser) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *IndexOfActiveGlobalNotificationForUser) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *IndexOfActiveGlobalNotificationForUser) HasErrors() error {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -35,11 +36,11 @@ import (
 //
 type ShowUserDetails struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of uuid, last_login
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of uuid, last_login
 	} `json:"query"`
 }
 
@@ -61,8 +62,12 @@ func (t *ShowUserDetails) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ShowUserDetails) GetBody() (string, error) {
-	return "", nil
+func (t *ShowUserDetails) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ShowUserDetails) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ShowUserDetails) HasErrors() error {
@@ -71,7 +76,7 @@ func (t *ShowUserDetails) HasErrors() error {
 		errs = append(errs, "'ID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"uuid", "last_login"}, v) {
+		if v != "" && !string_utils.Include([]string{"uuid", "last_login"}, v) {
 			errs = append(errs, "Include must be one of uuid, last_login")
 		}
 	}

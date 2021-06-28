@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,13 +26,13 @@ import (
 //
 type DeletePeerReviewSections struct {
 	Path struct {
-		SectionID    string `json:"section_id"`    //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		SubmissionID string `json:"submission_id"` //  (Required)
+		SectionID    string `json:"section_id" url:"section_id,omitempty"`       //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		SubmissionID string `json:"submission_id" url:"submission_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		UserID int64 `json:"user_id"` //  (Required)
+		UserID int64 `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"query"`
 }
 
@@ -55,8 +56,12 @@ func (t *DeletePeerReviewSections) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *DeletePeerReviewSections) GetBody() (string, error) {
-	return "", nil
+func (t *DeletePeerReviewSections) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeletePeerReviewSections) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeletePeerReviewSections) HasErrors() error {

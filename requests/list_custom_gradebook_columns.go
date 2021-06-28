@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,11 +24,11 @@ import (
 //
 type ListCustomGradebookColumns struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		IncludeHidden bool `json:"include_hidden"` //  (Optional)
+		IncludeHidden bool `json:"include_hidden" url:"include_hidden,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -49,8 +50,12 @@ func (t *ListCustomGradebookColumns) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListCustomGradebookColumns) GetBody() (string, error) {
-	return "", nil
+func (t *ListCustomGradebookColumns) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListCustomGradebookColumns) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListCustomGradebookColumns) HasErrors() error {

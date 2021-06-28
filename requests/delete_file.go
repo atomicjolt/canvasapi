@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -31,11 +32,11 @@ import (
 //
 type DeleteFile struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Replace bool `json:"replace"` //  (Optional)
+		Replace bool `json:"replace" url:"replace,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -57,8 +58,12 @@ func (t *DeleteFile) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *DeleteFile) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteFile) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteFile) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteFile) HasErrors() error {

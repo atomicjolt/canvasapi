@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -22,8 +23,8 @@ import (
 //
 type RemoveFeatureFlagAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		Feature   string `json:"feature"`    //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		Feature   string `json:"feature" url:"feature,omitempty"`       //  (Required)
 	} `json:"path"`
 }
 
@@ -42,8 +43,12 @@ func (t *RemoveFeatureFlagAccounts) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *RemoveFeatureFlagAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *RemoveFeatureFlagAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RemoveFeatureFlagAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RemoveFeatureFlagAccounts) HasErrors() error {

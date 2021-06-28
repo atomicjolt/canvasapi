@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -35,24 +36,24 @@ import (
 //
 type CreateSingleQuizQuestion struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Question struct {
-			QuestionName      string `json:"question_name"`      //  (Optional)
-			QuestionText      string `json:"question_text"`      //  (Optional)
-			QuizGroupID       int64  `json:"quiz_group_id"`      //  (Optional)
-			QuestionType      string `json:"question_type"`      //  (Optional) . Must be one of calculated_question, essay_question, file_upload_question, fill_in_multiple_blanks_question, matching_question, multiple_answers_question, multiple_choice_question, multiple_dropdowns_question, numerical_question, short_answer_question, text_only_question, true_false_question
-			Position          int64  `json:"position"`           //  (Optional)
-			PointsPossible    int64  `json:"points_possible"`    //  (Optional)
-			CorrectComments   string `json:"correct_comments"`   //  (Optional)
-			IncorrectComments string `json:"incorrect_comments"` //  (Optional)
-			NeutralComments   string `json:"neutral_comments"`   //  (Optional)
-			TextAfterAnswers  string `json:"text_after_answers"` //  (Optional)
-			Answers           string `json:"answers"`            //  (Optional)
-		} `json:"question"`
+			QuestionName      string `json:"question_name" url:"question_name,omitempty"`           //  (Optional)
+			QuestionText      string `json:"question_text" url:"question_text,omitempty"`           //  (Optional)
+			QuizGroupID       int64  `json:"quiz_group_id" url:"quiz_group_id,omitempty"`           //  (Optional)
+			QuestionType      string `json:"question_type" url:"question_type,omitempty"`           //  (Optional) . Must be one of calculated_question, essay_question, file_upload_question, fill_in_multiple_blanks_question, matching_question, multiple_answers_question, multiple_choice_question, multiple_dropdowns_question, numerical_question, short_answer_question, text_only_question, true_false_question
+			Position          int64  `json:"position" url:"position,omitempty"`                     //  (Optional)
+			PointsPossible    int64  `json:"points_possible" url:"points_possible,omitempty"`       //  (Optional)
+			CorrectComments   string `json:"correct_comments" url:"correct_comments,omitempty"`     //  (Optional)
+			IncorrectComments string `json:"incorrect_comments" url:"incorrect_comments,omitempty"` //  (Optional)
+			NeutralComments   string `json:"neutral_comments" url:"neutral_comments,omitempty"`     //  (Optional)
+			TextAfterAnswers  string `json:"text_after_answers" url:"text_after_answers,omitempty"` //  (Optional)
+			Answers           string `json:"answers" url:"answers,omitempty"`                       //  (Optional)
+		} `json:"question" url:"question,omitempty"`
 	} `json:"form"`
 }
 
@@ -71,12 +72,16 @@ func (t *CreateSingleQuizQuestion) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateSingleQuizQuestion) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateSingleQuizQuestion) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateSingleQuizQuestion) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateSingleQuizQuestion) HasErrors() error {
@@ -87,7 +92,7 @@ func (t *CreateSingleQuizQuestion) HasErrors() error {
 	if t.Path.QuizID == "" {
 		errs = append(errs, "'QuizID' is required")
 	}
-	if !string_utils.Include([]string{"calculated_question", "essay_question", "file_upload_question", "fill_in_multiple_blanks_question", "matching_question", "multiple_answers_question", "multiple_choice_question", "multiple_dropdowns_question", "numerical_question", "short_answer_question", "text_only_question", "true_false_question"}, t.Form.Question.QuestionType) {
+	if t.Form.Question.QuestionType != "" && !string_utils.Include([]string{"calculated_question", "essay_question", "file_upload_question", "fill_in_multiple_blanks_question", "matching_question", "multiple_answers_question", "multiple_choice_question", "multiple_dropdowns_question", "numerical_question", "short_answer_question", "text_only_question", "true_false_question"}, t.Form.Question.QuestionType) {
 		errs = append(errs, "Question must be one of calculated_question, essay_question, file_upload_question, fill_in_multiple_blanks_question, matching_question, multiple_answers_question, multiple_choice_question, multiple_dropdowns_question, numerical_question, short_answer_question, text_only_question, true_false_question")
 	}
 	if len(errs) > 0 {

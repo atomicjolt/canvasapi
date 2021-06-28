@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/google/go-querystring/query"
 
@@ -20,9 +21,9 @@ import (
 //
 type ListAllCourses struct {
 	Query struct {
-		Search             string `json:"search"`               //  (Optional)
-		PublicOnly         bool   `json:"public_only"`          //  (Optional)
-		OpenEnrollmentOnly bool   `json:"open_enrollment_only"` //  (Optional)
+		Search             string `json:"search" url:"search,omitempty"`                             //  (Optional)
+		PublicOnly         bool   `json:"public_only" url:"public_only,omitempty"`                   //  (Optional)
+		OpenEnrollmentOnly bool   `json:"open_enrollment_only" url:"open_enrollment_only,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -42,8 +43,12 @@ func (t *ListAllCourses) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListAllCourses) GetBody() (string, error) {
-	return "", nil
+func (t *ListAllCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListAllCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListAllCourses) HasErrors() error {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,11 +28,11 @@ import (
 //
 type Permissions struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Permissions []string `json:"permissions"` //  (Optional)
+		Permissions []string `json:"permissions" url:"permissions,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -53,8 +54,12 @@ func (t *Permissions) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *Permissions) GetBody() (string, error) {
-	return "", nil
+func (t *Permissions) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *Permissions) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *Permissions) HasErrors() error {

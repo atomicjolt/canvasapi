@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -18,8 +19,8 @@ import (
 //
 type LeaveGroupUsers struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
-		UserID  string `json:"user_id"`  //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
+		UserID  string `json:"user_id" url:"user_id,omitempty"`   //  (Required)
 	} `json:"path"`
 }
 
@@ -38,8 +39,12 @@ func (t *LeaveGroupUsers) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *LeaveGroupUsers) GetBody() (string, error) {
-	return "", nil
+func (t *LeaveGroupUsers) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *LeaveGroupUsers) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *LeaveGroupUsers) HasErrors() error {

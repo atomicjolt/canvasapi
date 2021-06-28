@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -53,20 +55,20 @@ import (
 //
 type CreateConversation struct {
 	Form struct {
-		Recipients        []string `json:"recipients"`         //  (Required)
-		Subject           string   `json:"subject"`            //  (Optional)
-		Body              string   `json:"body"`               //  (Required)
-		ForceNew          bool     `json:"force_new"`          //  (Optional)
-		GroupConversation bool     `json:"group_conversation"` //  (Optional)
-		AttachmentIDs     []string `json:"attachment_ids"`     //  (Optional)
-		MediaCommentID    string   `json:"media_comment_id"`   //  (Optional)
-		MediaCommentType  string   `json:"media_comment_type"` //  (Optional) . Must be one of audio, video
-		UserNote          bool     `json:"user_note"`          //  (Optional)
-		Mode              string   `json:"mode"`               //  (Optional) . Must be one of sync, async
-		Scope             string   `json:"scope"`              //  (Optional) . Must be one of unread, starred, archived
-		Filter            []string `json:"filter"`             //  (Optional)
-		FilterMode        string   `json:"filter_mode"`        //  (Optional) . Must be one of and, or, default or
-		ContextCode       string   `json:"context_code"`       //  (Optional)
+		Recipients        []string `json:"recipients" url:"recipients,omitempty"`                 //  (Required)
+		Subject           string   `json:"subject" url:"subject,omitempty"`                       //  (Optional)
+		Body              string   `json:"body" url:"body,omitempty"`                             //  (Required)
+		ForceNew          bool     `json:"force_new" url:"force_new,omitempty"`                   //  (Optional)
+		GroupConversation bool     `json:"group_conversation" url:"group_conversation,omitempty"` //  (Optional)
+		AttachmentIDs     []string `json:"attachment_ids" url:"attachment_ids,omitempty"`         //  (Optional)
+		MediaCommentID    string   `json:"media_comment_id" url:"media_comment_id,omitempty"`     //  (Optional)
+		MediaCommentType  string   `json:"media_comment_type" url:"media_comment_type,omitempty"` //  (Optional) . Must be one of audio, video
+		UserNote          bool     `json:"user_note" url:"user_note,omitempty"`                   //  (Optional)
+		Mode              string   `json:"mode" url:"mode,omitempty"`                             //  (Optional) . Must be one of sync, async
+		Scope             string   `json:"scope" url:"scope,omitempty"`                           //  (Optional) . Must be one of unread, starred, archived
+		Filter            []string `json:"filter" url:"filter,omitempty"`                         //  (Optional)
+		FilterMode        string   `json:"filter_mode" url:"filter_mode,omitempty"`               //  (Optional) . Must be one of and, or, default or
+		ContextCode       string   `json:"context_code" url:"context_code,omitempty"`             //  (Optional)
 	} `json:"form"`
 }
 
@@ -82,12 +84,16 @@ func (t *CreateConversation) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateConversation) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateConversation) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateConversation) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateConversation) HasErrors() error {
@@ -98,16 +104,16 @@ func (t *CreateConversation) HasErrors() error {
 	if t.Form.Body == "" {
 		errs = append(errs, "'Body' is required")
 	}
-	if !string_utils.Include([]string{"audio", "video"}, t.Form.MediaCommentType) {
+	if t.Form.MediaCommentType != "" && !string_utils.Include([]string{"audio", "video"}, t.Form.MediaCommentType) {
 		errs = append(errs, "MediaCommentType must be one of audio, video")
 	}
-	if !string_utils.Include([]string{"sync", "async"}, t.Form.Mode) {
+	if t.Form.Mode != "" && !string_utils.Include([]string{"sync", "async"}, t.Form.Mode) {
 		errs = append(errs, "Mode must be one of sync, async")
 	}
-	if !string_utils.Include([]string{"unread", "starred", "archived"}, t.Form.Scope) {
+	if t.Form.Scope != "" && !string_utils.Include([]string{"unread", "starred", "archived"}, t.Form.Scope) {
 		errs = append(errs, "Scope must be one of unread, starred, archived")
 	}
-	if !string_utils.Include([]string{"and", "or", "default or"}, t.Form.FilterMode) {
+	if t.Form.FilterMode != "" && !string_utils.Include([]string{"and", "or", "default or"}, t.Form.FilterMode) {
 		errs = append(errs, "FilterMode must be one of and, or, default or")
 	}
 	if len(errs) > 0 {

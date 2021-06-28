@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -32,12 +33,12 @@ import (
 //
 type CopyFile struct {
 	Path struct {
-		DestFolderID string `json:"dest_folder_id"` //  (Required)
+		DestFolderID string `json:"dest_folder_id" url:"dest_folder_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		SourceFileID string `json:"source_file_id"` //  (Required)
-		OnDuplicate  string `json:"on_duplicate"`   //  (Optional) . Must be one of overwrite, rename
+		SourceFileID string `json:"source_file_id" url:"source_file_id,omitempty"` //  (Required)
+		OnDuplicate  string `json:"on_duplicate" url:"on_duplicate,omitempty"`     //  (Optional) . Must be one of overwrite, rename
 	} `json:"form"`
 }
 
@@ -55,12 +56,16 @@ func (t *CopyFile) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CopyFile) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CopyFile) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CopyFile) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CopyFile) HasErrors() error {
@@ -71,7 +76,7 @@ func (t *CopyFile) HasErrors() error {
 	if t.Form.SourceFileID == "" {
 		errs = append(errs, "'SourceFileID' is required")
 	}
-	if !string_utils.Include([]string{"overwrite", "rename"}, t.Form.OnDuplicate) {
+	if t.Form.OnDuplicate != "" && !string_utils.Include([]string{"overwrite", "rename"}, t.Form.OnDuplicate) {
 		errs = append(errs, "OnDuplicate must be one of overwrite, rename")
 	}
 	if len(errs) > 0 {

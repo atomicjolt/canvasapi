@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -105,45 +106,45 @@ import (
 //
 type CreateContentMigrationCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		MigrationType string `json:"migration_type"` //  (Required)
+		MigrationType string `json:"migration_type" url:"migration_type,omitempty"` //  (Required)
 		PreAttachment struct {
-			Name    string     `json:"name"` //  (Optional)
-			*string `json:"*"` //  (Optional)
-		} `json:"pre_attachment"`
+			Name    string                       `json:"name" url:"name,omitempty"` //  (Optional)
+			*string `json:"*" url:"*,omitempty"` //  (Optional)
+		} `json:"pre_attachment" url:"pre_attachment,omitempty"`
 
 		Settings struct {
-			FileUrl                  string `json:"file_url"`                    //  (Optional)
-			ContentExportID          string `json:"content_export_id"`           //  (Optional)
-			SourceCourseID           string `json:"source_course_id"`            //  (Optional)
-			FolderID                 string `json:"folder_id"`                   //  (Optional)
-			OverwriteQuizzes         bool   `json:"overwrite_quizzes"`           //  (Optional)
-			QuestionBankID           int64  `json:"question_bank_id"`            //  (Optional)
-			QuestionBankName         string `json:"question_bank_name"`          //  (Optional)
-			InsertIntoModuleID       int64  `json:"insert_into_module_id"`       //  (Optional)
-			InsertIntoModuleType     string `json:"insert_into_module_type"`     //  (Optional) . Must be one of assignment, discussion_topic, file, page, quiz
-			InsertIntoModulePosition int64  `json:"insert_into_module_position"` //  (Optional)
-			MoveToAssignmentGroupID  int64  `json:"move_to_assignment_group_id"` //  (Optional)
-		} `json:"settings"`
+			FileUrl                  string `json:"file_url" url:"file_url,omitempty"`                                       //  (Optional)
+			ContentExportID          string `json:"content_export_id" url:"content_export_id,omitempty"`                     //  (Optional)
+			SourceCourseID           string `json:"source_course_id" url:"source_course_id,omitempty"`                       //  (Optional)
+			FolderID                 string `json:"folder_id" url:"folder_id,omitempty"`                                     //  (Optional)
+			OverwriteQuizzes         bool   `json:"overwrite_quizzes" url:"overwrite_quizzes,omitempty"`                     //  (Optional)
+			QuestionBankID           int64  `json:"question_bank_id" url:"question_bank_id,omitempty"`                       //  (Optional)
+			QuestionBankName         string `json:"question_bank_name" url:"question_bank_name,omitempty"`                   //  (Optional)
+			InsertIntoModuleID       int64  `json:"insert_into_module_id" url:"insert_into_module_id,omitempty"`             //  (Optional)
+			InsertIntoModuleType     string `json:"insert_into_module_type" url:"insert_into_module_type,omitempty"`         //  (Optional) . Must be one of assignment, discussion_topic, file, page, quiz
+			InsertIntoModulePosition int64  `json:"insert_into_module_position" url:"insert_into_module_position,omitempty"` //  (Optional)
+			MoveToAssignmentGroupID  int64  `json:"move_to_assignment_group_id" url:"move_to_assignment_group_id,omitempty"` //  (Optional)
+		} `json:"settings" url:"settings,omitempty"`
 
 		DateShiftOptions struct {
-			ShiftDates       bool      `json:"shift_dates"`    //  (Optional)
-			OldStartDate     time.Time `json:"old_start_date"` //  (Optional)
-			OldEndDate       time.Time `json:"old_end_date"`   //  (Optional)
-			NewStartDate     time.Time `json:"new_start_date"` //  (Optional)
-			NewEndDate       time.Time `json:"new_end_date"`   //  (Optional)
+			ShiftDates       bool      `json:"shift_dates" url:"shift_dates,omitempty"`       //  (Optional)
+			OldStartDate     time.Time `json:"old_start_date" url:"old_start_date,omitempty"` //  (Optional)
+			OldEndDate       time.Time `json:"old_end_date" url:"old_end_date,omitempty"`     //  (Optional)
+			NewStartDate     time.Time `json:"new_start_date" url:"new_start_date,omitempty"` //  (Optional)
+			NewEndDate       time.Time `json:"new_end_date" url:"new_end_date,omitempty"`     //  (Optional)
 			DaySubstitutions struct {
-				X int64 `json:"x"` //  (Optional)
-			} `json:"day_substitutions"`
+				X int64 `json:"x" url:"x,omitempty"` //  (Optional)
+			} `json:"day_substitutions" url:"day_substitutions,omitempty"`
 
-			RemoveDates bool `json:"remove_dates"` //  (Optional)
-		} `json:"date_shift_options"`
+			RemoveDates bool `json:"remove_dates" url:"remove_dates,omitempty"` //  (Optional)
+		} `json:"date_shift_options" url:"date_shift_options,omitempty"`
 
-		SelectiveImport bool   `json:"selective_import"` //  (Optional)
-		Select          string `json:"select"`           //  (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics
+		SelectiveImport bool   `json:"selective_import" url:"selective_import,omitempty"` //  (Optional)
+		Select          string `json:"select" url:"select,omitempty"`                     //  (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics
 	} `json:"form"`
 }
 
@@ -161,12 +162,16 @@ func (t *CreateContentMigrationCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateContentMigrationCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateContentMigrationCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateContentMigrationCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateContentMigrationCourses) HasErrors() error {
@@ -177,10 +182,10 @@ func (t *CreateContentMigrationCourses) HasErrors() error {
 	if t.Form.MigrationType == "" {
 		errs = append(errs, "'MigrationType' is required")
 	}
-	if !string_utils.Include([]string{"assignment", "discussion_topic", "file", "page", "quiz"}, t.Form.Settings.InsertIntoModuleType) {
+	if t.Form.Settings.InsertIntoModuleType != "" && !string_utils.Include([]string{"assignment", "discussion_topic", "file", "page", "quiz"}, t.Form.Settings.InsertIntoModuleType) {
 		errs = append(errs, "Settings must be one of assignment, discussion_topic, file, page, quiz")
 	}
-	if !string_utils.Include([]string{"folders", "files", "attachments", "quizzes", "assignments", "announcements", "calendar_events", "discussion_topics", "modules", "module_items", "pages", "rubrics"}, t.Form.Select) {
+	if t.Form.Select != "" && !string_utils.Include([]string{"folders", "files", "attachments", "quizzes", "assignments", "announcements", "calendar_events", "discussion_topics", "modules", "module_items", "pages", "rubrics"}, t.Form.Select) {
 		errs = append(errs, "Select must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics")
 	}
 	if len(errs) > 0 {

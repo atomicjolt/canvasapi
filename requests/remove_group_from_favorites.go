@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -18,7 +19,7 @@ import (
 //
 type RemoveGroupFromFavorites struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -36,8 +37,12 @@ func (t *RemoveGroupFromFavorites) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *RemoveGroupFromFavorites) GetBody() (string, error) {
-	return "", nil
+func (t *RemoveGroupFromFavorites) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RemoveGroupFromFavorites) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RemoveGroupFromFavorites) HasErrors() error {

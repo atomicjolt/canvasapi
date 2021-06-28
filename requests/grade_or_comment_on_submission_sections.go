@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -108,32 +110,32 @@ import (
 //
 type GradeOrCommentOnSubmissionSections struct {
 	Path struct {
-		SectionID    string `json:"section_id"`    //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		UserID       string `json:"user_id"`       //  (Required)
+		SectionID    string `json:"section_id" url:"section_id,omitempty"`       //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		UserID       string `json:"user_id" url:"user_id,omitempty"`             //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Comment struct {
-			TextComment      string  `json:"text_comment"`       //  (Optional)
-			GroupComment     bool    `json:"group_comment"`      //  (Optional)
-			MediaCommentID   string  `json:"media_comment_id"`   //  (Optional)
-			MediaCommentType string  `json:"media_comment_type"` //  (Optional) . Must be one of audio, video
-			FileIDs          []int64 `json:"file_ids"`           //  (Optional)
-		} `json:"comment"`
+			TextComment      string  `json:"text_comment" url:"text_comment,omitempty"`             //  (Optional)
+			GroupComment     bool    `json:"group_comment" url:"group_comment,omitempty"`           //  (Optional)
+			MediaCommentID   string  `json:"media_comment_id" url:"media_comment_id,omitempty"`     //  (Optional)
+			MediaCommentType string  `json:"media_comment_type" url:"media_comment_type,omitempty"` //  (Optional) . Must be one of audio, video
+			FileIDs          []int64 `json:"file_ids" url:"file_ids,omitempty"`                     //  (Optional)
+		} `json:"comment" url:"comment,omitempty"`
 
 		Include struct {
-			Visibility string `json:"visibility"` //  (Optional)
-		} `json:"include"`
+			Visibility string `json:"visibility" url:"visibility,omitempty"` //  (Optional)
+		} `json:"include" url:"include,omitempty"`
 
 		Submission struct {
-			PostedGrade         string `json:"posted_grade"`          //  (Optional)
-			Excuse              bool   `json:"excuse"`                //  (Optional)
-			LatePolicyStatus    string `json:"late_policy_status"`    //  (Optional)
-			SecondsLateOverride int64  `json:"seconds_late_override"` //  (Optional)
-		} `json:"submission"`
+			PostedGrade         string `json:"posted_grade" url:"posted_grade,omitempty"`                   //  (Optional)
+			Excuse              bool   `json:"excuse" url:"excuse,omitempty"`                               //  (Optional)
+			LatePolicyStatus    string `json:"late_policy_status" url:"late_policy_status,omitempty"`       //  (Optional)
+			SecondsLateOverride int64  `json:"seconds_late_override" url:"seconds_late_override,omitempty"` //  (Optional)
+		} `json:"submission" url:"submission,omitempty"`
 
-		RubricAssessment string `json:"rubric_assessment"` //  (Optional)
+		RubricAssessment string `json:"rubric_assessment" url:"rubric_assessment,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -153,12 +155,16 @@ func (t *GradeOrCommentOnSubmissionSections) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GradeOrCommentOnSubmissionSections) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *GradeOrCommentOnSubmissionSections) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *GradeOrCommentOnSubmissionSections) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *GradeOrCommentOnSubmissionSections) HasErrors() error {
@@ -172,7 +178,7 @@ func (t *GradeOrCommentOnSubmissionSections) HasErrors() error {
 	if t.Path.UserID == "" {
 		errs = append(errs, "'UserID' is required")
 	}
-	if !string_utils.Include([]string{"audio", "video"}, t.Form.Comment.MediaCommentType) {
+	if t.Form.Comment.MediaCommentType != "" && !string_utils.Include([]string{"audio", "video"}, t.Form.Comment.MediaCommentType) {
 		errs = append(errs, "Comment must be one of audio, video")
 	}
 	if len(errs) > 0 {

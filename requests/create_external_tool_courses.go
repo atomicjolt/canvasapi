@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -124,106 +126,106 @@ import (
 //
 type CreateExternalToolCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ClientID     string `json:"client_id"`     //  (Required)
-		Name         string `json:"name"`          //  (Required)
-		PrivacyLevel string `json:"privacy_level"` //  (Required) . Must be one of anonymous, name_only, public
-		ConsumerKey  string `json:"consumer_key"`  //  (Required)
-		SharedSecret string `json:"shared_secret"` //  (Required)
-		Description  string `json:"description"`   //  (Optional)
-		Url          string `json:"url"`           //  (Optional)
-		Domain       string `json:"domain"`        //  (Optional)
-		IconUrl      string `json:"icon_url"`      //  (Optional)
-		Text         string `json:"text"`          //  (Optional)
+		ClientID     string `json:"client_id" url:"client_id,omitempty"`         //  (Required)
+		Name         string `json:"name" url:"name,omitempty"`                   //  (Required)
+		PrivacyLevel string `json:"privacy_level" url:"privacy_level,omitempty"` //  (Required) . Must be one of anonymous, name_only, public
+		ConsumerKey  string `json:"consumer_key" url:"consumer_key,omitempty"`   //  (Required)
+		SharedSecret string `json:"shared_secret" url:"shared_secret,omitempty"` //  (Required)
+		Description  string `json:"description" url:"description,omitempty"`     //  (Optional)
+		Url          string `json:"url" url:"url,omitempty"`                     //  (Optional)
+		Domain       string `json:"domain" url:"domain,omitempty"`               //  (Optional)
+		IconUrl      string `json:"icon_url" url:"icon_url,omitempty"`           //  (Optional)
+		Text         string `json:"text" url:"text,omitempty"`                   //  (Optional)
 		CustomFields struct {
-			FieldName string `json:"field_name"` //  (Optional)
-		} `json:"custom_fields"`
+			FieldName string `json:"field_name" url:"field_name,omitempty"` //  (Optional)
+		} `json:"custom_fields" url:"custom_fields,omitempty"`
 
-		IsRceFavorite     bool `json:"is_rce_favorite"` //  (Optional)
+		IsRceFavorite     bool `json:"is_rce_favorite" url:"is_rce_favorite,omitempty"` //  (Optional)
 		AccountNavigation struct {
-			Url             string `json:"url"`              //  (Optional)
-			Enabled         bool   `json:"enabled"`          //  (Optional)
-			Text            string `json:"text"`             //  (Optional)
-			SelectionWidth  string `json:"selection_width"`  //  (Optional)
-			SelectionHeight string `json:"selection_height"` //  (Optional)
-			DisplayType     string `json:"display_type"`     //  (Optional)
-		} `json:"account_navigation"`
+			Url             string `json:"url" url:"url,omitempty"`                           //  (Optional)
+			Enabled         bool   `json:"enabled" url:"enabled,omitempty"`                   //  (Optional)
+			Text            string `json:"text" url:"text,omitempty"`                         //  (Optional)
+			SelectionWidth  string `json:"selection_width" url:"selection_width,omitempty"`   //  (Optional)
+			SelectionHeight string `json:"selection_height" url:"selection_height,omitempty"` //  (Optional)
+			DisplayType     string `json:"display_type" url:"display_type,omitempty"`         //  (Optional)
+		} `json:"account_navigation" url:"account_navigation,omitempty"`
 
 		UserNavigation struct {
-			Url        string `json:"url"`        //  (Optional)
-			Enabled    bool   `json:"enabled"`    //  (Optional)
-			Text       string `json:"text"`       //  (Optional)
-			Visibility string `json:"visibility"` //  (Optional) . Must be one of admins, members, public
-		} `json:"user_navigation"`
+			Url        string `json:"url" url:"url,omitempty"`               //  (Optional)
+			Enabled    bool   `json:"enabled" url:"enabled,omitempty"`       //  (Optional)
+			Text       string `json:"text" url:"text,omitempty"`             //  (Optional)
+			Visibility string `json:"visibility" url:"visibility,omitempty"` //  (Optional) . Must be one of admins, members, public
+		} `json:"user_navigation" url:"user_navigation,omitempty"`
 
 		CourseHomeSubNavigation struct {
-			Url     string `json:"url"`      //  (Optional)
-			Enabled bool   `json:"enabled"`  //  (Optional)
-			Text    string `json:"text"`     //  (Optional)
-			IconUrl string `json:"icon_url"` //  (Optional)
-		} `json:"course_home_sub_navigation"`
+			Url     string `json:"url" url:"url,omitempty"`           //  (Optional)
+			Enabled bool   `json:"enabled" url:"enabled,omitempty"`   //  (Optional)
+			Text    string `json:"text" url:"text,omitempty"`         //  (Optional)
+			IconUrl string `json:"icon_url" url:"icon_url,omitempty"` //  (Optional)
+		} `json:"course_home_sub_navigation" url:"course_home_sub_navigation,omitempty"`
 
 		CourseNavigation struct {
-			Enabled      bool   `json:"enabled"`       //  (Optional)
-			Text         string `json:"text"`          //  (Optional)
-			Visibility   string `json:"visibility"`    //  (Optional) . Must be one of admins, members
-			WindowTarget string `json:"window_target"` //  (Optional) . Must be one of _blank, _self
-			Default      string `json:"default"`       //  (Optional) . Must be one of disabled, enabled
-			DisplayType  string `json:"display_type"`  //  (Optional)
-		} `json:"course_navigation"`
+			Enabled      bool   `json:"enabled" url:"enabled,omitempty"`             //  (Optional)
+			Text         string `json:"text" url:"text,omitempty"`                   //  (Optional)
+			Visibility   string `json:"visibility" url:"visibility,omitempty"`       //  (Optional) . Must be one of admins, members
+			WindowTarget string `json:"window_target" url:"window_target,omitempty"` //  (Optional) . Must be one of _blank, _self
+			Default      string `json:"default" url:"default,omitempty"`             //  (Optional) . Must be one of disabled, enabled
+			DisplayType  string `json:"display_type" url:"display_type,omitempty"`   //  (Optional)
+		} `json:"course_navigation" url:"course_navigation,omitempty"`
 
 		EditorButton struct {
-			Url             string `json:"url"`              //  (Optional)
-			Enabled         bool   `json:"enabled"`          //  (Optional)
-			IconUrl         string `json:"icon_url"`         //  (Optional)
-			SelectionWidth  string `json:"selection_width"`  //  (Optional)
-			SelectionHeight string `json:"selection_height"` //  (Optional)
-			MessageType     string `json:"message_type"`     //  (Optional)
-		} `json:"editor_button"`
+			Url             string `json:"url" url:"url,omitempty"`                           //  (Optional)
+			Enabled         bool   `json:"enabled" url:"enabled,omitempty"`                   //  (Optional)
+			IconUrl         string `json:"icon_url" url:"icon_url,omitempty"`                 //  (Optional)
+			SelectionWidth  string `json:"selection_width" url:"selection_width,omitempty"`   //  (Optional)
+			SelectionHeight string `json:"selection_height" url:"selection_height,omitempty"` //  (Optional)
+			MessageType     string `json:"message_type" url:"message_type,omitempty"`         //  (Optional)
+		} `json:"editor_button" url:"editor_button,omitempty"`
 
 		HomeworkSubmission struct {
-			Url         string `json:"url"`          //  (Optional)
-			Enabled     bool   `json:"enabled"`      //  (Optional)
-			Text        string `json:"text"`         //  (Optional)
-			MessageType string `json:"message_type"` //  (Optional)
-		} `json:"homework_submission"`
+			Url         string `json:"url" url:"url,omitempty"`                   //  (Optional)
+			Enabled     bool   `json:"enabled" url:"enabled,omitempty"`           //  (Optional)
+			Text        string `json:"text" url:"text,omitempty"`                 //  (Optional)
+			MessageType string `json:"message_type" url:"message_type,omitempty"` //  (Optional)
+		} `json:"homework_submission" url:"homework_submission,omitempty"`
 
 		LinkSelection struct {
-			Url         string `json:"url"`          //  (Optional)
-			Enabled     bool   `json:"enabled"`      //  (Optional)
-			Text        string `json:"text"`         //  (Optional)
-			MessageType string `json:"message_type"` //  (Optional)
-		} `json:"link_selection"`
+			Url         string `json:"url" url:"url,omitempty"`                   //  (Optional)
+			Enabled     bool   `json:"enabled" url:"enabled,omitempty"`           //  (Optional)
+			Text        string `json:"text" url:"text,omitempty"`                 //  (Optional)
+			MessageType string `json:"message_type" url:"message_type,omitempty"` //  (Optional)
+		} `json:"link_selection" url:"link_selection,omitempty"`
 
 		MigrationSelection struct {
-			Url         string `json:"url"`          //  (Optional)
-			Enabled     bool   `json:"enabled"`      //  (Optional)
-			MessageType string `json:"message_type"` //  (Optional)
-		} `json:"migration_selection"`
+			Url         string `json:"url" url:"url,omitempty"`                   //  (Optional)
+			Enabled     bool   `json:"enabled" url:"enabled,omitempty"`           //  (Optional)
+			MessageType string `json:"message_type" url:"message_type,omitempty"` //  (Optional)
+		} `json:"migration_selection" url:"migration_selection,omitempty"`
 
 		ToolConfiguration struct {
-			Url            string `json:"url"`              //  (Optional)
-			Enabled        bool   `json:"enabled"`          //  (Optional)
-			MessageType    string `json:"message_type"`     //  (Optional)
-			PreferSISEmail bool   `json:"prefer_sis_email"` //  (Optional)
-		} `json:"tool_configuration"`
+			Url            string `json:"url" url:"url,omitempty"`                           //  (Optional)
+			Enabled        bool   `json:"enabled" url:"enabled,omitempty"`                   //  (Optional)
+			MessageType    string `json:"message_type" url:"message_type,omitempty"`         //  (Optional)
+			PreferSISEmail bool   `json:"prefer_sis_email" url:"prefer_sis_email,omitempty"` //  (Optional)
+		} `json:"tool_configuration" url:"tool_configuration,omitempty"`
 
 		ResourceSelection struct {
-			Url             string `json:"url"`              //  (Optional)
-			Enabled         bool   `json:"enabled"`          //  (Optional)
-			IconUrl         string `json:"icon_url"`         //  (Optional)
-			SelectionWidth  string `json:"selection_width"`  //  (Optional)
-			SelectionHeight string `json:"selection_height"` //  (Optional)
-		} `json:"resource_selection"`
+			Url             string `json:"url" url:"url,omitempty"`                           //  (Optional)
+			Enabled         bool   `json:"enabled" url:"enabled,omitempty"`                   //  (Optional)
+			IconUrl         string `json:"icon_url" url:"icon_url,omitempty"`                 //  (Optional)
+			SelectionWidth  string `json:"selection_width" url:"selection_width,omitempty"`   //  (Optional)
+			SelectionHeight string `json:"selection_height" url:"selection_height,omitempty"` //  (Optional)
+		} `json:"resource_selection" url:"resource_selection,omitempty"`
 
-		ConfigType     string `json:"config_type"`     //  (Optional)
-		ConfigXml      string `json:"config_xml"`      //  (Optional)
-		ConfigUrl      string `json:"config_url"`      //  (Optional)
-		NotSelectable  bool   `json:"not_selectable"`  //  (Optional)
-		OauthCompliant bool   `json:"oauth_compliant"` //  (Optional)
+		ConfigType     string `json:"config_type" url:"config_type,omitempty"`         //  (Optional)
+		ConfigXml      string `json:"config_xml" url:"config_xml,omitempty"`           //  (Optional)
+		ConfigUrl      string `json:"config_url" url:"config_url,omitempty"`           //  (Optional)
+		NotSelectable  bool   `json:"not_selectable" url:"not_selectable,omitempty"`   //  (Optional)
+		OauthCompliant bool   `json:"oauth_compliant" url:"oauth_compliant,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -241,12 +243,16 @@ func (t *CreateExternalToolCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateExternalToolCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateExternalToolCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateExternalToolCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateExternalToolCourses) HasErrors() error {
@@ -263,7 +269,7 @@ func (t *CreateExternalToolCourses) HasErrors() error {
 	if t.Form.PrivacyLevel == "" {
 		errs = append(errs, "'PrivacyLevel' is required")
 	}
-	if !string_utils.Include([]string{"anonymous", "name_only", "public"}, t.Form.PrivacyLevel) {
+	if t.Form.PrivacyLevel != "" && !string_utils.Include([]string{"anonymous", "name_only", "public"}, t.Form.PrivacyLevel) {
 		errs = append(errs, "PrivacyLevel must be one of anonymous, name_only, public")
 	}
 	if t.Form.ConsumerKey == "" {
@@ -272,16 +278,16 @@ func (t *CreateExternalToolCourses) HasErrors() error {
 	if t.Form.SharedSecret == "" {
 		errs = append(errs, "'SharedSecret' is required")
 	}
-	if !string_utils.Include([]string{"admins", "members", "public"}, t.Form.UserNavigation.Visibility) {
+	if t.Form.UserNavigation.Visibility != "" && !string_utils.Include([]string{"admins", "members", "public"}, t.Form.UserNavigation.Visibility) {
 		errs = append(errs, "UserNavigation must be one of admins, members, public")
 	}
-	if !string_utils.Include([]string{"admins", "members"}, t.Form.CourseNavigation.Visibility) {
+	if t.Form.CourseNavigation.Visibility != "" && !string_utils.Include([]string{"admins", "members"}, t.Form.CourseNavigation.Visibility) {
 		errs = append(errs, "CourseNavigation must be one of admins, members")
 	}
-	if !string_utils.Include([]string{"_blank", "_self"}, t.Form.CourseNavigation.WindowTarget) {
+	if t.Form.CourseNavigation.WindowTarget != "" && !string_utils.Include([]string{"_blank", "_self"}, t.Form.CourseNavigation.WindowTarget) {
 		errs = append(errs, "CourseNavigation must be one of _blank, _self")
 	}
-	if !string_utils.Include([]string{"disabled", "enabled"}, t.Form.CourseNavigation.Default) {
+	if t.Form.CourseNavigation.Default != "" && !string_utils.Include([]string{"disabled", "enabled"}, t.Form.CourseNavigation.Default) {
 		errs = append(errs, "CourseNavigation must be one of disabled, enabled")
 	}
 	if len(errs) > 0 {

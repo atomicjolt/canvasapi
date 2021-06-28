@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -15,7 +16,7 @@ import (
 //
 type GetSinglePoll struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -33,8 +34,12 @@ func (t *GetSinglePoll) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetSinglePoll) GetBody() (string, error) {
-	return "", nil
+func (t *GetSinglePoll) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSinglePoll) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSinglePoll) HasErrors() error {

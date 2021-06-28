@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,8 +20,8 @@ import (
 //
 type GetCustomColor struct {
 	Path struct {
-		ID          string `json:"id"`           //  (Required)
-		AssetString string `json:"asset_string"` //  (Required)
+		ID          string `json:"id" url:"id,omitempty"`                     //  (Required)
+		AssetString string `json:"asset_string" url:"asset_string,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *GetCustomColor) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetCustomColor) GetBody() (string, error) {
-	return "", nil
+func (t *GetCustomColor) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetCustomColor) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetCustomColor) HasErrors() error {

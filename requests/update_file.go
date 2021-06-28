@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -38,17 +39,17 @@ import (
 //
 type UpdateFile struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Name           string    `json:"name"`             //  (Optional)
-		ParentFolderID string    `json:"parent_folder_id"` //  (Optional)
-		OnDuplicate    string    `json:"on_duplicate"`     //  (Optional) . Must be one of overwrite, rename
-		LockAt         time.Time `json:"lock_at"`          //  (Optional)
-		UnlockAt       time.Time `json:"unlock_at"`        //  (Optional)
-		Locked         bool      `json:"locked"`           //  (Optional)
-		Hidden         bool      `json:"hidden"`           //  (Optional)
+		Name           string    `json:"name" url:"name,omitempty"`                         //  (Optional)
+		ParentFolderID string    `json:"parent_folder_id" url:"parent_folder_id,omitempty"` //  (Optional)
+		OnDuplicate    string    `json:"on_duplicate" url:"on_duplicate,omitempty"`         //  (Optional) . Must be one of overwrite, rename
+		LockAt         time.Time `json:"lock_at" url:"lock_at,omitempty"`                   //  (Optional)
+		UnlockAt       time.Time `json:"unlock_at" url:"unlock_at,omitempty"`               //  (Optional)
+		Locked         bool      `json:"locked" url:"locked,omitempty"`                     //  (Optional)
+		Hidden         bool      `json:"hidden" url:"hidden,omitempty"`                     //  (Optional)
 	} `json:"form"`
 }
 
@@ -66,12 +67,16 @@ func (t *UpdateFile) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateFile) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateFile) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateFile) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateFile) HasErrors() error {
@@ -79,7 +84,7 @@ func (t *UpdateFile) HasErrors() error {
 	if t.Path.ID == "" {
 		errs = append(errs, "'ID' is required")
 	}
-	if !string_utils.Include([]string{"overwrite", "rename"}, t.Form.OnDuplicate) {
+	if t.Form.OnDuplicate != "" && !string_utils.Include([]string{"overwrite", "rename"}, t.Form.OnDuplicate) {
 		errs = append(errs, "OnDuplicate must be one of overwrite, rename")
 	}
 	if len(errs) > 0 {

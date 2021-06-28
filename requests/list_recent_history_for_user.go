@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -21,7 +22,7 @@ import (
 //
 type ListRecentHistoryForUser struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -39,8 +40,12 @@ func (t *ListRecentHistoryForUser) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListRecentHistoryForUser) GetBody() (string, error) {
-	return "", nil
+func (t *ListRecentHistoryForUser) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListRecentHistoryForUser) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListRecentHistoryForUser) HasErrors() error {

@@ -2,8 +2,8 @@ package requests
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"net/url"
 	"time"
 
 	"github.com/google/go-querystring/query"
@@ -32,12 +32,12 @@ import (
 //
 type CreatePlannerNote struct {
 	Form struct {
-		Title            string    `json:"title"`              //  (Optional)
-		Details          string    `json:"details"`            //  (Optional)
-		TodoDate         time.Time `json:"todo_date"`          //  (Optional)
-		CourseID         int64     `json:"course_id"`          //  (Optional)
-		LinkedObjectType string    `json:"linked_object_type"` //  (Optional)
-		LinkedObjectID   int64     `json:"linked_object_id"`   //  (Optional)
+		Title            string    `json:"title" url:"title,omitempty"`                           //  (Optional)
+		Details          string    `json:"details" url:"details,omitempty"`                       //  (Optional)
+		TodoDate         time.Time `json:"todo_date" url:"todo_date,omitempty"`                   //  (Optional)
+		CourseID         int64     `json:"course_id" url:"course_id,omitempty"`                   //  (Optional)
+		LinkedObjectType string    `json:"linked_object_type" url:"linked_object_type,omitempty"` //  (Optional)
+		LinkedObjectID   int64     `json:"linked_object_id" url:"linked_object_id,omitempty"`     //  (Optional)
 	} `json:"form"`
 }
 
@@ -53,12 +53,16 @@ func (t *CreatePlannerNote) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreatePlannerNote) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreatePlannerNote) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreatePlannerNote) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreatePlannerNote) HasErrors() error {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -28,11 +29,11 @@ import (
 //
 type GetEffectiveDueDates struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		AssignmentIDs []string `json:"assignment_ids"` //  (Optional)
+		AssignmentIDs []string `json:"assignment_ids" url:"assignment_ids,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -54,8 +55,12 @@ func (t *GetEffectiveDueDates) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetEffectiveDueDates) GetBody() (string, error) {
-	return "", nil
+func (t *GetEffectiveDueDates) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetEffectiveDueDates) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetEffectiveDueDates) HasErrors() error {

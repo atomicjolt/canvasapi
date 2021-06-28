@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -44,11 +45,11 @@ import (
 //
 type ImportCategoryGroups struct {
 	Path struct {
-		GroupCategoryID string `json:"group_category_id"` //  (Required)
+		GroupCategoryID string `json:"group_category_id" url:"group_category_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Attachment string `json:"attachment"` //  (Optional)
+		Attachment string `json:"attachment" url:"attachment,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -66,12 +67,16 @@ func (t *ImportCategoryGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ImportCategoryGroups) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *ImportCategoryGroups) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *ImportCategoryGroups) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *ImportCategoryGroups) HasErrors() error {

@@ -3,6 +3,7 @@ package requests
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/url"
 
 	"github.com/atomicjolt/canvasapi"
 )
@@ -25,8 +26,12 @@ func (t *DeletePushNotificationEndpoint) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeletePushNotificationEndpoint) GetBody() (string, error) {
-	return "", nil
+func (t *DeletePushNotificationEndpoint) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeletePushNotificationEndpoint) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeletePushNotificationEndpoint) HasErrors() error {

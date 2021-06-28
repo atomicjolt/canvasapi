@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -40,12 +41,12 @@ import (
 //
 type ListConversations struct {
 	Query struct {
-		Scope                     string   `json:"scope"`                        //  (Optional) . Must be one of unread, starred, archived
-		Filter                    []string `json:"filter"`                       //  (Optional)
-		FilterMode                string   `json:"filter_mode"`                  //  (Optional) . Must be one of and, or, default or
-		InterleaveSubmissions     bool     `json:"interleave_submissions"`       //  (Optional)
-		IncludeAllConversationIDs bool     `json:"include_all_conversation_ids"` //  (Optional)
-		Include                   []string `json:"include"`                      //  (Optional) . Must be one of participant_avatars
+		Scope                     string   `json:"scope" url:"scope,omitempty"`                                               //  (Optional) . Must be one of unread, starred, archived
+		Filter                    []string `json:"filter" url:"filter,omitempty"`                                             //  (Optional)
+		FilterMode                string   `json:"filter_mode" url:"filter_mode,omitempty"`                                   //  (Optional) . Must be one of and, or, default or
+		InterleaveSubmissions     bool     `json:"interleave_submissions" url:"interleave_submissions,omitempty"`             //  (Optional)
+		IncludeAllConversationIDs bool     `json:"include_all_conversation_ids" url:"include_all_conversation_ids,omitempty"` //  (Optional)
+		Include                   []string `json:"include" url:"include,omitempty"`                                           //  (Optional) . Must be one of participant_avatars
 	} `json:"query"`
 }
 
@@ -65,20 +66,24 @@ func (t *ListConversations) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListConversations) GetBody() (string, error) {
-	return "", nil
+func (t *ListConversations) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListConversations) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListConversations) HasErrors() error {
 	errs := []string{}
-	if !string_utils.Include([]string{"unread", "starred", "archived"}, t.Query.Scope) {
+	if t.Query.Scope != "" && !string_utils.Include([]string{"unread", "starred", "archived"}, t.Query.Scope) {
 		errs = append(errs, "Scope must be one of unread, starred, archived")
 	}
-	if !string_utils.Include([]string{"and", "or", "default or"}, t.Query.FilterMode) {
+	if t.Query.FilterMode != "" && !string_utils.Include([]string{"and", "or", "default or"}, t.Query.FilterMode) {
 		errs = append(errs, "FilterMode must be one of and, or, default or")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"participant_avatars"}, v) {
+		if v != "" && !string_utils.Include([]string{"participant_avatars"}, v) {
 			errs = append(errs, "Include must be one of participant_avatars")
 		}
 	}

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,13 +28,13 @@ import (
 //
 type UpdateTabForCourse struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		TabID    string `json:"tab_id"`    //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		TabID    string `json:"tab_id" url:"tab_id,omitempty"`       //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Position int64 `json:"position"` //  (Optional)
-		Hidden   bool  `json:"hidden"`   //  (Optional)
+		Position int64 `json:"position" url:"position,omitempty"` //  (Optional)
+		Hidden   bool  `json:"hidden" url:"hidden,omitempty"`     //  (Optional)
 	} `json:"form"`
 }
 
@@ -52,12 +53,16 @@ func (t *UpdateTabForCourse) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateTabForCourse) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateTabForCourse) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateTabForCourse) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateTabForCourse) HasErrors() error {

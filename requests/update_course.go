@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -120,57 +122,57 @@ import (
 //
 type UpdateCourse struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Course struct {
-			AccountID                            int64     `json:"account_id"`                                //  (Optional)
-			Name                                 string    `json:"name"`                                      //  (Optional)
-			CourseCode                           string    `json:"course_code"`                               //  (Optional)
-			StartAt                              time.Time `json:"start_at"`                                  //  (Optional)
-			EndAt                                time.Time `json:"end_at"`                                    //  (Optional)
-			License                              string    `json:"license"`                                   //  (Optional)
-			IsPublic                             bool      `json:"is_public"`                                 //  (Optional)
-			IsPublicToAuthUsers                  bool      `json:"is_public_to_auth_users"`                   //  (Optional)
-			PublicSyllabus                       bool      `json:"public_syllabus"`                           //  (Optional)
-			PublicSyllabusToAuth                 bool      `json:"public_syllabus_to_auth"`                   //  (Optional)
-			PublicDescription                    string    `json:"public_description"`                        //  (Optional)
-			AllowStudentWikiEdits                bool      `json:"allow_student_wiki_edits"`                  //  (Optional)
-			AllowWikiComments                    bool      `json:"allow_wiki_comments"`                       //  (Optional)
-			AllowStudentForumAttachments         bool      `json:"allow_student_forum_attachments"`           //  (Optional)
-			OpenEnrollment                       bool      `json:"open_enrollment"`                           //  (Optional)
-			SelfEnrollment                       bool      `json:"self_enrollment"`                           //  (Optional)
-			RestrictEnrollmentsToCourseDates     bool      `json:"restrict_enrollments_to_course_dates"`      //  (Optional)
-			TermID                               int64     `json:"term_id"`                                   //  (Optional)
-			SISCourseID                          string    `json:"sis_course_id"`                             //  (Optional)
-			IntegrationID                        string    `json:"integration_id"`                            //  (Optional)
-			HideFinalGrades                      bool      `json:"hide_final_grades"`                         //  (Optional)
-			TimeZone                             string    `json:"time_zone"`                                 //  (Optional)
-			ApplyAssignmentGroupWeights          bool      `json:"apply_assignment_group_weights"`            //  (Optional)
-			StorageQuotaMb                       int64     `json:"storage_quota_mb"`                          //  (Optional)
-			Event                                string    `json:"event"`                                     //  (Optional) . Must be one of claim, offer, conclude, delete, undelete
-			DefaultView                          string    `json:"default_view"`                              //  (Optional) . Must be one of feed, wiki, modules, syllabus, assignments
-			SyllabusBody                         string    `json:"syllabus_body"`                             //  (Optional)
-			SyllabusCourseSummary                bool      `json:"syllabus_course_summary"`                   //  (Optional)
-			GradingStandardID                    int64     `json:"grading_standard_id"`                       //  (Optional)
-			GradePassbackSetting                 string    `json:"grade_passback_setting"`                    //  (Optional)
-			CourseFormat                         string    `json:"course_format"`                             //  (Optional)
-			ImageID                              int64     `json:"image_id"`                                  //  (Optional)
-			ImageUrl                             string    `json:"image_url"`                                 //  (Optional)
-			RemoveImage                          bool      `json:"remove_image"`                              //  (Optional)
-			Blueprint                            bool      `json:"blueprint"`                                 //  (Optional)
-			BlueprintRestrictions                string    `json:"blueprint_restrictions"`                    //  (Optional)
-			UseBlueprintRestrictionsByObjectType bool      `json:"use_blueprint_restrictions_by_object_type"` //  (Optional)
-			BlueprintRestrictionsByObjectType    string    `json:"blueprint_restrictions_by_object_type"`     //  (Optional)
-			HomeroomCourse                       bool      `json:"homeroom_course"`                           //  (Optional)
-			SyncEnrollmentsFromHomeroom          string    `json:"sync_enrollments_from_homeroom"`            //  (Optional)
-			HomeroomCourseID                     string    `json:"homeroom_course_id"`                        //  (Optional)
-			Template                             bool      `json:"template"`                                  //  (Optional)
-			CourseColor                          string    `json:"course_color"`                              //  (Optional)
-		} `json:"course"`
+			AccountID                            int64     `json:"account_id" url:"account_id,omitempty"`                                                               //  (Optional)
+			Name                                 string    `json:"name" url:"name,omitempty"`                                                                           //  (Optional)
+			CourseCode                           string    `json:"course_code" url:"course_code,omitempty"`                                                             //  (Optional)
+			StartAt                              time.Time `json:"start_at" url:"start_at,omitempty"`                                                                   //  (Optional)
+			EndAt                                time.Time `json:"end_at" url:"end_at,omitempty"`                                                                       //  (Optional)
+			License                              string    `json:"license" url:"license,omitempty"`                                                                     //  (Optional)
+			IsPublic                             bool      `json:"is_public" url:"is_public,omitempty"`                                                                 //  (Optional)
+			IsPublicToAuthUsers                  bool      `json:"is_public_to_auth_users" url:"is_public_to_auth_users,omitempty"`                                     //  (Optional)
+			PublicSyllabus                       bool      `json:"public_syllabus" url:"public_syllabus,omitempty"`                                                     //  (Optional)
+			PublicSyllabusToAuth                 bool      `json:"public_syllabus_to_auth" url:"public_syllabus_to_auth,omitempty"`                                     //  (Optional)
+			PublicDescription                    string    `json:"public_description" url:"public_description,omitempty"`                                               //  (Optional)
+			AllowStudentWikiEdits                bool      `json:"allow_student_wiki_edits" url:"allow_student_wiki_edits,omitempty"`                                   //  (Optional)
+			AllowWikiComments                    bool      `json:"allow_wiki_comments" url:"allow_wiki_comments,omitempty"`                                             //  (Optional)
+			AllowStudentForumAttachments         bool      `json:"allow_student_forum_attachments" url:"allow_student_forum_attachments,omitempty"`                     //  (Optional)
+			OpenEnrollment                       bool      `json:"open_enrollment" url:"open_enrollment,omitempty"`                                                     //  (Optional)
+			SelfEnrollment                       bool      `json:"self_enrollment" url:"self_enrollment,omitempty"`                                                     //  (Optional)
+			RestrictEnrollmentsToCourseDates     bool      `json:"restrict_enrollments_to_course_dates" url:"restrict_enrollments_to_course_dates,omitempty"`           //  (Optional)
+			TermID                               int64     `json:"term_id" url:"term_id,omitempty"`                                                                     //  (Optional)
+			SISCourseID                          string    `json:"sis_course_id" url:"sis_course_id,omitempty"`                                                         //  (Optional)
+			IntegrationID                        string    `json:"integration_id" url:"integration_id,omitempty"`                                                       //  (Optional)
+			HideFinalGrades                      bool      `json:"hide_final_grades" url:"hide_final_grades,omitempty"`                                                 //  (Optional)
+			TimeZone                             string    `json:"time_zone" url:"time_zone,omitempty"`                                                                 //  (Optional)
+			ApplyAssignmentGroupWeights          bool      `json:"apply_assignment_group_weights" url:"apply_assignment_group_weights,omitempty"`                       //  (Optional)
+			StorageQuotaMb                       int64     `json:"storage_quota_mb" url:"storage_quota_mb,omitempty"`                                                   //  (Optional)
+			Event                                string    `json:"event" url:"event,omitempty"`                                                                         //  (Optional) . Must be one of claim, offer, conclude, delete, undelete
+			DefaultView                          string    `json:"default_view" url:"default_view,omitempty"`                                                           //  (Optional) . Must be one of feed, wiki, modules, syllabus, assignments
+			SyllabusBody                         string    `json:"syllabus_body" url:"syllabus_body,omitempty"`                                                         //  (Optional)
+			SyllabusCourseSummary                bool      `json:"syllabus_course_summary" url:"syllabus_course_summary,omitempty"`                                     //  (Optional)
+			GradingStandardID                    int64     `json:"grading_standard_id" url:"grading_standard_id,omitempty"`                                             //  (Optional)
+			GradePassbackSetting                 string    `json:"grade_passback_setting" url:"grade_passback_setting,omitempty"`                                       //  (Optional)
+			CourseFormat                         string    `json:"course_format" url:"course_format,omitempty"`                                                         //  (Optional)
+			ImageID                              int64     `json:"image_id" url:"image_id,omitempty"`                                                                   //  (Optional)
+			ImageUrl                             string    `json:"image_url" url:"image_url,omitempty"`                                                                 //  (Optional)
+			RemoveImage                          bool      `json:"remove_image" url:"remove_image,omitempty"`                                                           //  (Optional)
+			Blueprint                            bool      `json:"blueprint" url:"blueprint,omitempty"`                                                                 //  (Optional)
+			BlueprintRestrictions                string    `json:"blueprint_restrictions" url:"blueprint_restrictions,omitempty"`                                       //  (Optional)
+			UseBlueprintRestrictionsByObjectType bool      `json:"use_blueprint_restrictions_by_object_type" url:"use_blueprint_restrictions_by_object_type,omitempty"` //  (Optional)
+			BlueprintRestrictionsByObjectType    string    `json:"blueprint_restrictions_by_object_type" url:"blueprint_restrictions_by_object_type,omitempty"`         //  (Optional)
+			HomeroomCourse                       bool      `json:"homeroom_course" url:"homeroom_course,omitempty"`                                                     //  (Optional)
+			SyncEnrollmentsFromHomeroom          string    `json:"sync_enrollments_from_homeroom" url:"sync_enrollments_from_homeroom,omitempty"`                       //  (Optional)
+			HomeroomCourseID                     string    `json:"homeroom_course_id" url:"homeroom_course_id,omitempty"`                                               //  (Optional)
+			Template                             bool      `json:"template" url:"template,omitempty"`                                                                   //  (Optional)
+			CourseColor                          string    `json:"course_color" url:"course_color,omitempty"`                                                           //  (Optional)
+		} `json:"course" url:"course,omitempty"`
 
-		Offer bool `json:"offer"` //  (Optional)
+		Offer bool `json:"offer" url:"offer,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -188,12 +190,16 @@ func (t *UpdateCourse) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateCourse) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateCourse) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateCourse) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateCourse) HasErrors() error {
@@ -201,10 +207,10 @@ func (t *UpdateCourse) HasErrors() error {
 	if t.Path.ID == "" {
 		errs = append(errs, "'ID' is required")
 	}
-	if !string_utils.Include([]string{"claim", "offer", "conclude", "delete", "undelete"}, t.Form.Course.Event) {
+	if t.Form.Course.Event != "" && !string_utils.Include([]string{"claim", "offer", "conclude", "delete", "undelete"}, t.Form.Course.Event) {
 		errs = append(errs, "Course must be one of claim, offer, conclude, delete, undelete")
 	}
-	if !string_utils.Include([]string{"feed", "wiki", "modules", "syllabus", "assignments"}, t.Form.Course.DefaultView) {
+	if t.Form.Course.DefaultView != "" && !string_utils.Include([]string{"feed", "wiki", "modules", "syllabus", "assignments"}, t.Form.Course.DefaultView) {
 		errs = append(errs, "Course must be one of feed, wiki, modules, syllabus, assignments")
 	}
 	if len(errs) > 0 {

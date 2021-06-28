@@ -3,6 +3,7 @@ package requests
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/url"
 
 	"github.com/atomicjolt/canvasapi"
 	"github.com/atomicjolt/canvasapi/models"
@@ -29,8 +30,12 @@ func (t *CreateJwt) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateJwt) GetBody() (string, error) {
-	return "", nil
+func (t *CreateJwt) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *CreateJwt) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *CreateJwt) HasErrors() error {

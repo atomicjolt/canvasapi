@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -40,13 +41,13 @@ import (
 //
 type FindRecipientsConversations struct {
 	Query struct {
-		Search             string   `json:"search"`               //  (Optional)
-		Context            string   `json:"context"`              //  (Optional)
-		Exclude            []string `json:"exclude"`              //  (Optional)
-		Type               string   `json:"type"`                 //  (Optional) . Must be one of user, context
-		UserID             int64    `json:"user_id"`              //  (Optional)
-		FromConversationID int64    `json:"from_conversation_id"` //  (Optional)
-		Permissions        []string `json:"permissions"`          //  (Optional)
+		Search             string   `json:"search" url:"search,omitempty"`                             //  (Optional)
+		Context            string   `json:"context" url:"context,omitempty"`                           //  (Optional)
+		Exclude            []string `json:"exclude" url:"exclude,omitempty"`                           //  (Optional)
+		Type               string   `json:"type" url:"type,omitempty"`                                 //  (Optional) . Must be one of user, context
+		UserID             int64    `json:"user_id" url:"user_id,omitempty"`                           //  (Optional)
+		FromConversationID int64    `json:"from_conversation_id" url:"from_conversation_id,omitempty"` //  (Optional)
+		Permissions        []string `json:"permissions" url:"permissions,omitempty"`                   //  (Optional)
 	} `json:"query"`
 }
 
@@ -66,13 +67,17 @@ func (t *FindRecipientsConversations) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *FindRecipientsConversations) GetBody() (string, error) {
-	return "", nil
+func (t *FindRecipientsConversations) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *FindRecipientsConversations) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *FindRecipientsConversations) HasErrors() error {
 	errs := []string{}
-	if !string_utils.Include([]string{"user", "context"}, t.Query.Type) {
+	if t.Query.Type != "" && !string_utils.Include([]string{"user", "context"}, t.Query.Type) {
 		errs = append(errs, "Type must be one of user, context")
 	}
 	if len(errs) > 0 {

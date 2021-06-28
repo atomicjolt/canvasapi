@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,14 +27,14 @@ import (
 //
 type UpdateBookmark struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Name     string `json:"name"`     //  (Optional)
-		Url      string `json:"url"`      //  (Optional)
-		Position int64  `json:"position"` //  (Optional)
-		Data     string `json:"data"`     //  (Optional)
+		Name     string `json:"name" url:"name,omitempty"`         //  (Optional)
+		Url      string `json:"url" url:"url,omitempty"`           //  (Optional)
+		Position int64  `json:"position" url:"position,omitempty"` //  (Optional)
+		Data     string `json:"data" url:"data,omitempty"`         //  (Optional)
 	} `json:"form"`
 }
 
@@ -51,12 +52,16 @@ func (t *UpdateBookmark) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateBookmark) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateBookmark) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateBookmark) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateBookmark) HasErrors() error {

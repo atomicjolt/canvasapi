@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,13 +26,13 @@ import (
 //
 type GetSingleRole struct {
 	Path struct {
-		ID        string `json:"id"`         //  (Required)
-		AccountID string `json:"account_id"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		RoleID int64  `json:"role_id"` //  (Required)
-		Role   string `json:"role"`    //  (Optional)
+		RoleID int64  `json:"role_id" url:"role_id,omitempty"` //  (Required)
+		Role   string `json:"role" url:"role,omitempty"`       //  (Optional)
 	} `json:"query"`
 }
 
@@ -54,8 +55,12 @@ func (t *GetSingleRole) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSingleRole) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleRole) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleRole) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleRole) HasErrors() error {

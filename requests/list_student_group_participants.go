@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,11 +24,11 @@ import (
 //
 type ListStudentGroupParticipants struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		RegistrationStatus string `json:"registration_status"` //  (Optional) . Must be one of all, registered, registered
+		RegistrationStatus string `json:"registration_status" url:"registration_status,omitempty"` //  (Optional) . Must be one of all, registered, registered
 	} `json:"query"`
 }
 
@@ -49,8 +50,12 @@ func (t *ListStudentGroupParticipants) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListStudentGroupParticipants) GetBody() (string, error) {
-	return "", nil
+func (t *ListStudentGroupParticipants) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListStudentGroupParticipants) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListStudentGroupParticipants) HasErrors() error {
@@ -58,7 +63,7 @@ func (t *ListStudentGroupParticipants) HasErrors() error {
 	if t.Path.ID == "" {
 		errs = append(errs, "'ID' is required")
 	}
-	if !string_utils.Include([]string{"all", "registered", "registered"}, t.Query.RegistrationStatus) {
+	if t.Query.RegistrationStatus != "" && !string_utils.Include([]string{"all", "registered", "registered"}, t.Query.RegistrationStatus) {
 		errs = append(errs, "RegistrationStatus must be one of all, registered, registered")
 	}
 	if len(errs) > 0 {

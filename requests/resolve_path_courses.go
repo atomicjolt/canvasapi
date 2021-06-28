@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -23,7 +24,7 @@ import (
 //
 type ResolvePathCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -41,8 +42,12 @@ func (t *ResolvePathCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ResolvePathCourses) GetBody() (string, error) {
-	return "", nil
+func (t *ResolvePathCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ResolvePathCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ResolvePathCourses) HasErrors() error {

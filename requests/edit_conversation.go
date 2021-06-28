@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -32,19 +34,19 @@ import (
 //
 type EditConversation struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Conversation struct {
-			WorkflowState string `json:"workflow_state"` //  (Optional) . Must be one of read, unread, archived
-			Subscribed    bool   `json:"subscribed"`     //  (Optional)
-			Starred       bool   `json:"starred"`        //  (Optional)
-		} `json:"conversation"`
+			WorkflowState string `json:"workflow_state" url:"workflow_state,omitempty"` //  (Optional) . Must be one of read, unread, archived
+			Subscribed    bool   `json:"subscribed" url:"subscribed,omitempty"`         //  (Optional)
+			Starred       bool   `json:"starred" url:"starred,omitempty"`               //  (Optional)
+		} `json:"conversation" url:"conversation,omitempty"`
 
-		Scope      string   `json:"scope"`       //  (Optional) . Must be one of unread, starred, archived
-		Filter     []string `json:"filter"`      //  (Optional)
-		FilterMode string   `json:"filter_mode"` //  (Optional) . Must be one of and, or, default or
+		Scope      string   `json:"scope" url:"scope,omitempty"`             //  (Optional) . Must be one of unread, starred, archived
+		Filter     []string `json:"filter" url:"filter,omitempty"`           //  (Optional)
+		FilterMode string   `json:"filter_mode" url:"filter_mode,omitempty"` //  (Optional) . Must be one of and, or, default or
 	} `json:"form"`
 }
 
@@ -62,12 +64,16 @@ func (t *EditConversation) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *EditConversation) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *EditConversation) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *EditConversation) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *EditConversation) HasErrors() error {
@@ -75,13 +81,13 @@ func (t *EditConversation) HasErrors() error {
 	if t.Path.ID == "" {
 		errs = append(errs, "'ID' is required")
 	}
-	if !string_utils.Include([]string{"read", "unread", "archived"}, t.Form.Conversation.WorkflowState) {
+	if t.Form.Conversation.WorkflowState != "" && !string_utils.Include([]string{"read", "unread", "archived"}, t.Form.Conversation.WorkflowState) {
 		errs = append(errs, "Conversation must be one of read, unread, archived")
 	}
-	if !string_utils.Include([]string{"unread", "starred", "archived"}, t.Form.Scope) {
+	if t.Form.Scope != "" && !string_utils.Include([]string{"unread", "starred", "archived"}, t.Form.Scope) {
 		errs = append(errs, "Scope must be one of unread, starred, archived")
 	}
-	if !string_utils.Include([]string{"and", "or", "default or"}, t.Form.FilterMode) {
+	if t.Form.FilterMode != "" && !string_utils.Include([]string{"and", "or", "default or"}, t.Form.FilterMode) {
 		errs = append(errs, "FilterMode must be one of and, or, default or")
 	}
 	if len(errs) > 0 {

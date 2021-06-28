@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -37,13 +38,13 @@ import (
 //
 type ListMediaObjectsCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Sort    string   `json:"sort"`    //  (Optional) . Must be one of title, created_at
-		Order   string   `json:"order"`   //  (Optional) . Must be one of asc, desc
-		Exclude []string `json:"exclude"` //  (Optional) . Must be one of sources, tracks
+		Sort    string   `json:"sort" url:"sort,omitempty"`       //  (Optional) . Must be one of title, created_at
+		Order   string   `json:"order" url:"order,omitempty"`     //  (Optional) . Must be one of asc, desc
+		Exclude []string `json:"exclude" url:"exclude,omitempty"` //  (Optional) . Must be one of sources, tracks
 	} `json:"query"`
 }
 
@@ -65,8 +66,12 @@ func (t *ListMediaObjectsCourses) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListMediaObjectsCourses) GetBody() (string, error) {
-	return "", nil
+func (t *ListMediaObjectsCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListMediaObjectsCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListMediaObjectsCourses) HasErrors() error {
@@ -74,14 +79,14 @@ func (t *ListMediaObjectsCourses) HasErrors() error {
 	if t.Path.CourseID == "" {
 		errs = append(errs, "'CourseID' is required")
 	}
-	if !string_utils.Include([]string{"title", "created_at"}, t.Query.Sort) {
+	if t.Query.Sort != "" && !string_utils.Include([]string{"title", "created_at"}, t.Query.Sort) {
 		errs = append(errs, "Sort must be one of title, created_at")
 	}
-	if !string_utils.Include([]string{"asc", "desc"}, t.Query.Order) {
+	if t.Query.Order != "" && !string_utils.Include([]string{"asc", "desc"}, t.Query.Order) {
 		errs = append(errs, "Order must be one of asc, desc")
 	}
 	for _, v := range t.Query.Exclude {
-		if !string_utils.Include([]string{"sources", "tracks"}, v) {
+		if v != "" && !string_utils.Include([]string{"sources", "tracks"}, v) {
 			errs = append(errs, "Exclude must be one of sources, tracks")
 		}
 	}

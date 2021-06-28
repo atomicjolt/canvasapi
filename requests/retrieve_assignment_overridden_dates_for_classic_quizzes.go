@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,7 +26,7 @@ import (
 //
 type RetrieveAssignmentOverriddenDatesForClassicQuizzes struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
@@ -51,8 +52,12 @@ func (t *RetrieveAssignmentOverriddenDatesForClassicQuizzes) GetQuery() (string,
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *RetrieveAssignmentOverriddenDatesForClassicQuizzes) GetBody() (string, error) {
-	return "", nil
+func (t *RetrieveAssignmentOverriddenDatesForClassicQuizzes) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RetrieveAssignmentOverriddenDatesForClassicQuizzes) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RetrieveAssignmentOverriddenDatesForClassicQuizzes) HasErrors() error {
@@ -87,5 +92,5 @@ func (t *RetrieveAssignmentOverriddenDatesForClassicQuizzes) Do(c *canvasapi.Can
 }
 
 type RetrieveAssignmentOverriddenDatesForClassicQuizzesQuizAssignmentOverrides struct {
-	QuizIDs []int64 `json:"quiz_ids"` //  (Optional)
+	QuizIDs []int64 `json:"quiz_ids" url:"quiz_ids,omitempty"` //  (Optional)
 }

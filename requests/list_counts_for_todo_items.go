@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,7 +24,7 @@ import (
 //
 type ListCountsForTodoItems struct {
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of ungraded_quizzes
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of ungraded_quizzes
 	} `json:"query"`
 }
 
@@ -43,14 +44,18 @@ func (t *ListCountsForTodoItems) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListCountsForTodoItems) GetBody() (string, error) {
-	return "", nil
+func (t *ListCountsForTodoItems) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListCountsForTodoItems) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListCountsForTodoItems) HasErrors() error {
 	errs := []string{}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"ungraded_quizzes"}, v) {
+		if v != "" && !string_utils.Include([]string{"ungraded_quizzes"}, v) {
 			errs = append(errs, "Include must be one of ungraded_quizzes")
 		}
 	}

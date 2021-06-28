@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -18,7 +19,7 @@ import (
 //
 type DeletePlannerOverride struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -36,8 +37,12 @@ func (t *DeletePlannerOverride) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeletePlannerOverride) GetBody() (string, error) {
-	return "", nil
+func (t *DeletePlannerOverride) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeletePlannerOverride) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeletePlannerOverride) HasErrors() error {

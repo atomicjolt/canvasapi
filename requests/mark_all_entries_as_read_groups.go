@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,12 +28,12 @@ import (
 //
 type MarkAllEntriesAsReadGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
-		TopicID string `json:"topic_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
+		TopicID string `json:"topic_id" url:"topic_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ForcedReadState bool `json:"forced_read_state"` //  (Optional)
+		ForcedReadState bool `json:"forced_read_state" url:"forced_read_state,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -50,12 +52,16 @@ func (t *MarkAllEntriesAsReadGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *MarkAllEntriesAsReadGroups) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *MarkAllEntriesAsReadGroups) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *MarkAllEntriesAsReadGroups) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *MarkAllEntriesAsReadGroups) HasErrors() error {

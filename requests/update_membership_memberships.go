@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,13 +27,13 @@ import (
 //
 type UpdateMembershipMemberships struct {
 	Path struct {
-		GroupID      string `json:"group_id"`      //  (Required)
-		MembershipID string `json:"membership_id"` //  (Required)
+		GroupID      string `json:"group_id" url:"group_id,omitempty"`           //  (Required)
+		MembershipID string `json:"membership_id" url:"membership_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		WorkflowState string `json:"workflow_state"` //  (Optional) . Must be one of accepted
-		Moderator     string `json:"moderator"`      //  (Optional)
+		WorkflowState string `json:"workflow_state" url:"workflow_state,omitempty"` //  (Optional) . Must be one of accepted
+		Moderator     string `json:"moderator" url:"moderator,omitempty"`           //  (Optional)
 	} `json:"form"`
 }
 
@@ -51,12 +52,16 @@ func (t *UpdateMembershipMemberships) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateMembershipMemberships) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateMembershipMemberships) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateMembershipMemberships) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateMembershipMemberships) HasErrors() error {
@@ -67,7 +72,7 @@ func (t *UpdateMembershipMemberships) HasErrors() error {
 	if t.Path.MembershipID == "" {
 		errs = append(errs, "'MembershipID' is required")
 	}
-	if !string_utils.Include([]string{"accepted"}, t.Form.WorkflowState) {
+	if t.Form.WorkflowState != "" && !string_utils.Include([]string{"accepted"}, t.Form.WorkflowState) {
 		errs = append(errs, "WorkflowState must be one of accepted")
 	}
 	if len(errs) > 0 {

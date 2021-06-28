@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -35,18 +37,18 @@ import (
 //
 type EditUserLogin struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Login struct {
-			UniqueID                 string `json:"unique_id"`                  //  (Optional)
-			Password                 string `json:"password"`                   //  (Optional)
-			SISUserID                string `json:"sis_user_id"`                //  (Optional)
-			IntegrationID            string `json:"integration_id"`             //  (Optional)
-			AuthenticationProviderID string `json:"authentication_provider_id"` //  (Optional)
-		} `json:"login"`
+			UniqueID                 string `json:"unique_id" url:"unique_id,omitempty"`                                   //  (Optional)
+			Password                 string `json:"password" url:"password,omitempty"`                                     //  (Optional)
+			SISUserID                string `json:"sis_user_id" url:"sis_user_id,omitempty"`                               //  (Optional)
+			IntegrationID            string `json:"integration_id" url:"integration_id,omitempty"`                         //  (Optional)
+			AuthenticationProviderID string `json:"authentication_provider_id" url:"authentication_provider_id,omitempty"` //  (Optional)
+		} `json:"login" url:"login,omitempty"`
 	} `json:"form"`
 }
 
@@ -65,12 +67,16 @@ func (t *EditUserLogin) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *EditUserLogin) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *EditUserLogin) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *EditUserLogin) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *EditUserLogin) HasErrors() error {

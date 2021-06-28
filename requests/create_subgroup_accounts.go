@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,14 +28,14 @@ import (
 //
 type CreateSubgroupAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Title       string `json:"title"`       //  (Required)
-		Description string `json:"description"` //  (Optional)
-		VendorGuid  string `json:"vendor_guid"` //  (Optional)
+		Title       string `json:"title" url:"title,omitempty"`             //  (Required)
+		Description string `json:"description" url:"description,omitempty"` //  (Optional)
+		VendorGuid  string `json:"vendor_guid" url:"vendor_guid,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -53,12 +54,16 @@ func (t *CreateSubgroupAccounts) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateSubgroupAccounts) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateSubgroupAccounts) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateSubgroupAccounts) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateSubgroupAccounts) HasErrors() error {

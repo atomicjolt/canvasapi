@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -28,11 +30,11 @@ import (
 //
 type DisableAssignmentsCurrentlyEnabledForGradeExportToSIS struct {
 	Path struct {
-		CourseID int64 `json:"course_id"` //  (Required)
+		CourseID int64 `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		GradingPeriodID int64 `json:"grading_period_id"` //  (Optional)
+		GradingPeriodID int64 `json:"grading_period_id" url:"grading_period_id,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -50,12 +52,16 @@ func (t *DisableAssignmentsCurrentlyEnabledForGradeExportToSIS) GetQuery() (stri
 	return "", nil
 }
 
-func (t *DisableAssignmentsCurrentlyEnabledForGradeExportToSIS) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *DisableAssignmentsCurrentlyEnabledForGradeExportToSIS) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *DisableAssignmentsCurrentlyEnabledForGradeExportToSIS) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *DisableAssignmentsCurrentlyEnabledForGradeExportToSIS) HasErrors() error {

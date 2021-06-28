@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -101,16 +102,18 @@ import (
 //    anything except "deleted", for all other enrollment types
 // # EnrollmentState (Optional) . Must be one of active, invited_or_pending, completedWhen set, only return courses where the user has an enrollment with the given state.
 //    This will respect section/course/term date overrides.
+// # Homeroom (Optional) If set, only return homeroom courses.
 //
 type ListCoursesForUser struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include         []string `json:"include"`          //  (Optional) . Must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, grading_periods, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, course_image, concluded
-		State           []string `json:"state"`            //  (Optional) . Must be one of unpublished, available, completed, deleted
-		EnrollmentState string   `json:"enrollment_state"` //  (Optional) . Must be one of active, invited_or_pending, completed
+		Include         []string `json:"include" url:"include,omitempty"`                   //  (Optional) . Must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, grading_periods, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, course_image, concluded
+		State           []string `json:"state" url:"state,omitempty"`                       //  (Optional) . Must be one of unpublished, available, completed, deleted
+		EnrollmentState string   `json:"enrollment_state" url:"enrollment_state,omitempty"` //  (Optional) . Must be one of active, invited_or_pending, completed
+		Homeroom        bool     `json:"homeroom" url:"homeroom,omitempty"`                 //  (Optional)
 	} `json:"query"`
 }
 
@@ -132,8 +135,12 @@ func (t *ListCoursesForUser) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListCoursesForUser) GetBody() (string, error) {
-	return "", nil
+func (t *ListCoursesForUser) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListCoursesForUser) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListCoursesForUser) HasErrors() error {
@@ -142,16 +149,16 @@ func (t *ListCoursesForUser) HasErrors() error {
 		errs = append(errs, "'UserID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"needs_grading_count", "syllabus_body", "public_description", "total_scores", "current_grading_period_scores", "grading_periods", "term", "account", "course_progress", "sections", "storage_quota_used_mb", "total_students", "passback_status", "favorites", "teachers", "observed_users", "course_image", "concluded"}, v) {
+		if v != "" && !string_utils.Include([]string{"needs_grading_count", "syllabus_body", "public_description", "total_scores", "current_grading_period_scores", "grading_periods", "term", "account", "course_progress", "sections", "storage_quota_used_mb", "total_students", "passback_status", "favorites", "teachers", "observed_users", "course_image", "concluded"}, v) {
 			errs = append(errs, "Include must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, grading_periods, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, course_image, concluded")
 		}
 	}
 	for _, v := range t.Query.State {
-		if !string_utils.Include([]string{"unpublished", "available", "completed", "deleted"}, v) {
+		if v != "" && !string_utils.Include([]string{"unpublished", "available", "completed", "deleted"}, v) {
 			errs = append(errs, "State must be one of unpublished, available, completed, deleted")
 		}
 	}
-	if !string_utils.Include([]string{"active", "invited_or_pending", "completed"}, t.Query.EnrollmentState) {
+	if t.Query.EnrollmentState != "" && !string_utils.Include([]string{"active", "invited_or_pending", "completed"}, t.Query.EnrollmentState) {
 		errs = append(errs, "EnrollmentState must be one of active, invited_or_pending, completed")
 	}
 	if len(errs) > 0 {

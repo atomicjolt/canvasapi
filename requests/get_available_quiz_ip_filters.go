@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -18,8 +19,8 @@ import (
 //
 type GetAvailableQuizIpFilters struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
 	} `json:"path"`
 }
 
@@ -38,8 +39,12 @@ func (t *GetAvailableQuizIpFilters) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetAvailableQuizIpFilters) GetBody() (string, error) {
-	return "", nil
+func (t *GetAvailableQuizIpFilters) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetAvailableQuizIpFilters) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetAvailableQuizIpFilters) HasErrors() error {

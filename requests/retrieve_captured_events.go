@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,13 +24,13 @@ import (
 //
 type RetrieveCapturedEvents struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Attempt int64 `json:"attempt"` //  (Optional)
+		Attempt int64 `json:"attempt" url:"attempt,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -53,8 +54,12 @@ func (t *RetrieveCapturedEvents) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *RetrieveCapturedEvents) GetBody() (string, error) {
-	return "", nil
+func (t *RetrieveCapturedEvents) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RetrieveCapturedEvents) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RetrieveCapturedEvents) HasErrors() error {

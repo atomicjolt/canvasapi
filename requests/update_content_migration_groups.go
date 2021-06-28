@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -24,8 +25,8 @@ import (
 //
 type UpdateContentMigrationGroups struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
-		ID      string `json:"id"`       //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
+		ID      string `json:"id" url:"id,omitempty"`             //  (Required)
 	} `json:"path"`
 }
 
@@ -44,8 +45,12 @@ func (t *UpdateContentMigrationGroups) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateContentMigrationGroups) GetBody() (string, error) {
-	return "", nil
+func (t *UpdateContentMigrationGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *UpdateContentMigrationGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *UpdateContentMigrationGroups) HasErrors() error {

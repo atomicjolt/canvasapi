@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -29,10 +30,10 @@ import (
 //
 type ListAppointmentGroups struct {
 	Query struct {
-		Scope                   string   `json:"scope"`                     //  (Optional) . Must be one of reservable, manageable
-		ContextCodes            []string `json:"context_codes"`             //  (Optional)
-		IncludePastAppointments bool     `json:"include_past_appointments"` //  (Optional)
-		Include                 []string `json:"include"`                   //  (Optional) . Must be one of appointments, child_events, participant_count, reserved_times, all_context_codes
+		Scope                   string   `json:"scope" url:"scope,omitempty"`                                         //  (Optional) . Must be one of reservable, manageable
+		ContextCodes            []string `json:"context_codes" url:"context_codes,omitempty"`                         //  (Optional)
+		IncludePastAppointments bool     `json:"include_past_appointments" url:"include_past_appointments,omitempty"` //  (Optional)
+		Include                 []string `json:"include" url:"include,omitempty"`                                     //  (Optional) . Must be one of appointments, child_events, participant_count, reserved_times, all_context_codes
 	} `json:"query"`
 }
 
@@ -52,17 +53,21 @@ func (t *ListAppointmentGroups) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListAppointmentGroups) GetBody() (string, error) {
-	return "", nil
+func (t *ListAppointmentGroups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListAppointmentGroups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListAppointmentGroups) HasErrors() error {
 	errs := []string{}
-	if !string_utils.Include([]string{"reservable", "manageable"}, t.Query.Scope) {
+	if t.Query.Scope != "" && !string_utils.Include([]string{"reservable", "manageable"}, t.Query.Scope) {
 		errs = append(errs, "Scope must be one of reservable, manageable")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"appointments", "child_events", "participant_count", "reserved_times", "all_context_codes"}, v) {
+		if v != "" && !string_utils.Include([]string{"appointments", "child_events", "participant_count", "reserved_times", "all_context_codes"}, v) {
 			errs = append(errs, "Include must be one of appointments, child_events, participant_count, reserved_times, all_context_codes")
 		}
 	}

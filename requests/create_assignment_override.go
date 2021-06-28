@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -63,20 +64,20 @@ import (
 //
 type CreateAssignmentOverride struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		AssignmentOverride struct {
-			StudentIDs      []int64   `json:"student_ids"`       //  (Optional)
-			Title           string    `json:"title"`             //  (Optional)
-			GroupID         int64     `json:"group_id"`          //  (Optional)
-			CourseSectionID int64     `json:"course_section_id"` //  (Optional)
-			DueAt           time.Time `json:"due_at"`            //  (Optional)
-			UnlockAt        time.Time `json:"unlock_at"`         //  (Optional)
-			LockAt          time.Time `json:"lock_at"`           //  (Optional)
-		} `json:"assignment_override"`
+			StudentIDs      []int64   `json:"student_ids" url:"student_ids,omitempty"`             //  (Optional)
+			Title           string    `json:"title" url:"title,omitempty"`                         //  (Optional)
+			GroupID         int64     `json:"group_id" url:"group_id,omitempty"`                   //  (Optional)
+			CourseSectionID int64     `json:"course_section_id" url:"course_section_id,omitempty"` //  (Optional)
+			DueAt           time.Time `json:"due_at" url:"due_at,omitempty"`                       //  (Optional)
+			UnlockAt        time.Time `json:"unlock_at" url:"unlock_at,omitempty"`                 //  (Optional)
+			LockAt          time.Time `json:"lock_at" url:"lock_at,omitempty"`                     //  (Optional)
+		} `json:"assignment_override" url:"assignment_override,omitempty"`
 	} `json:"form"`
 }
 
@@ -95,12 +96,16 @@ func (t *CreateAssignmentOverride) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateAssignmentOverride) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateAssignmentOverride) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateAssignmentOverride) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateAssignmentOverride) HasErrors() error {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -18,7 +19,7 @@ import (
 //
 type DeleteConversation struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -36,8 +37,12 @@ func (t *DeleteConversation) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteConversation) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteConversation) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteConversation) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteConversation) HasErrors() error {

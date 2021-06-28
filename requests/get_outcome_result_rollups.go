@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -45,19 +46,19 @@ import (
 //
 type GetOutcomeResultRollups struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Aggregate     string   `json:"aggregate"`       //  (Optional) . Must be one of course
-		AggregateStat string   `json:"aggregate_stat"`  //  (Optional) . Must be one of mean, median
-		UserIDs       []int64  `json:"user_ids"`        //  (Optional)
-		OutcomeIDs    []int64  `json:"outcome_ids"`     //  (Optional)
-		Include       []string `json:"include"`         //  (Optional)
-		Exclude       []string `json:"exclude"`         //  (Optional) . Must be one of missing_user_rollups
-		SortBy        string   `json:"sort_by"`         //  (Optional) . Must be one of student, outcome
-		SortOutcomeID int64    `json:"sort_outcome_id"` //  (Optional)
-		SortOrder     string   `json:"sort_order"`      //  (Optional) . Must be one of asc, desc
+		Aggregate     string   `json:"aggregate" url:"aggregate,omitempty"`             //  (Optional) . Must be one of course
+		AggregateStat string   `json:"aggregate_stat" url:"aggregate_stat,omitempty"`   //  (Optional) . Must be one of mean, median
+		UserIDs       []int64  `json:"user_ids" url:"user_ids,omitempty"`               //  (Optional)
+		OutcomeIDs    []int64  `json:"outcome_ids" url:"outcome_ids,omitempty"`         //  (Optional)
+		Include       []string `json:"include" url:"include,omitempty"`                 //  (Optional)
+		Exclude       []string `json:"exclude" url:"exclude,omitempty"`                 //  (Optional) . Must be one of missing_user_rollups
+		SortBy        string   `json:"sort_by" url:"sort_by,omitempty"`                 //  (Optional) . Must be one of student, outcome
+		SortOutcomeID int64    `json:"sort_outcome_id" url:"sort_outcome_id,omitempty"` //  (Optional)
+		SortOrder     string   `json:"sort_order" url:"sort_order,omitempty"`           //  (Optional) . Must be one of asc, desc
 	} `json:"query"`
 }
 
@@ -79,8 +80,12 @@ func (t *GetOutcomeResultRollups) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetOutcomeResultRollups) GetBody() (string, error) {
-	return "", nil
+func (t *GetOutcomeResultRollups) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetOutcomeResultRollups) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetOutcomeResultRollups) HasErrors() error {
@@ -88,21 +93,21 @@ func (t *GetOutcomeResultRollups) HasErrors() error {
 	if t.Path.CourseID == "" {
 		errs = append(errs, "'CourseID' is required")
 	}
-	if !string_utils.Include([]string{"course"}, t.Query.Aggregate) {
+	if t.Query.Aggregate != "" && !string_utils.Include([]string{"course"}, t.Query.Aggregate) {
 		errs = append(errs, "Aggregate must be one of course")
 	}
-	if !string_utils.Include([]string{"mean", "median"}, t.Query.AggregateStat) {
+	if t.Query.AggregateStat != "" && !string_utils.Include([]string{"mean", "median"}, t.Query.AggregateStat) {
 		errs = append(errs, "AggregateStat must be one of mean, median")
 	}
 	for _, v := range t.Query.Exclude {
-		if !string_utils.Include([]string{"missing_user_rollups"}, v) {
+		if v != "" && !string_utils.Include([]string{"missing_user_rollups"}, v) {
 			errs = append(errs, "Exclude must be one of missing_user_rollups")
 		}
 	}
-	if !string_utils.Include([]string{"student", "outcome"}, t.Query.SortBy) {
+	if t.Query.SortBy != "" && !string_utils.Include([]string{"student", "outcome"}, t.Query.SortBy) {
 		errs = append(errs, "SortBy must be one of student, outcome")
 	}
-	if !string_utils.Include([]string{"asc", "desc"}, t.Query.SortOrder) {
+	if t.Query.SortOrder != "" && !string_utils.Include([]string{"asc", "desc"}, t.Query.SortOrder) {
 		errs = append(errs, "SortOrder must be one of asc, desc")
 	}
 	if len(errs) > 0 {

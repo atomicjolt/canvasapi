@@ -1,6 +1,8 @@
 package requests
 
 import (
+	"net/url"
+
 	"github.com/atomicjolt/canvasapi"
 )
 
@@ -22,8 +24,12 @@ func (t *ListUpcomingAssignmentsCalendarEvents) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ListUpcomingAssignmentsCalendarEvents) GetBody() (string, error) {
-	return "", nil
+func (t *ListUpcomingAssignmentsCalendarEvents) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListUpcomingAssignmentsCalendarEvents) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListUpcomingAssignmentsCalendarEvents) HasErrors() error {

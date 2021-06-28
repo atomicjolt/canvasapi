@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -42,26 +43,26 @@ import (
 //
 type UpdateModuleItem struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ModuleID string `json:"module_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ModuleID string `json:"module_id" url:"module_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		ModuleItem struct {
-			Title                 string `json:"title"`        //  (Optional)
-			Position              int64  `json:"position"`     //  (Optional)
-			Indent                int64  `json:"indent"`       //  (Optional)
-			ExternalUrl           string `json:"external_url"` //  (Optional)
-			NewTab                bool   `json:"new_tab"`      //  (Optional)
+			Title                 string `json:"title" url:"title,omitempty"`               //  (Optional)
+			Position              int64  `json:"position" url:"position,omitempty"`         //  (Optional)
+			Indent                int64  `json:"indent" url:"indent,omitempty"`             //  (Optional)
+			ExternalUrl           string `json:"external_url" url:"external_url,omitempty"` //  (Optional)
+			NewTab                bool   `json:"new_tab" url:"new_tab,omitempty"`           //  (Optional)
 			CompletionRequirement struct {
-				Type     string `json:"type"`      //  (Optional) . Must be one of must_view, must_contribute, must_submit, must_mark_done
-				MinScore int64  `json:"min_score"` //  (Optional)
-			} `json:"completion_requirement"`
+				Type     string `json:"type" url:"type,omitempty"`           //  (Optional) . Must be one of must_view, must_contribute, must_submit, must_mark_done
+				MinScore int64  `json:"min_score" url:"min_score,omitempty"` //  (Optional)
+			} `json:"completion_requirement" url:"completion_requirement,omitempty"`
 
-			Published bool   `json:"published"` //  (Optional)
-			ModuleID  string `json:"module_id"` //  (Optional)
-		} `json:"module_item"`
+			Published bool   `json:"published" url:"published,omitempty"` //  (Optional)
+			ModuleID  string `json:"module_id" url:"module_id,omitempty"` //  (Optional)
+		} `json:"module_item" url:"module_item,omitempty"`
 	} `json:"form"`
 }
 
@@ -81,12 +82,16 @@ func (t *UpdateModuleItem) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateModuleItem) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateModuleItem) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateModuleItem) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateModuleItem) HasErrors() error {
@@ -100,7 +105,7 @@ func (t *UpdateModuleItem) HasErrors() error {
 	if t.Path.ID == "" {
 		errs = append(errs, "'ID' is required")
 	}
-	if !string_utils.Include([]string{"must_view", "must_contribute", "must_submit", "must_mark_done"}, t.Form.ModuleItem.CompletionRequirement.Type) {
+	if t.Form.ModuleItem.CompletionRequirement.Type != "" && !string_utils.Include([]string{"must_view", "must_contribute", "must_submit", "must_mark_done"}, t.Form.ModuleItem.CompletionRequirement.Type) {
 		errs = append(errs, "ModuleItem must be one of must_view, must_contribute, must_submit, must_mark_done")
 	}
 	if len(errs) > 0 {

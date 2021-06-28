@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,11 +25,11 @@ import (
 //
 type ListLinkedOutcomesGlobal struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		OutcomeStyle string `json:"outcome_style"` //  (Optional)
+		OutcomeStyle string `json:"outcome_style" url:"outcome_style,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -50,8 +51,12 @@ func (t *ListLinkedOutcomesGlobal) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListLinkedOutcomesGlobal) GetBody() (string, error) {
-	return "", nil
+func (t *ListLinkedOutcomesGlobal) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListLinkedOutcomesGlobal) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListLinkedOutcomesGlobal) HasErrors() error {

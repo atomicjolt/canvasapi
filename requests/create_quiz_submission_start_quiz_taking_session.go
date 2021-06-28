@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -32,13 +34,13 @@ import (
 //
 type CreateQuizSubmissionStartQuizTakingSession struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		AccessCode string `json:"access_code"` //  (Optional)
-		Preview    bool   `json:"preview"`     //  (Optional)
+		AccessCode string `json:"access_code" url:"access_code,omitempty"` //  (Optional)
+		Preview    bool   `json:"preview" url:"preview,omitempty"`         //  (Optional)
 	} `json:"form"`
 }
 
@@ -57,12 +59,16 @@ func (t *CreateQuizSubmissionStartQuizTakingSession) GetQuery() (string, error) 
 	return "", nil
 }
 
-func (t *CreateQuizSubmissionStartQuizTakingSession) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateQuizSubmissionStartQuizTakingSession) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateQuizSubmissionStartQuizTakingSession) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateQuizSubmissionStartQuizTakingSession) HasErrors() error {

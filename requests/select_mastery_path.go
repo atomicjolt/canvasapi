@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -28,14 +30,14 @@ import (
 //
 type SelectMasteryPath struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ModuleID string `json:"module_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ModuleID string `json:"module_id" url:"module_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		AssignmentSetID string `json:"assignment_set_id"` //  (Optional)
-		StudentID       string `json:"student_id"`        //  (Optional)
+		AssignmentSetID string `json:"assignment_set_id" url:"assignment_set_id,omitempty"` //  (Optional)
+		StudentID       string `json:"student_id" url:"student_id,omitempty"`               //  (Optional)
 	} `json:"form"`
 }
 
@@ -55,12 +57,16 @@ func (t *SelectMasteryPath) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *SelectMasteryPath) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *SelectMasteryPath) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *SelectMasteryPath) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *SelectMasteryPath) HasErrors() error {

@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -15,7 +16,7 @@ import (
 //
 type DeleteBookmark struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -33,8 +34,12 @@ func (t *DeleteBookmark) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteBookmark) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteBookmark) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteBookmark) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteBookmark) HasErrors() error {

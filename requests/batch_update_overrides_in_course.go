@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -35,11 +36,11 @@ import (
 //
 type BatchUpdateOverridesInCourse struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		AssignmentOverrides []*models.AssignmentOverride `json:"assignment_overrides"` //  (Required)
+		AssignmentOverrides []*models.AssignmentOverride `json:"assignment_overrides" url:"assignment_overrides,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -57,12 +58,16 @@ func (t *BatchUpdateOverridesInCourse) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *BatchUpdateOverridesInCourse) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *BatchUpdateOverridesInCourse) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *BatchUpdateOverridesInCourse) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *BatchUpdateOverridesInCourse) HasErrors() error {

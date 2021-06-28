@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -29,15 +30,15 @@ import (
 //
 type GetSessionlessLaunchUrlForExternalToolAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		ID           string `json:"id"`             //  (Optional)
-		Url          string `json:"url"`            //  (Optional)
-		AssignmentID string `json:"assignment_id"`  //  (Optional)
-		ModuleItemID string `json:"module_item_id"` //  (Optional)
-		LaunchType   string `json:"launch_type"`    //  (Optional) . Must be one of assessment, module_item
+		ID           string `json:"id" url:"id,omitempty"`                         //  (Optional)
+		Url          string `json:"url" url:"url,omitempty"`                       //  (Optional)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"`   //  (Optional)
+		ModuleItemID string `json:"module_item_id" url:"module_item_id,omitempty"` //  (Optional)
+		LaunchType   string `json:"launch_type" url:"launch_type,omitempty"`       //  (Optional) . Must be one of assessment, module_item
 	} `json:"query"`
 }
 
@@ -59,8 +60,12 @@ func (t *GetSessionlessLaunchUrlForExternalToolAccounts) GetQuery() (string, err
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSessionlessLaunchUrlForExternalToolAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *GetSessionlessLaunchUrlForExternalToolAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSessionlessLaunchUrlForExternalToolAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSessionlessLaunchUrlForExternalToolAccounts) HasErrors() error {
@@ -68,7 +73,7 @@ func (t *GetSessionlessLaunchUrlForExternalToolAccounts) HasErrors() error {
 	if t.Path.AccountID == "" {
 		errs = append(errs, "'AccountID' is required")
 	}
-	if !string_utils.Include([]string{"assessment", "module_item"}, t.Query.LaunchType) {
+	if t.Query.LaunchType != "" && !string_utils.Include([]string{"assessment", "module_item"}, t.Query.LaunchType) {
 		errs = append(errs, "LaunchType must be one of assessment, module_item")
 	}
 	if len(errs) > 0 {

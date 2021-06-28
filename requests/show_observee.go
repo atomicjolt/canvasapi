@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -21,8 +22,8 @@ import (
 //
 type ShowObservee struct {
 	Path struct {
-		UserID     string `json:"user_id"`     //  (Required)
-		ObserveeID string `json:"observee_id"` //  (Required)
+		UserID     string `json:"user_id" url:"user_id,omitempty"`         //  (Required)
+		ObserveeID string `json:"observee_id" url:"observee_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -41,8 +42,12 @@ func (t *ShowObservee) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *ShowObservee) GetBody() (string, error) {
-	return "", nil
+func (t *ShowObservee) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ShowObservee) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ShowObservee) HasErrors() error {

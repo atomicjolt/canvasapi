@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -20,8 +21,8 @@ import (
 //
 type CrossListSection struct {
 	Path struct {
-		ID          string `json:"id"`            //  (Required)
-		NewCourseID string `json:"new_course_id"` //  (Required)
+		ID          string `json:"id" url:"id,omitempty"`                       //  (Required)
+		NewCourseID string `json:"new_course_id" url:"new_course_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -40,8 +41,12 @@ func (t *CrossListSection) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CrossListSection) GetBody() (string, error) {
-	return "", nil
+func (t *CrossListSection) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *CrossListSection) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *CrossListSection) HasErrors() error {

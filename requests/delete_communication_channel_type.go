@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -20,9 +21,9 @@ import (
 //
 type DeleteCommunicationChannelType struct {
 	Path struct {
-		UserID  string `json:"user_id"` //  (Required)
-		Type    string `json:"type"`    //  (Required)
-		Address string `json:"address"` //  (Required)
+		UserID  string `json:"user_id" url:"user_id,omitempty"` //  (Required)
+		Type    string `json:"type" url:"type,omitempty"`       //  (Required)
+		Address string `json:"address" url:"address,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -42,8 +43,12 @@ func (t *DeleteCommunicationChannelType) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteCommunicationChannelType) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteCommunicationChannelType) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteCommunicationChannelType) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteCommunicationChannelType) HasErrors() error {

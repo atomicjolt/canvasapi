@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -16,8 +17,8 @@ import (
 //
 type GetSingleExternalToolCourses struct {
 	Path struct {
-		CourseID       string `json:"course_id"`        //  (Required)
-		ExternalToolID string `json:"external_tool_id"` //  (Required)
+		CourseID       string `json:"course_id" url:"course_id,omitempty"`               //  (Required)
+		ExternalToolID string `json:"external_tool_id" url:"external_tool_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -36,8 +37,12 @@ func (t *GetSingleExternalToolCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetSingleExternalToolCourses) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleExternalToolCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleExternalToolCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleExternalToolCourses) HasErrors() error {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -19,7 +20,7 @@ import (
 //
 type UnShareBrandconfigTheme struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -37,8 +38,12 @@ func (t *UnShareBrandconfigTheme) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UnShareBrandconfigTheme) GetBody() (string, error) {
-	return "", nil
+func (t *UnShareBrandconfigTheme) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *UnShareBrandconfigTheme) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *UnShareBrandconfigTheme) HasErrors() error {

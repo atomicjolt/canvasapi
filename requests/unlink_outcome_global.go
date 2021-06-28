@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -22,8 +23,8 @@ import (
 //
 type UnlinkOutcomeGlobal struct {
 	Path struct {
-		ID        string `json:"id"`         //  (Required)
-		OutcomeID string `json:"outcome_id"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
+		OutcomeID string `json:"outcome_id" url:"outcome_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -42,8 +43,12 @@ func (t *UnlinkOutcomeGlobal) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UnlinkOutcomeGlobal) GetBody() (string, error) {
-	return "", nil
+func (t *UnlinkOutcomeGlobal) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *UnlinkOutcomeGlobal) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *UnlinkOutcomeGlobal) HasErrors() error {

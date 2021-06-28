@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -41,8 +42,8 @@ import (
 //
 type GradeOrCommentOnMultipleSubmissionsSectionsAssignments struct {
 	Path struct {
-		SectionID    string `json:"section_id"`    //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
+		SectionID    string `json:"section_id" url:"section_id,omitempty"`       //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
@@ -65,12 +66,16 @@ func (t *GradeOrCommentOnMultipleSubmissionsSectionsAssignments) GetQuery() (str
 	return "", nil
 }
 
-func (t *GradeOrCommentOnMultipleSubmissionsSectionsAssignments) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *GradeOrCommentOnMultipleSubmissionsSectionsAssignments) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *GradeOrCommentOnMultipleSubmissionsSectionsAssignments) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *GradeOrCommentOnMultipleSubmissionsSectionsAssignments) HasErrors() error {
@@ -108,13 +113,13 @@ func (t *GradeOrCommentOnMultipleSubmissionsSectionsAssignments) Do(c *canvasapi
 }
 
 type GradeOrCommentOnMultipleSubmissionsSectionsAssignmentsGradeData struct {
-	PostedGrade      string  `json:"posted_grade"`       //  (Optional)
-	Excuse           bool    `json:"excuse"`             //  (Optional)
-	RubricAssessment string  `json:"rubric_assessment"`  //  (Optional)
-	TextComment      string  `json:"text_comment"`       //  (Optional)
-	GroupComment     bool    `json:"group_comment"`      //  (Optional)
-	MediaCommentID   string  `json:"media_comment_id"`   //  (Optional)
-	MediaCommentType string  `json:"media_comment_type"` //  (Optional) . Must be one of audio, video
-	FileIDs          []int64 `json:"file_ids"`           //  (Optional)
-	AssignmentID     int64   `json:"assignment_id"`      //  (Optional)
+	PostedGrade      string  `json:"posted_grade" url:"posted_grade,omitempty"`             //  (Optional)
+	Excuse           bool    `json:"excuse" url:"excuse,omitempty"`                         //  (Optional)
+	RubricAssessment string  `json:"rubric_assessment" url:"rubric_assessment,omitempty"`   //  (Optional)
+	TextComment      string  `json:"text_comment" url:"text_comment,omitempty"`             //  (Optional)
+	GroupComment     bool    `json:"group_comment" url:"group_comment,omitempty"`           //  (Optional)
+	MediaCommentID   string  `json:"media_comment_id" url:"media_comment_id,omitempty"`     //  (Optional)
+	MediaCommentType string  `json:"media_comment_type" url:"media_comment_type,omitempty"` //  (Optional) . Must be one of audio, video
+	FileIDs          []int64 `json:"file_ids" url:"file_ids,omitempty"`                     //  (Optional)
+	AssignmentID     int64   `json:"assignment_id" url:"assignment_id,omitempty"`           //  (Optional)
 }

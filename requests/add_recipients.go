@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,11 +26,11 @@ import (
 //
 type AddRecipients struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Recipients []string `json:"recipients"` //  (Required)
+		Recipients []string `json:"recipients" url:"recipients,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -46,12 +48,16 @@ func (t *AddRecipients) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *AddRecipients) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *AddRecipients) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *AddRecipients) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *AddRecipients) HasErrors() error {

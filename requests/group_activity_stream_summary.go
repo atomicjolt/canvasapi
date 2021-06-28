@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -18,7 +19,7 @@ import (
 //
 type GroupActivityStreamSummary struct {
 	Path struct {
-		GroupID string `json:"group_id"` //  (Required)
+		GroupID string `json:"group_id" url:"group_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -36,8 +37,12 @@ func (t *GroupActivityStreamSummary) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GroupActivityStreamSummary) GetBody() (string, error) {
-	return "", nil
+func (t *GroupActivityStreamSummary) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GroupActivityStreamSummary) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GroupActivityStreamSummary) HasErrors() error {

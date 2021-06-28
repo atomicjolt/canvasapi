@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -94,35 +95,35 @@ import (
 //
 type CreateQuiz struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		Quiz struct {
-			Title                         string    `json:"title"`                             //  (Required)
-			Description                   string    `json:"description"`                       //  (Optional)
-			QuizType                      string    `json:"quiz_type"`                         //  (Optional) . Must be one of practice_quiz, assignment, graded_survey, survey
-			AssignmentGroupID             int64     `json:"assignment_group_id"`               //  (Optional)
-			TimeLimit                     int64     `json:"time_limit"`                        //  (Optional)
-			ShuffleAnswers                bool      `json:"shuffle_answers"`                   //  (Optional)
-			HideResults                   string    `json:"hide_results"`                      //  (Optional) . Must be one of always, until_after_last_attempt
-			ShowCorrectAnswers            bool      `json:"show_correct_answers"`              //  (Optional)
-			ShowCorrectAnswersLastAttempt bool      `json:"show_correct_answers_last_attempt"` //  (Optional)
-			ShowCorrectAnswersAt          time.Time `json:"show_correct_answers_at"`           //  (Optional)
-			HideCorrectAnswersAt          time.Time `json:"hide_correct_answers_at"`           //  (Optional)
-			AllowedAttempts               int64     `json:"allowed_attempts"`                  //  (Optional)
-			ScoringPolicy                 string    `json:"scoring_policy"`                    //  (Optional) . Must be one of keep_highest, keep_latest
-			OneQuestionAtATime            bool      `json:"one_question_at_a_time"`            //  (Optional)
-			CantGoBack                    bool      `json:"cant_go_back"`                      //  (Optional)
-			AccessCode                    string    `json:"access_code"`                       //  (Optional)
-			IpFilter                      string    `json:"ip_filter"`                         //  (Optional)
-			DueAt                         time.Time `json:"due_at"`                            //  (Optional)
-			LockAt                        time.Time `json:"lock_at"`                           //  (Optional)
-			UnlockAt                      time.Time `json:"unlock_at"`                         //  (Optional)
-			Published                     bool      `json:"published"`                         //  (Optional)
-			OneTimeResults                bool      `json:"one_time_results"`                  //  (Optional)
-			OnlyVisibleToOverrides        bool      `json:"only_visible_to_overrides"`         //  (Optional)
-		} `json:"quiz"`
+			Title                         string    `json:"title" url:"title,omitempty"`                                                         //  (Required)
+			Description                   string    `json:"description" url:"description,omitempty"`                                             //  (Optional)
+			QuizType                      string    `json:"quiz_type" url:"quiz_type,omitempty"`                                                 //  (Optional) . Must be one of practice_quiz, assignment, graded_survey, survey
+			AssignmentGroupID             int64     `json:"assignment_group_id" url:"assignment_group_id,omitempty"`                             //  (Optional)
+			TimeLimit                     int64     `json:"time_limit" url:"time_limit,omitempty"`                                               //  (Optional)
+			ShuffleAnswers                bool      `json:"shuffle_answers" url:"shuffle_answers,omitempty"`                                     //  (Optional)
+			HideResults                   string    `json:"hide_results" url:"hide_results,omitempty"`                                           //  (Optional) . Must be one of always, until_after_last_attempt
+			ShowCorrectAnswers            bool      `json:"show_correct_answers" url:"show_correct_answers,omitempty"`                           //  (Optional)
+			ShowCorrectAnswersLastAttempt bool      `json:"show_correct_answers_last_attempt" url:"show_correct_answers_last_attempt,omitempty"` //  (Optional)
+			ShowCorrectAnswersAt          time.Time `json:"show_correct_answers_at" url:"show_correct_answers_at,omitempty"`                     //  (Optional)
+			HideCorrectAnswersAt          time.Time `json:"hide_correct_answers_at" url:"hide_correct_answers_at,omitempty"`                     //  (Optional)
+			AllowedAttempts               int64     `json:"allowed_attempts" url:"allowed_attempts,omitempty"`                                   //  (Optional)
+			ScoringPolicy                 string    `json:"scoring_policy" url:"scoring_policy,omitempty"`                                       //  (Optional) . Must be one of keep_highest, keep_latest
+			OneQuestionAtATime            bool      `json:"one_question_at_a_time" url:"one_question_at_a_time,omitempty"`                       //  (Optional)
+			CantGoBack                    bool      `json:"cant_go_back" url:"cant_go_back,omitempty"`                                           //  (Optional)
+			AccessCode                    string    `json:"access_code" url:"access_code,omitempty"`                                             //  (Optional)
+			IpFilter                      string    `json:"ip_filter" url:"ip_filter,omitempty"`                                                 //  (Optional)
+			DueAt                         time.Time `json:"due_at" url:"due_at,omitempty"`                                                       //  (Optional)
+			LockAt                        time.Time `json:"lock_at" url:"lock_at,omitempty"`                                                     //  (Optional)
+			UnlockAt                      time.Time `json:"unlock_at" url:"unlock_at,omitempty"`                                                 //  (Optional)
+			Published                     bool      `json:"published" url:"published,omitempty"`                                                 //  (Optional)
+			OneTimeResults                bool      `json:"one_time_results" url:"one_time_results,omitempty"`                                   //  (Optional)
+			OnlyVisibleToOverrides        bool      `json:"only_visible_to_overrides" url:"only_visible_to_overrides,omitempty"`                 //  (Optional)
+		} `json:"quiz" url:"quiz,omitempty"`
 	} `json:"form"`
 }
 
@@ -140,12 +141,16 @@ func (t *CreateQuiz) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateQuiz) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateQuiz) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateQuiz) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateQuiz) HasErrors() error {
@@ -156,13 +161,13 @@ func (t *CreateQuiz) HasErrors() error {
 	if t.Form.Quiz.Title == "" {
 		errs = append(errs, "'Quiz' is required")
 	}
-	if !string_utils.Include([]string{"practice_quiz", "assignment", "graded_survey", "survey"}, t.Form.Quiz.QuizType) {
+	if t.Form.Quiz.QuizType != "" && !string_utils.Include([]string{"practice_quiz", "assignment", "graded_survey", "survey"}, t.Form.Quiz.QuizType) {
 		errs = append(errs, "Quiz must be one of practice_quiz, assignment, graded_survey, survey")
 	}
-	if !string_utils.Include([]string{"always", "until_after_last_attempt"}, t.Form.Quiz.HideResults) {
+	if t.Form.Quiz.HideResults != "" && !string_utils.Include([]string{"always", "until_after_last_attempt"}, t.Form.Quiz.HideResults) {
 		errs = append(errs, "Quiz must be one of always, until_after_last_attempt")
 	}
-	if !string_utils.Include([]string{"keep_highest", "keep_latest"}, t.Form.Quiz.ScoringPolicy) {
+	if t.Form.Quiz.ScoringPolicy != "" && !string_utils.Include([]string{"keep_highest", "keep_latest"}, t.Form.Quiz.ScoringPolicy) {
 		errs = append(errs, "Quiz must be one of keep_highest, keep_latest")
 	}
 	if len(errs) > 0 {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,13 +27,13 @@ import (
 //
 type ShowRevisionCoursesRevisionID struct {
 	Path struct {
-		CourseID   string `json:"course_id"`   //  (Required)
-		Url        string `json:"url"`         //  (Required)
-		RevisionID string `json:"revision_id"` //  (Required)
+		CourseID   string `json:"course_id" url:"course_id,omitempty"`     //  (Required)
+		Url        string `json:"url" url:"url,omitempty"`                 //  (Required)
+		RevisionID string `json:"revision_id" url:"revision_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Summary bool `json:"summary"` //  (Optional)
+		Summary bool `json:"summary" url:"summary,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -56,8 +57,12 @@ func (t *ShowRevisionCoursesRevisionID) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ShowRevisionCoursesRevisionID) GetBody() (string, error) {
-	return "", nil
+func (t *ShowRevisionCoursesRevisionID) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ShowRevisionCoursesRevisionID) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ShowRevisionCoursesRevisionID) HasErrors() error {

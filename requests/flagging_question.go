@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,14 +29,14 @@ import (
 //
 type FlaggingQuestion struct {
 	Path struct {
-		QuizSubmissionID string `json:"quiz_submission_id"` //  (Required)
-		ID               string `json:"id"`                 //  (Required)
+		QuizSubmissionID string `json:"quiz_submission_id" url:"quiz_submission_id,omitempty"` //  (Required)
+		ID               string `json:"id" url:"id,omitempty"`                                 //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Attempt         int64  `json:"attempt"`          //  (Required)
-		ValidationToken string `json:"validation_token"` //  (Required)
-		AccessCode      string `json:"access_code"`      //  (Optional)
+		Attempt         int64  `json:"attempt" url:"attempt,omitempty"`                   //  (Required)
+		ValidationToken string `json:"validation_token" url:"validation_token,omitempty"` //  (Required)
+		AccessCode      string `json:"access_code" url:"access_code,omitempty"`           //  (Optional)
 	} `json:"form"`
 }
 
@@ -53,12 +55,16 @@ func (t *FlaggingQuestion) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *FlaggingQuestion) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *FlaggingQuestion) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *FlaggingQuestion) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *FlaggingQuestion) HasErrors() error {

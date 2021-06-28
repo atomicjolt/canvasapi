@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,13 +28,13 @@ import (
 type CreateWebhookSubscription struct {
 	Form struct {
 		Subscription struct {
-			ContextID         string `json:"context_id"`         //  (Required)
-			ContextType       string `json:"context_type"`       //  (Required)
-			EventTypes        string `json:"event_types"`        //  (Required)
-			Format            string `json:"format"`             //  (Required)
-			TransportMetadata string `json:"transport_metadata"` //  (Required)
-			TransportType     string `json:"transport_type"`     //  (Required)
-		} `json:"subscription"`
+			ContextID         string `json:"context_id" url:"context_id,omitempty"`                 //  (Required)
+			ContextType       string `json:"context_type" url:"context_type,omitempty"`             //  (Required)
+			EventTypes        string `json:"event_types" url:"event_types,omitempty"`               //  (Required)
+			Format            string `json:"format" url:"format,omitempty"`                         //  (Required)
+			TransportMetadata string `json:"transport_metadata" url:"transport_metadata,omitempty"` //  (Required)
+			TransportType     string `json:"transport_type" url:"transport_type,omitempty"`         //  (Required)
+		} `json:"subscription" url:"subscription,omitempty"`
 	} `json:"form"`
 }
 
@@ -48,12 +50,16 @@ func (t *CreateWebhookSubscription) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateWebhookSubscription) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateWebhookSubscription) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateWebhookSubscription) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateWebhookSubscription) HasErrors() error {

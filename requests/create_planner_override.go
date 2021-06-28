@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,10 +25,10 @@ import (
 //
 type CreatePlannerOverride struct {
 	Form struct {
-		PlannableType  string `json:"plannable_type"`  //  (Required) . Must be one of announcement, assignment, discussion_topic, quiz, wiki_page, planner_note
-		PlannableID    int64  `json:"plannable_id"`    //  (Required)
-		MarkedComplete bool   `json:"marked_complete"` //  (Optional)
-		Dismissed      bool   `json:"dismissed"`       //  (Optional)
+		PlannableType  string `json:"plannable_type" url:"plannable_type,omitempty"`   //  (Required) . Must be one of announcement, assignment, discussion_topic, quiz, wiki_page, planner_note
+		PlannableID    int64  `json:"plannable_id" url:"plannable_id,omitempty"`       //  (Required)
+		MarkedComplete bool   `json:"marked_complete" url:"marked_complete,omitempty"` //  (Optional)
+		Dismissed      bool   `json:"dismissed" url:"dismissed,omitempty"`             //  (Optional)
 	} `json:"form"`
 }
 
@@ -43,12 +44,16 @@ func (t *CreatePlannerOverride) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreatePlannerOverride) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreatePlannerOverride) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreatePlannerOverride) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreatePlannerOverride) HasErrors() error {
@@ -56,7 +61,7 @@ func (t *CreatePlannerOverride) HasErrors() error {
 	if t.Form.PlannableType == "" {
 		errs = append(errs, "'PlannableType' is required")
 	}
-	if !string_utils.Include([]string{"announcement", "assignment", "discussion_topic", "quiz", "wiki_page", "planner_note"}, t.Form.PlannableType) {
+	if t.Form.PlannableType != "" && !string_utils.Include([]string{"announcement", "assignment", "discussion_topic", "quiz", "wiki_page", "planner_note"}, t.Form.PlannableType) {
 		errs = append(errs, "PlannableType must be one of announcement, assignment, discussion_topic, quiz, wiki_page, planner_note")
 	}
 	if len(errs) > 0 {

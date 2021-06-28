@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -25,9 +26,9 @@ import (
 //
 type ListOfCommmessagesForUser struct {
 	Query struct {
-		UserID    string    `json:"user_id"`    //  (Required)
-		StartTime time.Time `json:"start_time"` //  (Optional)
-		EndTime   time.Time `json:"end_time"`   //  (Optional)
+		UserID    string    `json:"user_id" url:"user_id,omitempty"`       //  (Required)
+		StartTime time.Time `json:"start_time" url:"start_time,omitempty"` //  (Optional)
+		EndTime   time.Time `json:"end_time" url:"end_time,omitempty"`     //  (Optional)
 	} `json:"query"`
 }
 
@@ -47,8 +48,12 @@ func (t *ListOfCommmessagesForUser) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListOfCommmessagesForUser) GetBody() (string, error) {
-	return "", nil
+func (t *ListOfCommmessagesForUser) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListOfCommmessagesForUser) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListOfCommmessagesForUser) HasErrors() error {

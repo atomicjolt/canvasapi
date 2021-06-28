@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -25,12 +26,12 @@ import (
 //
 type UpdateContentShare struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
-		ID     string `json:"id"`      //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
+		ID     string `json:"id" url:"id,omitempty"`           //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ReadState string `json:"read_state"` //  (Optional) . Must be one of read, unread
+		ReadState string `json:"read_state" url:"read_state,omitempty"` //  (Optional) . Must be one of read, unread
 	} `json:"form"`
 }
 
@@ -49,12 +50,16 @@ func (t *UpdateContentShare) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateContentShare) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateContentShare) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateContentShare) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateContentShare) HasErrors() error {
@@ -65,7 +70,7 @@ func (t *UpdateContentShare) HasErrors() error {
 	if t.Path.ID == "" {
 		errs = append(errs, "'ID' is required")
 	}
-	if !string_utils.Include([]string{"read", "unread"}, t.Form.ReadState) {
+	if t.Form.ReadState != "" && !string_utils.Include([]string{"read", "unread"}, t.Form.ReadState) {
 		errs = append(errs, "ReadState must be one of read, unread")
 	}
 	if len(errs) > 0 {

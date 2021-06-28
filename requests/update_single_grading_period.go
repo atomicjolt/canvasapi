@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -24,16 +26,16 @@ import (
 //
 type UpdateSingleGradingPeriod struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 
 	Form struct {
 		GradingPeriods struct {
-			StartDate []time.Time `json:"start_date"` //  (Required)
-			EndDate   []time.Time `json:"end_date"`   //  (Required)
-			Weight    []float64   `json:"weight"`     //  (Optional)
-		} `json:"grading_periods"`
+			StartDate []time.Time `json:"start_date" url:"start_date,omitempty"` //  (Required)
+			EndDate   []time.Time `json:"end_date" url:"end_date,omitempty"`     //  (Required)
+			Weight    []float64   `json:"weight" url:"weight,omitempty"`         //  (Optional)
+		} `json:"grading_periods" url:"grading_periods,omitempty"`
 	} `json:"form"`
 }
 
@@ -52,12 +54,16 @@ func (t *UpdateSingleGradingPeriod) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *UpdateSingleGradingPeriod) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *UpdateSingleGradingPeriod) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *UpdateSingleGradingPeriod) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *UpdateSingleGradingPeriod) HasErrors() error {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,12 +25,12 @@ import (
 //
 type AddUsersToContentShare struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
-		ID     string `json:"id"`      //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
+		ID     string `json:"id" url:"id,omitempty"`           //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		ReceiverIDs string `json:"receiver_ids"` //  (Optional)
+		ReceiverIDs string `json:"receiver_ids" url:"receiver_ids,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -48,12 +49,16 @@ func (t *AddUsersToContentShare) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *AddUsersToContentShare) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *AddUsersToContentShare) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *AddUsersToContentShare) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *AddUsersToContentShare) HasErrors() error {

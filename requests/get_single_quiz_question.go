@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -20,9 +21,9 @@ import (
 //
 type GetSingleQuizQuestion struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		QuizID   string `json:"quiz_id"`   //  (Required)
-		ID       int64  `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		QuizID   string `json:"quiz_id" url:"quiz_id,omitempty"`     //  (Required)
+		ID       int64  `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 }
 
@@ -42,8 +43,12 @@ func (t *GetSingleQuizQuestion) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetSingleQuizQuestion) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleQuizQuestion) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleQuizQuestion) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleQuizQuestion) HasErrors() error {

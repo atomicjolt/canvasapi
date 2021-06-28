@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -27,12 +28,12 @@ import (
 //
 type DestroyAssignmentGroup struct {
 	Path struct {
-		CourseID          string `json:"course_id"`           //  (Required)
-		AssignmentGroupID string `json:"assignment_group_id"` //  (Required)
+		CourseID          string `json:"course_id" url:"course_id,omitempty"`                     //  (Required)
+		AssignmentGroupID string `json:"assignment_group_id" url:"assignment_group_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		MoveAssignmentsTo int64 `json:"move_assignments_to"` //  (Optional)
+		MoveAssignmentsTo int64 `json:"move_assignments_to" url:"move_assignments_to,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -55,8 +56,12 @@ func (t *DestroyAssignmentGroup) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *DestroyAssignmentGroup) GetBody() (string, error) {
-	return "", nil
+func (t *DestroyAssignmentGroup) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DestroyAssignmentGroup) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DestroyAssignmentGroup) HasErrors() error {

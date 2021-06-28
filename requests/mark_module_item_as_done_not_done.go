@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -18,9 +19,9 @@ import (
 //
 type MarkModuleItemAsDoneNotDone struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		ModuleID string `json:"module_id"` //  (Required)
-		ID       string `json:"id"`        //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		ModuleID string `json:"module_id" url:"module_id,omitempty"` //  (Required)
+		ID       string `json:"id" url:"id,omitempty"`               //  (Required)
 	} `json:"path"`
 }
 
@@ -40,8 +41,12 @@ func (t *MarkModuleItemAsDoneNotDone) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *MarkModuleItemAsDoneNotDone) GetBody() (string, error) {
-	return "", nil
+func (t *MarkModuleItemAsDoneNotDone) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *MarkModuleItemAsDoneNotDone) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *MarkModuleItemAsDoneNotDone) HasErrors() error {

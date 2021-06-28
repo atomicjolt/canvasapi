@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,18 +24,21 @@ import (
 // # HideDashcardColorOverlays (Optional) If true, images on course cards will be presented without being tinted
 //    to match the course color.
 // # CommentLibrarySuggestionsEnabled (Optional) If true, suggestions within the comment library will be shown.
+// # ElementaryDashboardDisabled (Optional) If true, will display the user's preferred class Canvas dashboard
+//    view instead of the canvas for elementary view.
 //
 type UpdateUserSettings struct {
 	Path struct {
-		ID string `json:"id"` //  (Required)
+		ID string `json:"id" url:"id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		ManualMarkAsRead                 bool `json:"manual_mark_as_read"`                 //  (Optional)
-		ReleaseNotesBadgeDisabled        bool `json:"release_notes_badge_disabled"`        //  (Optional)
-		CollapseGlobalNav                bool `json:"collapse_global_nav"`                 //  (Optional)
-		HideDashcardColorOverlays        bool `json:"hide_dashcard_color_overlays"`        //  (Optional)
-		CommentLibrarySuggestionsEnabled bool `json:"comment_library_suggestions_enabled"` //  (Optional)
+		ManualMarkAsRead                 bool `json:"manual_mark_as_read" url:"manual_mark_as_read,omitempty"`                                 //  (Optional)
+		ReleaseNotesBadgeDisabled        bool `json:"release_notes_badge_disabled" url:"release_notes_badge_disabled,omitempty"`               //  (Optional)
+		CollapseGlobalNav                bool `json:"collapse_global_nav" url:"collapse_global_nav,omitempty"`                                 //  (Optional)
+		HideDashcardColorOverlays        bool `json:"hide_dashcard_color_overlays" url:"hide_dashcard_color_overlays,omitempty"`               //  (Optional)
+		CommentLibrarySuggestionsEnabled bool `json:"comment_library_suggestions_enabled" url:"comment_library_suggestions_enabled,omitempty"` //  (Optional)
+		ElementaryDashboardDisabled      bool `json:"elementary_dashboard_disabled" url:"elementary_dashboard_disabled,omitempty"`             //  (Optional)
 	} `json:"query"`
 }
 
@@ -56,8 +60,12 @@ func (t *UpdateUserSettings) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *UpdateUserSettings) GetBody() (string, error) {
-	return "", nil
+func (t *UpdateUserSettings) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *UpdateUserSettings) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *UpdateUserSettings) HasErrors() error {

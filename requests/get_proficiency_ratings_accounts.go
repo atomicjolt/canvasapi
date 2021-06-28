@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -24,7 +25,7 @@ import (
 //
 type GetProficiencyRatingsAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -42,8 +43,12 @@ func (t *GetProficiencyRatingsAccounts) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *GetProficiencyRatingsAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *GetProficiencyRatingsAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetProficiencyRatingsAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetProficiencyRatingsAccounts) HasErrors() error {

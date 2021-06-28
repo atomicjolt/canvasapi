@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -21,12 +22,12 @@ import (
 //
 type RemoveUsageRightsCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		FileIDs   []string `json:"file_ids"`   //  (Required)
-		FolderIDs []string `json:"folder_ids"` //  (Optional)
+		FileIDs   []string `json:"file_ids" url:"file_ids,omitempty"`     //  (Required)
+		FolderIDs []string `json:"folder_ids" url:"folder_ids,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 
@@ -48,8 +49,12 @@ func (t *RemoveUsageRightsCourses) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *RemoveUsageRightsCourses) GetBody() (string, error) {
-	return "", nil
+func (t *RemoveUsageRightsCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *RemoveUsageRightsCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *RemoveUsageRightsCourses) HasErrors() error {

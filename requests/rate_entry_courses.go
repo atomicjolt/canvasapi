@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -24,13 +26,13 @@ import (
 //
 type RateEntryCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
-		TopicID  string `json:"topic_id"`  //  (Required)
-		EntryID  string `json:"entry_id"`  //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
+		TopicID  string `json:"topic_id" url:"topic_id,omitempty"`   //  (Required)
+		EntryID  string `json:"entry_id" url:"entry_id,omitempty"`   //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		Rating int64 `json:"rating"` //  (Optional)
+		Rating int64 `json:"rating" url:"rating,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -50,12 +52,16 @@ func (t *RateEntryCourses) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *RateEntryCourses) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *RateEntryCourses) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *RateEntryCourses) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *RateEntryCourses) HasErrors() error {

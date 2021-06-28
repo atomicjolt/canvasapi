@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -21,10 +22,10 @@ import (
 //
 type DeleteSubmissionComment struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		UserID       string `json:"user_id"`       //  (Required)
-		ID           string `json:"id"`            //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		UserID       string `json:"user_id" url:"user_id,omitempty"`             //  (Required)
+		ID           string `json:"id" url:"id,omitempty"`                       //  (Required)
 	} `json:"path"`
 }
 
@@ -45,8 +46,12 @@ func (t *DeleteSubmissionComment) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *DeleteSubmissionComment) GetBody() (string, error) {
-	return "", nil
+func (t *DeleteSubmissionComment) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *DeleteSubmissionComment) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *DeleteSubmissionComment) HasErrors() error {

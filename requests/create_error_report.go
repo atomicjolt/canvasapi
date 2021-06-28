@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -29,12 +31,12 @@ import (
 type CreateErrorReport struct {
 	Form struct {
 		Error struct {
-			Subject  string `json:"subject"`  //  (Required)
-			Url      string `json:"url"`      //  (Optional)
-			Email    string `json:"email"`    //  (Optional)
-			Comments string `json:"comments"` //  (Optional)
-			HttpEnv  string `json:"http_env"` //  (Optional)
-		} `json:"error"`
+			Subject  string `json:"subject" url:"subject,omitempty"`   //  (Required)
+			Url      string `json:"url" url:"url,omitempty"`           //  (Optional)
+			Email    string `json:"email" url:"email,omitempty"`       //  (Optional)
+			Comments string `json:"comments" url:"comments,omitempty"` //  (Optional)
+			HttpEnv  string `json:"http_env" url:"http_env,omitempty"` //  (Optional)
+		} `json:"error" url:"error,omitempty"`
 	} `json:"form"`
 }
 
@@ -50,12 +52,16 @@ func (t *CreateErrorReport) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateErrorReport) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateErrorReport) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateErrorReport) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateErrorReport) HasErrors() error {

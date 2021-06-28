@@ -1,7 +1,9 @@
 package requests
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -32,12 +34,12 @@ import (
 //
 type CreateOrUpdateEventsDirectlyForCourseTimetable struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Form struct {
-		CourseSectionID string                                               `json:"course_section_id"` //  (Optional)
-		Events          CreateOrUpdateEventsDirectlyForCourseTimetableEvents `json:"events"`            //  (Optional)
+		CourseSectionID string                                               `json:"course_section_id" url:"course_section_id,omitempty"` //  (Optional)
+		Events          CreateOrUpdateEventsDirectlyForCourseTimetableEvents `json:"events" url:"events,omitempty"`                       //  (Optional)
 	} `json:"form"`
 }
 
@@ -55,12 +57,16 @@ func (t *CreateOrUpdateEventsDirectlyForCourseTimetable) GetQuery() (string, err
 	return "", nil
 }
 
-func (t *CreateOrUpdateEventsDirectlyForCourseTimetable) GetBody() (string, error) {
-	v, err := query.Values(t.Form)
+func (t *CreateOrUpdateEventsDirectlyForCourseTimetable) GetBody() (url.Values, error) {
+	return query.Values(t.Form)
+}
+
+func (t *CreateOrUpdateEventsDirectlyForCourseTimetable) GetJSON() ([]byte, error) {
+	j, err := json.Marshal(t.Form)
 	if err != nil {
-		return "", err
+		return nil, nil
 	}
-	return fmt.Sprintf("%v", v.Encode()), nil
+	return j, nil
 }
 
 func (t *CreateOrUpdateEventsDirectlyForCourseTimetable) HasErrors() error {
@@ -84,9 +90,9 @@ func (t *CreateOrUpdateEventsDirectlyForCourseTimetable) Do(c *canvasapi.Canvas)
 }
 
 type CreateOrUpdateEventsDirectlyForCourseTimetableEvents struct {
-	StartAt      []time.Time `json:"start_at"`      //  (Optional)
-	EndAt        []time.Time `json:"end_at"`        //  (Optional)
-	LocationName []string    `json:"location_name"` //  (Optional)
-	Code         []string    `json:"code"`          //  (Optional)
-	Title        []string    `json:"title"`         //  (Optional)
+	StartAt      []time.Time `json:"start_at" url:"start_at,omitempty"`           //  (Optional)
+	EndAt        []time.Time `json:"end_at" url:"end_at,omitempty"`               //  (Optional)
+	LocationName []string    `json:"location_name" url:"location_name,omitempty"` //  (Optional)
+	Code         []string    `json:"code" url:"code,omitempty"`                   //  (Optional)
+	Title        []string    `json:"title" url:"title,omitempty"`                 //  (Optional)
 }

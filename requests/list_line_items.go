@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,14 +27,14 @@ import (
 //
 type ListLineItems struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Tag            string `json:"tag"`              //  (Optional)
-		ResourceID     string `json:"resource_id"`      //  (Optional)
-		ResourceLinkID string `json:"resource_link_id"` //  (Optional)
-		Limit          string `json:"limit"`            //  (Optional)
+		Tag            string `json:"tag" url:"tag,omitempty"`                           //  (Optional)
+		ResourceID     string `json:"resource_id" url:"resource_id,omitempty"`           //  (Optional)
+		ResourceLinkID string `json:"resource_link_id" url:"resource_link_id,omitempty"` //  (Optional)
+		Limit          string `json:"limit" url:"limit,omitempty"`                       //  (Optional)
 	} `json:"query"`
 }
 
@@ -55,8 +56,12 @@ func (t *ListLineItems) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListLineItems) GetBody() (string, error) {
-	return "", nil
+func (t *ListLineItems) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListLineItems) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListLineItems) HasErrors() error {

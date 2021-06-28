@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -33,13 +34,13 @@ import (
 //
 type ListUncollatedSubmissionVersions struct {
 	Path struct {
-		CourseID int64 `json:"course_id"` //  (Required)
+		CourseID int64 `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		AssignmentID int64 `json:"assignment_id"` //  (Optional)
-		UserID       int64 `json:"user_id"`       //  (Optional)
-		Ascending    bool  `json:"ascending"`     //  (Optional)
+		AssignmentID int64 `json:"assignment_id" url:"assignment_id,omitempty"` //  (Optional)
+		UserID       int64 `json:"user_id" url:"user_id,omitempty"`             //  (Optional)
+		Ascending    bool  `json:"ascending" url:"ascending,omitempty"`         //  (Optional)
 	} `json:"query"`
 }
 
@@ -61,8 +62,12 @@ func (t *ListUncollatedSubmissionVersions) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListUncollatedSubmissionVersions) GetBody() (string, error) {
-	return "", nil
+func (t *ListUncollatedSubmissionVersions) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListUncollatedSubmissionVersions) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListUncollatedSubmissionVersions) HasErrors() error {

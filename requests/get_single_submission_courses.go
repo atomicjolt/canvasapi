@@ -2,6 +2,7 @@ package requests
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -23,13 +24,13 @@ import (
 //
 type GetSingleSubmissionCourses struct {
 	Path struct {
-		CourseID     string `json:"course_id"`     //  (Required)
-		AssignmentID string `json:"assignment_id"` //  (Required)
-		UserID       string `json:"user_id"`       //  (Required)
+		CourseID     string `json:"course_id" url:"course_id,omitempty"`         //  (Required)
+		AssignmentID string `json:"assignment_id" url:"assignment_id,omitempty"` //  (Required)
+		UserID       string `json:"user_id" url:"user_id,omitempty"`             //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of submission_history, submission_comments, rubric_assessment, full_rubric_assessment, visibility, course, user, read_status
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of submission_history, submission_comments, rubric_assessment, full_rubric_assessment, visibility, course, user, read_status
 	} `json:"query"`
 }
 
@@ -53,8 +54,12 @@ func (t *GetSingleSubmissionCourses) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSingleSubmissionCourses) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleSubmissionCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleSubmissionCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleSubmissionCourses) HasErrors() error {
@@ -69,7 +74,7 @@ func (t *GetSingleSubmissionCourses) HasErrors() error {
 		errs = append(errs, "'UserID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"submission_history", "submission_comments", "rubric_assessment", "full_rubric_assessment", "visibility", "course", "user", "read_status"}, v) {
+		if v != "" && !string_utils.Include([]string{"submission_history", "submission_comments", "rubric_assessment", "full_rubric_assessment", "visibility", "course", "user", "read_status"}, v) {
 			errs = append(errs, "Include must be one of submission_history, submission_comments, rubric_assessment, full_rubric_assessment, visibility, course, user, read_status")
 		}
 	}

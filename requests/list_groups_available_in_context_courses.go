@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,12 +27,12 @@ import (
 //
 type ListGroupsAvailableInContextCourses struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		OnlyOwnGroups bool     `json:"only_own_groups"` //  (Optional)
-		Include       []string `json:"include"`         //  (Optional) . Must be one of tabs
+		OnlyOwnGroups bool     `json:"only_own_groups" url:"only_own_groups,omitempty"` //  (Optional)
+		Include       []string `json:"include" url:"include,omitempty"`                 //  (Optional) . Must be one of tabs
 	} `json:"query"`
 }
 
@@ -53,8 +54,12 @@ func (t *ListGroupsAvailableInContextCourses) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListGroupsAvailableInContextCourses) GetBody() (string, error) {
-	return "", nil
+func (t *ListGroupsAvailableInContextCourses) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListGroupsAvailableInContextCourses) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListGroupsAvailableInContextCourses) HasErrors() error {
@@ -63,7 +68,7 @@ func (t *ListGroupsAvailableInContextCourses) HasErrors() error {
 		errs = append(errs, "'CourseID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"tabs"}, v) {
+		if v != "" && !string_utils.Include([]string{"tabs"}, v) {
 			errs = append(errs, "Include must be one of tabs")
 		}
 	}

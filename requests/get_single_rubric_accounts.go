@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -26,13 +27,13 @@ import (
 //
 type GetSingleRubricAccounts struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
-		ID        string `json:"id"`         //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
+		ID        string `json:"id" url:"id,omitempty"`                 //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Include []string `json:"include"` //  (Optional) . Must be one of assessments, graded_assessments, peer_assessments, associations, assignment_associations, course_associations, account_associations
-		Style   string   `json:"style"`   //  (Optional) . Must be one of full, comments_only
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of assessments, graded_assessments, peer_assessments, associations, assignment_associations, course_associations, account_associations
+		Style   string   `json:"style" url:"style,omitempty"`     //  (Optional) . Must be one of full, comments_only
 	} `json:"query"`
 }
 
@@ -55,8 +56,12 @@ func (t *GetSingleRubricAccounts) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSingleRubricAccounts) GetBody() (string, error) {
-	return "", nil
+func (t *GetSingleRubricAccounts) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSingleRubricAccounts) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSingleRubricAccounts) HasErrors() error {
@@ -68,11 +73,11 @@ func (t *GetSingleRubricAccounts) HasErrors() error {
 		errs = append(errs, "'ID' is required")
 	}
 	for _, v := range t.Query.Include {
-		if !string_utils.Include([]string{"assessments", "graded_assessments", "peer_assessments", "associations", "assignment_associations", "course_associations", "account_associations"}, v) {
+		if v != "" && !string_utils.Include([]string{"assessments", "graded_assessments", "peer_assessments", "associations", "assignment_associations", "course_associations", "account_associations"}, v) {
 			errs = append(errs, "Include must be one of assessments, graded_assessments, peer_assessments, associations, assignment_associations, course_associations, account_associations")
 		}
 	}
-	if !string_utils.Include([]string{"full", "comments_only"}, t.Query.Style) {
+	if t.Query.Style != "" && !string_utils.Include([]string{"full", "comments_only"}, t.Query.Style) {
 		errs = append(errs, "Style must be one of full, comments_only")
 	}
 	if len(errs) > 0 {

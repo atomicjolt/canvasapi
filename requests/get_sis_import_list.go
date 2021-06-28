@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -26,16 +27,18 @@ import (
 //
 // Query Parameters:
 // # CreatedSince (Optional) If set, only shows imports created after the specified date (use ISO8601 format)
+// # CreatedBefore (Optional) If set, only shows imports created before the specified date (use ISO8601 format)
 // # WorkflowState (Optional) . Must be one of initializing, created, importing, cleanup_batch, imported, imported_with_messages, aborted, failed, failed_with_messages, restoring, partially_restored, restoredIf set, only returns imports that are in the given state.
 //
 type GetSISImportList struct {
 	Path struct {
-		AccountID string `json:"account_id"` //  (Required)
+		AccountID string `json:"account_id" url:"account_id,omitempty"` //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		CreatedSince  time.Time `json:"created_since"`  //  (Optional)
-		WorkflowState []string  `json:"workflow_state"` //  (Optional) . Must be one of initializing, created, importing, cleanup_batch, imported, imported_with_messages, aborted, failed, failed_with_messages, restoring, partially_restored, restored
+		CreatedSince  time.Time `json:"created_since" url:"created_since,omitempty"`   //  (Optional)
+		CreatedBefore time.Time `json:"created_before" url:"created_before,omitempty"` //  (Optional)
+		WorkflowState []string  `json:"workflow_state" url:"workflow_state,omitempty"` //  (Optional) . Must be one of initializing, created, importing, cleanup_batch, imported, imported_with_messages, aborted, failed, failed_with_messages, restoring, partially_restored, restored
 	} `json:"query"`
 }
 
@@ -57,8 +60,12 @@ func (t *GetSISImportList) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *GetSISImportList) GetBody() (string, error) {
-	return "", nil
+func (t *GetSISImportList) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *GetSISImportList) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *GetSISImportList) HasErrors() error {
@@ -67,7 +74,7 @@ func (t *GetSISImportList) HasErrors() error {
 		errs = append(errs, "'AccountID' is required")
 	}
 	for _, v := range t.Query.WorkflowState {
-		if !string_utils.Include([]string{"initializing", "created", "importing", "cleanup_batch", "imported", "imported_with_messages", "aborted", "failed", "failed_with_messages", "restoring", "partially_restored", "restored"}, v) {
+		if v != "" && !string_utils.Include([]string{"initializing", "created", "importing", "cleanup_batch", "imported", "imported_with_messages", "aborted", "failed", "failed_with_messages", "restoring", "partially_restored", "restored"}, v) {
 			errs = append(errs, "WorkflowState must be one of initializing, created, importing, cleanup_batch, imported, imported_with_messages, aborted, failed, failed_with_messages, restoring, partially_restored, restored")
 		}
 	}

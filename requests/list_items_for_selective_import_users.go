@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -76,12 +77,12 @@ import (
 //
 type ListItemsForSelectiveImportUsers struct {
 	Path struct {
-		UserID string `json:"user_id"` //  (Required)
-		ID     string `json:"id"`      //  (Required)
+		UserID string `json:"user_id" url:"user_id,omitempty"` //  (Required)
+		ID     string `json:"id" url:"id,omitempty"`           //  (Required)
 	} `json:"path"`
 
 	Query struct {
-		Type string `json:"type"` //  (Optional) . Must be one of context_modules, assignments, quizzes, assessment_question_banks, discussion_topics, wiki_pages, context_external_tools, tool_profiles, announcements, calendar_events, rubrics, groups, learning_outcomes, attachments
+		Type string `json:"type" url:"type,omitempty"` //  (Optional) . Must be one of context_modules, assignments, quizzes, assessment_question_banks, discussion_topics, wiki_pages, context_external_tools, tool_profiles, announcements, calendar_events, rubrics, groups, learning_outcomes, attachments
 	} `json:"query"`
 }
 
@@ -104,8 +105,12 @@ func (t *ListItemsForSelectiveImportUsers) GetQuery() (string, error) {
 	return fmt.Sprintf("?%v", v.Encode()), nil
 }
 
-func (t *ListItemsForSelectiveImportUsers) GetBody() (string, error) {
-	return "", nil
+func (t *ListItemsForSelectiveImportUsers) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *ListItemsForSelectiveImportUsers) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *ListItemsForSelectiveImportUsers) HasErrors() error {
@@ -116,7 +121,7 @@ func (t *ListItemsForSelectiveImportUsers) HasErrors() error {
 	if t.Path.ID == "" {
 		errs = append(errs, "'ID' is required")
 	}
-	if !string_utils.Include([]string{"context_modules", "assignments", "quizzes", "assessment_question_banks", "discussion_topics", "wiki_pages", "context_external_tools", "tool_profiles", "announcements", "calendar_events", "rubrics", "groups", "learning_outcomes", "attachments"}, t.Query.Type) {
+	if t.Query.Type != "" && !string_utils.Include([]string{"context_modules", "assignments", "quizzes", "assessment_question_banks", "discussion_topics", "wiki_pages", "context_external_tools", "tool_profiles", "announcements", "calendar_events", "rubrics", "groups", "learning_outcomes", "attachments"}, t.Query.Type) {
 		errs = append(errs, "Type must be one of context_modules, assignments, quizzes, assessment_question_banks, discussion_topics, wiki_pages, context_external_tools, tool_profiles, announcements, calendar_events, rubrics, groups, learning_outcomes, attachments")
 	}
 	if len(errs) > 0 {

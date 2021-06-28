@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/atomicjolt/canvasapi"
@@ -25,7 +26,7 @@ import (
 //
 type CreateEpubExport struct {
 	Path struct {
-		CourseID string `json:"course_id"` //  (Required)
+		CourseID string `json:"course_id" url:"course_id,omitempty"` //  (Required)
 	} `json:"path"`
 }
 
@@ -43,8 +44,12 @@ func (t *CreateEpubExport) GetQuery() (string, error) {
 	return "", nil
 }
 
-func (t *CreateEpubExport) GetBody() (string, error) {
-	return "", nil
+func (t *CreateEpubExport) GetBody() (url.Values, error) {
+	return nil, nil
+}
+
+func (t *CreateEpubExport) GetJSON() ([]byte, error) {
+	return nil, nil
 }
 
 func (t *CreateEpubExport) HasErrors() error {
