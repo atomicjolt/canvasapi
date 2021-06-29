@@ -59,7 +59,7 @@ func (t *GetAssignmentGroup) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *GetAssignmentGroup) GetBody() (url.Values, error) {

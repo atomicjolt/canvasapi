@@ -54,7 +54,7 @@ func (t *ShowRevisionCoursesRevisionID) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ShowRevisionCoursesRevisionID) GetBody() (url.Values, error) {

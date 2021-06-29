@@ -46,7 +46,7 @@ func (t *GetPublicInlinePreviewUrl) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *GetPublicInlinePreviewUrl) GetBody() (url.Values, error) {

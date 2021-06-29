@@ -75,7 +75,7 @@ func (t *RetrieveAssignmentsEnabledForGradeExportToSISCourses) GetQuery() (strin
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *RetrieveAssignmentsEnabledForGradeExportToSISCourses) GetBody() (url.Values, error) {

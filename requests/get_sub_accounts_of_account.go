@@ -49,7 +49,7 @@ func (t *GetSubAccountsOfAccount) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *GetSubAccountsOfAccount) GetBody() (url.Values, error) {

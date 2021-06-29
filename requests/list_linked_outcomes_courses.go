@@ -51,7 +51,7 @@ func (t *ListLinkedOutcomesCourses) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListLinkedOutcomesCourses) GetBody() (url.Values, error) {

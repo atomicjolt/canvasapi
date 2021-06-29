@@ -48,7 +48,7 @@ func (t *QueryByUser) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *QueryByUser) GetBody() (url.Values, error) {

@@ -59,7 +59,7 @@ func (t *GetSISImportErrorListSISImports) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *GetSISImportErrorListSISImports) GetBody() (url.Values, error) {

@@ -48,7 +48,7 @@ func (t *SubmissionSummaryCourses) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *SubmissionSummaryCourses) GetBody() (url.Values, error) {

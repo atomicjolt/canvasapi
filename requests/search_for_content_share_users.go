@@ -48,7 +48,7 @@ func (t *SearchForContentShareUsers) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *SearchForContentShareUsers) GetBody() (url.Values, error) {

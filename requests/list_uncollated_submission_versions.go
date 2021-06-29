@@ -59,7 +59,7 @@ func (t *ListUncollatedSubmissionVersions) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListUncollatedSubmissionVersions) GetBody() (url.Values, error) {

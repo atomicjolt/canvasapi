@@ -51,7 +51,7 @@ func (t *ShowRevisionGroupsLatest) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ShowRevisionGroupsLatest) GetBody() (url.Values, error) {

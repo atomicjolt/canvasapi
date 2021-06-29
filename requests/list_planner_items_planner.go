@@ -54,7 +54,7 @@ func (t *ListPlannerItemsPlanner) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListPlannerItemsPlanner) GetBody() (url.Values, error) {

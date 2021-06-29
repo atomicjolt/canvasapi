@@ -77,7 +77,7 @@ func (t *GetOutcomeResultRollups) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *GetOutcomeResultRollups) GetBody() (url.Values, error) {

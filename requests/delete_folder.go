@@ -45,7 +45,7 @@ func (t *DeleteFolder) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *DeleteFolder) GetBody() (url.Values, error) {

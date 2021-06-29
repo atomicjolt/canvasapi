@@ -1,7 +1,6 @@
 package requests
 
 import (
-	"fmt"
 	"net/url"
 
 	"github.com/google/go-querystring/query"
@@ -132,7 +131,7 @@ func (t *ListActivityStreamSelf) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListActivityStreamSelf) GetBody() (url.Values, error) {

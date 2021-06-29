@@ -42,7 +42,7 @@ func (t *ListYourGroups) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListYourGroups) GetBody() (url.Values, error) {

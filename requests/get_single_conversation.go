@@ -62,7 +62,7 @@ func (t *GetSingleConversation) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *GetSingleConversation) GetBody() (url.Values, error) {

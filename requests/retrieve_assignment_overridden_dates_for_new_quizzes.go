@@ -49,7 +49,7 @@ func (t *RetrieveAssignmentOverriddenDatesForNewQuizzes) GetQuery() (string, err
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *RetrieveAssignmentOverriddenDatesForNewQuizzes) GetBody() (url.Values, error) {

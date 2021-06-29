@@ -57,7 +57,7 @@ func (t *GetSISImportList) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *GetSISImportList) GetBody() (url.Values, error) {

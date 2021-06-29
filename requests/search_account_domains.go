@@ -1,7 +1,6 @@
 package requests
 
 import (
-	"fmt"
 	"net/url"
 
 	"github.com/google/go-querystring/query"
@@ -42,7 +41,7 @@ func (t *SearchAccountDomains) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *SearchAccountDomains) GetBody() (url.Values, error) {

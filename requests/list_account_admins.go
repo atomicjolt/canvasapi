@@ -47,7 +47,7 @@ func (t *ListAccountAdmins) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListAccountAdmins) GetBody() (url.Values, error) {

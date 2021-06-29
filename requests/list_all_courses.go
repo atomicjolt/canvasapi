@@ -1,7 +1,6 @@
 package requests
 
 import (
-	"fmt"
 	"net/url"
 
 	"github.com/google/go-querystring/query"
@@ -40,7 +39,7 @@ func (t *ListAllCourses) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListAllCourses) GetBody() (url.Values, error) {

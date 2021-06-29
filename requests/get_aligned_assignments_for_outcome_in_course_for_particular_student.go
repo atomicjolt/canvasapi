@@ -47,7 +47,7 @@ func (t *GetAlignedAssignmentsForOutcomeInCourseForParticularStudent) GetQuery()
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *GetAlignedAssignmentsForOutcomeInCourseForParticularStudent) GetBody() (url.Values, error) {

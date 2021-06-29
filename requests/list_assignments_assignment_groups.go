@@ -72,7 +72,7 @@ func (t *ListAssignmentsAssignmentGroups) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListAssignmentsAssignmentGroups) GetBody() (url.Values, error) {

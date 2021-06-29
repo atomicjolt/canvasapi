@@ -44,7 +44,7 @@ func (t *RemoveDomainFromAccount) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *RemoveDomainFromAccount) GetBody() (url.Values, error) {

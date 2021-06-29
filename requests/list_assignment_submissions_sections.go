@@ -53,7 +53,7 @@ func (t *ListAssignmentSubmissionsSections) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListAssignmentSubmissionsSections) GetBody() (url.Values, error) {

@@ -57,7 +57,7 @@ func (t *GetSessionlessLaunchUrlForExternalToolAccounts) GetQuery() (string, err
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *GetSessionlessLaunchUrlForExternalToolAccounts) GetBody() (url.Values, error) {

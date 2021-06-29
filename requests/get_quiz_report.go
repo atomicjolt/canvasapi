@@ -55,7 +55,7 @@ func (t *GetQuizReport) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *GetQuizReport) GetBody() (url.Values, error) {

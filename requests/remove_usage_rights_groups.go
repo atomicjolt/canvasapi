@@ -46,7 +46,7 @@ func (t *RemoveUsageRightsGroups) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *RemoveUsageRightsGroups) GetBody() (url.Values, error) {

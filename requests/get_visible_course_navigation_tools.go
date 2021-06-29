@@ -41,7 +41,7 @@ func (t *GetVisibleCourseNavigationTools) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *GetVisibleCourseNavigationTools) GetBody() (url.Values, error) {

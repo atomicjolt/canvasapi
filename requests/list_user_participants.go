@@ -47,7 +47,7 @@ func (t *ListUserParticipants) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListUserParticipants) GetBody() (url.Values, error) {

@@ -102,7 +102,7 @@ func (t *ListItemsForSelectiveImportGroups) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListItemsForSelectiveImportGroups) GetBody() (url.Values, error) {

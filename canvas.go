@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"path"
@@ -58,15 +57,11 @@ func (c *Canvas) SendRequest(canvasRequest CanvasRequest) (*http.Response, error
 	}
 
 	if body != nil {
-		// request.Form = body
-		// request.PostForm = body
 		encodedBody := body.Encode()
-		log.Printf("%v", encodedBody)
 		reqBody := bytes.NewBuffer([]byte(encodedBody))
 		request.Body = ioutil.NopCloser(reqBody)
 		request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 		request.Header.Add("Content-Length", strconv.Itoa(len(encodedBody)))
-		// request.Header.Add("Content-Type", "application/json")
 	}
 
 	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.AccessToken))

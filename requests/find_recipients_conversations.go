@@ -64,7 +64,7 @@ func (t *FindRecipientsConversations) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *FindRecipientsConversations) GetBody() (url.Values, error) {

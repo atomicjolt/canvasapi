@@ -63,7 +63,7 @@ func (t *ListMediaObjectsCourses) GetQuery() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("?%v", v.Encode()), nil
+	return v.Encode(), nil
 }
 
 func (t *ListMediaObjectsCourses) GetBody() (url.Values, error) {
