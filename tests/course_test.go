@@ -56,6 +56,16 @@ func TestCreateNewCourse(t *testing.T) {
 		t.Logf("CreateAssignment returned: %v", assignment)
 	}
 
+	listAssignments := requests.ListAssignmentsAssignments{}
+	listAssignments.Path.CourseID = courseID
+	listAssignments.Query.Include = []string{"submission", "can_edit"}
+	assignments, laerr := listAssignments.Do(&canvas)
+	if laerr != nil {
+		t.Errorf("ListAssignmentsAssignments failed: %v", laerr)
+	} else {
+		t.Logf("ListAssignmentsAssignments returned: %v", assignments[0])
+	}
+
 	// Delete the course
 	deleteCourse := requests.DeleteConcludeCourse{}
 	deleteCourse.Path.ID = courseID
