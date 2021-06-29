@@ -16,11 +16,11 @@ import (
 // https://canvas.instructure.com/doc/api/quizzes.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # AccessCode (Required) The access code being validated
+// # Form.AccessCode (Required) The access code being validated
 //
 type ValidateQuizAccessCode struct {
 	Path struct {
@@ -63,13 +63,13 @@ func (t *ValidateQuizAccessCode) GetJSON() ([]byte, error) {
 func (t *ValidateQuizAccessCode) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.AccessCode == "" {
-		errs = append(errs, "'AccessCode' is required")
+		errs = append(errs, "'Form.AccessCode' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

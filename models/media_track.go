@@ -12,6 +12,6 @@ type MediaTrack struct {
 	WebvttContent string `json:"webvtt_content" url:"webvtt_content,omitempty"`   //
 }
 
-func (t *MediaTrack) HasError() error {
+func (t *MediaTrack) HasErrors() error {
 	return nil
 }

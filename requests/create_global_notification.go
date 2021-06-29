@@ -17,18 +17,18 @@ import (
 // https://canvas.instructure.com/doc/api/account_notifications.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # AccountNotification (Required) The subject of the notification.
-// # AccountNotification (Required) The message body of the notification.
-// # AccountNotification (Required) The start date and time of the notification in ISO8601 format.
+// # Form.AccountNotification.Subject (Required) The subject of the notification.
+// # Form.AccountNotification.Message (Required) The message body of the notification.
+// # Form.AccountNotification.StartAt (Required) The start date and time of the notification in ISO8601 format.
 //    e.g. 2014-01-01T01:00Z
-// # AccountNotification (Required) The end date and time of the notification in ISO8601 format.
+// # Form.AccountNotification.EndAt (Required) The end date and time of the notification in ISO8601 format.
 //    e.g. 2014-01-01T01:00Z
-// # AccountNotification (Optional) . Must be one of warning, information, question, error, calendarThe icon to display with the notification.
+// # Form.AccountNotification.Icon (Optional) . Must be one of warning, information, question, error, calendarThe icon to display with the notification.
 //    Note: Defaults to warning.
-// # AccountNotificationRoles (Optional) The role(s) to send global notification to.  Note:  ommitting this field will send to everyone
+// # Form.AccountNotificationRoles (Optional) The role(s) to send global notification to.  Note:  ommitting this field will send to everyone
 //    Example:
 //      account_notification_roles: ["StudentEnrollment", "TeacherEnrollment"]
 //
@@ -79,19 +79,19 @@ func (t *CreateGlobalNotification) GetJSON() ([]byte, error) {
 func (t *CreateGlobalNotification) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Form.AccountNotification.Subject == "" {
-		errs = append(errs, "'AccountNotification' is required")
+		errs = append(errs, "'Form.AccountNotification.Subject' is required")
 	}
 	if t.Form.AccountNotification.Message == "" {
-		errs = append(errs, "'AccountNotification' is required")
+		errs = append(errs, "'Form.AccountNotification.Message' is required")
 	}
 	if t.Form.AccountNotification.StartAt.IsZero() {
-		errs = append(errs, "'AccountNotification' is required")
+		errs = append(errs, "'Form.AccountNotification.StartAt' is required")
 	}
 	if t.Form.AccountNotification.EndAt.IsZero() {
-		errs = append(errs, "'AccountNotification' is required")
+		errs = append(errs, "'Form.AccountNotification.EndAt' is required")
 	}
 	if t.Form.AccountNotification.Icon != "" && !string_utils.Include([]string{"warning", "information", "question", "error", "calendar"}, t.Form.AccountNotification.Icon) {
 		errs = append(errs, "AccountNotification must be one of warning, information, question, error, calendar")

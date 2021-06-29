@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_reports.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # QuizID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.QuizID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of file, progressWhether the output should include documents for the file and/or progress
+// # Query.Include (Optional) . Must be one of file, progressWhether the output should include documents for the file and/or progress
 //    objects associated with this report. (Note: JSON-API only)
 //
 type GetQuizReport struct {
@@ -34,7 +34,7 @@ type GetQuizReport struct {
 	} `json:"path"`
 
 	Query struct {
-		Include string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of file, progress
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of file, progress
 	} `json:"query"`
 }
 
@@ -69,16 +69,18 @@ func (t *GetQuizReport) GetJSON() ([]byte, error) {
 func (t *GetQuizReport) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.QuizID == "" {
-		errs = append(errs, "'QuizID' is required")
+		errs = append(errs, "'Path.QuizID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
-	if t.Query.Include != "" && !string_utils.Include([]string{"file", "progress"}, t.Query.Include) {
-		errs = append(errs, "Include must be one of file, progress")
+	for _, v := range t.Query.Include {
+		if v != "" && !string_utils.Include([]string{"file", "progress"}, v) {
+			errs = append(errs, "Include must be one of file, progress")
+		}
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -14,6 +14,6 @@ type PageRevision struct {
 	Body       string    `json:"body" url:"body,omitempty"`               // the historic page contents.Example: <p>Old Page Content</p>
 }
 
-func (t *PageRevision) HasError() error {
+func (t *PageRevision) HasErrors() error {
 	return nil
 }

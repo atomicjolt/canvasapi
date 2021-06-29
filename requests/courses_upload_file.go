@@ -19,7 +19,7 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 type CoursesUploadFile struct {
 	Path struct {
@@ -52,7 +52,7 @@ func (t *CoursesUploadFile) GetJSON() ([]byte, error) {
 func (t *CoursesUploadFile) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

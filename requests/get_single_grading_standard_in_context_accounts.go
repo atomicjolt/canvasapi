@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/grading_standards.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # GradingStandardID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.GradingStandardID (Required) ID
 //
 type GetSingleGradingStandardInContextAccounts struct {
 	Path struct {
@@ -51,10 +51,10 @@ func (t *GetSingleGradingStandardInContextAccounts) GetJSON() ([]byte, error) {
 func (t *GetSingleGradingStandardInContextAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.GradingStandardID == "" {
-		errs = append(errs, "'GradingStandardID' is required")
+		errs = append(errs, "'Path.GradingStandardID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

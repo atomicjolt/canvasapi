@@ -20,24 +20,24 @@ import (
 // https://canvas.instructure.com/doc/api/announcements.html
 //
 // Query Parameters:
-// # ContextCodes (Required) List of context_codes to retrieve announcements for (for example, +course_123+). Only courses
+// # Query.ContextCodes (Required) List of context_codes to retrieve announcements for (for example, +course_123+). Only courses
 //    are presently supported. The call will fail unless the caller has View Announcements permission
 //    in all listed courses.
-// # StartDate (Optional) Only return announcements posted since the start_date (inclusive).
+// # Query.StartDate (Optional) Only return announcements posted since the start_date (inclusive).
 //    Defaults to 14 days ago. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
-// # EndDate (Optional) Only return announcements posted before the end_date (inclusive).
+// # Query.EndDate (Optional) Only return announcements posted before the end_date (inclusive).
 //    Defaults to 28 days from start_date. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
 //    Announcements scheduled for future posting will only be returned to course administrators.
-// # ActiveOnly (Optional) Only return active announcements that have been published.
+// # Query.ActiveOnly (Optional) Only return active announcements that have been published.
 //    Applies only to requesting users that have permission to view
 //    unpublished items.
 //    Defaults to false for users with access to view unpublished items,
 //    otherwise true and unmodifiable.
-// # LatestOnly (Optional) Only return the latest announcement for each associated context.
+// # Query.LatestOnly (Optional) Only return the latest announcement for each associated context.
 //    The response will include at most one announcement for each
 //    specified context in the context_codes[] parameter.
 //    Defaults to false.
-// # Include (Optional) Optional list of resources to include with the response. May include
+// # Query.Include (Optional) Optional list of resources to include with the response. May include
 //    a string of the name of the resource. Possible values are:
 //    "sections", "sections_user_count"
 //    if "sections" is passed, includes the course sections that are associated
@@ -56,7 +56,7 @@ type ListAnnouncements struct {
 		EndDate      time.Time `json:"end_date" url:"end_date,omitempty"`           //  (Optional)
 		ActiveOnly   bool      `json:"active_only" url:"active_only,omitempty"`     //  (Optional)
 		LatestOnly   bool      `json:"latest_only" url:"latest_only,omitempty"`     //  (Optional)
-		Include      string    `json:"include" url:"include,omitempty"`             //  (Optional)
+		Include      []string  `json:"include" url:"include,omitempty"`             //  (Optional)
 	} `json:"query"`
 }
 
@@ -87,7 +87,7 @@ func (t *ListAnnouncements) GetJSON() ([]byte, error) {
 func (t *ListAnnouncements) HasErrors() error {
 	errs := []string{}
 	if t.Query.ContextCodes == nil {
-		errs = append(errs, "'ContextCodes' is required")
+		errs = append(errs, "'Query.ContextCodes' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -16,10 +16,10 @@ import (
 // https://canvas.instructure.com/doc/api/discussion_topics.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Form Parameters:
-// # Order (Required) The ids of the pinned discussion topics in the desired order.
+// # Form.Order (Required) The ids of the pinned discussion topics in the desired order.
 //    (For example, "order=104,102,103".)
 //
 type ReorderPinnedTopicsGroups struct {
@@ -28,7 +28,7 @@ type ReorderPinnedTopicsGroups struct {
 	} `json:"path"`
 
 	Form struct {
-		Order []int64 `json:"order" url:"order,omitempty"` //  (Required)
+		Order []string `json:"order" url:"order,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -61,10 +61,10 @@ func (t *ReorderPinnedTopicsGroups) GetJSON() ([]byte, error) {
 func (t *ReorderPinnedTopicsGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Form.Order == nil {
-		errs = append(errs, "'Order' is required")
+		errs = append(errs, "'Form.Order' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -9,6 +9,6 @@ type CustomColumn struct {
 	ReadOnly     bool   `json:"read_only" url:"read_only,omitempty"`         // won't be editable in the gradebook UI.Example: true
 }
 
-func (t *CustomColumn) HasError() error {
+func (t *CustomColumn) HasErrors() error {
 	return nil
 }

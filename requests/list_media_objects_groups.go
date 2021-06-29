@@ -20,16 +20,16 @@ import (
 // https://canvas.instructure.com/doc/api/media_objects.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Query Parameters:
-// # Sort (Optional) . Must be one of title, created_atField to sort on. Default is "title"
+// # Query.Sort (Optional) . Must be one of title, created_atField to sort on. Default is "title"
 //
 //    title:: sorts on user_entered_title if available, title if not.
 //
 //    created_at:: sorts on the object's creation time.
-// # Order (Optional) . Must be one of asc, descSort direction. Default is "asc"
-// # Exclude (Optional) . Must be one of sources, tracksArray of data to exclude. By excluding "sources" and "tracks",
+// # Query.Order (Optional) . Must be one of asc, descSort direction. Default is "asc"
+// # Query.Exclude (Optional) . Must be one of sources, tracksArray of data to exclude. By excluding "sources" and "tracks",
 //    the api will not need to query kaltura, which greatly
 //    speeds up its response.
 //
@@ -77,7 +77,7 @@ func (t *ListMediaObjectsGroups) GetJSON() ([]byte, error) {
 func (t *ListMediaObjectsGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Query.Sort != "" && !string_utils.Include([]string{"title", "created_at"}, t.Query.Sort) {
 		errs = append(errs, "Sort must be one of title, created_at")

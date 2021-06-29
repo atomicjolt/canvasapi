@@ -13,6 +13,6 @@ type RubricAssociation struct {
 	HideOutcomeResults bool   `json:"hide_outcome_results" url:"hide_outcome_results,omitempty"` // Example: true
 }
 
-func (t *RubricAssociation) HasError() error {
+func (t *RubricAssociation) HasErrors() error {
 	return nil
 }

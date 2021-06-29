@@ -18,13 +18,13 @@ import (
 // https://canvas.instructure.com/doc/api/groups.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Query Parameters:
-// # SearchTerm (Optional) The partial name or full ID of the users to match and return in the
+// # Query.SearchTerm (Optional) The partial name or full ID of the users to match and return in the
 //    results list. Must be at least 3 characters.
-// # Include (Optional) . Must be one of avatar_url"avatar_url": Include users' avatar_urls.
-// # ExcludeInactive (Optional) Whether to filter out inactive users from the results. Defaults to
+// # Query.Include (Optional) . Must be one of avatar_url"avatar_url": Include users' avatar_urls.
+// # Query.ExcludeInactive (Optional) Whether to filter out inactive users from the results. Defaults to
 //    false unless explicitly provided.
 //
 type ListGroupSUsers struct {
@@ -68,7 +68,7 @@ func (t *ListGroupSUsers) GetJSON() ([]byte, error) {
 func (t *ListGroupSUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"avatar_url"}, v) {

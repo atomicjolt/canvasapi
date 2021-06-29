@@ -18,6 +18,6 @@ type GradeChangeEvent struct {
 	Links             *GradeChangeEventLinks `json:"links" url:"links,omitempty"`                           //
 }
 
-func (t *GradeChangeEvent) HasError() error {
+func (t *GradeChangeEvent) HasErrors() error {
 	return nil
 }

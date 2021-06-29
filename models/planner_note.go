@@ -18,6 +18,6 @@ type PlannerNote struct {
 	LinkedObjectUrl     string    `json:"linked_object_url" url:"linked_object_url,omitempty"`           // the API URL of the linked learning object.Example: https://canvas.example.com/api/v1/courses/1578941/assignments/131072
 }
 
-func (t *PlannerNote) HasError() error {
+func (t *PlannerNote) HasErrors() error {
 	return nil
 }

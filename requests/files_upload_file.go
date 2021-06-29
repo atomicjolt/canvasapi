@@ -19,7 +19,7 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # FolderID (Required) ID
+// # Path.FolderID (Required) ID
 //
 type FilesUploadFile struct {
 	Path struct {
@@ -52,7 +52,7 @@ func (t *FilesUploadFile) GetJSON() ([]byte, error) {
 func (t *FilesUploadFile) HasErrors() error {
 	errs := []string{}
 	if t.Path.FolderID == "" {
-		errs = append(errs, "'FolderID' is required")
+		errs = append(errs, "'Path.FolderID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

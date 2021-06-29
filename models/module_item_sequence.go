@@ -5,6 +5,6 @@ type ModuleItemSequence struct {
 	Modules []*Module                 `json:"modules" url:"modules,omitempty"` // an array containing each Module referenced above.Example: {'id'=>123, 'name'=>'Overview'}, {'id'=>127, 'name'=>'Imaginary Numbers'}
 }
 
-func (t *ModuleItemSequence) HasError() error {
+func (t *ModuleItemSequence) HasErrors() error {
 	return nil
 }

@@ -12,6 +12,6 @@ type BlueprintTemplate struct {
 	LatestMigration       *BlueprintMigration `json:"latest_migration" url:"latest_migration,omitempty"`                 // Details of the latest migration.
 }
 
-func (t *BlueprintTemplate) HasError() error {
+func (t *BlueprintTemplate) HasErrors() error {
 	return nil
 }

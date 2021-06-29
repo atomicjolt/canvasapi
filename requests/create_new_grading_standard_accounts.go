@@ -32,13 +32,13 @@ import (
 // https://canvas.instructure.com/doc/api/grading_standards.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # Title (Required) The title for the Grading Standard.
-// # GradingSchemeEntry (Required) The name for an entry value within a GradingStandard that describes the range of the value
+// # Form.Title (Required) The title for the Grading Standard.
+// # Form.GradingSchemeEntry.Name (Required) The name for an entry value within a GradingStandard that describes the range of the value
 //    e.g. A-
-// # GradingSchemeEntry (Required) The value for the name of the entry within a GradingStandard.
+// # Form.GradingSchemeEntry.Value (Required) The value for the name of the entry within a GradingStandard.
 //    The entry represents the lower bound of the range for the entry.
 //    This range includes the value up to the next entry in the GradingStandard,
 //    or 100 if there is no upper bound. The lowest value will have a lower bound range of 0.
@@ -53,7 +53,7 @@ type CreateNewGradingStandardAccounts struct {
 		Title              string `json:"title" url:"title,omitempty"` //  (Required)
 		GradingSchemeEntry struct {
 			Name  []string `json:"name" url:"name,omitempty"`   //  (Required)
-			Value []int64  `json:"value" url:"value,omitempty"` //  (Required)
+			Value []string `json:"value" url:"value,omitempty"` //  (Required)
 		} `json:"grading_scheme_entry" url:"grading_scheme_entry,omitempty"`
 	} `json:"form"`
 }
@@ -87,16 +87,16 @@ func (t *CreateNewGradingStandardAccounts) GetJSON() ([]byte, error) {
 func (t *CreateNewGradingStandardAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Form.Title == "" {
-		errs = append(errs, "'Title' is required")
+		errs = append(errs, "'Form.Title' is required")
 	}
 	if t.Form.GradingSchemeEntry.Name == nil {
-		errs = append(errs, "'GradingSchemeEntry' is required")
+		errs = append(errs, "'Form.GradingSchemeEntry.Name' is required")
 	}
 	if t.Form.GradingSchemeEntry.Value == nil {
-		errs = append(errs, "'GradingSchemeEntry' is required")
+		errs = append(errs, "'Form.GradingSchemeEntry.Value' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

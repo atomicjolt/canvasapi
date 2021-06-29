@@ -11,6 +11,6 @@ type SectionAssignmentOverrideAttributes struct {
 	LockAt        time.Time `json:"lock_at" url:"lock_at,omitempty"`               // (Optional) Time at which this was/will be locked..Example: 2013-02-01T00:00:00-06:00
 }
 
-func (t *SectionAssignmentOverrideAttributes) HasError() error {
+func (t *SectionAssignmentOverrideAttributes) HasErrors() error {
 	return nil
 }

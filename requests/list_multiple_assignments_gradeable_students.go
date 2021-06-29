@@ -17,10 +17,10 @@ import (
 // https://canvas.instructure.com/doc/api/submissions.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # AssignmentIDs (Optional) Assignments being requested
+// # Query.AssignmentIDs (Optional) Assignments being requested
 //
 type ListMultipleAssignmentsGradeableStudents struct {
 	Path struct {
@@ -61,7 +61,7 @@ func (t *ListMultipleAssignmentsGradeableStudents) GetJSON() ([]byte, error) {
 func (t *ListMultipleAssignmentsGradeableStudents) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

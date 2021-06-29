@@ -15,11 +15,11 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_submission_questions.html
 //
 // Path Parameters:
-// # QuizSubmissionID (Required) ID
-// # ID (Required) ID
+// # Path.QuizSubmissionID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Answer (Required) no description
+// # Query.Answer (Required) no description
 //
 type GetFormattedStudentNumericalAnswer struct {
 	Path struct {
@@ -28,7 +28,7 @@ type GetFormattedStudentNumericalAnswer struct {
 	} `json:"path"`
 
 	Query struct {
-		Answer string `json:"answer" url:"answer,omitempty"` //  (Required)
+		Answer float64 `json:"answer" url:"answer,omitempty"` //  (Required)
 	} `json:"query"`
 }
 
@@ -62,13 +62,10 @@ func (t *GetFormattedStudentNumericalAnswer) GetJSON() ([]byte, error) {
 func (t *GetFormattedStudentNumericalAnswer) HasErrors() error {
 	errs := []string{}
 	if t.Path.QuizSubmissionID == "" {
-		errs = append(errs, "'QuizSubmissionID' is required")
+		errs = append(errs, "'Path.QuizSubmissionID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
-	}
-	if t.Query.Answer == "" {
-		errs = append(errs, "'Answer' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

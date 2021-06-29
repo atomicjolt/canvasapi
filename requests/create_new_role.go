@@ -18,17 +18,17 @@ import (
 // https://canvas.instructure.com/doc/api/roles.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # Label (Required) Label for the role.
-// # Role (Optional) Deprecated alias for label.
-// # BaseRoleType (Optional) . Must be one of AccountMembership, StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollmentSpecifies the role type that will be used as a base
+// # Form.Label (Required) Label for the role.
+// # Form.Role (Optional) Deprecated alias for label.
+// # Form.BaseRoleType (Optional) . Must be one of AccountMembership, StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollmentSpecifies the role type that will be used as a base
 //    for the permissions granted to this role.
 //
 //    Defaults to 'AccountMembership' if absent
-// # Permissions (Optional) no description
-// # Permissions (Optional) If explicit is 1 and enabled is 1, permission <X> will be explicitly
+// # Form.Permissions (Optional) no description
+// # Form.Permissions (Optional) If explicit is 1 and enabled is 1, permission <X> will be explicitly
 //    granted to this role. If explicit is 1 and enabled has any other value
 //    (typically 0), permission <X> will be explicitly denied to this role. If
 //    explicit is any other value (typically 0) or absent, or if enabled is
@@ -153,14 +153,14 @@ import (
 //    Course Permissions PDF: http://bit.ly/cnvs-course-permissions
 //
 //    Account Permissions PDF: http://bit.ly/cnvs-acct-permissions
-// # Permissions (Optional) If the value is 1, permission <X> will be locked downstream (new roles in
+// # Form.Permissions (Optional) If the value is 1, permission <X> will be locked downstream (new roles in
 //    subaccounts cannot override the setting). For any other value, permission
 //    <X> is left unlocked. Ignored if permission <X> is already locked
 //    upstream. May occur multiple times with unique values for <X>.
-// # Permissions (Optional) If the value is 1, permission <X> applies to the account this role is in.
+// # Form.Permissions (Optional) If the value is 1, permission <X> applies to the account this role is in.
 //    The default value is 1. Must be true if applies_to_descendants is false.
 //    This value is only returned if enabled is true.
-// # Permissions (Optional) If the value is 1, permission <X> cascades down to sub accounts of the
+// # Form.Permissions (Optional) If the value is 1, permission <X> cascades down to sub accounts of the
 //    account this role is in. The default value is 1.  Must be true if
 //    applies_to_self is false.This value is only returned if enabled is true.
 //
@@ -206,10 +206,10 @@ func (t *CreateNewRole) GetJSON() ([]byte, error) {
 func (t *CreateNewRole) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Form.Label == "" {
-		errs = append(errs, "'Label' is required")
+		errs = append(errs, "'Form.Label' is required")
 	}
 	if t.Form.BaseRoleType != "" && !string_utils.Include([]string{"AccountMembership", "StudentEnrollment", "TeacherEnrollment", "TaEnrollment", "ObserverEnrollment", "DesignerEnrollment"}, t.Form.BaseRoleType) {
 		errs = append(errs, "BaseRoleType must be one of AccountMembership, StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollment")

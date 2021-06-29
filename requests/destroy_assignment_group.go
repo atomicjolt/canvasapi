@@ -17,11 +17,11 @@ import (
 // https://canvas.instructure.com/doc/api/assignment_groups.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # AssignmentGroupID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.AssignmentGroupID (Required) ID
 //
 // Query Parameters:
-// # MoveAssignmentsTo (Optional) The ID of an active Assignment Group to which the assignments that are
+// # Query.MoveAssignmentsTo (Optional) The ID of an active Assignment Group to which the assignments that are
 //    currently assigned to the destroyed Assignment Group will be assigned.
 //    NOTE: If this argument is not provided, any assignments in this Assignment
 //    Group will be deleted.
@@ -67,10 +67,10 @@ func (t *DestroyAssignmentGroup) GetJSON() ([]byte, error) {
 func (t *DestroyAssignmentGroup) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.AssignmentGroupID == "" {
-		errs = append(errs, "'AssignmentGroupID' is required")
+		errs = append(errs, "'Path.AssignmentGroupID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

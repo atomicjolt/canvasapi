@@ -15,11 +15,11 @@ import (
 // https://canvas.instructure.com/doc/api/discussion_topics.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # TopicID (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.TopicID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of all_dates, sections, sections_user_count, overridesIf "all_dates" is passed, all dates associated with graded discussions'
+// # Query.Include (Optional) . Must be one of all_dates, sections, sections_user_count, overridesIf "all_dates" is passed, all dates associated with graded discussions'
 //    assignments will be included.
 //    if "sections" is passed, includes the course sections that are associated
 //    with the topic, if the topic is specific to certain sections of the course.
@@ -72,10 +72,10 @@ func (t *GetSingleTopicGroups) GetJSON() ([]byte, error) {
 func (t *GetSingleTopicGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.TopicID == "" {
-		errs = append(errs, "'TopicID' is required")
+		errs = append(errs, "'Path.TopicID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"all_dates", "sections", "sections_user_count", "overrides"}, v) {

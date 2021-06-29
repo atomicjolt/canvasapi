@@ -18,11 +18,11 @@ import (
 // https://canvas.instructure.com/doc/api/course_audit_log.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # StartTime (Optional) The beginning of the time range from which you want events.
-// # EndTime (Optional) The end of the time range from which you want events.
+// # Query.StartTime (Optional) The beginning of the time range from which you want events.
+// # Query.EndTime (Optional) The end of the time range from which you want events.
 //
 type CourseAuditLogQueryByCourse struct {
 	Path struct {
@@ -64,7 +64,7 @@ func (t *CourseAuditLogQueryByCourse) GetJSON() ([]byte, error) {
 func (t *CourseAuditLogQueryByCourse) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

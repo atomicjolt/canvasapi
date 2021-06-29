@@ -21,11 +21,12 @@ type CommMessage struct {
 	HtmlBody      string    `json:"html_body" url:"html_body,omitempty"`           // The HTML body of the message..Example: <html><body>This is the body of the message</body></html>
 }
 
-func (t *CommMessage) HasError() error {
+func (t *CommMessage) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"created", "staged", "sending", "sent", "bounced", "dashboard", "cancelled", "closed"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	return nil
 }

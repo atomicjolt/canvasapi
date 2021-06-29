@@ -15,11 +15,11 @@ import (
 // https://canvas.instructure.com/doc/api/notification_preferences.html
 //
 // Path Parameters:
-// # CommunicationChannelID (Required) ID
-// # Category (Required) The name of the category. Must be parameterized (e.g. The category "Course Content" should be "course_content")
+// # Path.CommunicationChannelID (Required) ID
+// # Path.Category (Required) The name of the category. Must be parameterized (e.g. The category "Course Content" should be "course_content")
 //
 // Form Parameters:
-// # NotificationPreferences (Required) The desired frequency for each notification in the category
+// # Form.NotificationPreferences.Frequency (Required) The desired frequency for each notification in the category
 //
 type UpdatePreferencesByCategory struct {
 	Path struct {
@@ -64,13 +64,13 @@ func (t *UpdatePreferencesByCategory) GetJSON() ([]byte, error) {
 func (t *UpdatePreferencesByCategory) HasErrors() error {
 	errs := []string{}
 	if t.Path.CommunicationChannelID == "" {
-		errs = append(errs, "'CommunicationChannelID' is required")
+		errs = append(errs, "'Path.CommunicationChannelID' is required")
 	}
 	if t.Path.Category == "" {
-		errs = append(errs, "'Category' is required")
+		errs = append(errs, "'Path.Category' is required")
 	}
 	if t.Form.NotificationPreferences.Frequency == "" {
-		errs = append(errs, "'NotificationPreferences' is required")
+		errs = append(errs, "'Form.NotificationPreferences.Frequency' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

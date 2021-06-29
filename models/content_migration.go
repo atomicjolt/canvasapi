@@ -21,11 +21,12 @@ type ContentMigration struct {
 	PreAttachment      string    `json:"pre_attachment" url:"pre_attachment,omitempty"`             // file uploading data, see {file:file_uploads.html File Upload Documentation} for file upload workflow This works a little differently in that all the file data is in the pre_attachment hash if there is no upload_url then there was an attachment pre-processing error, the error message will be in the message key This data will only be here after a create or update call.Example: {'upload_url'=>'', 'message'=>'file exceeded quota', 'upload_params'=>{}}
 }
 
-func (t *ContentMigration) HasError() error {
+func (t *ContentMigration) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"pre_processing", "pre_processed", "running", "waiting_for_select", "completed", "failed"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	return nil
 }

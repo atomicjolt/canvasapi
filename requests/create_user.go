@@ -22,83 +22,83 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # User (Optional) The full name of the user. This name will be used by teacher for grading.
+// # Form.User.Name (Optional) The full name of the user. This name will be used by teacher for grading.
 //    Required if this is a self-registration.
-// # User (Optional) User's name as it will be displayed in discussions, messages, and comments.
-// # User (Optional) User's name as used to sort alphabetically in lists.
-// # User (Optional) The time zone for the user. Allowed time zones are
+// # Form.User.ShortName (Optional) User's name as it will be displayed in discussions, messages, and comments.
+// # Form.User.SortableName (Optional) User's name as used to sort alphabetically in lists.
+// # Form.User.TimeZone (Optional) The time zone for the user. Allowed time zones are
 //    {http://www.iana.org/time-zones IANA time zones} or friendlier
 //    {http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html Ruby on Rails time zones}.
-// # User (Optional) The user's preferred language, from the list of languages Canvas supports.
+// # Form.User.Locale (Optional) The user's preferred language, from the list of languages Canvas supports.
 //    This is in RFC-5646 format.
-// # User (Optional) Whether the user accepts the terms of use. Required if this is a
+// # Form.User.TermsOfUse (Optional) Whether the user accepts the terms of use. Required if this is a
 //    self-registration and this canvas instance requires users to accept
 //    the terms (on by default).
 //
 //    If this is true, it will mark the user as having accepted the terms of use.
-// # User (Optional) Automatically mark the user as registered.
+// # Form.User.SkipRegistration (Optional) Automatically mark the user as registered.
 //
 //    If this is true, it is recommended to set <tt>"pseudonym[send_confirmation]"</tt> to true as well.
 //    Otherwise, the user will not receive any messages about their account creation.
 //
 //    The users communication channel confirmation can be skipped by setting
 //    <tt>"communication_channel[skip_confirmation]"</tt> to true as well.
-// # Pseudonym (Required) User's login ID. If this is a self-registration, it must be a valid
+// # Form.Pseudonym.UniqueID (Required) User's login ID. If this is a self-registration, it must be a valid
 //    email address.
-// # Pseudonym (Optional) User's password. Cannot be set during self-registration.
-// # Pseudonym (Optional) SIS ID for the user's account. To set this parameter, the caller must be
+// # Form.Pseudonym.Password (Optional) User's password. Cannot be set during self-registration.
+// # Form.Pseudonym.SISUserID (Optional) SIS ID for the user's account. To set this parameter, the caller must be
 //    able to manage SIS permissions.
-// # Pseudonym (Optional) Integration ID for the login. To set this parameter, the caller must be able to
+// # Form.Pseudonym.IntegrationID (Optional) Integration ID for the login. To set this parameter, the caller must be able to
 //    manage SIS permissions. The Integration ID is a secondary
 //    identifier useful for more complex SIS integrations.
-// # Pseudonym (Optional) Send user notification of account creation if true.
+// # Form.Pseudonym.SendConfirmation (Optional) Send user notification of account creation if true.
 //    Automatically set to true during self-registration.
-// # Pseudonym (Optional) Send user a self-registration style email if true.
+// # Form.Pseudonym.ForceSelfRegistration (Optional) Send user a self-registration style email if true.
 //    Setting it means the users will get a notification asking them
 //    to "complete the registration process" by clicking it, setting
 //    a password, and letting them in.  Will only be executed on
 //    if the user does not need admin approval.
 //    Defaults to false unless explicitly provided.
-// # Pseudonym (Optional) The authentication provider this login is associated with. Logins
+// # Form.Pseudonym.AuthenticationProviderID (Optional) The authentication provider this login is associated with. Logins
 //    associated with a specific provider can only be used with that provider.
 //    Legacy providers (LDAP, CAS, SAML) will search for logins associated with
 //    them, or unassociated logins. New providers will only search for logins
 //    explicitly associated with them. This can be the integer ID of the
 //    provider, or the type of the provider (in which case, it will find the
 //    first matching provider).
-// # CommunicationChannel (Optional) The communication channel type, e.g. 'email' or 'sms'.
-// # CommunicationChannel (Optional) The communication channel address, e.g. the user's email address.
-// # CommunicationChannel (Optional) Only valid for account admins. If true, returns the new user account
+// # Form.CommunicationChannel.Type (Optional) The communication channel type, e.g. 'email' or 'sms'.
+// # Form.CommunicationChannel.Address (Optional) The communication channel address, e.g. the user's email address.
+// # Form.CommunicationChannel.ConfirmationUrl (Optional) Only valid for account admins. If true, returns the new user account
 //    confirmation URL in the response.
-// # CommunicationChannel (Optional) Only valid for site admins and account admins making requests; If true, the channel is
+// # Form.CommunicationChannel.SkipConfirmation (Optional) Only valid for site admins and account admins making requests; If true, the channel is
 //    automatically validated and no confirmation email or SMS is sent.
 //    Otherwise, the user must respond to a confirmation message to confirm the
 //    channel.
 //
 //    If this is true, it is recommended to set <tt>"pseudonym[send_confirmation]"</tt> to true as well.
 //    Otherwise, the user will not receive any messages about their account creation.
-// # ForceValidations (Optional) If true, validations are performed on the newly created user (and their associated pseudonym)
+// # Form.ForceValidations (Optional) If true, validations are performed on the newly created user (and their associated pseudonym)
 //    even if the request is made by a privileged user like an admin. When set to false,
 //    or not included in the request parameters, any newly created users are subject to
 //    validations unless the request is made by a user with a 'manage_user_logins' right.
 //    In which case, certain validations such as 'require_acceptance_of_terms' and
 //    'require_presence_of_name' are not enforced. Use this parameter to return helpful json
 //    errors while building users with an admin request.
-// # EnableSISReactivation (Optional) When true, will first try to re-activate a deleted user with matching sis_user_id if possible.
+// # Form.EnableSISReactivation (Optional) When true, will first try to re-activate a deleted user with matching sis_user_id if possible.
 //    This is commonly done with user[skip_registration] and communication_channel[skip_confirmation]
 //    so that the default communication_channel is also restored.
-// # Destination (Optional) If you're setting the password for the newly created user, you can provide this param
+// # Form.Destination (Optional) If you're setting the password for the newly created user, you can provide this param
 //    with a valid URL pointing into this Canvas installation, and the response will include
 //    a destination field that's a URL that you can redirect a browser to and have the newly
 //    created user automatically logged in. The URL is only valid for a short time, and must
 //    match the domain this request is directed to, and be for a well-formed path that Canvas
 //    can recognize.
-// # InitialEnrollmentType (Optional) `observer` if doing a self-registration with a pairing code. This allows setting the
+// # Form.InitialEnrollmentType (Optional) `observer` if doing a self-registration with a pairing code. This allows setting the
 //    password during user creation.
-// # PairingCode (Optional) If provided and valid, will link the new user as an observer to the student's whose
+// # Form.PairingCode.Code (Optional) If provided and valid, will link the new user as an observer to the student's whose
 //    pairing code is given.
 //
 type CreateUser struct {
@@ -173,10 +173,10 @@ func (t *CreateUser) GetJSON() ([]byte, error) {
 func (t *CreateUser) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Form.Pseudonym.UniqueID == "" {
-		errs = append(errs, "'Pseudonym' is required")
+		errs = append(errs, "'Form.Pseudonym.UniqueID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

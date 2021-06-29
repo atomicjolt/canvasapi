@@ -18,13 +18,13 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_question_groups.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # QuizID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.QuizID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Order (Required) The associated item's unique identifier
-// # Order (Optional) . Must be one of questionThe type of item is always 'question' for a group
+// # Form.Order.ID (Required) The associated item's unique identifier
+// # Form.Order.Type (Optional) . Must be one of questionThe type of item is always 'question' for a group
 //
 type ReorderQuestionGroups struct {
 	Path struct {
@@ -35,7 +35,7 @@ type ReorderQuestionGroups struct {
 
 	Form struct {
 		Order struct {
-			ID   []int64  `json:"id" url:"id,omitempty"`     //  (Required)
+			ID   []string `json:"id" url:"id,omitempty"`     //  (Required)
 			Type []string `json:"type" url:"type,omitempty"` //  (Optional) . Must be one of question
 		} `json:"order" url:"order,omitempty"`
 	} `json:"form"`
@@ -72,16 +72,16 @@ func (t *ReorderQuestionGroups) GetJSON() ([]byte, error) {
 func (t *ReorderQuestionGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.QuizID == "" {
-		errs = append(errs, "'QuizID' is required")
+		errs = append(errs, "'Path.QuizID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.Order.ID == nil {
-		errs = append(errs, "'Order' is required")
+		errs = append(errs, "'Form.Order.ID' is required")
 	}
 	for _, v := range t.Form.Order.Type {
 		if v != "" && !string_utils.Include([]string{"question"}, v) {

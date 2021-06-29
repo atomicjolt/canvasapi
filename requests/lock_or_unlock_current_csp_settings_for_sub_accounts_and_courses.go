@@ -15,10 +15,10 @@ import (
 // https://canvas.instructure.com/doc/api/content_security_policy_settings.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # SettingsLocked (Required) Whether sub-accounts and courses will be prevented from overriding settings inherited from this account.
+// # Form.SettingsLocked (Required) Whether sub-accounts and courses will be prevented from overriding settings inherited from this account.
 //
 type LockOrUnlockCurrentCspSettingsForSubAccountsAndCourses struct {
 	Path struct {
@@ -59,7 +59,7 @@ func (t *LockOrUnlockCurrentCspSettingsForSubAccountsAndCourses) GetJSON() ([]by
 func (t *LockOrUnlockCurrentCspSettingsForSubAccountsAndCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

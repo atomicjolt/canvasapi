@@ -9,6 +9,6 @@ type HelpLink struct {
 	AvailableTo []string `json:"available_to" url:"available_to,omitempty"` // The roles that have access to this help link.Example: user, student, teacher, admin, observer, unenrolled
 }
 
-func (t *HelpLink) HasError() error {
+func (t *HelpLink) HasErrors() error {
 	return nil
 }

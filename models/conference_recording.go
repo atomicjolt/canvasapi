@@ -12,6 +12,6 @@ type ConferenceRecording struct {
 	PlaybackUrl     string    `json:"playback_url" url:"playback_url,omitempty"`         // Example: http://example.com/recording_url
 }
 
-func (t *ConferenceRecording) HasError() error {
+func (t *ConferenceRecording) HasErrors() error {
 	return nil
 }

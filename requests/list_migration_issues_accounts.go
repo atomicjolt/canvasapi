@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/content_migrations.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # ContentMigrationID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.ContentMigrationID (Required) ID
 //
 type ListMigrationIssuesAccounts struct {
 	Path struct {
@@ -51,10 +51,10 @@ func (t *ListMigrationIssuesAccounts) GetJSON() ([]byte, error) {
 func (t *ListMigrationIssuesAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.ContentMigrationID == "" {
-		errs = append(errs, "'ContentMigrationID' is required")
+		errs = append(errs, "'Path.ContentMigrationID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -16,8 +16,8 @@ import (
 // https://canvas.instructure.com/doc/api/sections.html
 //
 // Path Parameters:
-// # ID (Required) ID
-// # NewCourseID (Required) ID
+// # Path.ID (Required) ID
+// # Path.NewCourseID (Required) ID
 //
 type CrossListSection struct {
 	Path struct {
@@ -52,10 +52,10 @@ func (t *CrossListSection) GetJSON() ([]byte, error) {
 func (t *CrossListSection) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Path.NewCourseID == "" {
-		errs = append(errs, "'NewCourseID' is required")
+		errs = append(errs, "'Path.NewCourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

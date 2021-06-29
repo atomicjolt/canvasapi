@@ -20,7 +20,7 @@ import (
 // https://canvas.instructure.com/doc/api/accounts.html
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of lti_guid, registration_settings, servicesArray of additional information to include.
+// # Query.Include (Optional) . Must be one of lti_guid, registration_settings, servicesArray of additional information to include.
 //
 //    "lti_guid":: the 'tool_consumer_instance_guid' that will be sent for this account on LTI launches
 //    "registration_settings":: returns info about the privacy policy and terms of use

@@ -17,14 +17,14 @@ import (
 // https://canvas.instructure.com/doc/api/external_tools.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # ID (Optional) The external id of the tool to launch.
-// # Url (Optional) The LTI launch url for the external tool.
-// # AssignmentID (Optional) The assignment id for an assignment launch. Required if launch_type is set to "assessment".
-// # ModuleItemID (Optional) The assignment id for a module item launch. Required if launch_type is set to "module_item".
-// # LaunchType (Optional) . Must be one of assessment, module_itemThe type of launch to perform on the external tool. Placement names (eg. "course_navigation")
+// # Query.ID (Optional) The external id of the tool to launch.
+// # Query.Url (Optional) The LTI launch url for the external tool.
+// # Query.AssignmentID (Optional) The assignment id for an assignment launch. Required if launch_type is set to "assessment".
+// # Query.ModuleItemID (Optional) The assignment id for a module item launch. Required if launch_type is set to "module_item".
+// # Query.LaunchType (Optional) . Must be one of assessment, module_itemThe type of launch to perform on the external tool. Placement names (eg. "course_navigation")
 //    can also be specified to use the custom launch url for that placement; if done, the tool id
 //    must be provided.
 //
@@ -71,7 +71,7 @@ func (t *GetSessionlessLaunchUrlForExternalToolAccounts) GetJSON() ([]byte, erro
 func (t *GetSessionlessLaunchUrlForExternalToolAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Query.LaunchType != "" && !string_utils.Include([]string{"assessment", "module_item"}, t.Query.LaunchType) {
 		errs = append(errs, "LaunchType must be one of assessment, module_item")

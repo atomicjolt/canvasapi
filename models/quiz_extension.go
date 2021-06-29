@@ -9,6 +9,6 @@ type QuizExtension struct {
 	EndAt            string `json:"end_at" url:"end_at,omitempty"`                       // The time at which the quiz submission will be overdue, and be flagged as a late submission..Example: 2013-11-07T13:16:18Z
 }
 
-func (t *QuizExtension) HasError() error {
+func (t *QuizExtension) HasErrors() error {
 	return nil
 }

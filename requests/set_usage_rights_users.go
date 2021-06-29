@@ -18,16 +18,16 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Form Parameters:
-// # FileIDs (Required) List of ids of files to set usage rights for.
-// # FolderIDs (Optional) List of ids of folders to search for files to set usage rights for.
+// # Form.FileIDs (Required) List of ids of files to set usage rights for.
+// # Form.FolderIDs (Optional) List of ids of folders to search for files to set usage rights for.
 //    Note that new files uploaded to these folders do not automatically inherit these rights.
-// # Publish (Optional) Whether the file(s) or folder(s) should be published on save, provided that usage rights have been specified (set to `true` to publish on save).
-// # UsageRights (Required) . Must be one of own_copyright, used_by_permission, fair_use, public_domain, creative_commonsThe intellectual property justification for using the files in Canvas
-// # UsageRights (Optional) The legal copyright line for the files
-// # UsageRights (Optional) The license that applies to the files. See the {api:UsageRightsController#licenses List licenses endpoint} for the supported license types.
+// # Form.Publish (Optional) Whether the file(s) or folder(s) should be published on save, provided that usage rights have been specified (set to `true` to publish on save).
+// # Form.UsageRights.UseJustification (Required) . Must be one of own_copyright, used_by_permission, fair_use, public_domain, creative_commonsThe intellectual property justification for using the files in Canvas
+// # Form.UsageRights.LegalCopyright (Optional) The legal copyright line for the files
+// # Form.UsageRights.License (Optional) The license that applies to the files. See the {api:UsageRightsController#licenses List licenses endpoint} for the supported license types.
 //
 type SetUsageRightsUsers struct {
 	Path struct {
@@ -75,13 +75,13 @@ func (t *SetUsageRightsUsers) GetJSON() ([]byte, error) {
 func (t *SetUsageRightsUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Form.FileIDs == nil {
-		errs = append(errs, "'FileIDs' is required")
+		errs = append(errs, "'Form.FileIDs' is required")
 	}
 	if t.Form.UsageRights.UseJustification == "" {
-		errs = append(errs, "'UsageRights' is required")
+		errs = append(errs, "'Form.UsageRights.UseJustification' is required")
 	}
 	if t.Form.UsageRights.UseJustification != "" && !string_utils.Include([]string{"own_copyright", "used_by_permission", "fair_use", "public_domain", "creative_commons"}, t.Form.UsageRights.UseJustification) {
 		errs = append(errs, "UsageRights must be one of own_copyright, used_by_permission, fair_use, public_domain, creative_commons")

@@ -12,9 +12,9 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_questions.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # QuizID (Required) The associated quiz's unique identifier
-// # ID (Required) The quiz question's unique identifier
+// # Path.CourseID (Required) ID
+// # Path.QuizID (Required) The associated quiz's unique identifier
+// # Path.ID (Required) The quiz question's unique identifier
 //
 type DeleteQuizQuestion struct {
 	Path struct {
@@ -51,7 +51,7 @@ func (t *DeleteQuizQuestion) GetJSON() ([]byte, error) {
 func (t *DeleteQuizQuestion) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

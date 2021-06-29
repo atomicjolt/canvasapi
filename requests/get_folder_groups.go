@@ -18,8 +18,8 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # ID (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.ID (Required) ID
 //
 type GetFolderGroups struct {
 	Path struct {
@@ -54,10 +54,10 @@ func (t *GetFolderGroups) GetJSON() ([]byte, error) {
 func (t *GetFolderGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

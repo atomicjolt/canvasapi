@@ -15,14 +15,14 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_question_groups.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # QuizID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.QuizID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # QuizGroups (Optional) The name of the question group.
-// # QuizGroups (Optional) The number of questions to randomly select for this group.
-// # QuizGroups (Optional) The number of points to assign to each question in the group.
+// # Form.QuizGroups.Name (Optional) The name of the question group.
+// # Form.QuizGroups.PickCount (Optional) The number of questions to randomly select for this group.
+// # Form.QuizGroups.QuestionPoints (Optional) The number of points to assign to each question in the group.
 //
 type UpdateQuestionGroup struct {
 	Path struct {
@@ -34,8 +34,8 @@ type UpdateQuestionGroup struct {
 	Form struct {
 		QuizGroups struct {
 			Name           []string `json:"name" url:"name,omitempty"`                       //  (Optional)
-			PickCount      []int64  `json:"pick_count" url:"pick_count,omitempty"`           //  (Optional)
-			QuestionPoints []int64  `json:"question_points" url:"question_points,omitempty"` //  (Optional)
+			PickCount      []string `json:"pick_count" url:"pick_count,omitempty"`           //  (Optional)
+			QuestionPoints []string `json:"question_points" url:"question_points,omitempty"` //  (Optional)
 		} `json:"quiz_groups" url:"quiz_groups,omitempty"`
 	} `json:"form"`
 }
@@ -71,13 +71,13 @@ func (t *UpdateQuestionGroup) GetJSON() ([]byte, error) {
 func (t *UpdateQuestionGroup) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.QuizID == "" {
-		errs = append(errs, "'QuizID' is required")
+		errs = append(errs, "'Path.QuizID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

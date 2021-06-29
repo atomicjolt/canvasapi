@@ -16,7 +16,7 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Form Parameters:
-// # AppKey (Optional) The pandata events appKey for this mobile app
+// # Form.AppKey (Optional) The pandata events appKey for this mobile app
 //
 type GetPandataEventsJwtTokenAndItsExpirationDate struct {
 	Form struct {

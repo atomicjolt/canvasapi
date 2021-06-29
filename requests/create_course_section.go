@@ -18,16 +18,16 @@ import (
 // https://canvas.instructure.com/doc/api/sections.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # CourseSection (Optional) The name of the section
-// # CourseSection (Optional) The sis ID of the section. Must have manage_sis permission to set. This is ignored if caller does not have permission to set.
-// # CourseSection (Optional) The integration_id of the section. Must have manage_sis permission to set. This is ignored if caller does not have permission to set.
-// # CourseSection (Optional) Section start date in ISO8601 format, e.g. 2011-01-01T01:00Z
-// # CourseSection (Optional) Section end date in ISO8601 format. e.g. 2011-01-01T01:00Z
-// # CourseSection (Optional) Set to true to restrict user enrollments to the start and end dates of the section.
-// # EnableSISReactivation (Optional) When true, will first try to re-activate a deleted section with matching sis_section_id if possible.
+// # Form.CourseSection.Name (Optional) The name of the section
+// # Form.CourseSection.SISSectionID (Optional) The sis ID of the section. Must have manage_sis permission to set. This is ignored if caller does not have permission to set.
+// # Form.CourseSection.IntegrationID (Optional) The integration_id of the section. Must have manage_sis permission to set. This is ignored if caller does not have permission to set.
+// # Form.CourseSection.StartAt (Optional) Section start date in ISO8601 format, e.g. 2011-01-01T01:00Z
+// # Form.CourseSection.EndAt (Optional) Section end date in ISO8601 format. e.g. 2011-01-01T01:00Z
+// # Form.CourseSection.RestrictEnrollmentsToSectionDates (Optional) Set to true to restrict user enrollments to the start and end dates of the section.
+// # Form.EnableSISReactivation (Optional) When true, will first try to re-activate a deleted section with matching sis_section_id if possible.
 //
 type CreateCourseSection struct {
 	Path struct {
@@ -77,7 +77,7 @@ func (t *CreateCourseSection) GetJSON() ([]byte, error) {
 func (t *CreateCourseSection) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

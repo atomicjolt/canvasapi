@@ -26,18 +26,18 @@ import (
 // https://canvas.instructure.com/doc/api/roles.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # ID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Label (Optional) The label for the role. Can only change the label of a custom role that belongs directly to the account.
-// # Permissions (Optional) no description
-// # Permissions (Optional) These arguments are described in the documentation for the
+// # Form.Label (Optional) The label for the role. Can only change the label of a custom role that belongs directly to the account.
+// # Form.Permissions (Optional) no description
+// # Form.Permissions (Optional) These arguments are described in the documentation for the
 //    {api:RoleOverridesController#add_role add_role method}.
-// # Permissions (Optional) If the value is 1, permission <X> applies to the account this role is in.
+// # Form.Permissions (Optional) If the value is 1, permission <X> applies to the account this role is in.
 //    The default value is 1. Must be true if applies_to_descendants is false.
 //    This value is only returned if enabled is true.
-// # Permissions (Optional) If the value is 1, permission <X> cascades down to sub accounts of the
+// # Form.Permissions (Optional) If the value is 1, permission <X> cascades down to sub accounts of the
 //    account this role is in. The default value is 1.  Must be true if
 //    applies_to_self is false.This value is only returned if enabled is true.
 //
@@ -83,10 +83,10 @@ func (t *UpdateRole) GetJSON() ([]byte, error) {
 func (t *UpdateRole) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

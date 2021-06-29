@@ -34,8 +34,8 @@ import (
 // https://canvas.instructure.com/doc/api/analytics.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # TermID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.TermID (Required) ID
 //
 type GetDepartmentLevelParticipationDataTerms struct {
 	Path struct {
@@ -70,10 +70,10 @@ func (t *GetDepartmentLevelParticipationDataTerms) GetJSON() ([]byte, error) {
 func (t *GetDepartmentLevelParticipationDataTerms) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.TermID == "" {
-		errs = append(errs, "'TermID' is required")
+		errs = append(errs, "'Path.TermID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

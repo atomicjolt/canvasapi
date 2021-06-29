@@ -17,18 +17,18 @@ import (
 // https://canvas.instructure.com/doc/api/names_and_role.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Query Parameters:
-// # RLID (Optional) If specified only NamesAndRoleMemberships with access to the LTI link references by this `rlid` will be included.
+// # Query.RLID (Optional) If specified only NamesAndRoleMemberships with access to the LTI link references by this `rlid` will be included.
 //    Also causes the member array to be included for each returned NamesAndRoleMembership.
 //    If the role parameter is also present, it will be 'and-ed' together with this parameter
-// # Role (Optional) If specified only NamesAndRoleMemberships having this role in the given Group will be included.
+// # Query.Role (Optional) If specified only NamesAndRoleMemberships having this role in the given Group will be included.
 //    Value must be a fully-qualified LTI/LIS role URN. Further, only
 //    http://purl.imsglobal.org/vocab/lis/v2/membership#Member and
 //    http://purl.imsglobal.org/vocab/lis/v2/membership#Manager are supported.
 //    If the `rlid` parameter is also present, it will be 'and-ed' together with this parameter
-// # Limit (Optional) May be used to limit the number of NamesAndRoleMemberships returned in a page. Defaults to 50.
+// # Query.Limit (Optional) May be used to limit the number of NamesAndRoleMemberships returned in a page. Defaults to 50.
 //
 type NamesAndRoleListGroupMemberships struct {
 	Path struct {
@@ -71,7 +71,7 @@ func (t *NamesAndRoleListGroupMemberships) GetJSON() ([]byte, error) {
 func (t *NamesAndRoleListGroupMemberships) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -19,7 +19,7 @@ import (
 // https://canvas.instructure.com/doc/api/conferences.html
 //
 // Query Parameters:
-// # State (Optional) If set to "live", returns only conferences that are live (i.e., have
+// # Query.State (Optional) If set to "live", returns only conferences that are live (i.e., have
 //    started and not finished yet). If omitted, returns all conferences for
 //    this user's groups and courses.
 //

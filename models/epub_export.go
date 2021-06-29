@@ -16,11 +16,12 @@ type EpubExport struct {
 	WorkflowState string    `json:"workflow_state" url:"workflow_state,omitempty"` // Current state of the ePub export: created exporting exported generating generated failed.Example: exported
 }
 
-func (t *EpubExport) HasError() error {
+func (t *EpubExport) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"created", "exporting", "exported", "generating", "generated", "failed"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	return nil
 }

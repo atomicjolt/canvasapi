@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/plagiarism_detection_platform_assignments.html
 //
 // Path Parameters:
-// # AssignmentID (Required) ID
+// # Path.AssignmentID (Required) ID
 //
 // Query Parameters:
-// # UserID (Optional) The id of the user. Can be a Canvas or LTI id for the user.
+// # Query.UserID (Optional) The id of the user. Can be a Canvas or LTI id for the user.
 //
 type GetSingleAssignmentLti struct {
 	Path struct {
@@ -62,7 +62,7 @@ func (t *GetSingleAssignmentLti) GetJSON() ([]byte, error) {
 func (t *GetSingleAssignmentLti) HasErrors() error {
 	errs := []string{}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

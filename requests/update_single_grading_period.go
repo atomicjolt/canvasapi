@@ -16,13 +16,13 @@ import (
 // https://canvas.instructure.com/doc/api/grading_periods.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # GradingPeriods (Required) The date the grading period starts.
-// # GradingPeriods (Required) no description
-// # GradingPeriods (Optional) A weight value that contributes to the overall weight of a grading period set which is used to calculate how much assignments in this period contribute to the total grade
+// # Form.GradingPeriods.StartDate (Required) The date the grading period starts.
+// # Form.GradingPeriods.EndDate (Required) no description
+// # Form.GradingPeriods.Weight (Optional) A weight value that contributes to the overall weight of a grading period set which is used to calculate how much assignments in this period contribute to the total grade
 //
 type UpdateSingleGradingPeriod struct {
 	Path struct {
@@ -34,7 +34,7 @@ type UpdateSingleGradingPeriod struct {
 		GradingPeriods struct {
 			StartDate []time.Time `json:"start_date" url:"start_date,omitempty"` //  (Required)
 			EndDate   []time.Time `json:"end_date" url:"end_date,omitempty"`     //  (Required)
-			Weight    []float64   `json:"weight" url:"weight,omitempty"`         //  (Optional)
+			Weight    []string    `json:"weight" url:"weight,omitempty"`         //  (Optional)
 		} `json:"grading_periods" url:"grading_periods,omitempty"`
 	} `json:"form"`
 }
@@ -69,16 +69,16 @@ func (t *UpdateSingleGradingPeriod) GetJSON() ([]byte, error) {
 func (t *UpdateSingleGradingPeriod) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.GradingPeriods.StartDate == nil {
-		errs = append(errs, "'GradingPeriods' is required")
+		errs = append(errs, "'Form.GradingPeriods.StartDate' is required")
 	}
 	if t.Form.GradingPeriods.EndDate == nil {
-		errs = append(errs, "'GradingPeriods' is required")
+		errs = append(errs, "'Form.GradingPeriods.EndDate' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

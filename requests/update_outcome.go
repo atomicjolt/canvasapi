@@ -29,20 +29,20 @@ import (
 // https://canvas.instructure.com/doc/api/outcomes.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Title (Optional) The new outcome title.
-// # DisplayName (Optional) A friendly name shown in reports for outcomes with cryptic titles,
+// # Form.Title (Optional) The new outcome title.
+// # Form.DisplayName (Optional) A friendly name shown in reports for outcomes with cryptic titles,
 //    such as common core standards names.
-// # Description (Optional) The new outcome description.
-// # VendorGuid (Optional) A custom GUID for the learning standard.
-// # MasteryPoints (Optional) The new mastery threshold for the embedded rubric criterion.
-// # Ratings (Optional) The description of a new rating level for the embedded rubric criterion.
-// # Ratings (Optional) The points corresponding to a new rating level for the embedded rubric
+// # Form.Description (Optional) The new outcome description.
+// # Form.VendorGuid (Optional) A custom GUID for the learning standard.
+// # Form.MasteryPoints (Optional) The new mastery threshold for the embedded rubric criterion.
+// # Form.Ratings.Description (Optional) The description of a new rating level for the embedded rubric criterion.
+// # Form.Ratings.Points (Optional) The points corresponding to a new rating level for the embedded rubric
 //    criterion.
-// # CalculationMethod (Optional) . Must be one of decaying_average, n_mastery, latest, highestThe new calculation method.
-// # CalculationInt (Optional) The new calculation int.  Only applies if the calculation_method is "decaying_average" or "n_mastery"
+// # Form.CalculationMethod (Optional) . Must be one of decaying_average, n_mastery, latest, highestThe new calculation method.
+// # Form.CalculationInt (Optional) The new calculation int.  Only applies if the calculation_method is "decaying_average" or "n_mastery"
 //
 type UpdateOutcome struct {
 	Path struct {
@@ -57,7 +57,7 @@ type UpdateOutcome struct {
 		MasteryPoints int64  `json:"mastery_points" url:"mastery_points,omitempty"` //  (Optional)
 		Ratings       struct {
 			Description []string `json:"description" url:"description,omitempty"` //  (Optional)
-			Points      []int64  `json:"points" url:"points,omitempty"`           //  (Optional)
+			Points      []string `json:"points" url:"points,omitempty"`           //  (Optional)
 		} `json:"ratings" url:"ratings,omitempty"`
 
 		CalculationMethod string `json:"calculation_method" url:"calculation_method,omitempty"` //  (Optional) . Must be one of decaying_average, n_mastery, latest, highest
@@ -94,7 +94,7 @@ func (t *UpdateOutcome) GetJSON() ([]byte, error) {
 func (t *UpdateOutcome) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.CalculationMethod != "" && !string_utils.Include([]string{"decaying_average", "n_mastery", "latest", "highest"}, t.Form.CalculationMethod) {
 		errs = append(errs, "CalculationMethod must be one of decaying_average, n_mastery, latest, highest")

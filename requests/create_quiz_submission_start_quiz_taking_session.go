@@ -24,12 +24,12 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_submissions.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # QuizID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.QuizID (Required) ID
 //
 // Form Parameters:
-// # AccessCode (Optional) Access code for the Quiz, if any.
-// # Preview (Optional) Whether this should be a preview QuizSubmission and not count towards
+// # Form.AccessCode (Optional) Access code for the Quiz, if any.
+// # Form.Preview (Optional) Whether this should be a preview QuizSubmission and not count towards
 //    the user's course record. Teachers only.
 //
 type CreateQuizSubmissionStartQuizTakingSession struct {
@@ -74,10 +74,10 @@ func (t *CreateQuizSubmissionStartQuizTakingSession) GetJSON() ([]byte, error) {
 func (t *CreateQuizSubmissionStartQuizTakingSession) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.QuizID == "" {
-		errs = append(errs, "'QuizID' is required")
+		errs = append(errs, "'Path.QuizID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

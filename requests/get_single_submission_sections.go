@@ -15,12 +15,12 @@ import (
 // https://canvas.instructure.com/doc/api/submissions.html
 //
 // Path Parameters:
-// # SectionID (Required) ID
-// # AssignmentID (Required) ID
-// # UserID (Required) ID
+// # Path.SectionID (Required) ID
+// # Path.AssignmentID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of submission_history, submission_comments, rubric_assessment, full_rubric_assessment, visibility, course, user, read_statusAssociations to include with the group.
+// # Query.Include (Optional) . Must be one of submission_history, submission_comments, rubric_assessment, full_rubric_assessment, visibility, course, user, read_statusAssociations to include with the group.
 //
 type GetSingleSubmissionSections struct {
 	Path struct {
@@ -65,13 +65,13 @@ func (t *GetSingleSubmissionSections) GetJSON() ([]byte, error) {
 func (t *GetSingleSubmissionSections) HasErrors() error {
 	errs := []string{}
 	if t.Path.SectionID == "" {
-		errs = append(errs, "'SectionID' is required")
+		errs = append(errs, "'Path.SectionID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"submission_history", "submission_comments", "rubric_assessment", "full_rubric_assessment", "visibility", "course", "user", "read_status"}, v) {

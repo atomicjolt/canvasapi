@@ -15,6 +15,6 @@ type OutcomeGroup struct {
 	CanEdit            bool          `json:"can_edit" url:"can_edit,omitempty"`                         // whether the current user can update the outcome group.Example: true
 }
 
-func (t *OutcomeGroup) HasError() error {
+func (t *OutcomeGroup) HasErrors() error {
 	return nil
 }

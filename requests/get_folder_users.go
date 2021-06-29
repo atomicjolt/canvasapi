@@ -18,8 +18,8 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # UserID (Required) ID
-// # ID (Required) ID
+// # Path.UserID (Required) ID
+// # Path.ID (Required) ID
 //
 type GetFolderUsers struct {
 	Path struct {
@@ -54,10 +54,10 @@ func (t *GetFolderUsers) GetJSON() ([]byte, error) {
 func (t *GetFolderUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

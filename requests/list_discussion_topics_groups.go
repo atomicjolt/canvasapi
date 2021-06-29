@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/discussion_topics.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of all_dates, sections, sections_user_count, overridesIf "all_dates" is passed, all dates associated with graded discussions'
+// # Query.Include (Optional) . Must be one of all_dates, sections, sections_user_count, overridesIf "all_dates" is passed, all dates associated with graded discussions'
 //    assignments will be included.
 //    if "sections" is passed, includes the course sections that are associated
 //    with the topic, if the topic is specific to certain sections of the course.
@@ -32,15 +32,15 @@ import (
 //      (b) Else, includes at the root level the total number of users in the
 //          topic's context (group or course) that the topic applies to.
 //    If "overrides" is passed, the overrides for the assignment will be included
-// # OrderBy (Optional) . Must be one of position, recent_activity, titleDetermines the order of the discussion topic list. Defaults to "position".
-// # Scope (Optional) . Must be one of locked, unlocked, pinned, unpinnedOnly return discussion topics in the given state(s). Defaults to including
+// # Query.OrderBy (Optional) . Must be one of position, recent_activity, titleDetermines the order of the discussion topic list. Defaults to "position".
+// # Query.Scope (Optional) . Must be one of locked, unlocked, pinned, unpinnedOnly return discussion topics in the given state(s). Defaults to including
 //    all topics. Filtering is done after pagination, so pages
 //    may be smaller than requested if topics are filtered.
 //    Can pass multiple states as comma separated string.
-// # OnlyAnnouncements (Optional) Return announcements instead of discussion topics. Defaults to false
-// # FilterBy (Optional) . Must be one of all, unreadThe state of the discussion topic to return. Currently only supports unread state.
-// # SearchTerm (Optional) The partial title of the discussion topics to match and return.
-// # ExcludeContextModuleLockedTopics (Optional) For students, exclude topics that are locked by module progression.
+// # Query.OnlyAnnouncements (Optional) Return announcements instead of discussion topics. Defaults to false
+// # Query.FilterBy (Optional) . Must be one of all, unreadThe state of the discussion topic to return. Currently only supports unread state.
+// # Query.SearchTerm (Optional) The partial title of the discussion topics to match and return.
+// # Query.ExcludeContextModuleLockedTopics (Optional) For students, exclude topics that are locked by module progression.
 //    Defaults to false.
 //
 type ListDiscussionTopicsGroups struct {
@@ -88,7 +88,7 @@ func (t *ListDiscussionTopicsGroups) GetJSON() ([]byte, error) {
 func (t *ListDiscussionTopicsGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"all_dates", "sections", "sections_user_count", "overrides"}, v) {

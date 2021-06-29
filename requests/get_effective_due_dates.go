@@ -22,10 +22,10 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # AssignmentIDs (Optional) no description
+// # Query.AssignmentIDs (Optional) no description
 //
 type GetEffectiveDueDates struct {
 	Path struct {
@@ -66,7 +66,7 @@ func (t *GetEffectiveDueDates) GetJSON() ([]byte, error) {
 func (t *GetEffectiveDueDates) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

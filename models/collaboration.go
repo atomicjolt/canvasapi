@@ -21,6 +21,6 @@ type Collaboration struct {
 	UserName          string    `json:"user_name" url:"user_name,omitempty"`                   // The name of the user who owns the collaboration.Example: John Danger
 }
 
-func (t *Collaboration) HasError() error {
+func (t *Collaboration) HasErrors() error {
 	return nil
 }

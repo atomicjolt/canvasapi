@@ -24,6 +24,6 @@ type PageView struct {
 	Links              *PageViewLinks `json:"links" url:"links,omitempty"`                             // The page view links to define the relationships.Example: 1234, 1234
 }
 
-func (t *PageView) HasError() error {
+func (t *PageView) HasErrors() error {
 	return nil
 }

@@ -18,29 +18,29 @@ import (
 // https://canvas.instructure.com/doc/api/modules.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ModuleID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ModuleID (Required) ID
 //
 // Form Parameters:
-// # ModuleItem (Optional) The name of the module item and associated content
-// # ModuleItem (Required) . Must be one of File, Page, Discussion, Assignment, Quiz, SubHeader, ExternalUrl, ExternalToolThe type of content linked to the item
-// # ModuleItem (Required) The id of the content to link to the module item. Required, except for
+// # Form.ModuleItem.Title (Optional) The name of the module item and associated content
+// # Form.ModuleItem.Type (Required) . Must be one of File, Page, Discussion, Assignment, Quiz, SubHeader, ExternalUrl, ExternalToolThe type of content linked to the item
+// # Form.ModuleItem.ContentID (Required) The id of the content to link to the module item. Required, except for
 //    'ExternalUrl', 'Page', and 'SubHeader' types.
-// # ModuleItem (Optional) The position of this item in the module (1-based).
-// # ModuleItem (Optional) 0-based indent level; module items may be indented to show a hierarchy
-// # ModuleItem (Optional) Suffix for the linked wiki page (e.g. 'front-page'). Required for 'Page'
+// # Form.ModuleItem.Position (Optional) The position of this item in the module (1-based).
+// # Form.ModuleItem.Indent (Optional) 0-based indent level; module items may be indented to show a hierarchy
+// # Form.ModuleItem.PageUrl (Optional) Suffix for the linked wiki page (e.g. 'front-page'). Required for 'Page'
 //    type.
-// # ModuleItem (Optional) External url that the item points to. [Required for 'ExternalUrl' and
+// # Form.ModuleItem.ExternalUrl (Optional) External url that the item points to. [Required for 'ExternalUrl' and
 //    'ExternalTool' types.
-// # ModuleItem (Optional) Whether the external tool opens in a new tab. Only applies to
+// # Form.ModuleItem.NewTab (Optional) Whether the external tool opens in a new tab. Only applies to
 //    'ExternalTool' type.
-// # ModuleItem (Optional) . Must be one of must_view, must_contribute, must_submit, must_mark_doneCompletion requirement for this module item.
+// # Form.ModuleItem.CompletionRequirement.Type (Optional) . Must be one of must_view, must_contribute, must_submit, must_mark_doneCompletion requirement for this module item.
 //    "must_view": Applies to all item types
 //    "must_contribute": Only applies to "Assignment", "Discussion", and "Page" types
 //    "must_submit", "min_score": Only apply to "Assignment" and "Quiz" types
 //    "must_mark_done": Only applies to "Assignment" and "Page" types
 //    Inapplicable types will be ignored
-// # ModuleItem (Optional) Minimum score required to complete. Required for completion_requirement
+// # Form.ModuleItem.CompletionRequirement.MinScore (Optional) Minimum score required to complete. Required for completion_requirement
 //    type 'min_score'.
 //
 type CreateModuleItem struct {
@@ -97,19 +97,19 @@ func (t *CreateModuleItem) GetJSON() ([]byte, error) {
 func (t *CreateModuleItem) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ModuleID == "" {
-		errs = append(errs, "'ModuleID' is required")
+		errs = append(errs, "'Path.ModuleID' is required")
 	}
 	if t.Form.ModuleItem.Type == "" {
-		errs = append(errs, "'ModuleItem' is required")
+		errs = append(errs, "'Form.ModuleItem.Type' is required")
 	}
 	if t.Form.ModuleItem.Type != "" && !string_utils.Include([]string{"File", "Page", "Discussion", "Assignment", "Quiz", "SubHeader", "ExternalUrl", "ExternalTool"}, t.Form.ModuleItem.Type) {
 		errs = append(errs, "ModuleItem must be one of File, Page, Discussion, Assignment, Quiz, SubHeader, ExternalUrl, ExternalTool")
 	}
 	if t.Form.ModuleItem.ContentID == "" {
-		errs = append(errs, "'ModuleItem' is required")
+		errs = append(errs, "'Form.ModuleItem.ContentID' is required")
 	}
 	if t.Form.ModuleItem.CompletionRequirement.Type != "" && !string_utils.Include([]string{"must_view", "must_contribute", "must_submit", "must_mark_done"}, t.Form.ModuleItem.CompletionRequirement.Type) {
 		errs = append(errs, "ModuleItem must be one of must_view, must_contribute, must_submit, must_mark_done")

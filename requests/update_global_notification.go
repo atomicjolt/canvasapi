@@ -17,18 +17,18 @@ import (
 // https://canvas.instructure.com/doc/api/account_notifications.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # ID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # AccountNotification (Optional) The subject of the notification.
-// # AccountNotification (Optional) The message body of the notification.
-// # AccountNotification (Optional) The start date and time of the notification in ISO8601 format.
+// # Form.AccountNotification.Subject (Optional) The subject of the notification.
+// # Form.AccountNotification.Message (Optional) The message body of the notification.
+// # Form.AccountNotification.StartAt (Optional) The start date and time of the notification in ISO8601 format.
 //    e.g. 2014-01-01T01:00Z
-// # AccountNotification (Optional) The end date and time of the notification in ISO8601 format.
+// # Form.AccountNotification.EndAt (Optional) The end date and time of the notification in ISO8601 format.
 //    e.g. 2014-01-01T01:00Z
-// # AccountNotification (Optional) . Must be one of warning, information, question, error, calendarThe icon to display with the notification.
-// # AccountNotificationRoles (Optional) The role(s) to send global notification to.  Note:  ommitting this field will send to everyone
+// # Form.AccountNotification.Icon (Optional) . Must be one of warning, information, question, error, calendarThe icon to display with the notification.
+// # Form.AccountNotificationRoles (Optional) The role(s) to send global notification to.  Note:  ommitting this field will send to everyone
 //    Example:
 //      account_notification_roles: ["StudentEnrollment", "TeacherEnrollment"]
 //
@@ -81,10 +81,10 @@ func (t *UpdateGlobalNotification) GetJSON() ([]byte, error) {
 func (t *UpdateGlobalNotification) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.AccountNotification.Icon != "" && !string_utils.Include([]string{"warning", "information", "question", "error", "calendar"}, t.Form.AccountNotification.Icon) {
 		errs = append(errs, "AccountNotification must be one of warning, information, question, error, calendar")

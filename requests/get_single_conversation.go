@@ -17,18 +17,18 @@ import (
 // https://canvas.instructure.com/doc/api/conversations.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # InterleaveSubmissions (Optional) (Obsolete) Submissions are no
+// # Query.InterleaveSubmissions (Optional) (Obsolete) Submissions are no
 //    longer linked to conversations. This parameter is ignored.
-// # Scope (Optional) . Must be one of unread, starred, archivedUsed when generating "visible" in the API response. See the explanation
+// # Query.Scope (Optional) . Must be one of unread, starred, archivedUsed when generating "visible" in the API response. See the explanation
 //    under the {api:ConversationsController#index index API action}
-// # Filter (Optional) Used when generating "visible" in the API response. See the explanation
+// # Query.Filter (Optional) Used when generating "visible" in the API response. See the explanation
 //    under the {api:ConversationsController#index index API action}
-// # FilterMode (Optional) . Must be one of and, or, default orUsed when generating "visible" in the API response. See the explanation
+// # Query.FilterMode (Optional) . Must be one of and, or, default orUsed when generating "visible" in the API response. See the explanation
 //    under the {api:ConversationsController#index index API action}
-// # AutoMarkAsRead (Optional) Default true. If true, unread
+// # Query.AutoMarkAsRead (Optional) Default true. If true, unread
 //    conversations will be automatically marked as read. This will default
 //    to false in a future API release, so clients should explicitly send
 //    true if that is the desired behavior.
@@ -76,7 +76,7 @@ func (t *GetSingleConversation) GetJSON() ([]byte, error) {
 func (t *GetSingleConversation) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Query.Scope != "" && !string_utils.Include([]string{"unread", "starred", "archived"}, t.Query.Scope) {
 		errs = append(errs, "Scope must be one of unread, starred, archived")

@@ -19,13 +19,13 @@ import (
 // https://canvas.instructure.com/doc/api/groups.html
 //
 // Form Parameters:
-// # Name (Optional) The name of the group
-// # Description (Optional) A description of the group
-// # IsPublic (Optional) whether the group is public (applies only to community groups)
-// # JoinLevel (Optional) . Must be one of parent_context_auto_join, parent_context_request, invitation_onlyno description
-// # StorageQuotaMb (Optional) The allowed file storage for the group, in megabytes. This parameter is
+// # Form.Name (Optional) The name of the group
+// # Form.Description (Optional) A description of the group
+// # Form.IsPublic (Optional) whether the group is public (applies only to community groups)
+// # Form.JoinLevel (Optional) . Must be one of parent_context_auto_join, parent_context_request, invitation_onlyno description
+// # Form.StorageQuotaMb (Optional) The allowed file storage for the group, in megabytes. This parameter is
 //    ignored if the caller does not have the manage_storage_quotas permission.
-// # SISGroupID (Optional) The sis ID of the group. Must have manage_sis permission to set.
+// # Form.SISGroupID (Optional) The sis ID of the group. Must have manage_sis permission to set.
 //
 type CreateGroupGroups struct {
 	Form struct {

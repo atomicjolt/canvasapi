@@ -20,6 +20,6 @@ type Answer struct {
 	BlankID             int64   `json:"blank_id" url:"blank_id,omitempty"`                           // Used in fill in multiple blank and multiple dropdowns questions..Example: 1170
 }
 
-func (t *Answer) HasError() error {
+func (t *Answer) HasErrors() error {
 	return nil
 }

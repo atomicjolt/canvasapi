@@ -26,11 +26,12 @@ type Outcome struct {
 	HasUpdateableRubrics bool            `json:"has_updateable_rubrics" url:"has_updateable_rubrics,omitempty"` // whether updates to this outcome will propagate to unassessed rubrics that have imported it.Example: true
 }
 
-func (t *Outcome) HasError() error {
+func (t *Outcome) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"decaying_average", "n_mastery", "latest", "highest"}
 	if t.CalculationMethod != "" && !string_utils.Include(s, t.CalculationMethod) {
-		return fmt.Errorf("expected 'calculation_method' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'CalculationMethod' to be one of %v", s))
 	}
 	return nil
 }

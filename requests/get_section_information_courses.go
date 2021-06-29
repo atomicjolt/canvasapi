@@ -18,11 +18,11 @@ import (
 // https://canvas.instructure.com/doc/api/sections.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of students, avatar_url, enrollments, total_students, passback_status- "students": Associations to include with the group. Note: this is only
+// # Query.Include (Optional) . Must be one of students, avatar_url, enrollments, total_students, passback_status- "students": Associations to include with the group. Note: this is only
 //      available if you have permission to view users or grades in the course
 //    - "avatar_url": Include the avatar URLs for students returned.
 //    - "enrollments": If 'students' is also included, return the section
@@ -72,10 +72,10 @@ func (t *GetSectionInformationCourses) GetJSON() ([]byte, error) {
 func (t *GetSectionInformationCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"students", "avatar_url", "enrollments", "total_students", "passback_status"}, v) {

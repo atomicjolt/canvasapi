@@ -29,10 +29,10 @@ import (
 // https://canvas.instructure.com/doc/api/assignments.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # AssignmentOverrides (Required) Attributes for the updated overrides.
+// # Form.AssignmentOverrides (Required) Attributes for the updated overrides.
 //
 type BatchUpdateOverridesInCourse struct {
 	Path struct {
@@ -73,10 +73,10 @@ func (t *BatchUpdateOverridesInCourse) GetJSON() ([]byte, error) {
 func (t *BatchUpdateOverridesInCourse) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Form.AssignmentOverrides == nil {
-		errs = append(errs, "'AssignmentOverrides' is required")
+		errs = append(errs, "'Form.AssignmentOverrides' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

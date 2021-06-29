@@ -14,10 +14,10 @@ import (
 // https://canvas.instructure.com/doc/api/content_security_policy_settings.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # Domain (Required) no description
+// # Query.Domain (Required) no description
 //
 type RemoveDomainFromAccount struct {
 	Path struct {
@@ -58,10 +58,10 @@ func (t *RemoveDomainFromAccount) GetJSON() ([]byte, error) {
 func (t *RemoveDomainFromAccount) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Query.Domain == "" {
-		errs = append(errs, "'Domain' is required")
+		errs = append(errs, "'Query.Domain' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -18,24 +18,24 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Query Parameters:
-// # EnrollmentType (Optional) . Must be one of teacher, student, ta, observer, designerWhen set, only return courses where the user is enrolled as this type. For
+// # Query.EnrollmentType (Optional) . Must be one of teacher, student, ta, observer, designerWhen set, only return courses where the user is enrolled as this type. For
 //    example, set to "teacher" to return only courses where the user is
 //    enrolled as a Teacher.  This argument is ignored if enrollment_role is given.
-// # EnrollmentRole (Optional) Deprecated
+// # Query.EnrollmentRole (Optional) Deprecated
 //    When set, only return courses where the user is enrolled with the specified
 //    course-level role.  This can be a role created with the
 //    {api:RoleOverridesController#add_role Add Role API} or a base role type of
 //    'StudentEnrollment', 'TeacherEnrollment', 'TaEnrollment', 'ObserverEnrollment',
 //    or 'DesignerEnrollment'.
-// # EnrollmentRoleID (Optional) When set, only return courses where the user is enrolled with the specified
+// # Query.EnrollmentRoleID (Optional) When set, only return courses where the user is enrolled with the specified
 //    course-level role.  This can be a role created with the
 //    {api:RoleOverridesController#add_role Add Role API} or a built_in role type of
 //    'StudentEnrollment', 'TeacherEnrollment', 'TaEnrollment', 'ObserverEnrollment',
 //    or 'DesignerEnrollment'.
-// # EnrollmentState (Optional) . Must be one of active, invited_or_pending, completedWhen set, only return courses where the user has an enrollment with the given state.
+// # Query.EnrollmentState (Optional) . Must be one of active, invited_or_pending, completedWhen set, only return courses where the user has an enrollment with the given state.
 //    This will respect section/course/term date overrides.
-// # ExcludeBlueprintCourses (Optional) When set, only return courses that are not configured as blueprint courses.
-// # Include (Optional) . Must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, grading_periods, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, course_image, concluded- "needs_grading_count": Optional information to include with each Course.
+// # Query.ExcludeBlueprintCourses (Optional) When set, only return courses that are not configured as blueprint courses.
+// # Query.Include (Optional) . Must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, grading_periods, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, course_image, concluded- "needs_grading_count": Optional information to include with each Course.
 //      When needs_grading_count is given, and the current user has grading
 //      rights, the total number of submissions needing grading for all
 //      assignments is returned.
@@ -124,7 +124,7 @@ import (
 //      and the course image feature flag has been enabled
 //    - "concluded": Optional information to include with each Course. Indicates whether
 //      the course has been concluded, taking course and term dates into account.
-// # State (Optional) . Must be one of unpublished, available, completed, deletedIf set, only return courses that are in the given state(s).
+// # Query.State (Optional) . Must be one of unpublished, available, completed, deletedIf set, only return courses that are in the given state(s).
 //    By default, "available" is returned for students and observers, and
 //    anything except "deleted", for all other enrollment types
 //

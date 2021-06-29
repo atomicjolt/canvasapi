@@ -14,10 +14,10 @@ import (
 // https://canvas.instructure.com/doc/api/calendar_events.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # CancelReason (Optional) Reason for deleting/canceling the event.
+// # Query.CancelReason (Optional) Reason for deleting/canceling the event.
 //
 type DeleteCalendarEvent struct {
 	Path struct {
@@ -58,7 +58,7 @@ func (t *DeleteCalendarEvent) GetJSON() ([]byte, error) {
 func (t *DeleteCalendarEvent) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

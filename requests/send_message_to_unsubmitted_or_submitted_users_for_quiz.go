@@ -31,11 +31,11 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_submission_user_list.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Conversations (Optional) - Body and recipients to send the message to.
+// # Form.Conversations (Optional) - Body and recipients to send the message to.
 //
 type SendMessageToUnsubmittedOrSubmittedUsersForQuiz struct {
 	Path struct {
@@ -44,7 +44,7 @@ type SendMessageToUnsubmittedOrSubmittedUsersForQuiz struct {
 	} `json:"path"`
 
 	Form struct {
-		Conversations string `json:"conversations" url:"conversations,omitempty"` //  (Optional)
+		Conversations canvasapi.QuizUserConversation `json:"conversations" url:"conversations,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -78,10 +78,10 @@ func (t *SendMessageToUnsubmittedOrSubmittedUsersForQuiz) GetJSON() ([]byte, err
 func (t *SendMessageToUnsubmittedOrSubmittedUsersForQuiz) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

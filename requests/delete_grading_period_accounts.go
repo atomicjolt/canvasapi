@@ -13,8 +13,8 @@ import (
 // https://canvas.instructure.com/doc/api/grading_periods.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # ID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.ID (Required) ID
 //
 type DeleteGradingPeriodAccounts struct {
 	Path struct {
@@ -49,10 +49,10 @@ func (t *DeleteGradingPeriodAccounts) GetJSON() ([]byte, error) {
 func (t *DeleteGradingPeriodAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -6,6 +6,6 @@ type OutcomeRollupLinks struct {
 	Section int64 `json:"section" url:"section,omitempty"` // (Optional) The id of the section the user is in.Example: 57
 }
 
-func (t *OutcomeRollupLinks) HasError() error {
+func (t *OutcomeRollupLinks) HasErrors() error {
 	return nil
 }

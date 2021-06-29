@@ -16,7 +16,7 @@ import (
 // https://canvas.instructure.com/doc/api/plagiarism_detection_platform_users.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 type GetAllUsersInGroupLti struct {
 	Path struct {
@@ -49,7 +49,7 @@ func (t *GetAllUsersInGroupLti) GetJSON() ([]byte, error) {
 func (t *GetAllUsersInGroupLti) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

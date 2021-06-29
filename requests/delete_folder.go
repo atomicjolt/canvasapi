@@ -15,10 +15,10 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Force (Optional) Set to 'true' to allow deleting a non-empty folder
+// # Query.Force (Optional) Set to 'true' to allow deleting a non-empty folder
 //
 type DeleteFolder struct {
 	Path struct {
@@ -59,7 +59,7 @@ func (t *DeleteFolder) GetJSON() ([]byte, error) {
 func (t *DeleteFolder) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

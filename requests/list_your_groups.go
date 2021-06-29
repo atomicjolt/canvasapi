@@ -18,8 +18,8 @@ import (
 // https://canvas.instructure.com/doc/api/groups.html
 //
 // Query Parameters:
-// # ContextType (Optional) . Must be one of Account, CourseOnly include groups that are in this type of context.
-// # Include (Optional) . Must be one of tabs- "tabs": Include the list of tabs configured for each group.  See the
+// # Query.ContextType (Optional) . Must be one of Account, CourseOnly include groups that are in this type of context.
+// # Query.Include (Optional) . Must be one of tabs- "tabs": Include the list of tabs configured for each group.  See the
 //      {api:TabsController#index List available tabs API} for more information.
 //
 type ListYourGroups struct {

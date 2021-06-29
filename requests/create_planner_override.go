@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/planner.html
 //
 // Form Parameters:
-// # PlannableType (Required) . Must be one of announcement, assignment, discussion_topic, quiz, wiki_page, planner_noteType of the item that you are overriding in the planner
-// # PlannableID (Required) ID of the item that you are overriding in the planner
-// # MarkedComplete (Optional) If this is true, the item will show in the planner as completed
-// # Dismissed (Optional) If this is true, the item will not show in the opportunities list
+// # Form.PlannableType (Required) . Must be one of announcement, assignment, discussion_topic, quiz, wiki_page, planner_noteType of the item that you are overriding in the planner
+// # Form.PlannableID (Required) ID of the item that you are overriding in the planner
+// # Form.MarkedComplete (Optional) If this is true, the item will show in the planner as completed
+// # Form.Dismissed (Optional) If this is true, the item will not show in the opportunities list
 //
 type CreatePlannerOverride struct {
 	Form struct {
@@ -59,7 +59,7 @@ func (t *CreatePlannerOverride) GetJSON() ([]byte, error) {
 func (t *CreatePlannerOverride) HasErrors() error {
 	errs := []string{}
 	if t.Form.PlannableType == "" {
-		errs = append(errs, "'PlannableType' is required")
+		errs = append(errs, "'Form.PlannableType' is required")
 	}
 	if t.Form.PlannableType != "" && !string_utils.Include([]string{"announcement", "assignment", "discussion_topic", "quiz", "wiki_page", "planner_note"}, t.Form.PlannableType) {
 		errs = append(errs, "PlannableType must be one of announcement, assignment, discussion_topic, quiz, wiki_page, planner_note")

@@ -15,9 +15,9 @@ import (
 // https://canvas.instructure.com/doc/api/rubrics.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # RubricAssociationID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.RubricAssociationID (Required) ID
+// # Path.ID (Required) ID
 //
 type DeleteSingleRubricAssessment struct {
 	Path struct {
@@ -54,13 +54,13 @@ func (t *DeleteSingleRubricAssessment) GetJSON() ([]byte, error) {
 func (t *DeleteSingleRubricAssessment) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.RubricAssociationID == "" {
-		errs = append(errs, "'RubricAssociationID' is required")
+		errs = append(errs, "'Path.RubricAssociationID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

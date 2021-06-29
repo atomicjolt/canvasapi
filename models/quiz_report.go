@@ -23,11 +23,12 @@ type QuizReport struct {
 	Progress            *Progress `json:"progress" url:"progress,omitempty"`                           // if the report is being generated, a Progress object that represents the operation. Refer to the Progress API for more information about the format. (Note: available only in JSON-API format).
 }
 
-func (t *QuizReport) HasError() error {
+func (t *QuizReport) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"student_analysis", "item_analysis"}
 	if t.ReportType != "" && !string_utils.Include(s, t.ReportType) {
-		return fmt.Errorf("expected 'report_type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'ReportType' to be one of %v", s))
 	}
 	return nil
 }

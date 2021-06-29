@@ -6,6 +6,6 @@ type License struct {
 	Url  string `json:"url" url:"url,omitempty"`   // a link to the license text.Example: http://creativecommons.org/licenses/by-sa/4.0
 }
 
-func (t *License) HasError() error {
+func (t *License) HasErrors() error {
 	return nil
 }

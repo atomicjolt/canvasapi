@@ -18,7 +18,7 @@ import (
 // https://canvas.instructure.com/doc/api/conferences.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 type ListConferencesGroups struct {
 	Path struct {
@@ -51,7 +51,7 @@ func (t *ListConferencesGroups) GetJSON() ([]byte, error) {
 func (t *ListConferencesGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

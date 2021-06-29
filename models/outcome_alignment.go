@@ -9,6 +9,6 @@ type OutcomeAlignment struct {
 	Title           string `json:"title" url:"title,omitempty"`                       // the title of the aligned assignment..Example: Unit 1 test
 }
 
-func (t *OutcomeAlignment) HasError() error {
+func (t *OutcomeAlignment) HasErrors() error {
 	return nil
 }

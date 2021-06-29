@@ -3,6 +3,6 @@ package models
 type JSONAPIPagination struct {
 }
 
-func (t *JSONAPIPagination) HasError() error {
+func (t *JSONAPIPagination) HasErrors() error {
 	return nil
 }

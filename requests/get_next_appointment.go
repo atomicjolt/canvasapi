@@ -17,7 +17,7 @@ import (
 // https://canvas.instructure.com/doc/api/appointment_groups.html
 //
 // Query Parameters:
-// # AppointmentGroupIDs (Optional) List of ids of appointment groups to search.
+// # Query.AppointmentGroupIDs (Optional) List of ids of appointment groups to search.
 //
 type GetNextAppointment struct {
 	Query struct {

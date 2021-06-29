@@ -22,10 +22,10 @@ import (
 // https://canvas.instructure.com/doc/api/media_objects.html
 //
 // Path Parameters:
-// # MediaObjectID (Required) ID
+// # Path.MediaObjectID (Required) ID
 //
 // Form Parameters:
-// # Include (Optional) Retuns a listing of the resulting set of MediaTracks.
+// # Form.Include (Optional) Retuns a listing of the resulting set of MediaTracks.
 //    Like List Media Objects, use the include[] parameter to
 //    add additional fields.
 //
@@ -68,7 +68,7 @@ func (t *UpdateMediaTracks) GetJSON() ([]byte, error) {
 func (t *UpdateMediaTracks) HasErrors() error {
 	errs := []string{}
 	if t.Path.MediaObjectID == "" {
-		errs = append(errs, "'MediaObjectID' is required")
+		errs = append(errs, "'Path.MediaObjectID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

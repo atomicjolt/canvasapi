@@ -18,16 +18,16 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Name (Optional) The new name of the folder
-// # ParentFolderID (Optional) The id of the folder to move this folder into. The new folder must be in the same context as the original parent folder.
-// # LockAt (Optional) The datetime to lock the folder at
-// # UnlockAt (Optional) The datetime to unlock the folder at
-// # Locked (Optional) Flag the folder as locked
-// # Hidden (Optional) Flag the folder as hidden
-// # Position (Optional) Set an explicit sort position for the folder
+// # Form.Name (Optional) The new name of the folder
+// # Form.ParentFolderID (Optional) The id of the folder to move this folder into. The new folder must be in the same context as the original parent folder.
+// # Form.LockAt (Optional) The datetime to lock the folder at
+// # Form.UnlockAt (Optional) The datetime to unlock the folder at
+// # Form.Locked (Optional) Flag the folder as locked
+// # Form.Hidden (Optional) Flag the folder as hidden
+// # Form.Position (Optional) Set an explicit sort position for the folder
 //
 type UpdateFolder struct {
 	Path struct {
@@ -74,7 +74,7 @@ func (t *UpdateFolder) GetJSON() ([]byte, error) {
 func (t *UpdateFolder) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

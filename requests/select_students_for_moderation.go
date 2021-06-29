@@ -17,11 +17,11 @@ import (
 // https://canvas.instructure.com/doc/api/moderated_grading.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # AssignmentID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.AssignmentID (Required) ID
 //
 // Form Parameters:
-// # StudentIDs (Optional) user ids for students to select for moderation
+// # Form.StudentIDs (Optional) user ids for students to select for moderation
 //
 type SelectStudentsForModeration struct {
 	Path struct {
@@ -30,7 +30,7 @@ type SelectStudentsForModeration struct {
 	} `json:"path"`
 
 	Form struct {
-		StudentIDs []float64 `json:"student_ids" url:"student_ids,omitempty"` //  (Optional)
+		StudentIDs []string `json:"student_ids" url:"student_ids,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -64,10 +64,10 @@ func (t *SelectStudentsForModeration) GetJSON() ([]byte, error) {
 func (t *SelectStudentsForModeration) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

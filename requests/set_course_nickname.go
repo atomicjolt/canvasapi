@@ -19,10 +19,10 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # Nickname (Required) The nickname to set.  It must be non-empty and shorter than 60 characters.
+// # Form.Nickname (Required) The nickname to set.  It must be non-empty and shorter than 60 characters.
 //
 type SetCourseNickname struct {
 	Path struct {
@@ -63,10 +63,10 @@ func (t *SetCourseNickname) GetJSON() ([]byte, error) {
 func (t *SetCourseNickname) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Form.Nickname == "" {
-		errs = append(errs, "'Nickname' is required")
+		errs = append(errs, "'Form.Nickname' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

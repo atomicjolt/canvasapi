@@ -19,11 +19,11 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # ID (Required) ID
-// # AssetString (Required) ID
+// # Path.ID (Required) ID
+// # Path.AssetString (Required) ID
 //
 // Form Parameters:
-// # Hexcode (Optional) The hexcode of the color to set for the context, if you choose to pass the
+// # Form.Hexcode (Optional) The hexcode of the color to set for the context, if you choose to pass the
 //    hexcode as a query parameter rather than in the request body you should
 //    NOT include the '#' unless you escape it first.
 //
@@ -68,10 +68,10 @@ func (t *UpdateCustomColor) GetJSON() ([]byte, error) {
 func (t *UpdateCustomColor) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Path.AssetString == "" {
-		errs = append(errs, "'AssetString' is required")
+		errs = append(errs, "'Path.AssetString' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

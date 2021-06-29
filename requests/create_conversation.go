@@ -18,39 +18,39 @@ import (
 // https://canvas.instructure.com/doc/api/conversations.html
 //
 // Form Parameters:
-// # Recipients (Required) An array of recipient ids. These may be user ids or course/group ids
+// # Form.Recipients (Required) An array of recipient ids. These may be user ids or course/group ids
 //    prefixed with "course_" or "group_" respectively, e.g.
 //    recipients[]=1&recipients[]=2&recipients[]=course_3. If the course/group
 //    has over 100 enrollments, 'bulk_message' and 'group_conversation' must be
 //    set to true.
-// # Subject (Optional) The subject of the conversation. This is ignored when reusing a
+// # Form.Subject (Optional) The subject of the conversation. This is ignored when reusing a
 //    conversation. Maximum length is 255 characters.
-// # Body (Required) The message to be sent
-// # ForceNew (Optional) Forces a new message to be created, even if there is an existing private conversation.
-// # GroupConversation (Optional) Defaults to false.  When false, individual private conversations will be
+// # Form.Body (Required) The message to be sent
+// # Form.ForceNew (Optional) Forces a new message to be created, even if there is an existing private conversation.
+// # Form.GroupConversation (Optional) Defaults to false.  When false, individual private conversations will be
 //    created with each recipient. If true, this will be a group conversation
 //    (i.e. all recipients may see all messages and replies). Must be set true if
 //    the number of recipients is over the set maximum (default is 100).
-// # AttachmentIDs (Optional) An array of attachments ids. These must be files that have been previously
+// # Form.AttachmentIDs (Optional) An array of attachments ids. These must be files that have been previously
 //    uploaded to the sender's "conversation attachments" folder.
-// # MediaCommentID (Optional) Media comment id of an audio of video file to be associated with this
+// # Form.MediaCommentID (Optional) Media comment id of an audio of video file to be associated with this
 //    message.
-// # MediaCommentType (Optional) . Must be one of audio, videoType of the associated media file
-// # UserNote (Optional) Will add a faculty journal entry for each recipient as long as the user
+// # Form.MediaCommentType (Optional) . Must be one of audio, videoType of the associated media file
+// # Form.UserNote (Optional) Will add a faculty journal entry for each recipient as long as the user
 //    making the api call has permission, the recipient is a student and
 //    faculty journals are enabled in the account.
-// # Mode (Optional) . Must be one of sync, asyncDetermines whether the messages will be created/sent synchronously or
+// # Form.Mode (Optional) . Must be one of sync, asyncDetermines whether the messages will be created/sent synchronously or
 //    asynchronously. Defaults to sync, and this option is ignored if this is a
 //    group conversation or there is just one recipient (i.e. it must be a bulk
 //    private message). When sent async, the response will be an empty array
 //    (batch status can be queried via the {api:ConversationsController#batches batches API})
-// # Scope (Optional) . Must be one of unread, starred, archivedUsed when generating "visible" in the API response. See the explanation
+// # Form.Scope (Optional) . Must be one of unread, starred, archivedUsed when generating "visible" in the API response. See the explanation
 //    under the {api:ConversationsController#index index API action}
-// # Filter (Optional) Used when generating "visible" in the API response. See the explanation
+// # Form.Filter (Optional) Used when generating "visible" in the API response. See the explanation
 //    under the {api:ConversationsController#index index API action}
-// # FilterMode (Optional) . Must be one of and, or, default orUsed when generating "visible" in the API response. See the explanation
+// # Form.FilterMode (Optional) . Must be one of and, or, default orUsed when generating "visible" in the API response. See the explanation
 //    under the {api:ConversationsController#index index API action}
-// # ContextCode (Optional) The course or group that is the context for this conversation. Same format
+// # Form.ContextCode (Optional) The course or group that is the context for this conversation. Same format
 //    as courses or groups in the recipients argument.
 //
 type CreateConversation struct {
@@ -99,10 +99,10 @@ func (t *CreateConversation) GetJSON() ([]byte, error) {
 func (t *CreateConversation) HasErrors() error {
 	errs := []string{}
 	if t.Form.Recipients == nil {
-		errs = append(errs, "'Recipients' is required")
+		errs = append(errs, "'Form.Recipients' is required")
 	}
 	if t.Form.Body == "" {
-		errs = append(errs, "'Body' is required")
+		errs = append(errs, "'Form.Body' is required")
 	}
 	if t.Form.MediaCommentType != "" && !string_utils.Include([]string{"audio", "video"}, t.Form.MediaCommentType) {
 		errs = append(errs, "MediaCommentType must be one of audio, video")

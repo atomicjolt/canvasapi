@@ -18,14 +18,14 @@ import (
 // https://canvas.instructure.com/doc/api/modules.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ModuleID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ModuleID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # AssignmentSetID (Optional) Assignment set chosen, as specified in the mastery_paths portion of the
+// # Form.AssignmentSetID (Optional) Assignment set chosen, as specified in the mastery_paths portion of the
 //    context module item response
-// # StudentID (Optional) Which student the selection applies to.  If not specified, current user is
+// # Form.StudentID (Optional) Which student the selection applies to.  If not specified, current user is
 //    implied.
 //
 type SelectMasteryPath struct {
@@ -72,13 +72,13 @@ func (t *SelectMasteryPath) GetJSON() ([]byte, error) {
 func (t *SelectMasteryPath) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ModuleID == "" {
-		errs = append(errs, "'ModuleID' is required")
+		errs = append(errs, "'Path.ModuleID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

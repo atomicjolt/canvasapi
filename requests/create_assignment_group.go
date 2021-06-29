@@ -17,15 +17,15 @@ import (
 // https://canvas.instructure.com/doc/api/assignment_groups.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # Name (Optional) The assignment group's name
-// # Position (Optional) The position of this assignment group in relation to the other assignment groups
-// # GroupWeight (Optional) The percent of the total grade that this assignment group represents
-// # SISSourceID (Optional) The sis source id of the Assignment Group
-// # IntegrationData (Optional) The integration data of the Assignment Group
-// # Rules (Optional) The grading rules that are applied within this assignment group
+// # Form.Name (Optional) The assignment group's name
+// # Form.Position (Optional) The position of this assignment group in relation to the other assignment groups
+// # Form.GroupWeight (Optional) The percent of the total grade that this assignment group represents
+// # Form.SISSourceID (Optional) The sis source id of the Assignment Group
+// # Form.IntegrationData (Optional) The integration data of the Assignment Group
+// # Form.Rules (Optional) The grading rules that are applied within this assignment group
 //    See the Assignment Group object definition for format
 //
 type CreateAssignmentGroup struct {
@@ -34,12 +34,12 @@ type CreateAssignmentGroup struct {
 	} `json:"path"`
 
 	Form struct {
-		Name            string  `json:"name" url:"name,omitempty"`                         //  (Optional)
-		Position        int64   `json:"position" url:"position,omitempty"`                 //  (Optional)
-		GroupWeight     float64 `json:"group_weight" url:"group_weight,omitempty"`         //  (Optional)
-		SISSourceID     string  `json:"sis_source_id" url:"sis_source_id,omitempty"`       //  (Optional)
-		IntegrationData string  `json:"integration_data" url:"integration_data,omitempty"` //  (Optional)
-		Rules           string  `json:"rules" url:"rules,omitempty"`                       //  (Optional)
+		Name            string                   `json:"name" url:"name,omitempty"`                         //  (Optional)
+		Position        int64                    `json:"position" url:"position,omitempty"`                 //  (Optional)
+		GroupWeight     float64                  `json:"group_weight" url:"group_weight,omitempty"`         //  (Optional)
+		SISSourceID     string                   `json:"sis_source_id" url:"sis_source_id,omitempty"`       //  (Optional)
+		IntegrationData map[string](interface{}) `json:"integration_data" url:"integration_data,omitempty"` //  (Optional)
+		Rules           string                   `json:"rules" url:"rules,omitempty"`                       //  (Optional)
 	} `json:"form"`
 }
 
@@ -72,7 +72,7 @@ func (t *CreateAssignmentGroup) GetJSON() ([]byte, error) {
 func (t *CreateAssignmentGroup) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/modules.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of items, content_details- "items": Return module items inline if possible.
+// # Query.Include (Optional) . Must be one of items, content_details- "items": Return module items inline if possible.
 //      This parameter suggests that Canvas return module items directly
 //      in the Module object JSON, to avoid having to make separate API
 //      requests for each module when enumerating modules and items. Canvas
@@ -32,9 +32,9 @@ import (
 //    - "content_details": Requires 'items'. Returns additional
 //      details with module items specific to their associated content items.
 //      Includes standard lock information for each item.
-// # SearchTerm (Optional) The partial name of the modules (and module items, if 'items' is
+// # Query.SearchTerm (Optional) The partial name of the modules (and module items, if 'items' is
 //    specified with include[]) to match and return.
-// # StudentID (Optional) Returns module completion information for the student with this id.
+// # Query.StudentID (Optional) Returns module completion information for the student with this id.
 //
 type ListModules struct {
 	Path struct {
@@ -77,7 +77,7 @@ func (t *ListModules) GetJSON() ([]byte, error) {
 func (t *ListModules) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"items", "content_details"}, v) {

@@ -10,6 +10,6 @@ type RolePermissions struct {
 	PriorDefault         bool `json:"prior_default" url:"prior_default,omitempty"`                   // The value that would have been inherited from upstream if the role had not explicitly set a value. Only present if explicit is true..
 }
 
-func (t *RolePermissions) HasError() error {
+func (t *RolePermissions) HasErrors() error {
 	return nil
 }

@@ -19,8 +19,8 @@ import (
 // https://canvas.instructure.com/doc/api/conversations.html
 //
 // Form Parameters:
-// # ConversationIDs (Required) List of conversations to update. Limited to 500 conversations.
-// # Event (Required) . Must be one of mark_as_read, mark_as_unread, star, unstar, archive, destroyThe action to take on each conversation.
+// # Form.ConversationIDs (Required) List of conversations to update. Limited to 500 conversations.
+// # Form.Event (Required) . Must be one of mark_as_read, mark_as_unread, star, unstar, archive, destroyThe action to take on each conversation.
 //
 type BatchUpdateConversations struct {
 	Form struct {
@@ -56,10 +56,10 @@ func (t *BatchUpdateConversations) GetJSON() ([]byte, error) {
 func (t *BatchUpdateConversations) HasErrors() error {
 	errs := []string{}
 	if t.Form.ConversationIDs == nil {
-		errs = append(errs, "'ConversationIDs' is required")
+		errs = append(errs, "'Form.ConversationIDs' is required")
 	}
 	if t.Form.Event == "" {
-		errs = append(errs, "'Event' is required")
+		errs = append(errs, "'Form.Event' is required")
 	}
 	if t.Form.Event != "" && !string_utils.Include([]string{"mark_as_read", "mark_as_unread", "star", "unstar", "archive", "destroy"}, t.Form.Event) {
 		errs = append(errs, "Event must be one of mark_as_read, mark_as_unread, star, unstar, archive, destroy")

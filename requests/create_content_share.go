@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/content_shares.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Form Parameters:
-// # ReceiverIDs (Required) IDs of users to share the content with.
-// # ContentType (Required) . Must be one of assignment, discussion_topic, page, quiz, module, module_itemType of content you are sharing.
-// # ContentID (Required) The id of the content that you are sharing
+// # Form.ReceiverIDs (Required) IDs of users to share the content with.
+// # Form.ContentType (Required) . Must be one of assignment, discussion_topic, page, quiz, module, module_itemType of content you are sharing.
+// # Form.ContentID (Required) The id of the content that you are sharing
 //
 type CreateContentShare struct {
 	Path struct {
@@ -66,13 +66,13 @@ func (t *CreateContentShare) GetJSON() ([]byte, error) {
 func (t *CreateContentShare) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Form.ReceiverIDs == "" {
-		errs = append(errs, "'ReceiverIDs' is required")
+		errs = append(errs, "'Form.ReceiverIDs' is required")
 	}
 	if t.Form.ContentType == "" {
-		errs = append(errs, "'ContentType' is required")
+		errs = append(errs, "'Form.ContentType' is required")
 	}
 	if t.Form.ContentType != "" && !string_utils.Include([]string{"assignment", "discussion_topic", "page", "quiz", "module", "module_item"}, t.Form.ContentType) {
 		errs = append(errs, "ContentType must be one of assignment, discussion_topic, page, quiz, module, module_item")

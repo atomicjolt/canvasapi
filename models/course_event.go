@@ -13,6 +13,6 @@ type CourseEvent struct {
 	Links       *CourseEventLink `json:"links" url:"links,omitempty"`               // Jsonapi.org links.Example: 12345, 12345, e2b76430-27a5-0131-3ca1-48e0eb13f29b
 }
 
-func (t *CourseEvent) HasError() error {
+func (t *CourseEvent) HasErrors() error {
 	return nil
 }

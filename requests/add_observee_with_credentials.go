@@ -21,14 +21,14 @@ import (
 // https://canvas.instructure.com/doc/api/user_observees.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Form Parameters:
-// # Observee (Optional) The login id for the user to observe.  Required if access_token is omitted.
-// # Observee (Optional) The password for the user to observe. Required if access_token is omitted.
-// # AccessToken (Optional) The access token for the user to observe.  Required if <tt>observee[unique_id]</tt> or <tt>observee[password]</tt> are omitted.
-// # PairingCode (Optional) A generated pairing code for the user to observe. Required if the Observer pairing code feature flag is enabled
-// # RootAccountID (Optional) The ID for the root account to associate with the observation link.
+// # Form.Observee.UniqueID (Optional) The login id for the user to observe.  Required if access_token is omitted.
+// # Form.Observee.Password (Optional) The password for the user to observe. Required if access_token is omitted.
+// # Form.AccessToken (Optional) The access token for the user to observe.  Required if <tt>observee[unique_id]</tt> or <tt>observee[password]</tt> are omitted.
+// # Form.PairingCode (Optional) A generated pairing code for the user to observe. Required if the Observer pairing code feature flag is enabled
+// # Form.RootAccountID (Optional) The ID for the root account to associate with the observation link.
 //    Defaults to the current domain account.
 //    If 'all' is specified, a link will be created for each root account associated
 //    to both the observer and observee.
@@ -79,7 +79,7 @@ func (t *AddObserveeWithCredentials) GetJSON() ([]byte, error) {
 func (t *AddObserveeWithCredentials) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

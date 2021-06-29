@@ -15,15 +15,16 @@ type CommunicationChannel struct {
 	WorkflowState string `json:"workflow_state" url:"workflow_state,omitempty"` // The current state of the communication channel. Possible values are: 'unconfirmed' or 'active'..Example: active
 }
 
-func (t *CommunicationChannel) HasError() error {
+func (t *CommunicationChannel) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"email", "push", "sms", "twitter"}
 	if t.Type != "" && !string_utils.Include(s, t.Type) {
-		return fmt.Errorf("expected 'type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'Type' to be one of %v", s))
 	}
 	s = []string{"unconfirmed", "active"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	return nil
 }

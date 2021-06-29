@@ -6,6 +6,6 @@ type SISImportData struct {
 	Counts          *SISImportCounts `json:"counts" url:"counts,omitempty"`                     // The number of rows processed for each type of import.
 }
 
-func (t *SISImportData) HasError() error {
+func (t *SISImportData) HasErrors() error {
 	return nil
 }

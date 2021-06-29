@@ -21,16 +21,16 @@ import (
 // https://canvas.instructure.com/doc/api/planner.html
 //
 // Query Parameters:
-// # StartDate (Optional) Only return items starting from the given date.
+// # Query.StartDate (Optional) Only return items starting from the given date.
 //    The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
-// # EndDate (Optional) Only return items up to the given date.
+// # Query.EndDate (Optional) Only return items up to the given date.
 //    The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
-// # ContextCodes (Optional) List of context codes of courses and/or groups whose items you want to see.
+// # Query.ContextCodes (Optional) List of context codes of courses and/or groups whose items you want to see.
 //    If not specified, defaults to all contexts associated to the current user.
 //    Note that concluded courses will be ignored unless specified in the includes[]
 //    parameter. The format of this field is the context type, followed by an underscore,
 //    followed by the context id. For example: course_42, group_123
-// # Filter (Optional) . Must be one of new_activityOnly return items that have new or unread activity
+// # Query.Filter (Optional) . Must be one of new_activityOnly return items that have new or unread activity
 //
 type ListPlannerItemsPlanner struct {
 	Query struct {

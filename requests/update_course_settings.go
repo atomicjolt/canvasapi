@@ -15,25 +15,25 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # AllowStudentDiscussionTopics (Optional) Let students create discussion topics
-// # AllowStudentForumAttachments (Optional) Let students attach files to discussions
-// # AllowStudentDiscussionEditing (Optional) Let students edit or delete their own discussion posts
-// # AllowStudentOrganizedGroups (Optional) Let students organize their own groups
-// # FilterSpeedGraderByStudentGroup (Optional) Filter SpeedGrader to only the selected student group
-// # HideFinalGrades (Optional) Hide totals in student grades summary
-// # HideDistributionGraphs (Optional) Hide grade distribution graphs from students
-// # HideSectionsOnCourseUsersPage (Optional) Disallow students from viewing students in sections they do not belong to
-// # LockAllAnnouncements (Optional) Disable comments on announcements
-// # UsageRightsRequired (Optional) Copyright and license information must be provided for files before they are published.
-// # RestrictStudentPastView (Optional) Restrict students from viewing courses after end date
-// # RestrictStudentFutureView (Optional) Restrict students from viewing courses before start date
-// # ShowAnnouncementsOnHomePage (Optional) Show the most recent announcements on the Course home page (if a Wiki, defaults to five announcements, configurable via home_page_announcement_limit).
+// # Form.AllowStudentDiscussionTopics (Optional) Let students create discussion topics
+// # Form.AllowStudentForumAttachments (Optional) Let students attach files to discussions
+// # Form.AllowStudentDiscussionEditing (Optional) Let students edit or delete their own discussion posts
+// # Form.AllowStudentOrganizedGroups (Optional) Let students organize their own groups
+// # Form.FilterSpeedGraderByStudentGroup (Optional) Filter SpeedGrader to only the selected student group
+// # Form.HideFinalGrades (Optional) Hide totals in student grades summary
+// # Form.HideDistributionGraphs (Optional) Hide grade distribution graphs from students
+// # Form.HideSectionsOnCourseUsersPage (Optional) Disallow students from viewing students in sections they do not belong to
+// # Form.LockAllAnnouncements (Optional) Disable comments on announcements
+// # Form.UsageRightsRequired (Optional) Copyright and license information must be provided for files before they are published.
+// # Form.RestrictStudentPastView (Optional) Restrict students from viewing courses after end date
+// # Form.RestrictStudentFutureView (Optional) Restrict students from viewing courses before start date
+// # Form.ShowAnnouncementsOnHomePage (Optional) Show the most recent announcements on the Course home page (if a Wiki, defaults to five announcements, configurable via home_page_announcement_limit).
 //    Canvas for Elementary subjects ignore this setting.
-// # HomePageAnnouncementLimit (Optional) Limit the number of announcements on the home page if enabled via show_announcements_on_home_page
-// # SyllabusCourseSummary (Optional) Show the course summary (list of assignments and calendar events) on the syllabus page. Default is true.
+// # Form.HomePageAnnouncementLimit (Optional) Limit the number of announcements on the home page if enabled via show_announcements_on_home_page
+// # Form.SyllabusCourseSummary (Optional) Show the course summary (list of assignments and calendar events) on the syllabus page. Default is true.
 //
 type UpdateCourseSettings struct {
 	Path struct {
@@ -88,7 +88,7 @@ func (t *UpdateCourseSettings) GetJSON() ([]byte, error) {
 func (t *UpdateCourseSettings) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

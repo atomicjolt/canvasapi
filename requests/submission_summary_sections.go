@@ -15,11 +15,11 @@ import (
 // https://canvas.instructure.com/doc/api/submissions.html
 //
 // Path Parameters:
-// # SectionID (Required) ID
-// # AssignmentID (Required) ID
+// # Path.SectionID (Required) ID
+// # Path.AssignmentID (Required) ID
 //
 // Query Parameters:
-// # Grouped (Optional) If this argument is true, the response will take into account student groups.
+// # Query.Grouped (Optional) If this argument is true, the response will take into account student groups.
 //
 type SubmissionSummarySections struct {
 	Path struct {
@@ -62,10 +62,10 @@ func (t *SubmissionSummarySections) GetJSON() ([]byte, error) {
 func (t *SubmissionSummarySections) HasErrors() error {
 	errs := []string{}
 	if t.Path.SectionID == "" {
-		errs = append(errs, "'SectionID' is required")
+		errs = append(errs, "'Path.SectionID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

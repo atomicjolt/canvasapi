@@ -6,6 +6,6 @@ type AssignmentExtension struct {
 	ExtraAttempts int64 `json:"extra_attempts" url:"extra_attempts,omitempty"` // Number of times the student is allowed to re-submit the assignment.Example: 2
 }
 
-func (t *AssignmentExtension) HasError() error {
+func (t *AssignmentExtension) HasErrors() error {
 	return nil
 }

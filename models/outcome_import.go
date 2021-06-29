@@ -20,14 +20,15 @@ type OutcomeImport struct {
 	Data             *OutcomeImportData `json:"data" url:"data,omitempty"`                           // See the OutcomeImportData specification above..
 	Progress         string             `json:"progress" url:"progress,omitempty"`                   // The progress of the outcome import..Example: 100
 	User             *User              `json:"user" url:"user,omitempty"`                           // The user that initiated the outcome_import. See the Users API for details..
-	ProcessingErrors string             `json:"processing_errors" url:"processing_errors,omitempty"` // An array of row number / error message pairs. Returns the first 25 errors..Example: 1, Missing required fields: title
+	ProcessingErrors []string           `json:"processing_errors" url:"processing_errors,omitempty"` // An array of row number / error message pairs. Returns the first 25 errors..Example: 1, Missing required fields: title
 }
 
-func (t *OutcomeImport) HasError() error {
+func (t *OutcomeImport) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"created", "importing", "succeeded", "failed"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	return nil
 }

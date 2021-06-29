@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/media_objects.html
 //
 // Path Parameters:
-// # MediaObjectID (Required) ID
+// # Path.MediaObjectID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of content, webvtt_content, updated_at, created_atBy default, index returns id, locale, kind, media_object_id, and user_id for each of the
+// # Query.Include (Optional) . Must be one of content, webvtt_content, updated_at, created_atBy default, index returns id, locale, kind, media_object_id, and user_id for each of the
 //    result MediaTracks. Use include[] to
 //    add additional fields. For example include[]=content
 //
@@ -64,7 +64,7 @@ func (t *ListMediaTracksForMediaObject) GetJSON() ([]byte, error) {
 func (t *ListMediaTracksForMediaObject) HasErrors() error {
 	errs := []string{}
 	if t.Path.MediaObjectID == "" {
-		errs = append(errs, "'MediaObjectID' is required")
+		errs = append(errs, "'Path.MediaObjectID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"content", "webvtt_content", "updated_at", "created_at"}, v) {

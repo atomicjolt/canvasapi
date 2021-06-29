@@ -21,19 +21,19 @@ import (
 // https://canvas.instructure.com/doc/api/planner.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Query Parameters:
-// # StartDate (Optional) Only return items starting from the given date.
+// # Query.StartDate (Optional) Only return items starting from the given date.
 //    The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
-// # EndDate (Optional) Only return items up to the given date.
+// # Query.EndDate (Optional) Only return items up to the given date.
 //    The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
-// # ContextCodes (Optional) List of context codes of courses and/or groups whose items you want to see.
+// # Query.ContextCodes (Optional) List of context codes of courses and/or groups whose items you want to see.
 //    If not specified, defaults to all contexts associated to the current user.
 //    Note that concluded courses will be ignored unless specified in the includes[]
 //    parameter. The format of this field is the context type, followed by an underscore,
 //    followed by the context id. For example: course_42, group_123
-// # Filter (Optional) . Must be one of new_activityOnly return items that have new or unread activity
+// # Query.Filter (Optional) . Must be one of new_activityOnly return items that have new or unread activity
 //
 type ListPlannerItemsUsers struct {
 	Path struct {
@@ -77,7 +77,7 @@ func (t *ListPlannerItemsUsers) GetJSON() ([]byte, error) {
 func (t *ListPlannerItemsUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Query.Filter != "" && !string_utils.Include([]string{"new_activity"}, t.Query.Filter) {
 		errs = append(errs, "Filter must be one of new_activity")

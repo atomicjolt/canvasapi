@@ -18,15 +18,15 @@ import (
 // https://canvas.instructure.com/doc/api/planner.html
 //
 // Query Parameters:
-// # StartDate (Optional) Only return notes with todo dates since the start_date (inclusive).
+// # Query.StartDate (Optional) Only return notes with todo dates since the start_date (inclusive).
 //    No default. The value should be formatted as: yyyy-mm-dd or
 //    ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
-// # EndDate (Optional) Only return notes with todo dates before the end_date (inclusive).
+// # Query.EndDate (Optional) Only return notes with todo dates before the end_date (inclusive).
 //    No default. The value should be formatted as: yyyy-mm-dd or
 //    ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
 //    If end_date and start_date are both specified and equivalent,
 //    then only notes with todo dates on that day are returned.
-// # ContextCodes (Optional) List of context codes of courses whose notes you want to see.
+// # Query.ContextCodes (Optional) List of context codes of courses whose notes you want to see.
 //    If not specified, defaults to all contexts that the user belongs to.
 //    The format of this field is the context type, followed by an
 //    underscore, followed by the context id. For example: course_42

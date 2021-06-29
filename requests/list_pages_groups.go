@@ -18,13 +18,13 @@ import (
 // https://canvas.instructure.com/doc/api/pages.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Query Parameters:
-// # Sort (Optional) . Must be one of title, created_at, updated_atSort results by this field.
-// # Order (Optional) . Must be one of asc, descThe sorting order. Defaults to 'asc'.
-// # SearchTerm (Optional) The partial title of the pages to match and return.
-// # Published (Optional) If true, include only published paqes. If false, exclude published
+// # Query.Sort (Optional) . Must be one of title, created_at, updated_atSort results by this field.
+// # Query.Order (Optional) . Must be one of asc, descThe sorting order. Defaults to 'asc'.
+// # Query.SearchTerm (Optional) The partial title of the pages to match and return.
+// # Query.Published (Optional) If true, include only published paqes. If false, exclude published
 //    pages. If not present, do not filter on published status.
 //
 type ListPagesGroups struct {
@@ -69,7 +69,7 @@ func (t *ListPagesGroups) GetJSON() ([]byte, error) {
 func (t *ListPagesGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Query.Sort != "" && !string_utils.Include([]string{"title", "created_at", "updated_at"}, t.Query.Sort) {
 		errs = append(errs, "Sort must be one of title, created_at, updated_at")

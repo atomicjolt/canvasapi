@@ -9,6 +9,6 @@ type CourseEventLink struct {
 	SISBatch   int64  `json:"sis_batch" url:"sis_batch,omitempty"`     // ID of the SIS batch that triggered the event..Example: 12345
 }
 
-func (t *CourseEventLink) HasError() error {
+func (t *CourseEventLink) HasErrors() error {
 	return nil
 }

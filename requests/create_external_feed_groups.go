@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/announcement_external_feeds.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Form Parameters:
-// # Url (Required) The url to the external rss or atom feed
-// # HeaderMatch (Optional) If given, only feed entries that contain this string in their title will be imported
-// # Verbosity (Optional) . Must be one of full, truncate, link_onlyDefaults to "full"
+// # Form.Url (Required) The url to the external rss or atom feed
+// # Form.HeaderMatch (Optional) If given, only feed entries that contain this string in their title will be imported
+// # Form.Verbosity (Optional) . Must be one of full, truncate, link_onlyDefaults to "full"
 //
 type CreateExternalFeedGroups struct {
 	Path struct {
@@ -66,10 +66,10 @@ func (t *CreateExternalFeedGroups) GetJSON() ([]byte, error) {
 func (t *CreateExternalFeedGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Form.Url == "" {
-		errs = append(errs, "'Url' is required")
+		errs = append(errs, "'Form.Url' is required")
 	}
 	if t.Form.Verbosity != "" && !string_utils.Include([]string{"full", "truncate", "link_only"}, t.Form.Verbosity) {
 		errs = append(errs, "Verbosity must be one of full, truncate, link_only")

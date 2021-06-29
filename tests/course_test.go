@@ -43,6 +43,19 @@ func TestCreateNewCourse(t *testing.T) {
 		t.Logf("UpdateCourse returned: %v", course)
 	}
 
+	// Create an assignment in the course
+	createAssignment := requests.CreateAssignment{}
+	createAssignment.Path.CourseID = courseID
+	createAssignment.Form.Assignment.Name = "a test assignment"
+	createAssignment.Form.Assignment.SubmissionTypes = []string{"none"}
+	createAssignment.Form.Assignment.GradingType = "pass_fail"
+	assignment, aerr := createAssignment.Do(&canvas)
+	if aerr != nil {
+		t.Errorf("CreateAssignment failed: %v", aerr)
+	} else {
+		t.Logf("CreateAssignment returned: %v", assignment)
+	}
+
 	// Delete the course
 	deleteCourse := requests.DeleteConcludeCourse{}
 	deleteCourse.Path.ID = courseID

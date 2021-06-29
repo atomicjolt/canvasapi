@@ -17,15 +17,15 @@ import (
 // https://canvas.instructure.com/doc/api/admins.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # UserID (Required) The id of the user to promote.
-// # Role (Optional) [DEPRECATED] The user's admin relationship with the account will be
+// # Form.UserID (Required) The id of the user to promote.
+// # Form.Role (Optional) [DEPRECATED] The user's admin relationship with the account will be
 //    created with the given role. Defaults to 'AccountAdmin'.
-// # RoleID (Optional) The user's admin relationship with the account will be created with the
+// # Form.RoleID (Optional) The user's admin relationship with the account will be created with the
 //    given role. Defaults to the built-in role for 'AccountAdmin'.
-// # SendConfirmation (Optional) Send a notification email to
+// # Form.SendConfirmation (Optional) Send a notification email to
 //    the new admin if true. Default is true.
 //
 type MakeAccountAdmin struct {
@@ -70,7 +70,7 @@ func (t *MakeAccountAdmin) GetJSON() ([]byte, error) {
 func (t *MakeAccountAdmin) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

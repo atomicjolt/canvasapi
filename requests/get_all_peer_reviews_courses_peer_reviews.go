@@ -18,11 +18,11 @@ import (
 // https://canvas.instructure.com/doc/api/peer_reviews.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # AssignmentID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.AssignmentID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of submission_comments, userAssociations to include with the peer review.
+// # Query.Include (Optional) . Must be one of submission_comments, userAssociations to include with the peer review.
 //
 type GetAllPeerReviewsCoursesPeerReviews struct {
 	Path struct {
@@ -65,10 +65,10 @@ func (t *GetAllPeerReviewsCoursesPeerReviews) GetJSON() ([]byte, error) {
 func (t *GetAllPeerReviewsCoursesPeerReviews) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"submission_comments", "user"}, v) {

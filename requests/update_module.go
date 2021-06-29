@@ -18,20 +18,20 @@ import (
 // https://canvas.instructure.com/doc/api/modules.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Module (Optional) The name of the module
-// # Module (Optional) The date the module will unlock
-// # Module (Optional) The position of the module in the course (1-based)
-// # Module (Optional) Whether module items must be unlocked in order
-// # Module (Optional) IDs of Modules that must be completed before this one is unlocked
+// # Form.Module.Name (Optional) The name of the module
+// # Form.Module.UnlockAt (Optional) The date the module will unlock
+// # Form.Module.Position (Optional) The position of the module in the course (1-based)
+// # Form.Module.RequireSequentialProgress (Optional) Whether module items must be unlocked in order
+// # Form.Module.PrerequisiteModuleIDs (Optional) IDs of Modules that must be completed before this one is unlocked
 //    Prerequisite modules must precede this module (i.e. have a lower position
 //    value), otherwise they will be ignored
-// # Module (Optional) Whether to publish the student's final grade for the course upon
+// # Form.Module.PublishFinalGrade (Optional) Whether to publish the student's final grade for the course upon
 //    completion of this module.
-// # Module (Optional) Whether the module is published and visible to students
+// # Form.Module.Published (Optional) Whether the module is published and visible to students
 //
 type UpdateModule struct {
 	Path struct {
@@ -82,10 +82,10 @@ func (t *UpdateModule) GetJSON() ([]byte, error) {
 func (t *UpdateModule) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

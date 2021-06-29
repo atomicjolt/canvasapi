@@ -23,10 +23,10 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # SearchTerm (Optional) The partial name or full ID of the users to match and return in the
+// # Query.SearchTerm (Optional) The partial name or full ID of the users to match and return in the
 //    results list. Must be at least 3 characters.
 //
 //    Note that the API will prefer matching on canonical user ID if the ID has
@@ -34,11 +34,11 @@ import (
 //    in form, or if the numeric value doesn't yield any matches. Queries by
 //    administrative users will search on SIS ID, login ID, name, or email
 //    address
-// # EnrollmentType (Optional) When set, only return users enrolled with the specified course-level base role.
+// # Query.EnrollmentType (Optional) When set, only return users enrolled with the specified course-level base role.
 //    This can be a base role type of 'student', 'teacher',
 //    'ta', 'observer', or 'designer'.
-// # Sort (Optional) . Must be one of username, email, sis_id, last_loginThe column to sort results by.
-// # Order (Optional) . Must be one of asc, descThe order to sort the given column by.
+// # Query.Sort (Optional) . Must be one of username, email, sis_id, last_loginThe column to sort results by.
+// # Query.Order (Optional) . Must be one of asc, descThe order to sort the given column by.
 //
 type ListUsersInAccount struct {
 	Path struct {
@@ -82,7 +82,7 @@ func (t *ListUsersInAccount) GetJSON() ([]byte, error) {
 func (t *ListUsersInAccount) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Query.Sort != "" && !string_utils.Include([]string{"username", "email", "sis_id", "last_login"}, t.Query.Sort) {
 		errs = append(errs, "Sort must be one of username, email, sis_id, last_login")

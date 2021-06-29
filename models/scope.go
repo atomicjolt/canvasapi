@@ -9,6 +9,6 @@ type Scope struct {
 	Scope        string `json:"scope" url:"scope,omitempty"`                 // The identifier for the scope.Example: url:GET|/api/v1/courses
 }
 
-func (t *Scope) HasError() error {
+func (t *Scope) HasErrors() error {
 	return nil
 }

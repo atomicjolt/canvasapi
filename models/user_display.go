@@ -7,6 +7,6 @@ type UserDisplay struct {
 	HtmlUrl        string `json:"html_url" url:"html_url,omitempty"`                 // URL to access user, either nested to a context or directly..Example: https://school.instructure.com/courses/:course_id/users/:user_id
 }
 
-func (t *UserDisplay) HasError() error {
+func (t *UserDisplay) HasErrors() error {
 	return nil
 }

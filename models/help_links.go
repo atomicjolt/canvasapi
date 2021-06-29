@@ -7,6 +7,6 @@ type HelpLinks struct {
 	DefaultHelpLinks []*HelpLink `json:"default_help_links" url:"default_help_links,omitempty"` // Default help links provided when account has not set help links of their own..Example: {'available_to'=>['student'], 'text'=>'Ask Your Instructor a Question', 'subtext'=>'Questions are submitted to your instructor', 'url'=>'#teacher_feedback', 'type'=>'default', 'id'=>'instructor_question', 'is_featured'=>false, 'is_new'=>true, 'feature_headline'=>''}, {'available_to'=>['user', 'student', 'teacher', 'admin', 'observer', 'unenrolled'], 'text'=>'Search the Canvas Guides', 'subtext'=>'Find answers to common questions', 'url'=>'https://community.canvaslms.com/t5/Guides/ct-p/guides', 'type'=>'default', 'id'=>'search_the_canvas_guides', 'is_featured'=>false, 'is_new'=>false, 'feature_headline'=>''}, {'available_to'=>['user', 'student', 'teacher', 'admin', 'observer', 'unenrolled'], 'text'=>'Report a Problem', 'subtext'=>'If Canvas misbehaves, tell us about it', 'url'=>'#create_ticket', 'type'=>'default', 'id'=>'report_a_problem', 'is_featured'=>false, 'is_new'=>false, 'feature_headline'=>''}
 }
 
-func (t *HelpLinks) HasError() error {
+func (t *HelpLinks) HasErrors() error {
 	return nil
 }

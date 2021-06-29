@@ -15,11 +15,11 @@ import (
 // https://canvas.instructure.com/doc/api/polls.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Polls (Required) The title of the poll.
-// # Polls (Optional) A brief description or instructions for the poll.
+// # Form.Polls.Question (Required) The title of the poll.
+// # Form.Polls.Description (Optional) A brief description or instructions for the poll.
 //
 type UpdateSinglePoll struct {
 	Path struct {
@@ -63,10 +63,10 @@ func (t *UpdateSinglePoll) GetJSON() ([]byte, error) {
 func (t *UpdateSinglePoll) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.Polls.Question == nil {
-		errs = append(errs, "'Polls' is required")
+		errs = append(errs, "'Form.Polls.Question' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

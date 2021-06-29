@@ -19,11 +19,11 @@ import (
 // https://canvas.instructure.com/doc/api/quizzes.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Quiz (Optional) If true, notifies users that the quiz has changed.
+// # Form.Quiz.NotifyOfUpdate (Optional) If true, notifies users that the quiz has changed.
 //    Defaults to true
 //
 type EditQuiz struct {
@@ -69,10 +69,10 @@ func (t *EditQuiz) GetJSON() ([]byte, error) {
 func (t *EditQuiz) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -15,10 +15,10 @@ import (
 // https://canvas.instructure.com/doc/api/appointment_groups.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # CancelReason (Optional) Reason for deleting/canceling the appointment group.
+// # Query.CancelReason (Optional) Reason for deleting/canceling the appointment group.
 //
 type DeleteAppointmentGroup struct {
 	Path struct {
@@ -59,7 +59,7 @@ func (t *DeleteAppointmentGroup) GetJSON() ([]byte, error) {
 func (t *DeleteAppointmentGroup) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

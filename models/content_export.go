@@ -17,15 +17,16 @@ type ContentExport struct {
 	WorkflowState string    `json:"workflow_state" url:"workflow_state,omitempty"` // Current state of the content migration: created exporting exported failed.Example: exported
 }
 
-func (t *ContentExport) HasError() error {
+func (t *ContentExport) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"common_cartridge", "qti"}
 	if t.ExportType != "" && !string_utils.Include(s, t.ExportType) {
-		return fmt.Errorf("expected 'export_type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'ExportType' to be one of %v", s))
 	}
 	s = []string{"created", "exporting", "exported", "failed"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	return nil
 }

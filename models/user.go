@@ -18,6 +18,6 @@ type User struct {
 	Bio           string        `json:"bio" url:"bio,omitempty"`                       // Optional: The user's bio..Example: I like the Muppets.
 }
 
-func (t *User) HasError() error {
+func (t *User) HasErrors() error {
 	return nil
 }

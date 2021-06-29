@@ -17,11 +17,11 @@ import (
 // https://canvas.instructure.com/doc/api/public_jwk.html
 //
 // Form Parameters:
-// # PublicJwk (Required) The new public jwk that will be set to the tools current public jwk.
+// # Form.PublicJwk (Required) The new public jwk that will be set to the tools current public jwk.
 //
 type UpdatePublicJwk struct {
 	Form struct {
-		PublicJwk string `json:"public_jwk" url:"public_jwk,omitempty"` //  (Required)
+		PublicJwk map[string](interface{}) `json:"public_jwk" url:"public_jwk,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -51,8 +51,8 @@ func (t *UpdatePublicJwk) GetJSON() ([]byte, error) {
 
 func (t *UpdatePublicJwk) HasErrors() error {
 	errs := []string{}
-	if t.Form.PublicJwk == "" {
-		errs = append(errs, "'PublicJwk' is required")
+	if t.Form.PublicJwk == nil {
+		errs = append(errs, "'Form.PublicJwk' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

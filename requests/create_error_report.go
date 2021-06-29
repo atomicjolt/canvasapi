@@ -18,11 +18,11 @@ import (
 // https://canvas.instructure.com/doc/api/error_reports.html
 //
 // Form Parameters:
-// # Error (Required) The summary of the problem
-// # Error (Optional) URL from which the report was issued
-// # Error (Optional) Email address for the reporting user
-// # Error (Optional) The long version of the story from the user one what they experienced
-// # Error (Optional) A collection of metadata about the users' environment.  If not provided,
+// # Form.Error.Subject (Required) The summary of the problem
+// # Form.Error.Url (Optional) URL from which the report was issued
+// # Form.Error.Email (Optional) Email address for the reporting user
+// # Form.Error.Comments (Optional) The long version of the story from the user one what they experienced
+// # Form.Error.HttpEnv (Optional) A collection of metadata about the users' environment.  If not provided,
 //    canvas will collect it based on information found in the request.
 //    (Doesn't have to be HTTPENV info, could be anything JSON object that can be
 //    serialized as a hash, a mobile app might include relevant metadata for
@@ -31,11 +31,11 @@ import (
 type CreateErrorReport struct {
 	Form struct {
 		Error struct {
-			Subject  string `json:"subject" url:"subject,omitempty"`   //  (Required)
-			Url      string `json:"url" url:"url,omitempty"`           //  (Optional)
-			Email    string `json:"email" url:"email,omitempty"`       //  (Optional)
-			Comments string `json:"comments" url:"comments,omitempty"` //  (Optional)
-			HttpEnv  string `json:"http_env" url:"http_env,omitempty"` //  (Optional)
+			Subject  string                   `json:"subject" url:"subject,omitempty"`   //  (Required)
+			Url      string                   `json:"url" url:"url,omitempty"`           //  (Optional)
+			Email    string                   `json:"email" url:"email,omitempty"`       //  (Optional)
+			Comments string                   `json:"comments" url:"comments,omitempty"` //  (Optional)
+			HttpEnv  map[string](interface{}) `json:"http_env" url:"http_env,omitempty"` //  (Optional)
 		} `json:"error" url:"error,omitempty"`
 	} `json:"form"`
 }
@@ -67,7 +67,7 @@ func (t *CreateErrorReport) GetJSON() ([]byte, error) {
 func (t *CreateErrorReport) HasErrors() error {
 	errs := []string{}
 	if t.Form.Error.Subject == "" {
-		errs = append(errs, "'Error' is required")
+		errs = append(errs, "'Form.Error.Subject' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

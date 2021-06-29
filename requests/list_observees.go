@@ -25,10 +25,10 @@ import (
 // https://canvas.instructure.com/doc/api/user_observees.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of avatar_url- "avatar_url": Optionally include avatar_url.
+// # Query.Include (Optional) . Must be one of avatar_url- "avatar_url": Optionally include avatar_url.
 //
 type ListObservees struct {
 	Path struct {
@@ -69,7 +69,7 @@ func (t *ListObservees) GetJSON() ([]byte, error) {
 func (t *ListObservees) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"avatar_url"}, v) {

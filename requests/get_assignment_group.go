@@ -18,16 +18,16 @@ import (
 // https://canvas.instructure.com/doc/api/assignment_groups.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # AssignmentGroupID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.AssignmentGroupID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of assignments, discussion_topic, assignment_visibility, submission, score_statisticsAssociations to include with the group. "discussion_topic" and "assignment_visibility" and "submission"
+// # Query.Include (Optional) . Must be one of assignments, discussion_topic, assignment_visibility, submission, score_statisticsAssociations to include with the group. "discussion_topic" and "assignment_visibility" and "submission"
 //    are only valid if "assignments" is also included. "score_statistics" is only valid if "submission" and
 //    "assignments" are also included. The "assignment_visibility" option additionally requires that the Differentiated Assignments
 //    course feature be turned on.
-// # OverrideAssignmentDates (Optional) Apply assignment overrides for each assignment, defaults to true.
-// # GradingPeriodID (Optional) The id of the grading period in which assignment groups are being requested
+// # Query.OverrideAssignmentDates (Optional) Apply assignment overrides for each assignment, defaults to true.
+// # Query.GradingPeriodID (Optional) The id of the grading period in which assignment groups are being requested
 //    (Requires grading periods to exist on the account)
 //
 type GetAssignmentGroup struct {
@@ -73,10 +73,10 @@ func (t *GetAssignmentGroup) GetJSON() ([]byte, error) {
 func (t *GetAssignmentGroup) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.AssignmentGroupID == "" {
-		errs = append(errs, "'AssignmentGroupID' is required")
+		errs = append(errs, "'Path.AssignmentGroupID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"assignments", "discussion_topic", "assignment_visibility", "submission", "score_statistics"}, v) {

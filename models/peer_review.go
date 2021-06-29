@@ -12,6 +12,6 @@ type PeerReview struct {
 	SubmissionComments string `json:"submission_comments" url:"submission_comments,omitempty"` // The submission comments associated with this Peer Review if the submission_comment include parameter is provided (see submissions API) (optional).Example: SubmissionComment
 }
 
-func (t *PeerReview) HasError() error {
+func (t *PeerReview) HasErrors() error {
 	return nil
 }

@@ -24,11 +24,12 @@ type Feature struct {
 	ReleaseNotesUrl string       `json:"release_notes_url" url:"release_notes_url,omitempty"` // A URL to the release notes describing the feature.Example: http://canvas.example.com/release_notes#fancy_wickets
 }
 
-func (t *Feature) HasError() error {
+func (t *Feature) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"Course", "RootAccount", "Account", "User"}
 	if t.AppliesTo != "" && !string_utils.Include(s, t.AppliesTo) {
-		return fmt.Errorf("expected 'applies_to' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'AppliesTo' to be one of %v", s))
 	}
 	return nil
 }

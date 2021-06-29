@@ -18,24 +18,24 @@ import (
 // https://canvas.instructure.com/doc/api/group_categories.html
 //
 // Path Parameters:
-// # GroupCategoryID (Required) ID
+// # Path.GroupCategoryID (Required) ID
 //
 // Form Parameters:
-// # Name (Optional) Name of the group category
-// # SelfSignup (Optional) . Must be one of enabled, restrictedAllow students to sign up for a group themselves (Course Only).
+// # Form.Name (Optional) Name of the group category
+// # Form.SelfSignup (Optional) . Must be one of enabled, restrictedAllow students to sign up for a group themselves (Course Only).
 //    Valid values are:
 //    "enabled":: allows students to self sign up for any group in course
 //    "restricted":: allows students to self sign up only for groups in the
 //                   same section null disallows self sign up
-// # AutoLeader (Optional) . Must be one of first, randomAssigns group leaders automatically when generating and allocating students to groups
+// # Form.AutoLeader (Optional) . Must be one of first, randomAssigns group leaders automatically when generating and allocating students to groups
 //    Valid values are:
 //    "first":: the first student to be allocated to a group is the leader
 //    "random":: a random student from all members is chosen as the leader
-// # GroupLimit (Optional) Limit the maximum number of users in each group (Course Only). Requires
+// # Form.GroupLimit (Optional) Limit the maximum number of users in each group (Course Only). Requires
 //    self signup.
-// # SISGroupCategoryID (Optional) The unique SIS identifier.
-// # CreateGroupCount (Optional) Create this number of groups (Course Only).
-// # SplitGroupCount (Optional) (Deprecated)
+// # Form.SISGroupCategoryID (Optional) The unique SIS identifier.
+// # Form.CreateGroupCount (Optional) Create this number of groups (Course Only).
+// # Form.SplitGroupCount (Optional) (Deprecated)
 //    Create this number of groups, and evenly distribute students
 //    among them. not allowed with "enable_self_signup". because
 //    the group assignment happens synchronously, it's recommended
@@ -87,7 +87,7 @@ func (t *UpdateGroupCategory) GetJSON() ([]byte, error) {
 func (t *UpdateGroupCategory) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupCategoryID == "" {
-		errs = append(errs, "'GroupCategoryID' is required")
+		errs = append(errs, "'Path.GroupCategoryID' is required")
 	}
 	if t.Form.SelfSignup != "" && !string_utils.Include([]string{"enabled", "restricted"}, t.Form.SelfSignup) {
 		errs = append(errs, "SelfSignup must be one of enabled, restricted")

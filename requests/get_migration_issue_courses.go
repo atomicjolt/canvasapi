@@ -15,9 +15,9 @@ import (
 // https://canvas.instructure.com/doc/api/content_migrations.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ContentMigrationID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ContentMigrationID (Required) ID
+// # Path.ID (Required) ID
 //
 type GetMigrationIssueCourses struct {
 	Path struct {
@@ -54,13 +54,13 @@ func (t *GetMigrationIssueCourses) GetJSON() ([]byte, error) {
 func (t *GetMigrationIssueCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ContentMigrationID == "" {
-		errs = append(errs, "'ContentMigrationID' is required")
+		errs = append(errs, "'Path.ContentMigrationID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

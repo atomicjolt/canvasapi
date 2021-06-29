@@ -13,7 +13,7 @@ import (
 // https://canvas.instructure.com/doc/api/feature_flags.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 type ListEnabledFeaturesCourses struct {
 	Path struct {
@@ -46,7 +46,7 @@ func (t *ListEnabledFeaturesCourses) GetJSON() ([]byte, error) {
 func (t *ListEnabledFeaturesCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

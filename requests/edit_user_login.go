@@ -15,19 +15,19 @@ import (
 // https://canvas.instructure.com/doc/api/logins.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # ID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Login (Optional) The new unique ID for the login.
-// # Login (Optional) The new password for the login. Can only be set by an admin user if admins
+// # Form.Login.UniqueID (Optional) The new unique ID for the login.
+// # Form.Login.Password (Optional) The new password for the login. Can only be set by an admin user if admins
 //    are allowed to change passwords for the account.
-// # Login (Optional) SIS ID for the login. To set this parameter, the caller must be able to
+// # Form.Login.SISUserID (Optional) SIS ID for the login. To set this parameter, the caller must be able to
 //    manage SIS permissions on the account.
-// # Login (Optional) Integration ID for the login. To set this parameter, the caller must be able to
+// # Form.Login.IntegrationID (Optional) Integration ID for the login. To set this parameter, the caller must be able to
 //    manage SIS permissions on the account. The Integration ID is a secondary
 //    identifier useful for more complex SIS integrations.
-// # Login (Optional) The authentication provider this login is associated with. Logins
+// # Form.Login.AuthenticationProviderID (Optional) The authentication provider this login is associated with. Logins
 //    associated with a specific provider can only be used with that provider.
 //    Legacy providers (LDAP, CAS, SAML) will search for logins associated with
 //    them, or unassociated logins. New providers will only search for logins
@@ -82,10 +82,10 @@ func (t *EditUserLogin) GetJSON() ([]byte, error) {
 func (t *EditUserLogin) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

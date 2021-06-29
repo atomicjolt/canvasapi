@@ -12,11 +12,12 @@ type Collaborator struct {
 	Name string `json:"name" url:"name,omitempty"` // The name of the collaborator..Example: Don Draper
 }
 
-func (t *Collaborator) HasError() error {
+func (t *Collaborator) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"user", "group"}
 	if t.Type != "" && !string_utils.Include(s, t.Type) {
-		return fmt.Errorf("expected 'type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'Type' to be one of %v", s))
 	}
 	return nil
 }

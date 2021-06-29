@@ -11,11 +11,12 @@ type Favorite struct {
 	ContextType string `json:"context_type" url:"context_type,omitempty"` // The type of the object the Favorite refers to (currently, only 'Course' is supported).Example: Course
 }
 
-func (t *Favorite) HasError() error {
+func (t *Favorite) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"Course"}
 	if t.ContextType != "" && !string_utils.Include(s, t.ContextType) {
-		return fmt.Errorf("expected 'context_type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'ContextType' to be one of %v", s))
 	}
 	return nil
 }

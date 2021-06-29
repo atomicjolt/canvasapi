@@ -17,6 +17,6 @@ type BlueprintMigration struct {
 	Comment            string    `json:"comment" url:"comment,omitempty"`                           // User-specified comment describing changes made in this operation.Example: Fixed spelling in question 3 of midterm exam
 }
 
-func (t *BlueprintMigration) HasError() error {
+func (t *BlueprintMigration) HasErrors() error {
 	return nil
 }

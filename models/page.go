@@ -20,6 +20,6 @@ type Page struct {
 	LockExplanation  string    `json:"lock_explanation" url:"lock_explanation,omitempty"`     // (Optional) An explanation of why this is locked for the user. Present when locked_for_user is true..Example: This page is locked until September 1 at 12:00am
 }
 
-func (t *Page) HasError() error {
+func (t *Page) HasErrors() error {
 	return nil
 }

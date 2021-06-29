@@ -20,7 +20,7 @@ import (
 // https://canvas.instructure.com/doc/api/jw_ts.html
 //
 // Form Parameters:
-// # Jwt (Required) An existing JWT token to be refreshed. The new token will have
+// # Form.Jwt (Required) An existing JWT token to be refreshed. The new token will have
 //    the same context and workflows as the existing token.
 //
 type RefreshJwt struct {
@@ -56,7 +56,7 @@ func (t *RefreshJwt) GetJSON() ([]byte, error) {
 func (t *RefreshJwt) HasErrors() error {
 	errs := []string{}
 	if t.Form.Jwt == "" {
-		errs = append(errs, "'Jwt' is required")
+		errs = append(errs, "'Form.Jwt' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

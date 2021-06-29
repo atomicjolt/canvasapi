@@ -10,6 +10,6 @@ type Score struct {
 	GradingProgress  string  `json:"grading_progress" url:"grading_progress,omitempty"`   // Indicate to Canvas the status of the grading process. A value of PendingManual will require intervention by a grader. Values of NotReady, Failed, and Pending will cause the scoreGiven to be ignored. FullyGraded values will require no action. Possible values are NotReady, Failed, Pending, PendingManual, FullyGraded.Example: FullyGraded
 }
 
-func (t *Score) HasError() error {
+func (t *Score) HasErrors() error {
 	return nil
 }

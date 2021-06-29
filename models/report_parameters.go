@@ -28,11 +28,12 @@ type ReportParameters struct {
 	EndAt                  time.Time `json:"end_at" url:"end_at,omitempty"`                                     // The end date for submissions. Max time range is 2 weeks..Example: 2012-07-13T10:55:20-06:00
 }
 
-func (t *ReportParameters) HasError() error {
+func (t *ReportParameters) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"users", "courses", "outcomes"}
 	if t.Order != "" && !string_utils.Include(s, t.Order) {
-		return fmt.Errorf("expected 'order' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'Order' to be one of %v", s))
 	}
 	return nil
 }

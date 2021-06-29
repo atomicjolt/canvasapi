@@ -8,6 +8,6 @@ type RubricRating struct {
 	Points          int64  `json:"points" url:"points,omitempty"`                     // Example: 5
 }
 
-func (t *RubricRating) HasError() error {
+func (t *RubricRating) HasErrors() error {
 	return nil
 }

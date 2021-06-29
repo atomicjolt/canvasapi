@@ -7,6 +7,6 @@ type FileAttachment struct {
 	DisplayName string `json:"display_name" url:"display_name,omitempty"` // Example: content.txt
 }
 
-func (t *FileAttachment) HasError() error {
+func (t *FileAttachment) HasErrors() error {
 	return nil
 }

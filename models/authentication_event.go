@@ -15,11 +15,12 @@ type AuthenticationEvent struct {
 	UserID      int64     `json:"user_id" url:"user_id,omitempty"`           // ID of the user associated with the event will match the user_id in the associated pseudonym..Example: 362
 }
 
-func (t *AuthenticationEvent) HasError() error {
+func (t *AuthenticationEvent) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"login", "logout"}
 	if t.EventType != "" && !string_utils.Include(s, t.EventType) {
-		return fmt.Errorf("expected 'event_type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'EventType' to be one of %v", s))
 	}
 	return nil
 }

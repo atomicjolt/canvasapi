@@ -15,6 +15,6 @@ type LtiAssignment struct {
 	LtiCourseID    string    `json:"lti_course_id" url:"lti_course_id,omitempty"`     // Example: 66157096483e6b3a50bfedc6bac902c0b20a8241
 }
 
-func (t *LtiAssignment) HasError() error {
+func (t *LtiAssignment) HasErrors() error {
 	return nil
 }

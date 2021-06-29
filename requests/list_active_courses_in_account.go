@@ -19,48 +19,48 @@ import (
 // https://canvas.instructure.com/doc/api/accounts.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # WithEnrollments (Optional) If true, include only courses with at least one enrollment.  If false,
+// # Query.WithEnrollments (Optional) If true, include only courses with at least one enrollment.  If false,
 //    include only courses with no enrollments.  If not present, do not filter
 //    on course enrollment status.
-// # EnrollmentType (Optional) . Must be one of teacher, student, ta, observer, designerIf set, only return courses that have at least one user enrolled in
+// # Query.EnrollmentType (Optional) . Must be one of teacher, student, ta, observer, designerIf set, only return courses that have at least one user enrolled in
 //    in the course with one of the specified enrollment types.
-// # Published (Optional) If true, include only published courses.  If false, exclude published
+// # Query.Published (Optional) If true, include only published courses.  If false, exclude published
 //    courses.  If not present, do not filter on published status.
-// # Completed (Optional) If true, include only completed courses (these may be in state
+// # Query.Completed (Optional) If true, include only completed courses (these may be in state
 //    'completed', or their enrollment term may have ended).  If false, exclude
 //    completed courses.  If not present, do not filter on completed status.
-// # Blueprint (Optional) If true, include only blueprint courses. If false, exclude them.
+// # Query.Blueprint (Optional) If true, include only blueprint courses. If false, exclude them.
 //    If not present, do not filter on this basis.
-// # BlueprintAssociated (Optional) If true, include only courses that inherit content from a blueprint course.
+// # Query.BlueprintAssociated (Optional) If true, include only courses that inherit content from a blueprint course.
 //    If false, exclude them. If not present, do not filter on this basis.
-// # ByTeachers (Optional) List of User IDs of teachers; if supplied, include only courses taught by
+// # Query.ByTeachers (Optional) List of User IDs of teachers; if supplied, include only courses taught by
 //    one of the referenced users.
-// # BySubaccounts (Optional) List of Account IDs; if supplied, include only courses associated with one
+// # Query.BySubaccounts (Optional) List of Account IDs; if supplied, include only courses associated with one
 //    of the referenced subaccounts.
-// # HideEnrollmentlessCourses (Optional) If present, only return courses that have at least one enrollment.
+// # Query.HideEnrollmentlessCourses (Optional) If present, only return courses that have at least one enrollment.
 //    Equivalent to 'with_enrollments=true'; retained for compatibility.
-// # State (Optional) . Must be one of created, claimed, available, completed, deleted, allIf set, only return courses that are in the given state(s). By default,
+// # Query.State (Optional) . Must be one of created, claimed, available, completed, deleted, allIf set, only return courses that are in the given state(s). By default,
 //    all states but "deleted" are returned.
-// # EnrollmentTermID (Optional) If set, only includes courses from the specified term.
-// # SearchTerm (Optional) The partial course name, code, or full ID to match and return in the results list. Must be at least 3 characters.
-// # Include (Optional) . Must be one of syllabus_body, term, course_progress, storage_quota_used_mb, total_students, teachers, account_name, concluded- All explanations can be seen in the {api:CoursesController#index Course API index documentation}
+// # Query.EnrollmentTermID (Optional) If set, only includes courses from the specified term.
+// # Query.SearchTerm (Optional) The partial course name, code, or full ID to match and return in the results list. Must be at least 3 characters.
+// # Query.Include (Optional) . Must be one of syllabus_body, term, course_progress, storage_quota_used_mb, total_students, teachers, account_name, concluded- All explanations can be seen in the {api:CoursesController#index Course API index documentation}
 //    - "sections", "needs_grading_count" and "total_scores" are not valid options at the account level
-// # Sort (Optional) . Must be one of course_name, sis_course_id, teacher, account_nameThe column to sort results by.
-// # Order (Optional) . Must be one of asc, descThe order to sort the given column by.
-// # SearchBy (Optional) . Must be one of course, teacherThe filter to search by. "course" searches for course names, course codes,
+// # Query.Sort (Optional) . Must be one of course_name, sis_course_id, teacher, account_nameThe column to sort results by.
+// # Query.Order (Optional) . Must be one of asc, descThe order to sort the given column by.
+// # Query.SearchBy (Optional) . Must be one of course, teacherThe filter to search by. "course" searches for course names, course codes,
 //    and SIS IDs. "teacher" searches for teacher names
-// # StartsBefore (Optional) If set, only return courses that start before the value (inclusive)
+// # Query.StartsBefore (Optional) If set, only return courses that start before the value (inclusive)
 //    or their enrollment term starts before the value (inclusive)
 //    or both the course's start_at and the enrollment term's start_at are set to null.
 //    The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
-// # EndsAfter (Optional) If set, only return courses that end after the value (inclusive)
+// # Query.EndsAfter (Optional) If set, only return courses that end after the value (inclusive)
 //    or their enrollment term ends after the value (inclusive)
 //    or both the course's end_at and the enrollment term's end_at are set to null.
 //    The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
-// # Homeroom (Optional) If set, only return homeroom courses.
+// # Query.Homeroom (Optional) If set, only return homeroom courses.
 //
 type ListActiveCoursesInAccount struct {
 	Path struct {
@@ -74,8 +74,8 @@ type ListActiveCoursesInAccount struct {
 		Completed                 bool      `json:"completed" url:"completed,omitempty"`                                     //  (Optional)
 		Blueprint                 bool      `json:"blueprint" url:"blueprint,omitempty"`                                     //  (Optional)
 		BlueprintAssociated       bool      `json:"blueprint_associated" url:"blueprint_associated,omitempty"`               //  (Optional)
-		ByTeachers                []int64   `json:"by_teachers" url:"by_teachers,omitempty"`                                 //  (Optional)
-		BySubaccounts             []int64   `json:"by_subaccounts" url:"by_subaccounts,omitempty"`                           //  (Optional)
+		ByTeachers                []string  `json:"by_teachers" url:"by_teachers,omitempty"`                                 //  (Optional)
+		BySubaccounts             []string  `json:"by_subaccounts" url:"by_subaccounts,omitempty"`                           //  (Optional)
 		HideEnrollmentlessCourses bool      `json:"hide_enrollmentless_courses" url:"hide_enrollmentless_courses,omitempty"` //  (Optional)
 		State                     []string  `json:"state" url:"state,omitempty"`                                             //  (Optional) . Must be one of created, claimed, available, completed, deleted, all
 		EnrollmentTermID          int64     `json:"enrollment_term_id" url:"enrollment_term_id,omitempty"`                   //  (Optional)
@@ -119,7 +119,7 @@ func (t *ListActiveCoursesInAccount) GetJSON() ([]byte, error) {
 func (t *ListActiveCoursesInAccount) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	for _, v := range t.Query.EnrollmentType {
 		if v != "" && !string_utils.Include([]string{"teacher", "student", "ta", "observer", "designer"}, v) {

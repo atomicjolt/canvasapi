@@ -20,12 +20,12 @@ import (
 // https://canvas.instructure.com/doc/api/roles.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # ID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # RoleID (Required) The unique identifier for the role
-// # Role (Optional) The name for the role
+// # Query.RoleID (Required) The unique identifier for the role
+// # Query.Role (Optional) The name for the role
 //
 type DeactivateRole struct {
 	Path struct {
@@ -69,10 +69,10 @@ func (t *DeactivateRole) GetJSON() ([]byte, error) {
 func (t *DeactivateRole) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

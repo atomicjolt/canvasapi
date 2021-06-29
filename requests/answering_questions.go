@@ -17,16 +17,16 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_submission_questions.html
 //
 // Path Parameters:
-// # QuizSubmissionID (Required) ID
+// # Path.QuizSubmissionID (Required) ID
 //
 // Form Parameters:
-// # Attempt (Required) The attempt number of the quiz submission being taken. Note that this
+// # Form.Attempt (Required) The attempt number of the quiz submission being taken. Note that this
 //    must be the latest attempt index, as questions for earlier attempts can
 //    not be modified.
-// # ValidationToken (Required) The unique validation token you received when the Quiz Submission was
+// # Form.ValidationToken (Required) The unique validation token you received when the Quiz Submission was
 //    created.
-// # AccessCode (Optional) Access code for the Quiz, if any.
-// # QuizQuestions (Optional) Set of question IDs and the answer value.
+// # Form.AccessCode (Optional) Access code for the Quiz, if any.
+// # Form.QuizQuestions (Optional) Set of question IDs and the answer value.
 //
 //    See {Appendix: Question Answer Formats} for the accepted answer formats
 //    for each question type.
@@ -73,10 +73,10 @@ func (t *AnsweringQuestions) GetJSON() ([]byte, error) {
 func (t *AnsweringQuestions) HasErrors() error {
 	errs := []string{}
 	if t.Path.QuizSubmissionID == "" {
-		errs = append(errs, "'QuizSubmissionID' is required")
+		errs = append(errs, "'Path.QuizSubmissionID' is required")
 	}
 	if t.Form.ValidationToken == "" {
-		errs = append(errs, "'ValidationToken' is required")
+		errs = append(errs, "'Form.ValidationToken' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

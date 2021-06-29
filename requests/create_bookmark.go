@@ -15,10 +15,10 @@ import (
 // https://canvas.instructure.com/doc/api/bookmarks.html
 //
 // Form Parameters:
-// # Name (Optional) The name of the bookmark
-// # Url (Optional) The url of the bookmark
-// # Position (Optional) The position of the bookmark. Defaults to the bottom.
-// # Data (Optional) The data associated with the bookmark
+// # Form.Name (Optional) The name of the bookmark
+// # Form.Url (Optional) The url of the bookmark
+// # Form.Position (Optional) The position of the bookmark. Defaults to the bottom.
+// # Form.Data (Optional) The data associated with the bookmark
 //
 type CreateBookmark struct {
 	Form struct {

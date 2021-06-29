@@ -17,10 +17,10 @@ import (
 // https://canvas.instructure.com/doc/api/custom_gradebook_columns.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # Order (Required) no description
+// # Form.Order (Required) no description
 //
 type ReorderCustomColumns struct {
 	Path struct {
@@ -28,7 +28,7 @@ type ReorderCustomColumns struct {
 	} `json:"path"`
 
 	Form struct {
-		Order []int64 `json:"order" url:"order,omitempty"` //  (Required)
+		Order []string `json:"order" url:"order,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -61,10 +61,10 @@ func (t *ReorderCustomColumns) GetJSON() ([]byte, error) {
 func (t *ReorderCustomColumns) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Form.Order == nil {
-		errs = append(errs, "'Order' is required")
+		errs = append(errs, "'Form.Order' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

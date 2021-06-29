@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/groups.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # UserID (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.UserID (Required) ID
 //
 type GetSingleGroupMembershipUsers struct {
 	Path struct {
@@ -51,10 +51,10 @@ func (t *GetSingleGroupMembershipUsers) GetJSON() ([]byte, error) {
 func (t *GetSingleGroupMembershipUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

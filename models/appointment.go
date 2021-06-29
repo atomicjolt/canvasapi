@@ -10,6 +10,6 @@ type Appointment struct {
 	EndAt   time.Time `json:"end_at" url:"end_at,omitempty"`     // End time for the appointment.Example: 2012-07-20T15:00:00-06:00
 }
 
-func (t *Appointment) HasError() error {
+func (t *Appointment) HasErrors() error {
 	return nil
 }

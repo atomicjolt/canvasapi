@@ -5,6 +5,6 @@ type NeedsGradingCount struct {
 	NeedsGradingCount int64  `json:"needs_grading_count" url:"needs_grading_count,omitempty"` // Number of submissions that need grading.Example: 5
 }
 
-func (t *NeedsGradingCount) HasError() error {
+func (t *NeedsGradingCount) HasErrors() error {
 	return nil
 }

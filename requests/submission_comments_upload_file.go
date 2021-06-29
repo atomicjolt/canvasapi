@@ -18,9 +18,9 @@ import (
 // https://canvas.instructure.com/doc/api/submission_comments.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # AssignmentID (Required) ID
-// # UserID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.AssignmentID (Required) ID
+// # Path.UserID (Required) ID
 //
 type SubmissionCommentsUploadFile struct {
 	Path struct {
@@ -57,13 +57,13 @@ func (t *SubmissionCommentsUploadFile) GetJSON() ([]byte, error) {
 func (t *SubmissionCommentsUploadFile) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

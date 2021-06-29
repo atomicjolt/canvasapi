@@ -14,10 +14,10 @@ import (
 // https://canvas.instructure.com/doc/api/account_domain_lookups.html
 //
 // Query Parameters:
-// # Name (Optional) campus name
-// # Domain (Optional) no description
-// # Latitude (Optional) no description
-// # Longitude (Optional) no description
+// # Query.Name (Optional) campus name
+// # Query.Domain (Optional) no description
+// # Query.Latitude (Optional) no description
+// # Query.Longitude (Optional) no description
 //
 type SearchAccountDomains struct {
 	Query struct {

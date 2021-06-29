@@ -35,27 +35,27 @@ import (
 // https://canvas.instructure.com/doc/api/score.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # LineItemID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.LineItemID (Required) ID
 //
 // Form Parameters:
-// # UserID (Required) The lti_user_id or the Canvas user_id.
+// # Form.UserID (Required) The lti_user_id or the Canvas user_id.
 //    Returns a 422 if user not found in Canvas or is not a student.
-// # ActivityProgress (Required) Indicate to Canvas the status of the user towards the activity's completion.
+// # Form.ActivityProgress (Required) Indicate to Canvas the status of the user towards the activity's completion.
 //    Must be one of Initialized, Started, InProgress, Submitted, Completed.
-// # GradingProgress (Required) Indicate to Canvas the status of the grading process.
+// # Form.GradingProgress (Required) Indicate to Canvas the status of the grading process.
 //    A value of PendingManual will require intervention by a grader.
 //    Values of NotReady, Failed, and Pending will cause the scoreGiven to be ignored.
 //    FullyGraded values will require no action.
 //    Possible values are NotReady, Failed, Pending, PendingManual, FullyGraded.
-// # Timestamp (Required) Date and time when the score was modified in the tool. Should use subsecond precision.
+// # Form.Timestamp (Required) Date and time when the score was modified in the tool. Should use subsecond precision.
 //    Returns a 400 if the timestamp is earlier than the updated_at time of the Result.
-// # ScoreGiven (Optional) The Current score received in the tool for this line item and user,
+// # Form.ScoreGiven (Optional) The Current score received in the tool for this line item and user,
 //    scaled to the scoreMaximum
-// # ScoreMaximum (Optional) Maximum possible score for this result; it must be present if scoreGiven is present.
+// # Form.ScoreMaximum (Optional) Maximum possible score for this result; it must be present if scoreGiven is present.
 //    Returns 412 if not present when scoreGiven is present.
-// # Comment (Optional) Comment visible to the student about this score.
-// # CanvasLTISubmission (Optional) (EXTENSION) Optional submission type and data.
+// # Form.Comment (Optional) Comment visible to the student about this score.
+// # Form.CanvasLTISubmission (Optional) (EXTENSION) Optional submission type and data.
 //    new_submission [Boolean] flag to indicate that this is a new submission. Defaults to true unless submission_type is none.
 //    submission_type [String] permissible values are: none, basic_lti_launch, online_text_entry, external_tool, online_upload, or online_url. Defaults to external_tool. Ignored if content_items are provided.
 //    submission_data [String] submission data (URL or body text)
@@ -69,14 +69,14 @@ type CreateScore struct {
 	} `json:"path"`
 
 	Form struct {
-		UserID              string  `json:"user_id" url:"user_id,omitempty"`                                                                             //  (Required)
-		ActivityProgress    string  `json:"activity_progress" url:"activity_progress,omitempty"`                                                         //  (Required)
-		GradingProgress     string  `json:"grading_progress" url:"grading_progress,omitempty"`                                                           //  (Required)
-		Timestamp           string  `json:"timestamp" url:"timestamp,omitempty"`                                                                         //  (Required)
-		ScoreGiven          float64 `json:"score_given" url:"score_given,omitempty"`                                                                     //  (Optional)
-		ScoreMaximum        float64 `json:"score_maximum" url:"score_maximum,omitempty"`                                                                 //  (Optional)
-		Comment             string  `json:"comment" url:"comment,omitempty"`                                                                             //  (Optional)
-		CanvasLTISubmission string  `json:"https://canvas.instructure.com/lti/submission" url:"https://canvas.instructure.com/lti/submission,omitempty"` //  (Optional)
+		UserID              string                   `json:"user_id" url:"user_id,omitempty"`                                                                             //  (Required)
+		ActivityProgress    string                   `json:"activity_progress" url:"activity_progress,omitempty"`                                                         //  (Required)
+		GradingProgress     string                   `json:"grading_progress" url:"grading_progress,omitempty"`                                                           //  (Required)
+		Timestamp           string                   `json:"timestamp" url:"timestamp,omitempty"`                                                                         //  (Required)
+		ScoreGiven          float64                  `json:"score_given" url:"score_given,omitempty"`                                                                     //  (Optional)
+		ScoreMaximum        float64                  `json:"score_maximum" url:"score_maximum,omitempty"`                                                                 //  (Optional)
+		Comment             string                   `json:"comment" url:"comment,omitempty"`                                                                             //  (Optional)
+		CanvasLTISubmission map[string](interface{}) `json:"https://canvas.instructure.com/lti/submission" url:"https://canvas.instructure.com/lti/submission,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -110,22 +110,22 @@ func (t *CreateScore) GetJSON() ([]byte, error) {
 func (t *CreateScore) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.LineItemID == "" {
-		errs = append(errs, "'LineItemID' is required")
+		errs = append(errs, "'Path.LineItemID' is required")
 	}
 	if t.Form.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Form.UserID' is required")
 	}
 	if t.Form.ActivityProgress == "" {
-		errs = append(errs, "'ActivityProgress' is required")
+		errs = append(errs, "'Form.ActivityProgress' is required")
 	}
 	if t.Form.GradingProgress == "" {
-		errs = append(errs, "'GradingProgress' is required")
+		errs = append(errs, "'Form.GradingProgress' is required")
 	}
 	if t.Form.Timestamp == "" {
-		errs = append(errs, "'Timestamp' is required")
+		errs = append(errs, "'Form.Timestamp' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

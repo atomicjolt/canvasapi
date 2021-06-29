@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of assignmentAssociations to include with the group
-// # OnlyCurrentEnrollments (Optional) Returns submissions for only currently active enrollments
-// # OnlyPublishedAssignments (Optional) Returns submissions for only published assignments
+// # Query.Include (Optional) . Must be one of assignmentAssociations to include with the group
+// # Query.OnlyCurrentEnrollments (Optional) Returns submissions for only currently active enrollments
+// # Query.OnlyPublishedAssignments (Optional) Returns submissions for only published assignments
 //
 type GetUsersMostRecentlyGradedSubmissions struct {
 	Path struct {
@@ -66,7 +66,7 @@ func (t *GetUsersMostRecentlyGradedSubmissions) GetJSON() ([]byte, error) {
 func (t *GetUsersMostRecentlyGradedSubmissions) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"assignment"}, v) {

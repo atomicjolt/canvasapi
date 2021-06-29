@@ -17,13 +17,13 @@ import (
 // https://canvas.instructure.com/doc/api/line_items.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # Tag (Optional) If specified only Line Items with this tag will be included.
-// # ResourceID (Optional) If specified only Line Items with this resource_id will be included.
-// # ResourceLinkID (Optional) If specified only Line Items attached to the specified resource_link_id will be included.
-// # Limit (Optional) May be used to limit the number of Line Items returned in a page
+// # Query.Tag (Optional) If specified only Line Items with this tag will be included.
+// # Query.ResourceID (Optional) If specified only Line Items with this resource_id will be included.
+// # Query.ResourceLinkID (Optional) If specified only Line Items attached to the specified resource_link_id will be included.
+// # Query.Limit (Optional) May be used to limit the number of Line Items returned in a page
 //
 type ListLineItems struct {
 	Path struct {
@@ -67,7 +67,7 @@ func (t *ListLineItems) GetJSON() ([]byte, error) {
 func (t *ListLineItems) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

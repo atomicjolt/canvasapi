@@ -22,6 +22,6 @@ type QuizSubmission struct {
 	OverdueAndNeedsSubmission bool   `json:"overdue_and_needs_submission" url:"overdue_and_needs_submission,omitempty"` // Indicates whether the quiz submission is overdue and needs submission.Example: false
 }
 
-func (t *QuizSubmission) HasError() error {
+func (t *QuizSubmission) HasErrors() error {
 	return nil
 }

@@ -12,8 +12,8 @@ import (
 // https://canvas.instructure.com/doc/api/external_tools.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ExternalToolID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ExternalToolID (Required) ID
 //
 type GetSingleExternalToolCourses struct {
 	Path struct {
@@ -48,10 +48,10 @@ func (t *GetSingleExternalToolCourses) GetJSON() ([]byte, error) {
 func (t *GetSingleExternalToolCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ExternalToolID == "" {
-		errs = append(errs, "'ExternalToolID' is required")
+		errs = append(errs, "'Path.ExternalToolID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

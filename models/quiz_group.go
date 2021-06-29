@@ -10,6 +10,6 @@ type QuizGroup struct {
 	Position                 int64  `json:"position" url:"position,omitempty"`                                       // The order in which the question group will be retrieved and displayed..Example: 1
 }
 
-func (t *QuizGroup) HasError() error {
+func (t *QuizGroup) HasErrors() error {
 	return nil
 }

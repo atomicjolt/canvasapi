@@ -11,6 +11,6 @@ type Avatar struct {
 	Size        int64  `json:"size" url:"size,omitempty"`                 // ['attachment' type only] the size of the attachment.Example: 32649
 }
 
-func (t *Avatar) HasError() error {
+func (t *Avatar) HasErrors() error {
 	return nil
 }

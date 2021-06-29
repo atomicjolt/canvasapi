@@ -16,10 +16,10 @@ import (
 // https://canvas.instructure.com/doc/api/analytics.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # Async (Optional) If async is true, then the course_assignments call can happen asynch-
+// # Query.Async (Optional) If async is true, then the course_assignments call can happen asynch-
 //    ronously and MAY return a response containing a progress_url key instead
 //    of an assignments array. If it does, then it is the caller's
 //    responsibility to poll the API again to see if the progress is complete.
@@ -65,7 +65,7 @@ func (t *GetCourseLevelAssignmentData) GetJSON() ([]byte, error) {
 func (t *GetCourseLevelAssignmentData) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

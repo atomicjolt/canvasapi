@@ -8,6 +8,6 @@ type MediaComment struct {
 	Url         string `json:"url" url:"url,omitempty"`                   // Example: http://example.com/media_url
 }
 
-func (t *MediaComment) HasError() error {
+func (t *MediaComment) HasErrors() error {
 	return nil
 }

@@ -7,6 +7,6 @@ type QuizStatisticsAnswerStatistics struct {
 	Responses int64  `json:"responses" url:"responses,omitempty"` // Number of students who have chosen this answer..Example: 2
 }
 
-func (t *QuizStatisticsAnswerStatistics) HasError() error {
+func (t *QuizStatisticsAnswerStatistics) HasErrors() error {
 	return nil
 }

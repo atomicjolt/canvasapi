@@ -24,15 +24,15 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_submissions.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # QuizID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.QuizID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # QuizSubmissions (Required) The attempt number of the quiz submission that should be updated. This
+// # Form.QuizSubmissions.Attempt (Required) The attempt number of the quiz submission that should be updated. This
 //    attempt MUST be already completed.
-// # QuizSubmissions (Optional) Amount of positive or negative points to fudge the total score by.
-// # QuizSubmissions (Optional) A set of scores and comments for each question answered by the student.
+// # Form.QuizSubmissions.FudgePoints (Optional) Amount of positive or negative points to fudge the total score by.
+// # Form.QuizSubmissions.Questions (Optional) A set of scores and comments for each question answered by the student.
 //    The keys are the question IDs, and the values are hashes of `score` and
 //    `comment` entries. See {Appendix: Manual Scoring} for more on this
 //    parameter.
@@ -46,8 +46,8 @@ type UpdateStudentQuestionScoresAndComments struct {
 
 	Form struct {
 		QuizSubmissions struct {
-			Attempt     []int64                            `json:"attempt" url:"attempt,omitempty"`           //  (Required)
-			FudgePoints []float64                          `json:"fudge_points" url:"fudge_points,omitempty"` //  (Optional)
+			Attempt     []string                           `json:"attempt" url:"attempt,omitempty"`           //  (Required)
+			FudgePoints []string                           `json:"fudge_points" url:"fudge_points,omitempty"` //  (Optional)
 			Questions   map[string]QuizSubmissionOverrides `json:"questions" url:"questions,omitempty"`       //  (Optional)
 		} `json:"quiz_submissions" url:"quiz_submissions,omitempty"`
 	} `json:"form"`
@@ -84,16 +84,16 @@ func (t *UpdateStudentQuestionScoresAndComments) GetJSON() ([]byte, error) {
 func (t *UpdateStudentQuestionScoresAndComments) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.QuizID == "" {
-		errs = append(errs, "'QuizID' is required")
+		errs = append(errs, "'Path.QuizID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.QuizSubmissions.Attempt == nil {
-		errs = append(errs, "'QuizSubmissions' is required")
+		errs = append(errs, "'Form.QuizSubmissions.Attempt' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))
@@ -111,6 +111,6 @@ func (t *UpdateStudentQuestionScoresAndComments) Do(c *canvasapi.Canvas) error {
 }
 
 type QuizSubmissionOverrides struct {
-	Score   string `json:"score" url:"score,omitempty"`     //  (Optional)
-	Comment string `json:"comment" url:"comment,omitempty"` //  (Optional)
+	Score   float64 `json:"score" url:"score,omitempty"`     //  (Optional)
+	Comment string  `json:"comment" url:"comment,omitempty"` //  (Optional)
 }

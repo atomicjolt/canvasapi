@@ -18,6 +18,6 @@ type Profile struct {
 	K5User       bool          `json:"k5_user" url:"k5_user,omitempty"`             // Optional: Whether or not the user is a K5 user. This field is nil if the user settings are not for the user making the request..Example: true
 }
 
-func (t *Profile) HasError() error {
+func (t *Profile) HasErrors() error {
 	return nil
 }

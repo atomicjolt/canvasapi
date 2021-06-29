@@ -26,18 +26,18 @@ import (
 // https://canvas.instructure.com/doc/api/conversations.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Body (Required) The message to be sent.
-// # AttachmentIDs (Optional) An array of attachments ids. These must be files that have been previously
+// # Form.Body (Required) The message to be sent.
+// # Form.AttachmentIDs (Optional) An array of attachments ids. These must be files that have been previously
 //    uploaded to the sender's "conversation attachments" folder.
-// # MediaCommentID (Optional) Media comment id of an audio of video file to be associated with this
+// # Form.MediaCommentID (Optional) Media comment id of an audio of video file to be associated with this
 //    message.
-// # MediaCommentType (Optional) . Must be one of audio, videoType of the associated media file.
-// # Recipients (Optional) no description
-// # IncludedMessages (Optional) no description
-// # UserNote (Optional) Will add a faculty journal entry for each recipient as long as the user
+// # Form.MediaCommentType (Optional) . Must be one of audio, videoType of the associated media file.
+// # Form.Recipients (Optional) no description
+// # Form.IncludedMessages (Optional) no description
+// # Form.UserNote (Optional) Will add a faculty journal entry for each recipient as long as the user
 //    making the api call has permission, the recipient is a student and
 //    faculty journals are enabled in the account.
 //
@@ -86,10 +86,10 @@ func (t *AddMessage) GetJSON() ([]byte, error) {
 func (t *AddMessage) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.Body == "" {
-		errs = append(errs, "'Body' is required")
+		errs = append(errs, "'Form.Body' is required")
 	}
 	if t.Form.MediaCommentType != "" && !string_utils.Include([]string{"audio", "video"}, t.Form.MediaCommentType) {
 		errs = append(errs, "MediaCommentType must be one of audio, video")

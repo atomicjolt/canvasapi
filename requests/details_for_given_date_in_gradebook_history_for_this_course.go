@@ -17,8 +17,8 @@ import (
 // https://canvas.instructure.com/doc/api/gradebook_history.html
 //
 // Path Parameters:
-// # CourseID (Required) The id of the contextual course for this API call
-// # Date (Required) The date for which you would like to see detailed information
+// # Path.CourseID (Required) The id of the contextual course for this API call
+// # Path.Date (Required) The date for which you would like to see detailed information
 //
 type DetailsForGivenDateInGradebookHistoryForThisCourse struct {
 	Path struct {
@@ -53,7 +53,7 @@ func (t *DetailsForGivenDateInGradebookHistoryForThisCourse) GetJSON() ([]byte, 
 func (t *DetailsForGivenDateInGradebookHistoryForThisCourse) HasErrors() error {
 	errs := []string{}
 	if t.Path.Date == "" {
-		errs = append(errs, "'Date' is required")
+		errs = append(errs, "'Path.Date' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -10,6 +10,6 @@ type GradingPeriod struct {
 	IsClosed  bool   `json:"is_closed" url:"is_closed,omitempty"`   // If true, the grading period's close_date has passed..Example: true
 }
 
-func (t *GradingPeriod) HasError() error {
+func (t *GradingPeriod) HasErrors() error {
 	return nil
 }

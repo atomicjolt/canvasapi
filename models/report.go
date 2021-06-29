@@ -18,6 +18,6 @@ type Report struct {
 	CurrentLine int64             `json:"current_line" url:"current_line,omitempty"` // This is the current line count being written to the report. It updates every 1000 records..Example: 12000
 }
 
-func (t *Report) HasError() error {
+func (t *Report) HasErrors() error {
 	return nil
 }

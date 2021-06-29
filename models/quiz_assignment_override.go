@@ -13,6 +13,6 @@ type QuizAssignmentOverride struct {
 	Base     bool      `json:"base" url:"base,omitempty"`           // If this property is present, it means that dates in this structure are not based on an assignment override, but are instead for all students..Example: true
 }
 
-func (t *QuizAssignmentOverride) HasError() error {
+func (t *QuizAssignmentOverride) HasErrors() error {
 	return nil
 }

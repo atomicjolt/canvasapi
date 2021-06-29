@@ -39,21 +39,21 @@ import (
 // https://canvas.instructure.com/doc/api/outcome_groups.html
 //
 // Path Parameters:
-// # ID (Required) ID
-// # OutcomeID (Required) The ID of the existing outcome to link.
+// # Path.ID (Required) ID
+// # Path.OutcomeID (Required) The ID of the existing outcome to link.
 //
 // Form Parameters:
-// # MoveFrom (Optional) The ID of the old outcome group. Only used if outcome_id is present.
-// # Title (Optional) The title of the new outcome. Required if outcome_id is absent.
-// # DisplayName (Optional) A friendly name shown in reports for outcomes with cryptic titles,
+// # Form.MoveFrom (Optional) The ID of the old outcome group. Only used if outcome_id is present.
+// # Form.Title (Optional) The title of the new outcome. Required if outcome_id is absent.
+// # Form.DisplayName (Optional) A friendly name shown in reports for outcomes with cryptic titles,
 //    such as common core standards names.
-// # Description (Optional) The description of the new outcome.
-// # VendorGuid (Optional) A custom GUID for the learning standard.
-// # MasteryPoints (Optional) The mastery threshold for the embedded rubric criterion.
-// # Ratings (Optional) The description of a rating level for the embedded rubric criterion.
-// # Ratings (Optional) The points corresponding to a rating level for the embedded rubric criterion.
-// # CalculationMethod (Optional) . Must be one of decaying_average, n_mastery, latest, highestThe new calculation method.  Defaults to "decaying_average"
-// # CalculationInt (Optional) The new calculation int.  Only applies if the calculation_method is "decaying_average" or "n_mastery". Defaults to 65
+// # Form.Description (Optional) The description of the new outcome.
+// # Form.VendorGuid (Optional) A custom GUID for the learning standard.
+// # Form.MasteryPoints (Optional) The mastery threshold for the embedded rubric criterion.
+// # Form.Ratings.Description (Optional) The description of a rating level for the embedded rubric criterion.
+// # Form.Ratings.Points (Optional) The points corresponding to a rating level for the embedded rubric criterion.
+// # Form.CalculationMethod (Optional) . Must be one of decaying_average, n_mastery, latest, highestThe new calculation method.  Defaults to "decaying_average"
+// # Form.CalculationInt (Optional) The new calculation int.  Only applies if the calculation_method is "decaying_average" or "n_mastery". Defaults to 65
 //
 type CreateLinkOutcomeGlobalOutcomeID struct {
 	Path struct {
@@ -70,7 +70,7 @@ type CreateLinkOutcomeGlobalOutcomeID struct {
 		MasteryPoints int64  `json:"mastery_points" url:"mastery_points,omitempty"` //  (Optional)
 		Ratings       struct {
 			Description []string `json:"description" url:"description,omitempty"` //  (Optional)
-			Points      []int64  `json:"points" url:"points,omitempty"`           //  (Optional)
+			Points      []string `json:"points" url:"points,omitempty"`           //  (Optional)
 		} `json:"ratings" url:"ratings,omitempty"`
 
 		CalculationMethod string `json:"calculation_method" url:"calculation_method,omitempty"` //  (Optional) . Must be one of decaying_average, n_mastery, latest, highest
@@ -108,7 +108,7 @@ func (t *CreateLinkOutcomeGlobalOutcomeID) GetJSON() ([]byte, error) {
 func (t *CreateLinkOutcomeGlobalOutcomeID) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.CalculationMethod != "" && !string_utils.Include([]string{"decaying_average", "n_mastery", "latest", "highest"}, t.Form.CalculationMethod) {
 		errs = append(errs, "CalculationMethod must be one of decaying_average, n_mastery, latest, highest")

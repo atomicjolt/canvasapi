@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, grading_periods, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, course_image, concluded- "needs_grading_count": Optional information to include with each Course.
+// # Query.Include (Optional) . Must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, grading_periods, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, course_image, concluded- "needs_grading_count": Optional information to include with each Course.
 //      When needs_grading_count is given, and the current user has grading
 //      rights, the total number of submissions needing grading for all
 //      assignments is returned.
@@ -97,12 +97,12 @@ import (
 //      and the course image feature flag has been enabled
 //    - "concluded": Optional information to include with each Course. Indicates whether
 //      the course has been concluded, taking course and term dates into account.
-// # State (Optional) . Must be one of unpublished, available, completed, deletedIf set, only return courses that are in the given state(s).
+// # Query.State (Optional) . Must be one of unpublished, available, completed, deletedIf set, only return courses that are in the given state(s).
 //    By default, "available" is returned for students and observers, and
 //    anything except "deleted", for all other enrollment types
-// # EnrollmentState (Optional) . Must be one of active, invited_or_pending, completedWhen set, only return courses where the user has an enrollment with the given state.
+// # Query.EnrollmentState (Optional) . Must be one of active, invited_or_pending, completedWhen set, only return courses where the user has an enrollment with the given state.
 //    This will respect section/course/term date overrides.
-// # Homeroom (Optional) If set, only return homeroom courses.
+// # Query.Homeroom (Optional) If set, only return homeroom courses.
 //
 type ListCoursesForUser struct {
 	Path struct {
@@ -146,7 +146,7 @@ func (t *ListCoursesForUser) GetJSON() ([]byte, error) {
 func (t *ListCoursesForUser) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"needs_grading_count", "syllabus_body", "public_description", "total_scores", "current_grading_period_scores", "grading_periods", "term", "account", "course_progress", "sections", "storage_quota_used_mb", "total_students", "passback_status", "favorites", "teachers", "observed_users", "course_image", "concluded"}, v) {

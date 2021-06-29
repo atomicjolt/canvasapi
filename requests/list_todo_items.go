@@ -24,7 +24,7 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of ungraded_quizzes"ungraded_quizzes":: Optionally include ungraded quizzes (such as practice quizzes and surveys) in the list.
+// # Query.Include (Optional) . Must be one of ungraded_quizzes"ungraded_quizzes":: Optionally include ungraded quizzes (such as practice quizzes and surveys) in the list.
 //                         These will be returned under a +quiz+ key instead of an +assignment+ key in response elements.
 //
 type ListTodoItems struct {

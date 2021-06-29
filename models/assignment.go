@@ -41,9 +41,9 @@ type Assignment struct {
 	Position                        int64                      `json:"position" url:"position,omitempty"`                                                         // the sorting order of the assignment in the group.Example: 1
 	PostToSIS                       bool                       `json:"post_to_sis" url:"post_to_sis,omitempty"`                                                   // (optional, present if Sync Grades to SIS feature is enabled).Example: true
 	IntegrationID                   string                     `json:"integration_id" url:"integration_id,omitempty"`                                             // (optional, Third Party unique identifier for Assignment).Example: 12341234
-	IntegrationData                 string                     `json:"integration_data" url:"integration_data,omitempty"`                                         // (optional, Third Party integration data for assignment).Example: 0954
+	IntegrationData                 map[string](interface{})   `json:"integration_data" url:"integration_data,omitempty"`                                         // (optional, Third Party integration data for assignment).Example: 0954
 	PointsPossible                  float64                    `json:"points_possible" url:"points_possible,omitempty"`                                           // the maximum points possible for the assignment.Example: 12.0
-	SubmissionTypes                 string                     `json:"submission_types" url:"submission_types,omitempty"`                                         // the types of submissions allowed for this assignment list containing one or more of the following: 'discussion_topic', 'online_quiz', 'on_paper', 'none', 'external_tool', 'online_text_entry', 'online_url', 'online_upload', 'media_recording', 'student_annotation'.Example: online_text_entry
+	SubmissionTypes                 []string                   `json:"submission_types" url:"submission_types,omitempty"`                                         // the types of submissions allowed for this assignment list containing one or more of the following: 'discussion_topic', 'online_quiz', 'on_paper', 'none', 'external_tool', 'online_text_entry', 'online_url', 'online_upload', 'media_recording', 'student_annotation'.Example: online_text_entry
 	HasSubmittedSubmissions         bool                       `json:"has_submitted_submissions" url:"has_submitted_submissions,omitempty"`                       // If true, the assignment has been submitted to by at least one student.Example: true
 	GradingType                     string                     `json:"grading_type" url:"grading_type,omitempty"`                                                 // The type of grading the assignment receives; one of 'pass_fail', 'percent', 'letter_grade', 'gpa_scale', 'points'.Example: points
 	GradingStandardID               int64                      `json:"grading_standard_id" url:"grading_standard_id,omitempty"`                                   // The id of the grading standard being applied to this assignment. Valid if grading_type is 'letter_grade' or 'gpa_scale'..
@@ -63,7 +63,7 @@ type Assignment struct {
 	UseRubricForGrading             bool                       `json:"use_rubric_for_grading" url:"use_rubric_for_grading,omitempty"`                             // (Optional) If true, the rubric is directly tied to grading the assignment. Otherwise, it is only advisory. Included if there is an associated rubric..Example: true
 	RubricSettings                  string                     `json:"rubric_settings" url:"rubric_settings,omitempty"`                                           // (Optional) An object describing the basic attributes of the rubric, including the point total. Included if there is an associated rubric..Example: {'points_possible'=>12}
 	Rubric                          []*RubricCriteria          `json:"rubric" url:"rubric,omitempty"`                                                             // (Optional) A list of scoring criteria and ratings for each rubric criterion. Included if there is an associated rubric..
-	AssignmentVisibility            []int64                    `json:"assignment_visibility" url:"assignment_visibility,omitempty"`                               // (Optional) If 'assignment_visibility' is included in the 'include' parameter, includes an array of student IDs who can see this assignment..Example: 137, 381, 572
+	AssignmentVisibility            []string                   `json:"assignment_visibility" url:"assignment_visibility,omitempty"`                               // (Optional) If 'assignment_visibility' is included in the 'include' parameter, includes an array of student IDs who can see this assignment..Example: 137, 381, 572
 	Overrides                       []*AssignmentOverride      `json:"overrides" url:"overrides,omitempty"`                                                       // (Optional) If 'overrides' is included in the 'include' parameter, includes an array of assignment override objects..
 	OmitFromFinalGrade              bool                       `json:"omit_from_final_grade" url:"omit_from_final_grade,omitempty"`                               // (Optional) If true, the assignment will be omitted from the student's final grade.Example: true
 	ModeratedGrading                bool                       `json:"moderated_grading" url:"moderated_grading,omitempty"`                                       // Boolean indicating if the assignment is moderated..Example: true
@@ -79,15 +79,19 @@ type Assignment struct {
 	CanSubmit                       bool                       `json:"can_submit" url:"can_submit,omitempty"`                                                     // (Optional) If retrieving a single assignment and 'can_submit' is included in the 'include' parameter, flags whether user has the right to submit the assignment (i.e. checks enrollment dates, submission types, locked status, attempts remaining, etc...). Including 'can submit' automatically includes 'submission' in the include parameter. Not available when observed_users are included..Example: true
 }
 
-func (t *Assignment) HasError() error {
+func (t *Assignment) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"discussion_topic", "online_quiz", "on_paper", "not_graded", "none", "external_tool", "online_text_entry", "online_url", "online_upload", "media_recording", "student_annotation"}
-	if t.SubmissionTypes != "" && !string_utils.Include(s, t.SubmissionTypes) {
-		return fmt.Errorf("expected 'submission_types' to be one of %v", s)
+
+	for _, v := range t.SubmissionTypes {
+		if v != "" && !string_utils.Include(s, v) {
+			errs = append(errs, fmt.Sprintf("expected 'SubmissionTypes' to be one of %v", s))
+		}
 	}
 	s = []string{"pass_fail", "percent", "letter_grade", "gpa_scale", "points"}
 	if t.GradingType != "" && !string_utils.Include(s, t.GradingType) {
-		return fmt.Errorf("expected 'grading_type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'GradingType' to be one of %v", s))
 	}
 	return nil
 }

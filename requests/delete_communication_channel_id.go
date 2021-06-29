@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/communication_channels.html
 //
 // Path Parameters:
-// # UserID (Required) ID
-// # ID (Required) ID
+// # Path.UserID (Required) ID
+// # Path.ID (Required) ID
 //
 type DeleteCommunicationChannelID struct {
 	Path struct {
@@ -51,10 +51,10 @@ func (t *DeleteCommunicationChannelID) GetJSON() ([]byte, error) {
 func (t *DeleteCommunicationChannelID) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

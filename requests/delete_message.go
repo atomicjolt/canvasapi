@@ -17,10 +17,10 @@ import (
 // https://canvas.instructure.com/doc/api/conversations.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Remove (Required) Array of message ids to be deleted
+// # Form.Remove (Required) Array of message ids to be deleted
 //
 type DeleteMessage struct {
 	Path struct {
@@ -61,10 +61,10 @@ func (t *DeleteMessage) GetJSON() ([]byte, error) {
 func (t *DeleteMessage) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.Remove == nil {
-		errs = append(errs, "'Remove' is required")
+		errs = append(errs, "'Form.Remove' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

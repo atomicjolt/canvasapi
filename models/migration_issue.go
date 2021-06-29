@@ -20,15 +20,16 @@ type MigrationIssue struct {
 	UpdatedAt           time.Time `json:"updated_at" url:"updated_at,omitempty"`                       // timestamp.Example: 2012-06-01T00:00:00-06:00
 }
 
-func (t *MigrationIssue) HasError() error {
+func (t *MigrationIssue) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"active", "resolved"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	s = []string{"todo", "warning", "error"}
 	if t.IssueType != "" && !string_utils.Include(s, t.IssueType) {
-		return fmt.Errorf("expected 'issue_type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'IssueType' to be one of %v", s))
 	}
 	return nil
 }

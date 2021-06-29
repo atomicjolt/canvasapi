@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # ID (Required) ID
-// # AssetString (Required) ID
+// # Path.ID (Required) ID
+// # Path.AssetString (Required) ID
 //
 type GetCustomColor struct {
 	Path struct {
@@ -51,10 +51,10 @@ func (t *GetCustomColor) GetJSON() ([]byte, error) {
 func (t *GetCustomColor) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Path.AssetString == "" {
-		errs = append(errs, "'AssetString' is required")
+		errs = append(errs, "'Path.AssetString' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

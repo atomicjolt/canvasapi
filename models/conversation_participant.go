@@ -7,6 +7,6 @@ type ConversationParticipant struct {
 	AvatarUrl string `json:"avatar_url" url:"avatar_url,omitempty"` // If requested, this field will be included and contain a url to retrieve the user's avatar..Example: https://canvas.instructure.com/images/messages/avatar-50.png
 }
 
-func (t *ConversationParticipant) HasError() error {
+func (t *ConversationParticipant) HasErrors() error {
 	return nil
 }

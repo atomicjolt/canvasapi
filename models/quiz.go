@@ -49,19 +49,20 @@ type Quiz struct {
 	AnonymousSubmissions          bool              `json:"anonymous_submissions" url:"anonymous_submissions,omitempty"`                         // Whether survey submissions will be kept anonymous (only applicable to 'graded_survey', 'survey' quiz types).
 }
 
-func (t *Quiz) HasError() error {
+func (t *Quiz) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"practice_quiz", "assignment", "graded_survey", "survey"}
 	if t.QuizType != "" && !string_utils.Include(s, t.QuizType) {
-		return fmt.Errorf("expected 'quiz_type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'QuizType' to be one of %v", s))
 	}
 	s = []string{"always", "until_after_last_attempt"}
 	if t.HideResults != "" && !string_utils.Include(s, t.HideResults) {
-		return fmt.Errorf("expected 'hide_results' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'HideResults' to be one of %v", s))
 	}
 	s = []string{"keep_highest", "keep_latest"}
 	if t.ScoringPolicy != "" && !string_utils.Include(s, t.ScoringPolicy) {
-		return fmt.Errorf("expected 'scoring_policy' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'ScoringPolicy' to be one of %v", s))
 	}
 	return nil
 }

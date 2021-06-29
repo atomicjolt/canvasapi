@@ -21,11 +21,11 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # DestFolderID (Required) ID
+// # Path.DestFolderID (Required) ID
 //
 // Form Parameters:
-// # SourceFileID (Required) The id of the source file
-// # OnDuplicate (Optional) . Must be one of overwrite, renameWhat to do if a file with the same name already exists at the destination.
+// # Form.SourceFileID (Required) The id of the source file
+// # Form.OnDuplicate (Optional) . Must be one of overwrite, renameWhat to do if a file with the same name already exists at the destination.
 //    If such a file exists and this parameter is not given, the call will fail.
 //
 //    "overwrite":: Replace an existing file with the same name
@@ -71,10 +71,10 @@ func (t *CopyFile) GetJSON() ([]byte, error) {
 func (t *CopyFile) HasErrors() error {
 	errs := []string{}
 	if t.Path.DestFolderID == "" {
-		errs = append(errs, "'DestFolderID' is required")
+		errs = append(errs, "'Path.DestFolderID' is required")
 	}
 	if t.Form.SourceFileID == "" {
-		errs = append(errs, "'SourceFileID' is required")
+		errs = append(errs, "'Form.SourceFileID' is required")
 	}
 	if t.Form.OnDuplicate != "" && !string_utils.Include([]string{"overwrite", "rename"}, t.Form.OnDuplicate) {
 		errs = append(errs, "OnDuplicate must be one of overwrite, rename")

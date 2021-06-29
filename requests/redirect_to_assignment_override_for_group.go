@@ -13,8 +13,8 @@ import (
 // https://canvas.instructure.com/doc/api/assignments.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # AssignmentID (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.AssignmentID (Required) ID
 //
 type RedirectToAssignmentOverrideForGroup struct {
 	Path struct {
@@ -49,10 +49,10 @@ func (t *RedirectToAssignmentOverrideForGroup) GetJSON() ([]byte, error) {
 func (t *RedirectToAssignmentOverrideForGroup) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

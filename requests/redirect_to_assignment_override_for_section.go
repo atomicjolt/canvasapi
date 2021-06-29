@@ -13,8 +13,8 @@ import (
 // https://canvas.instructure.com/doc/api/assignments.html
 //
 // Path Parameters:
-// # CourseSectionID (Required) ID
-// # AssignmentID (Required) ID
+// # Path.CourseSectionID (Required) ID
+// # Path.AssignmentID (Required) ID
 //
 type RedirectToAssignmentOverrideForSection struct {
 	Path struct {
@@ -49,10 +49,10 @@ func (t *RedirectToAssignmentOverrideForSection) GetJSON() ([]byte, error) {
 func (t *RedirectToAssignmentOverrideForSection) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseSectionID == "" {
-		errs = append(errs, "'CourseSectionID' is required")
+		errs = append(errs, "'Path.CourseSectionID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

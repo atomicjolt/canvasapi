@@ -17,12 +17,12 @@ import (
 // https://canvas.instructure.com/doc/api/outcome_groups.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # OutcomeStyle (Optional) The detail level of the outcomes. Defaults to "abbrev".
+// # Query.OutcomeStyle (Optional) The detail level of the outcomes. Defaults to "abbrev".
 //    Specify "full" for more information.
-// # OutcomeGroupStyle (Optional) The detail level of the outcome groups. Defaults to "abbrev".
+// # Query.OutcomeGroupStyle (Optional) The detail level of the outcome groups. Defaults to "abbrev".
 //    Specify "full" for more information.
 //
 type GetAllOutcomeLinksForContextAccounts struct {
@@ -65,7 +65,7 @@ func (t *GetAllOutcomeLinksForContextAccounts) GetJSON() ([]byte, error) {
 func (t *GetAllOutcomeLinksForContextAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

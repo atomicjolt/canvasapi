@@ -19,8 +19,8 @@ import (
 // https://canvas.instructure.com/doc/api/feature_flags.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # Feature (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.Feature (Required) ID
 //
 type GetFeatureFlagAccounts struct {
 	Path struct {
@@ -55,10 +55,10 @@ func (t *GetFeatureFlagAccounts) GetJSON() ([]byte, error) {
 func (t *GetFeatureFlagAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.Feature == "" {
-		errs = append(errs, "'Feature' is required")
+		errs = append(errs, "'Path.Feature' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

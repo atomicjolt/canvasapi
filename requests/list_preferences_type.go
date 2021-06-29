@@ -15,9 +15,9 @@ import (
 // https://canvas.instructure.com/doc/api/notification_preferences.html
 //
 // Path Parameters:
-// # UserID (Required) ID
-// # Type (Required) ID
-// # Address (Required) ID
+// # Path.UserID (Required) ID
+// # Path.Type (Required) ID
+// # Path.Address (Required) ID
 //
 type ListPreferencesType struct {
 	Path struct {
@@ -54,13 +54,13 @@ func (t *ListPreferencesType) GetJSON() ([]byte, error) {
 func (t *ListPreferencesType) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Path.Type == "" {
-		errs = append(errs, "'Type' is required")
+		errs = append(errs, "'Path.Type' is required")
 	}
 	if t.Path.Address == "" {
-		errs = append(errs, "'Address' is required")
+		errs = append(errs, "'Path.Address' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -18,7 +18,7 @@ type AppointmentGroup struct {
 	ParticipantCount              int64            `json:"participant_count" url:"participant_count,omitempty"`                               // The number of participant who have reserved slots (see include[] argument).Example: 2
 	ReservedTimes                 []*Appointment   `json:"reserved_times" url:"reserved_times,omitempty"`                                     // The start and end times of slots reserved by the current user as well as the id of the calendar event for the reservation (see include[] argument).Example: {'id'=>987, 'start_at'=>'2012-07-20T15:00:00-06:00', 'end_at'=>'2012-07-20T15:00:00-06:00'}
 	ContextCodes                  []string         `json:"context_codes" url:"context_codes,omitempty"`                                       // The context codes (i.e. courses) this appointment group belongs to. Only people in these courses will be eligible to sign up..Example: course_123
-	SubContextCodes               []int64          `json:"sub_context_codes" url:"sub_context_codes,omitempty"`                               // The sub-context codes (i.e. course sections and group categories) this appointment group is restricted to.Example: course_section_234
+	SubContextCodes               []string         `json:"sub_context_codes" url:"sub_context_codes,omitempty"`                               // The sub-context codes (i.e. course sections and group categories) this appointment group is restricted to.Example: course_section_234
 	WorkflowState                 string           `json:"workflow_state" url:"workflow_state,omitempty"`                                     // Current state of the appointment group ('pending', 'active' or 'deleted'). 'pending' indicates that it has not been published yet and is invisible to participants..Example: active
 	RequiringAction               bool             `json:"requiring_action" url:"requiring_action,omitempty"`                                 // Boolean indicating whether the current user needs to sign up for this appointment group (i.e. it's reservable and the min_appointments_per_participant limit has not been met by this user)..Example: true
 	AppointmentsCount             int64            `json:"appointments_count" url:"appointments_count,omitempty"`                             // Number of time slots in this appointment group.Example: 2
@@ -35,19 +35,20 @@ type AppointmentGroup struct {
 	UpdatedAt                     time.Time        `json:"updated_at" url:"updated_at,omitempty"`                                             // When the appointment group was last updated.Example: 2012-07-13T10:55:20-06:00
 }
 
-func (t *AppointmentGroup) HasError() error {
+func (t *AppointmentGroup) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"pending", "active", "deleted"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	s = []string{"private", "protected"}
 	if t.ParticipantVisibility != "" && !string_utils.Include(s, t.ParticipantVisibility) {
-		return fmt.Errorf("expected 'participant_visibility' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'ParticipantVisibility' to be one of %v", s))
 	}
 	s = []string{"User", "Group"}
 	if t.ParticipantType != "" && !string_utils.Include(s, t.ParticipantType) {
-		return fmt.Errorf("expected 'participant_type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'ParticipantType' to be one of %v", s))
 	}
 	return nil
 }

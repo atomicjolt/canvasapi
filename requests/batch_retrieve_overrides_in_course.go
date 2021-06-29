@@ -19,11 +19,11 @@ import (
 // https://canvas.instructure.com/doc/api/assignments.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # AssignmentOverrides (Required) Ids of overrides to retrieve
-// # AssignmentOverrides (Required) Ids of assignments for each override
+// # Query.AssignmentOverrides.ID (Required) Ids of overrides to retrieve
+// # Query.AssignmentOverrides.AssignmentID (Required) Ids of assignments for each override
 //
 type BatchRetrieveOverridesInCourse struct {
 	Path struct {
@@ -67,13 +67,13 @@ func (t *BatchRetrieveOverridesInCourse) GetJSON() ([]byte, error) {
 func (t *BatchRetrieveOverridesInCourse) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Query.AssignmentOverrides.ID == nil {
-		errs = append(errs, "'AssignmentOverrides' is required")
+		errs = append(errs, "'Query.AssignmentOverrides.ID' is required")
 	}
 	if t.Query.AssignmentOverrides.AssignmentID == nil {
-		errs = append(errs, "'AssignmentOverrides' is required")
+		errs = append(errs, "'Query.AssignmentOverrides.AssignmentID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

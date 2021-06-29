@@ -6,6 +6,6 @@ type ScoreStatistic struct {
 	Mean int64 `json:"mean" url:"mean,omitempty"` // Mean score.Example: 6
 }
 
-func (t *ScoreStatistic) HasError() error {
+func (t *ScoreStatistic) HasErrors() error {
 	return nil
 }

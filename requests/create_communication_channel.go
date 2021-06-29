@@ -18,20 +18,20 @@ import (
 // https://canvas.instructure.com/doc/api/communication_channels.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Form Parameters:
-// # CommunicationChannel (Required) An email address or SMS number. Not required for "push" type channels.
-// # CommunicationChannel (Required) . Must be one of email, sms, pushThe type of communication channel.
+// # Form.CommunicationChannel.Address (Required) An email address or SMS number. Not required for "push" type channels.
+// # Form.CommunicationChannel.Type (Required) . Must be one of email, sms, pushThe type of communication channel.
 //
 //    In order to enable push notification support, the server must be
 //    properly configured (via sns.yml) to communicate with Amazon
 //    Simple Notification Services, and the developer key used to create
 //    the access token from this request must have an SNS ARN configured on
 //    it.
-// # CommunicationChannel (Optional) A registration id, device token, or equivalent token given to an app when
+// # Form.CommunicationChannel.Token (Optional) A registration id, device token, or equivalent token given to an app when
 //    registering with a push notification provider. Only valid for "push" type channels.
-// # SkipConfirmation (Optional) Only valid for site admins and account admins making requests; If true, the channel is
+// # Form.SkipConfirmation (Optional) Only valid for site admins and account admins making requests; If true, the channel is
 //    automatically validated and no confirmation email or SMS is sent.
 //    Otherwise, the user must respond to a confirmation message to confirm the
 //    channel.
@@ -81,13 +81,13 @@ func (t *CreateCommunicationChannel) GetJSON() ([]byte, error) {
 func (t *CreateCommunicationChannel) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Form.CommunicationChannel.Address == "" {
-		errs = append(errs, "'CommunicationChannel' is required")
+		errs = append(errs, "'Form.CommunicationChannel.Address' is required")
 	}
 	if t.Form.CommunicationChannel.Type == "" {
-		errs = append(errs, "'CommunicationChannel' is required")
+		errs = append(errs, "'Form.CommunicationChannel.Type' is required")
 	}
 	if t.Form.CommunicationChannel.Type != "" && !string_utils.Include([]string{"email", "sms", "push"}, t.Form.CommunicationChannel.Type) {
 		errs = append(errs, "CommunicationChannel must be one of email, sms, push")

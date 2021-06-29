@@ -16,26 +16,26 @@ import (
 // https://canvas.instructure.com/doc/api/calendar_events.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # CalendarEvent (Optional) Context code of the course/group/user to move this event to.
+// # Form.CalendarEvent.ContextCode (Optional) Context code of the course/group/user to move this event to.
 //    Scheduler appointments and events with section-specific times cannot be moved between calendars.
-// # CalendarEvent (Optional) Short title for the calendar event.
-// # CalendarEvent (Optional) Longer HTML description of the event.
-// # CalendarEvent (Optional) Start date/time of the event.
-// # CalendarEvent (Optional) End date/time of the event.
-// # CalendarEvent (Optional) Location name of the event.
-// # CalendarEvent (Optional) Location address
-// # CalendarEvent (Optional) Time zone of the user editing the event. Allowed time zones are
+// # Form.CalendarEvent.Title (Optional) Short title for the calendar event.
+// # Form.CalendarEvent.Description (Optional) Longer HTML description of the event.
+// # Form.CalendarEvent.StartAt (Optional) Start date/time of the event.
+// # Form.CalendarEvent.EndAt (Optional) End date/time of the event.
+// # Form.CalendarEvent.LocationName (Optional) Location name of the event.
+// # Form.CalendarEvent.LocationAddress (Optional) Location address
+// # Form.CalendarEvent.TimeZoneEdited (Optional) Time zone of the user editing the event. Allowed time zones are
 //    {http://www.iana.org/time-zones IANA time zones} or friendlier
 //    {http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html Ruby on Rails time zones}.
-// # CalendarEvent (Optional) When true event is considered to span the whole day and times are ignored.
-// # CalendarEvent (Optional) Section-level start time(s) if this is a course event. X can be any
+// # Form.CalendarEvent.AllDay (Optional) When true event is considered to span the whole day and times are ignored.
+// # Form.CalendarEvent (Optional) Section-level start time(s) if this is a course event. X can be any
 //    identifier, provided that it is consistent across the start_at, end_at
 //    and context_code
-// # CalendarEvent (Optional) Section-level end time(s) if this is a course event.
-// # CalendarEvent (Optional) Context code(s) corresponding to the section-level start and end time(s).
+// # Form.CalendarEvent (Optional) Section-level end time(s) if this is a course event.
+// # Form.CalendarEvent (Optional) Context code(s) corresponding to the section-level start and end time(s).
 //
 type UpdateCalendarEvent struct {
 	Path struct {
@@ -87,7 +87,7 @@ func (t *UpdateCalendarEvent) GetJSON() ([]byte, error) {
 func (t *UpdateCalendarEvent) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

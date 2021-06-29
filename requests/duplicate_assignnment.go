@@ -18,11 +18,11 @@ import (
 // https://canvas.instructure.com/doc/api/assignments.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # AssignmentID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.AssignmentID (Required) ID
 //
 // Form Parameters:
-// # ResultType (Optional) . Must be one of QuizOptional information:
+// # Form.ResultType (Optional) . Must be one of QuizOptional information:
 //    When the root account has the feature `newquizzes_on_quiz_page` enabled
 //    and this argument is set to "Quiz" the response will be serialized into a
 //    quiz format({file:doc/api/quizzes.html#Quiz});
@@ -70,10 +70,10 @@ func (t *DuplicateAssignnment) GetJSON() ([]byte, error) {
 func (t *DuplicateAssignnment) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if t.Form.ResultType != "" && !string_utils.Include([]string{"Quiz"}, t.Form.ResultType) {
 		errs = append(errs, "ResultType must be one of Quiz")

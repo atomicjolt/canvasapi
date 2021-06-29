@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/originality_reports.html
 //
 // Path Parameters:
-// # AssignmentID (Required) ID
-// # FileID (Required) ID
+// # Path.AssignmentID (Required) ID
+// # Path.FileID (Required) ID
 //
 type ShowOriginalityReportFiles struct {
 	Path struct {
@@ -51,10 +51,10 @@ func (t *ShowOriginalityReportFiles) GetJSON() ([]byte, error) {
 func (t *ShowOriginalityReportFiles) HasErrors() error {
 	errs := []string{}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if t.Path.FileID == "" {
-		errs = append(errs, "'FileID' is required")
+		errs = append(errs, "'Path.FileID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -9,6 +9,6 @@ type Result struct {
 	ScoreOf       string  `json:"score_of" url:"score_of,omitempty"`             // URL of the line item this belongs to.Example: http://institution.canvas.com/api/lti/courses/5/line_items/2
 }
 
-func (t *Result) HasError() error {
+func (t *Result) HasErrors() error {
 	return nil
 }

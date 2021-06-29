@@ -19,11 +19,11 @@ import (
 // https://canvas.instructure.com/doc/api/feature_flags.html
 //
 // Path Parameters:
-// # UserID (Required) ID
-// # Feature (Required) ID
+// # Path.UserID (Required) ID
+// # Path.Feature (Required) ID
 //
 // Form Parameters:
-// # State (Optional) . Must be one of off, allowed, on"off":: The feature is not available for the course, user, or account and sub-accounts.
+// # Form.State (Optional) . Must be one of off, allowed, on"off":: The feature is not available for the course, user, or account and sub-accounts.
 //    "allowed":: (valid only on accounts) The feature is off in the account, but may be enabled in
 //                sub-accounts and courses by setting a feature flag on the sub-account or course.
 //    "on":: The feature is turned on unconditionally for the user, course, or account and sub-accounts.
@@ -69,10 +69,10 @@ func (t *SetFeatureFlagUsers) GetJSON() ([]byte, error) {
 func (t *SetFeatureFlagUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Path.Feature == "" {
-		errs = append(errs, "'Feature' is required")
+		errs = append(errs, "'Path.Feature' is required")
 	}
 	if t.Form.State != "" && !string_utils.Include([]string{"off", "allowed", "on"}, t.Form.State) {
 		errs = append(errs, "State must be one of off, allowed, on")

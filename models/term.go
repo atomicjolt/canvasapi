@@ -11,6 +11,6 @@ type Term struct {
 	EndAt   time.Time `json:"end_at" url:"end_at,omitempty"`     //
 }
 
-func (t *Term) HasError() error {
+func (t *Term) HasErrors() error {
 	return nil
 }

@@ -7,6 +7,6 @@ type BlueprintRestriction struct {
 	AvailabilityDates bool `json:"availability_dates" url:"availability_dates,omitempty"` // Restriction on availability dates for an object.Example: true
 }
 
-func (t *BlueprintRestriction) HasError() error {
+func (t *BlueprintRestriction) HasErrors() error {
 	return nil
 }

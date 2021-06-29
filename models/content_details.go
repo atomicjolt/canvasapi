@@ -14,6 +14,6 @@ type ContentDetails struct {
 	LockInfo        *LockInfo `json:"lock_info" url:"lock_info,omitempty"`               // Example: assignment_4, 2012-12-31T06:00:00-06:00, 2012-12-31T06:00:00-06:00, {}
 }
 
-func (t *ContentDetails) HasError() error {
+func (t *ContentDetails) HasErrors() error {
 	return nil
 }

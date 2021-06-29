@@ -17,10 +17,10 @@ import (
 // https://canvas.instructure.com/doc/api/appointment_groups.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # RegistrationStatus (Optional) . Must be one of all, registered, registeredLimits results to the a given participation status, defaults to "all"
+// # Query.RegistrationStatus (Optional) . Must be one of all, registered, registeredLimits results to the a given participation status, defaults to "all"
 //
 type ListUserParticipants struct {
 	Path struct {
@@ -61,7 +61,7 @@ func (t *ListUserParticipants) GetJSON() ([]byte, error) {
 func (t *ListUserParticipants) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Query.RegistrationStatus != "" && !string_utils.Include([]string{"all", "registered", "registered"}, t.Query.RegistrationStatus) {
 		errs = append(errs, "RegistrationStatus must be one of all, registered, registered")

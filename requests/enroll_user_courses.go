@@ -19,45 +19,45 @@ import (
 // https://canvas.instructure.com/doc/api/enrollments.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # Enrollment (Optional) The start time of the enrollment, in ISO8601 format. e.g. 2012-04-18T23:08:51Z
-// # Enrollment (Optional) The end time of the enrollment, in ISO8601 format. e.g. 2012-04-18T23:08:51Z
-// # Enrollment (Required) The ID of the user to be enrolled in the course.
-// # Enrollment (Required) . Must be one of StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollmentEnroll the user as a student, teacher, TA, observer, or designer. If no
+// # Form.Enrollment.StartAt (Optional) The start time of the enrollment, in ISO8601 format. e.g. 2012-04-18T23:08:51Z
+// # Form.Enrollment.EndAt (Optional) The end time of the enrollment, in ISO8601 format. e.g. 2012-04-18T23:08:51Z
+// # Form.Enrollment.UserID (Required) The ID of the user to be enrolled in the course.
+// # Form.Enrollment.Type (Required) . Must be one of StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollmentEnroll the user as a student, teacher, TA, observer, or designer. If no
 //    value is given, the type will be inferred by enrollment[role] if supplied,
 //    otherwise 'StudentEnrollment' will be used.
-// # Enrollment (Optional) Assigns a custom course-level role to the user.
-// # Enrollment (Optional) Assigns a custom course-level role to the user.
-// # Enrollment (Optional) . Must be one of active, invited, inactiveIf set to 'active,' student will be immediately enrolled in the course.
+// # Form.Enrollment.Role (Optional) Assigns a custom course-level role to the user.
+// # Form.Enrollment.RoleID (Optional) Assigns a custom course-level role to the user.
+// # Form.Enrollment.EnrollmentState (Optional) . Must be one of active, invited, inactiveIf set to 'active,' student will be immediately enrolled in the course.
 //    Otherwise they will be required to accept a course invitation. Default is
 //    'invited.'.
 //
 //    If set to 'inactive', student will be listed in the course roster for
 //    teachers, but will not be able to participate in the course until
 //    their enrollment is activated.
-// # Enrollment (Optional) The ID of the course section to enroll the student in. If the
+// # Form.Enrollment.CourseSectionID (Optional) The ID of the course section to enroll the student in. If the
 //    section-specific URL is used, this argument is redundant and will be
 //    ignored.
-// # Enrollment (Optional) If set, the enrollment will only allow the user to see and interact with
+// # Form.Enrollment.LimitPrivilegesToCourseSection (Optional) If set, the enrollment will only allow the user to see and interact with
 //    users enrolled in the section given by course_section_id.
 //    * For teachers and TAs, this includes grading privileges.
 //    * Section-limited students will not see any users (including teachers
 //      and TAs) not enrolled in their sections.
 //    * Users may have other enrollments that grant privileges to
 //      multiple sections in the same course.
-// # Enrollment (Optional) If true, a notification will be sent to the enrolled user.
+// # Form.Enrollment.Notify (Optional) If true, a notification will be sent to the enrolled user.
 //    Notifications are not sent by default.
-// # Enrollment (Optional) If the current user is not allowed to manage enrollments in this
+// # Form.Enrollment.SelfEnrollmentCode (Optional) If the current user is not allowed to manage enrollments in this
 //    course, but the course allows self-enrollment, the user can self-
 //    enroll as a student in the default section by passing in a valid
 //    code. When self-enrolling, the user_id must be 'self'. The
 //    enrollment_state will be set to 'active' and all other arguments
 //    will be ignored.
-// # Enrollment (Optional) If true, marks the enrollment as a self-enrollment, which gives
+// # Form.Enrollment.SelfEnrolled (Optional) If true, marks the enrollment as a self-enrollment, which gives
 //    students the ability to drop the course if desired. Defaults to false.
-// # Enrollment (Optional) For an observer enrollment, the ID of a student to observe.
+// # Form.Enrollment.AssociatedUserID (Optional) For an observer enrollment, the ID of a student to observe.
 //    This is a one-off operation; to automatically observe all a
 //    student's enrollments (for example, as a parent), please use
 //    the {api:UserObserveesController#create User Observees API}.
@@ -115,13 +115,13 @@ func (t *EnrollUserCourses) GetJSON() ([]byte, error) {
 func (t *EnrollUserCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Form.Enrollment.UserID == "" {
-		errs = append(errs, "'Enrollment' is required")
+		errs = append(errs, "'Form.Enrollment.UserID' is required")
 	}
 	if t.Form.Enrollment.Type == "" {
-		errs = append(errs, "'Enrollment' is required")
+		errs = append(errs, "'Form.Enrollment.Type' is required")
 	}
 	if t.Form.Enrollment.Type != "" && !string_utils.Include([]string{"StudentEnrollment", "TeacherEnrollment", "TaEnrollment", "ObserverEnrollment", "DesignerEnrollment"}, t.Form.Enrollment.Type) {
 		errs = append(errs, "Enrollment must be one of StudentEnrollment, TeacherEnrollment, TaEnrollment, ObserverEnrollment, DesignerEnrollment")

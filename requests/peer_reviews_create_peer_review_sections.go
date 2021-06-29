@@ -17,12 +17,12 @@ import (
 // https://canvas.instructure.com/doc/api/peer_reviews.html
 //
 // Path Parameters:
-// # SectionID (Required) ID
-// # AssignmentID (Required) ID
-// # SubmissionID (Required) ID
+// # Path.SectionID (Required) ID
+// # Path.AssignmentID (Required) ID
+// # Path.SubmissionID (Required) ID
 //
 // Form Parameters:
-// # UserID (Required) user_id to assign as reviewer on this assignment
+// # Form.UserID (Required) user_id to assign as reviewer on this assignment
 //
 type PeerReviewsCreatePeerReviewSections struct {
 	Path struct {
@@ -67,13 +67,13 @@ func (t *PeerReviewsCreatePeerReviewSections) GetJSON() ([]byte, error) {
 func (t *PeerReviewsCreatePeerReviewSections) HasErrors() error {
 	errs := []string{}
 	if t.Path.SectionID == "" {
-		errs = append(errs, "'SectionID' is required")
+		errs = append(errs, "'Path.SectionID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if t.Path.SubmissionID == "" {
-		errs = append(errs, "'SubmissionID' is required")
+		errs = append(errs, "'Path.SubmissionID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

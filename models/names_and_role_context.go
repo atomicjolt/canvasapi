@@ -6,6 +6,6 @@ type NamesAndRoleContext struct {
 	Title string `json:"title" url:"title,omitempty"` // LTI Context full name.Example: Computer Science 101
 }
 
-func (t *NamesAndRoleContext) HasError() error {
+func (t *NamesAndRoleContext) HasErrors() error {
 	return nil
 }

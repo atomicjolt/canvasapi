@@ -17,12 +17,12 @@ import (
 // https://canvas.instructure.com/doc/api/roles.html
 //
 // Path Parameters:
-// # ID (Required) ID
-// # AccountID (Required) The id of the account containing the role
+// # Path.ID (Required) ID
+// # Path.AccountID (Required) The id of the account containing the role
 //
 // Query Parameters:
-// # RoleID (Required) The unique identifier for the role
-// # Role (Optional) The name for the role
+// # Query.RoleID (Required) The unique identifier for the role
+// # Query.Role (Optional) The name for the role
 //
 type GetSingleRole struct {
 	Path struct {
@@ -66,10 +66,10 @@ func (t *GetSingleRole) GetJSON() ([]byte, error) {
 func (t *GetSingleRole) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

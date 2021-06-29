@@ -20,11 +20,11 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Query Parameters:
-// # StartTime (Optional) The beginning of the time range from which you want page views.
-// # EndTime (Optional) The end of the time range from which you want page views.
+// # Query.StartTime (Optional) The beginning of the time range from which you want page views.
+// # Query.EndTime (Optional) The end of the time range from which you want page views.
 //
 type ListUserPageViews struct {
 	Path struct {
@@ -66,7 +66,7 @@ func (t *ListUserPageViews) GetJSON() ([]byte, error) {
 func (t *ListUserPageViews) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

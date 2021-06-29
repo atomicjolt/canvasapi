@@ -16,44 +16,44 @@ import (
 // https://canvas.instructure.com/doc/api/submissions.html
 //
 // Path Parameters:
-// # SectionID (Required) ID
+// # Path.SectionID (Required) ID
 //
 // Query Parameters:
-// # StudentIDs (Optional) List of student ids to return submissions for. If this argument is
+// # Query.StudentIDs (Optional) List of student ids to return submissions for. If this argument is
 //    omitted, return submissions for the calling user. Students may only list
 //    their own submissions. Observers may only list those of associated
 //    students. The special id "all" will return submissions for all students
 //    in the course/section as appropriate.
-// # AssignmentIDs (Optional) List of assignments to return submissions for. If none are given,
+// # Query.AssignmentIDs (Optional) List of assignments to return submissions for. If none are given,
 //    submissions for all assignments are returned.
-// # Grouped (Optional) If this argument is present, the response will be grouped by student,
+// # Query.Grouped (Optional) If this argument is present, the response will be grouped by student,
 //    rather than a flat array of submissions.
-// # PostToSIS (Optional) If this argument is set to true, the response will only include
+// # Query.PostToSIS (Optional) If this argument is set to true, the response will only include
 //    submissions for assignments that have the post_to_sis flag set to true and
 //    user enrollments that were added through sis.
-// # SubmittedSince (Optional) If this argument is set, the response will only include submissions that
+// # Query.SubmittedSince (Optional) If this argument is set, the response will only include submissions that
 //    were submitted after the specified date_time. This will exclude
 //    submissions that do not have a submitted_at which will exclude unsubmitted
 //    submissions.
 //    The value must be formatted as ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
-// # GradedSince (Optional) If this argument is set, the response will only include submissions that
+// # Query.GradedSince (Optional) If this argument is set, the response will only include submissions that
 //    were graded after the specified date_time. This will exclude
 //    submissions that have not been graded.
 //    The value must be formatted as ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
-// # GradingPeriodID (Optional) The id of the grading period in which submissions are being requested
+// # Query.GradingPeriodID (Optional) The id of the grading period in which submissions are being requested
 //    (Requires grading periods to exist on the account)
-// # WorkflowState (Optional) . Must be one of submitted, unsubmitted, graded, pending_reviewThe current status of the submission
-// # EnrollmentState (Optional) . Must be one of active, concludedThe current state of the enrollments. If omitted will include all
+// # Query.WorkflowState (Optional) . Must be one of submitted, unsubmitted, graded, pending_reviewThe current status of the submission
+// # Query.EnrollmentState (Optional) . Must be one of active, concludedThe current state of the enrollments. If omitted will include all
 //    enrollments that are not deleted.
-// # StateBasedOnDate (Optional) If omitted it is set to true. When set to false it will ignore the effective
+// # Query.StateBasedOnDate (Optional) If omitted it is set to true. When set to false it will ignore the effective
 //    state of the student enrollments and use the workflow_state for the
 //    enrollments. The argument is ignored unless enrollment_state argument is
 //    also passed.
-// # Order (Optional) . Must be one of id, graded_atThe order submissions will be returned in.  Defaults to "id".  Doesn't
+// # Query.Order (Optional) . Must be one of id, graded_atThe order submissions will be returned in.  Defaults to "id".  Doesn't
 //    affect results for "grouped" mode.
-// # OrderDirection (Optional) . Must be one of ascending, descendingDetermines whether ordered results are returned in ascending or descending
+// # Query.OrderDirection (Optional) . Must be one of ascending, descendingDetermines whether ordered results are returned in ascending or descending
 //    order.  Defaults to "ascending".  Doesn't affect results for "grouped" mode.
-// # Include (Optional) . Must be one of submission_history, submission_comments, rubric_assessment, assignment, total_scores, visibility, course, userAssociations to include with the group. `total_scores` requires the
+// # Query.Include (Optional) . Must be one of submission_history, submission_comments, rubric_assessment, assignment, total_scores, visibility, course, userAssociations to include with the group. `total_scores` requires the
 //    `grouped` argument.
 //
 type ListSubmissionsForMultipleAssignmentsSections struct {
@@ -107,7 +107,7 @@ func (t *ListSubmissionsForMultipleAssignmentsSections) GetJSON() ([]byte, error
 func (t *ListSubmissionsForMultipleAssignmentsSections) HasErrors() error {
 	errs := []string{}
 	if t.Path.SectionID == "" {
-		errs = append(errs, "'SectionID' is required")
+		errs = append(errs, "'Path.SectionID' is required")
 	}
 	if t.Query.WorkflowState != "" && !string_utils.Include([]string{"submitted", "unsubmitted", "graded", "pending_review"}, t.Query.WorkflowState) {
 		errs = append(errs, "WorkflowState must be one of submitted, unsubmitted, graded, pending_review")

@@ -28,6 +28,6 @@ type DeveloperKey struct {
 	WorkflowState    string    `json:"workflow_state" url:"workflow_state,omitempty"`         // The current state of the tool.Example: active
 }
 
-func (t *DeveloperKey) HasError() error {
+func (t *DeveloperKey) HasErrors() error {
 	return nil
 }

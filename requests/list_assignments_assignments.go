@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/assignments.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of submission, assignment_visibility, all_dates, overrides, observed_users, can_edit, score_statisticsOptional information to include with each assignment:
+// # Query.Include (Optional) . Must be one of submission, assignment_visibility, all_dates, overrides, observed_users, can_edit, score_statisticsOptional information to include with each assignment:
 //    submission:: The current user's current +Submission+
 //    assignment_visibility:: An array of ids of students who can see the assignment
 //    all_dates:: An array of +AssignmentDate+ structures, one for each override, and also a +base+ if the assignment has an "Everyone" / "Everyone Else" date
@@ -29,13 +29,13 @@ import (
 //    observed_users:: An array of submissions for observed users
 //    can_edit:: an extra Boolean value will be included with each +Assignment+ (and +AssignmentDate+ if +all_dates+ is supplied) to indicate whether the caller can edit the assignment or date. Moderated grading and closed grading periods may restrict a user's ability to edit an assignment.
 //    score_statistics:: An object containing min, max, and mean score on this assignment. This will not be included for students if there are less than 5 graded assignments or if disabled by the instructor. Only valid if 'submission' is also included.
-// # SearchTerm (Optional) The partial title of the assignments to match and return.
-// # OverrideAssignmentDates (Optional) Apply assignment overrides for each assignment, defaults to true.
-// # NeedsGradingCountBySection (Optional) Split up "needs_grading_count" by sections into the "needs_grading_count_by_section" key, defaults to false
-// # Bucket (Optional) . Must be one of past, overdue, undated, ungraded, unsubmitted, upcoming, futureIf included, only return certain assignments depending on due date and submission status.
-// # AssignmentIDs (Optional) if set, return only assignments specified
-// # OrderBy (Optional) . Must be one of position, name, due_atDetermines the order of the assignments. Defaults to "position".
-// # PostToSIS (Optional) Return only assignments that have post_to_sis set or not set.
+// # Query.SearchTerm (Optional) The partial title of the assignments to match and return.
+// # Query.OverrideAssignmentDates (Optional) Apply assignment overrides for each assignment, defaults to true.
+// # Query.NeedsGradingCountBySection (Optional) Split up "needs_grading_count" by sections into the "needs_grading_count_by_section" key, defaults to false
+// # Query.Bucket (Optional) . Must be one of past, overdue, undated, ungraded, unsubmitted, upcoming, futureIf included, only return certain assignments depending on due date and submission status.
+// # Query.AssignmentIDs (Optional) if set, return only assignments specified
+// # Query.OrderBy (Optional) . Must be one of position, name, due_atDetermines the order of the assignments. Defaults to "position".
+// # Query.PostToSIS (Optional) Return only assignments that have post_to_sis set or not set.
 //
 type ListAssignmentsAssignments struct {
 	Path struct {
@@ -83,7 +83,7 @@ func (t *ListAssignmentsAssignments) GetJSON() ([]byte, error) {
 func (t *ListAssignmentsAssignments) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"submission", "assignment_visibility", "all_dates", "overrides", "observed_users", "can_edit", "score_statistics"}, v) {

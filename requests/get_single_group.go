@@ -19,10 +19,10 @@ import (
 // https://canvas.instructure.com/doc/api/groups.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of permissions, tabs- "permissions": Include permissions the current user has
+// # Query.Include (Optional) . Must be one of permissions, tabs- "permissions": Include permissions the current user has
 //      for the group.
 //    - "tabs": Include the list of tabs configured for each group.  See the
 //      {api:TabsController#index List available tabs API} for more information.
@@ -66,7 +66,7 @@ func (t *GetSingleGroup) GetJSON() ([]byte, error) {
 func (t *GetSingleGroup) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"permissions", "tabs"}, v) {

@@ -20,10 +20,10 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, all_courses, permissions, observed_users, course_image, concluded- "all_courses": Also search recently deleted courses.
+// # Query.Include (Optional) . Must be one of needs_grading_count, syllabus_body, public_description, total_scores, current_grading_period_scores, term, account, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, all_courses, permissions, observed_users, course_image, concluded- "all_courses": Also search recently deleted courses.
 //    - "permissions": Include permissions the current user has
 //      for the course.
 //    - "observed_users": include observed users in the enrollments
@@ -31,7 +31,7 @@ import (
 //      and the course image feature flag has been enabled
 //    - "concluded": Optional information to include with each Course. Indicates whether
 //      the course has been concluded, taking course and term dates into account.
-// # TeacherLimit (Optional) The maximum number of teacher enrollments to show.
+// # Query.TeacherLimit (Optional) The maximum number of teacher enrollments to show.
 //    If the course contains more teachers than this, instead of giving the teacher
 //    enrollments, the count of teachers will be given under a _teacher_count_ key.
 //
@@ -75,7 +75,7 @@ func (t *GetSingleCourseCourses) GetJSON() ([]byte, error) {
 func (t *GetSingleCourseCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"needs_grading_count", "syllabus_body", "public_description", "total_scores", "current_grading_period_scores", "term", "account", "course_progress", "sections", "storage_quota_used_mb", "total_students", "passback_status", "favorites", "teachers", "observed_users", "all_courses", "permissions", "observed_users", "course_image", "concluded"}, v) {

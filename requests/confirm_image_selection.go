@@ -12,7 +12,7 @@ import (
 // https://canvas.instructure.com/doc/api/image_search.html
 //
 // Path Parameters:
-// # ID (Required) The ID from the image_search result.
+// # Path.ID (Required) The ID from the image_search result.
 //
 type ConfirmImageSelection struct {
 	Path struct {
@@ -45,7 +45,7 @@ func (t *ConfirmImageSelection) GetJSON() ([]byte, error) {
 func (t *ConfirmImageSelection) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

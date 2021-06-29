@@ -15,10 +15,10 @@ import (
 // https://canvas.instructure.com/doc/api/media_objects.html
 //
 // Path Parameters:
-// # MediaObjectID (Required) ID
+// # Path.MediaObjectID (Required) ID
 //
 // Form Parameters:
-// # UserEnteredTitle (Optional) The new title.
+// # Form.UserEnteredTitle (Optional) The new title.
 //
 type UpdateMediaObject struct {
 	Path struct {
@@ -59,7 +59,7 @@ func (t *UpdateMediaObject) GetJSON() ([]byte, error) {
 func (t *UpdateMediaObject) HasErrors() error {
 	errs := []string{}
 	if t.Path.MediaObjectID == "" {
-		errs = append(errs, "'MediaObjectID' is required")
+		errs = append(errs, "'Path.MediaObjectID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

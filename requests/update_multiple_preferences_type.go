@@ -15,11 +15,11 @@ import (
 // https://canvas.instructure.com/doc/api/notification_preferences.html
 //
 // Path Parameters:
-// # Type (Required) ID
-// # Address (Required) ID
+// # Path.Type (Required) ID
+// # Path.Address (Required) ID
 //
 // Form Parameters:
-// # NotificationPreferences (Required) The desired frequency for <X> notification
+// # Form.NotificationPreferences (Required) The desired frequency for <X> notification
 //
 type UpdateMultiplePreferencesType struct {
 	Path struct {
@@ -62,13 +62,13 @@ func (t *UpdateMultiplePreferencesType) GetJSON() ([]byte, error) {
 func (t *UpdateMultiplePreferencesType) HasErrors() error {
 	errs := []string{}
 	if t.Path.Type == "" {
-		errs = append(errs, "'Type' is required")
+		errs = append(errs, "'Path.Type' is required")
 	}
 	if t.Path.Address == "" {
-		errs = append(errs, "'Address' is required")
+		errs = append(errs, "'Path.Address' is required")
 	}
 	if t.Form.NotificationPreferences == nil {
-		errs = append(errs, "'NotificationPreferences' is required")
+		errs = append(errs, "'Form.NotificationPreferences' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

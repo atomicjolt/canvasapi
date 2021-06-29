@@ -9,6 +9,6 @@ type Day struct {
 	Graders int64     `json:"graders" url:"graders,omitempty"` // an array of the graders who were responsible for the submissions in this response. the submissions are grouped according to the person who graded them and the assignment they were submitted for..Example: []
 }
 
-func (t *Day) HasError() error {
+func (t *Day) HasErrors() error {
 	return nil
 }

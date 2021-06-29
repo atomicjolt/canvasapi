@@ -14,6 +14,6 @@ type ProvisionalGrade struct {
 	SpeedgraderUrl                string    `json:"speedgrader_url" url:"speedgrader_url,omitempty"`                                   // A link to view this provisional grade in SpeedGrader™.Example: http://www.example.com/courses/123/gradebook/speed_grader?.
 }
 
-func (t *ProvisionalGrade) HasError() error {
+func (t *ProvisionalGrade) HasErrors() error {
 	return nil
 }

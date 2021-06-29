@@ -20,15 +20,15 @@ import (
 // https://canvas.instructure.com/doc/api/gradebook_history.html
 //
 // Path Parameters:
-// # CourseID (Required) The id of the contextual course for this API call
+// # Path.CourseID (Required) The id of the contextual course for this API call
 //
 // Query Parameters:
-// # AssignmentID (Optional) The ID of the assignment for which you want to see submissions. If
+// # Query.AssignmentID (Optional) The ID of the assignment for which you want to see submissions. If
 //    absent, versions of submissions from any assignment in the course are
 //    included.
-// # UserID (Optional) The ID of the user for which you want to see submissions. If absent,
+// # Query.UserID (Optional) The ID of the user for which you want to see submissions. If absent,
 //    versions of submissions from any user in the course are included.
-// # Ascending (Optional) Returns submission versions in ascending date order (oldest first). If
+// # Query.Ascending (Optional) Returns submission versions in ascending date order (oldest first). If
 //    absent, returns submission versions in descending date order (newest
 //    first).
 //

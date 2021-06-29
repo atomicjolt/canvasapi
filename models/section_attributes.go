@@ -10,6 +10,6 @@ type SectionAttributes struct {
 	Override      *SectionAssignmentOverrideAttributes `json:"override" url:"override,omitempty"`             // Optional: Attributes of the assignment override that apply to the section. See Assignment API for more details.
 }
 
-func (t *SectionAttributes) HasError() error {
+func (t *SectionAttributes) HasErrors() error {
 	return nil
 }

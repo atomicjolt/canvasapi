@@ -17,11 +17,11 @@ import (
 // https://canvas.instructure.com/doc/api/user_observees.html
 //
 // Path Parameters:
-// # UserID (Required) ID
-// # ObserveeID (Required) ID
+// # Path.UserID (Required) ID
+// # Path.ObserveeID (Required) ID
 //
 // Form Parameters:
-// # RootAccountID (Optional) The ID for the root account to associate with the observation link.
+// # Form.RootAccountID (Optional) The ID for the root account to associate with the observation link.
 //    If not specified, a link will be created for each root account associated
 //    to both the observer and observee.
 //
@@ -66,10 +66,10 @@ func (t *AddObservee) GetJSON() ([]byte, error) {
 func (t *AddObservee) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Path.ObserveeID == "" {
-		errs = append(errs, "'ObserveeID' is required")
+		errs = append(errs, "'Path.ObserveeID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

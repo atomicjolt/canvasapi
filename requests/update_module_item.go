@@ -18,27 +18,27 @@ import (
 // https://canvas.instructure.com/doc/api/modules.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ModuleID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ModuleID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # ModuleItem (Optional) The name of the module item
-// # ModuleItem (Optional) The position of this item in the module (1-based)
-// # ModuleItem (Optional) 0-based indent level; module items may be indented to show a hierarchy
-// # ModuleItem (Optional) External url that the item points to. Only applies to 'ExternalUrl' type.
-// # ModuleItem (Optional) Whether the external tool opens in a new tab. Only applies to
+// # Form.ModuleItem.Title (Optional) The name of the module item
+// # Form.ModuleItem.Position (Optional) The position of this item in the module (1-based)
+// # Form.ModuleItem.Indent (Optional) 0-based indent level; module items may be indented to show a hierarchy
+// # Form.ModuleItem.ExternalUrl (Optional) External url that the item points to. Only applies to 'ExternalUrl' type.
+// # Form.ModuleItem.NewTab (Optional) Whether the external tool opens in a new tab. Only applies to
 //    'ExternalTool' type.
-// # ModuleItem (Optional) . Must be one of must_view, must_contribute, must_submit, must_mark_doneCompletion requirement for this module item.
+// # Form.ModuleItem.CompletionRequirement.Type (Optional) . Must be one of must_view, must_contribute, must_submit, must_mark_doneCompletion requirement for this module item.
 //    "must_view": Applies to all item types
 //    "must_contribute": Only applies to "Assignment", "Discussion", and "Page" types
 //    "must_submit", "min_score": Only apply to "Assignment" and "Quiz" types
 //    "must_mark_done": Only applies to "Assignment" and "Page" types
 //    Inapplicable types will be ignored
-// # ModuleItem (Optional) Minimum score required to complete, Required for completion_requirement
+// # Form.ModuleItem.CompletionRequirement.MinScore (Optional) Minimum score required to complete, Required for completion_requirement
 //    type 'min_score'.
-// # ModuleItem (Optional) Whether the module item is published and visible to students.
-// # ModuleItem (Optional) Move this item to another module by specifying the target module id here.
+// # Form.ModuleItem.Published (Optional) Whether the module item is published and visible to students.
+// # Form.ModuleItem.ModuleID (Optional) Move this item to another module by specifying the target module id here.
 //    The target module must be in the same course.
 //
 type UpdateModuleItem struct {
@@ -97,13 +97,13 @@ func (t *UpdateModuleItem) GetJSON() ([]byte, error) {
 func (t *UpdateModuleItem) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ModuleID == "" {
-		errs = append(errs, "'ModuleID' is required")
+		errs = append(errs, "'Path.ModuleID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.ModuleItem.CompletionRequirement.Type != "" && !string_utils.Include([]string{"must_view", "must_contribute", "must_submit", "must_mark_done"}, t.Form.ModuleItem.CompletionRequirement.Type) {
 		errs = append(errs, "ModuleItem must be one of must_view, must_contribute, must_submit, must_mark_done")

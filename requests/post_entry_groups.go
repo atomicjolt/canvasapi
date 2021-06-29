@@ -16,12 +16,12 @@ import (
 // https://canvas.instructure.com/doc/api/discussion_topics.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # TopicID (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.TopicID (Required) ID
 //
 // Form Parameters:
-// # Message (Optional) The body of the entry.
-// # Attachment (Optional) a multipart/form-data form-field-style
+// # Form.Message (Optional) The body of the entry.
+// # Form.Attachment (Optional) a multipart/form-data form-field-style
 //    attachment. Attachments larger than 1 kilobyte are subject to quota
 //    restrictions.
 //
@@ -67,10 +67,10 @@ func (t *PostEntryGroups) GetJSON() ([]byte, error) {
 func (t *PostEntryGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.TopicID == "" {
-		errs = append(errs, "'TopicID' is required")
+		errs = append(errs, "'Path.TopicID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

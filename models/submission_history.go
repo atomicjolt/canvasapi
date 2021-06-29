@@ -5,6 +5,6 @@ type SubmissionHistory struct {
 	Versions     []*SubmissionVersion `json:"versions" url:"versions,omitempty"`           // an array of all the versions of this submission.
 }
 
-func (t *SubmissionHistory) HasError() error {
+func (t *SubmissionHistory) HasErrors() error {
 	return nil
 }

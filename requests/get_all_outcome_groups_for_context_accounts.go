@@ -15,7 +15,7 @@ import (
 // https://canvas.instructure.com/doc/api/outcome_groups.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 type GetAllOutcomeGroupsForContextAccounts struct {
 	Path struct {
@@ -48,7 +48,7 @@ func (t *GetAllOutcomeGroupsForContextAccounts) GetJSON() ([]byte, error) {
 func (t *GetAllOutcomeGroupsForContextAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

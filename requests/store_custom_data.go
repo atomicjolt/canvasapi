@@ -159,12 +159,12 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Form Parameters:
-// # Ns (Required) The namespace under which to store the data.  This should be something other
+// # Form.Ns (Required) The namespace under which to store the data.  This should be something other
 //    Canvas API apps aren't likely to use, such as a reverse DNS for your organization.
-// # Data (Required) The data you want to store for the user, at the specified scope.  If the data is
+// # Form.Data (Required) The data you want to store for the user, at the specified scope.  If the data is
 //    composed of (possibly nested) JSON objects, scopes will be generated for the (nested)
 //    keys (see examples).
 //
@@ -174,8 +174,8 @@ type StoreCustomData struct {
 	} `json:"path"`
 
 	Form struct {
-		Ns   string `json:"ns" url:"ns,omitempty"`     //  (Required)
-		Data string `json:"data" url:"data,omitempty"` //  (Required)
+		Ns   string                   `json:"ns" url:"ns,omitempty"`     //  (Required)
+		Data map[string](interface{}) `json:"data" url:"data,omitempty"` //  (Required)
 	} `json:"form"`
 }
 
@@ -208,13 +208,13 @@ func (t *StoreCustomData) GetJSON() ([]byte, error) {
 func (t *StoreCustomData) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Form.Ns == "" {
-		errs = append(errs, "'Ns' is required")
+		errs = append(errs, "'Form.Ns' is required")
 	}
-	if t.Form.Data == "" {
-		errs = append(errs, "'Data' is required")
+	if t.Form.Data == nil {
+		errs = append(errs, "'Form.Data' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

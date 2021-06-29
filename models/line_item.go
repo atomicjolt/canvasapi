@@ -10,6 +10,6 @@ type LineItem struct {
 	SubmissionType string  `json:"submission_type" url:"submission_type,omitempty"`   // The extension that defines the submission_type of the line_item. Only returns if set through the line_item create endpoint..Example: { 	'type':'external_tool', 	'external_tool_url':'https://my.launch.url', }
 }
 
-func (t *LineItem) HasError() error {
+func (t *LineItem) HasErrors() error {
 	return nil
 }

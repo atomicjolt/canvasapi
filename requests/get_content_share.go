@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/content_shares.html
 //
 // Path Parameters:
-// # UserID (Required) ID
-// # ID (Required) ID
+// # Path.UserID (Required) ID
+// # Path.ID (Required) ID
 //
 type GetContentShare struct {
 	Path struct {
@@ -51,10 +51,10 @@ func (t *GetContentShare) GetJSON() ([]byte, error) {
 func (t *GetContentShare) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -18,8 +18,8 @@ import (
 // https://canvas.instructure.com/doc/api/outcome_groups.html
 //
 // Path Parameters:
-// # ID (Required) ID
-// # OutcomeID (Required) ID
+// # Path.ID (Required) ID
+// # Path.OutcomeID (Required) ID
 //
 type UnlinkOutcomeGlobal struct {
 	Path struct {
@@ -54,10 +54,10 @@ func (t *UnlinkOutcomeGlobal) GetJSON() ([]byte, error) {
 func (t *UnlinkOutcomeGlobal) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Path.OutcomeID == "" {
-		errs = append(errs, "'OutcomeID' is required")
+		errs = append(errs, "'Path.OutcomeID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

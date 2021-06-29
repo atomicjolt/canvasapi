@@ -15,9 +15,9 @@ import (
 // https://canvas.instructure.com/doc/api/pages.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # Url (Required) ID
-// # RevisionID (Required) The revision to revert to (use the
+// # Path.CourseID (Required) ID
+// # Path.Url (Required) ID
+// # Path.RevisionID (Required) The revision to revert to (use the
 //    {api:WikiPagesApiController#revisions List Revisions API} to see
 //    available revisions)
 //
@@ -56,10 +56,10 @@ func (t *RevertToRevisionCourses) GetJSON() ([]byte, error) {
 func (t *RevertToRevisionCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.Url == "" {
-		errs = append(errs, "'Url' is required")
+		errs = append(errs, "'Path.Url' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

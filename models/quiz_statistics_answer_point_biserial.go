@@ -7,6 +7,6 @@ type QuizStatisticsAnswerPointBiserial struct {
 	Distractor    bool    `json:"distractor" url:"distractor,omitempty"`         // Convenience attribute that denotes whether this is a distractor answer and not the correct one. This is mutually exclusive with the `correct` value.
 }
 
-func (t *QuizStatisticsAnswerPointBiserial) HasError() error {
+func (t *QuizStatisticsAnswerPointBiserial) HasErrors() error {
 	return nil
 }

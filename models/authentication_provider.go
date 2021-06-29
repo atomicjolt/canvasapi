@@ -23,6 +23,6 @@ type AuthenticationProvider struct {
 	MfaRequired            bool                       `json:"mfa_required" url:"mfa_required,omitempty"`                       // If multi-factor authentication is required when logging in with this authentication provider. The account must not have MFA disabled..
 }
 
-func (t *AuthenticationProvider) HasError() error {
+func (t *AuthenticationProvider) HasErrors() error {
 	return nil
 }

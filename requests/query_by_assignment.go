@@ -18,11 +18,11 @@ import (
 // https://canvas.instructure.com/doc/api/grade_change_log.html
 //
 // Path Parameters:
-// # AssignmentID (Required) ID
+// # Path.AssignmentID (Required) ID
 //
 // Query Parameters:
-// # StartTime (Optional) The beginning of the time range from which you want events.
-// # EndTime (Optional) The end of the time range from which you want events.
+// # Query.StartTime (Optional) The beginning of the time range from which you want events.
+// # Query.EndTime (Optional) The end of the time range from which you want events.
 //
 type QueryByAssignment struct {
 	Path struct {
@@ -64,7 +64,7 @@ func (t *QueryByAssignment) GetJSON() ([]byte, error) {
 func (t *QueryByAssignment) HasErrors() error {
 	errs := []string{}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

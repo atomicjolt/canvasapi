@@ -51,6 +51,6 @@ type Enrollment struct {
 	CurrentPeriodUnpostedFinalGrade   string    `json:"current_period_unposted_final_grade" url:"current_period_unposted_final_grade,omitempty"`     // optional: The letter grade equivalent of current_period_unposted_final_score, if available. Only included if user has permission to view this grade, typically teachers, TAs, and admins. If the course the enrollment belongs to does not have grading periods, or if no currently active grading period exists, the value will be null. (applies only to student enrollments, and only available in course endpoints).Example: B
 }
 
-func (t *Enrollment) HasError() error {
+func (t *Enrollment) HasErrors() error {
 	return nil
 }

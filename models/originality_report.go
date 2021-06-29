@@ -16,6 +16,6 @@ type OriginalityReport struct {
 	RootAccountID           int64        `json:"root_account_id" url:"root_account_id,omitempty"`                       // The id of the root Account associated with the OriginalityReport.Example: 1
 }
 
-func (t *OriginalityReport) HasError() error {
+func (t *OriginalityReport) HasErrors() error {
 	return nil
 }

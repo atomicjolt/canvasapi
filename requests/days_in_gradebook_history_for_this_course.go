@@ -15,7 +15,7 @@ import (
 // https://canvas.instructure.com/doc/api/gradebook_history.html
 //
 // Path Parameters:
-// # CourseID (Required) The id of the contextual course for this API call
+// # Path.CourseID (Required) The id of the contextual course for this API call
 //
 type DaysInGradebookHistoryForThisCourse struct {
 	Path struct {

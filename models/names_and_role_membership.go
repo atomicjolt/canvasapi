@@ -13,6 +13,6 @@ type NamesAndRoleMembership struct {
 	Message            []*NamesAndRoleMessage `json:"message" url:"message,omitempty"`                           // Only present when the request specifies a `rlid` query parameter. Contains additional attributes which would appear in the LTI launch message were this member to click the link referenced by the `rlid` query parameter.Example: {'https://purl.imsglobal.org/spec/lti/claim/message_type'=>'LtiResourceLinkRequest', 'locale'=>'en', 'https://www.instructure.com/canvas_user_id'=>1, 'https://www.instructure.com/canvas_user_login_id'=>'showell@school.edu', 'https://purl.imsglobal.org/spec/lti/claim/custom'=>{'message_locale'=>'en', 'person_address_timezone'=>'America/Denver'}}
 }
 
-func (t *NamesAndRoleMembership) HasError() error {
+func (t *NamesAndRoleMembership) HasErrors() error {
 	return nil
 }

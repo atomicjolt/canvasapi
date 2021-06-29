@@ -19,14 +19,14 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # UserID (Required) the student's ID
+// # Path.UserID (Required) the student's ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of planner_overrides, course"planner_overrides":: Optionally include the assignment's associated planner override, if it exists, for the current user.
+// # Query.Include (Optional) . Must be one of planner_overrides, course"planner_overrides":: Optionally include the assignment's associated planner override, if it exists, for the current user.
 //                          These will be returned under a +planner_override+ key
 //    "course":: Optionally include the assignments' courses
-// # Filter (Optional) . Must be one of submittable"submittable":: Only return assignments that the current user can submit (i.e. filter out locked assignments)
-// # CourseIDs (Optional) Optionally restricts the list of past-due assignments to only those associated with the specified
+// # Query.Filter (Optional) . Must be one of submittable"submittable":: Only return assignments that the current user can submit (i.e. filter out locked assignments)
+// # Query.CourseIDs (Optional) Optionally restricts the list of past-due assignments to only those associated with the specified
 //    course IDs.
 //
 type ListMissingSubmissions struct {
@@ -70,7 +70,7 @@ func (t *ListMissingSubmissions) GetJSON() ([]byte, error) {
 func (t *ListMissingSubmissions) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"planner_overrides", "course"}, v) {

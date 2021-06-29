@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/outcome_groups.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Title (Required) The title of the new outcome group.
-// # Description (Optional) The description of the new outcome group.
-// # VendorGuid (Optional) A custom GUID for the learning standard
+// # Form.Title (Required) The title of the new outcome group.
+// # Form.Description (Optional) The description of the new outcome group.
+// # Form.VendorGuid (Optional) A custom GUID for the learning standard
 //
 type CreateSubgroupGlobal struct {
 	Path struct {
@@ -66,10 +66,10 @@ func (t *CreateSubgroupGlobal) GetJSON() ([]byte, error) {
 func (t *CreateSubgroupGlobal) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.Title == "" {
-		errs = append(errs, "'Title' is required")
+		errs = append(errs, "'Form.Title' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

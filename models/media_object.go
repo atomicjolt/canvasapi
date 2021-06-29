@@ -10,6 +10,6 @@ type MediaObject struct {
 	MediaSources     string `json:"media_sources" url:"media_sources,omitempty"`           //
 }
 
-func (t *MediaObject) HasError() error {
+func (t *MediaObject) HasErrors() error {
 	return nil
 }

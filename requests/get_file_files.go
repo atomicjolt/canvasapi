@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of userArray of additional information to include.
+// # Query.Include (Optional) . Must be one of userArray of additional information to include.
 //
 //    "user":: the user who uploaded the file or last edited its content
 //    "usage_rights":: copyright and license information for the file (see UsageRights)
@@ -65,7 +65,7 @@ func (t *GetFileFiles) GetJSON() ([]byte, error) {
 func (t *GetFileFiles) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"user"}, v) {

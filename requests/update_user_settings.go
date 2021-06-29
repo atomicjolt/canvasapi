@@ -14,17 +14,17 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # ManualMarkAsRead (Optional) If true, require user to manually mark discussion posts as read (don't
+// # Query.ManualMarkAsRead (Optional) If true, require user to manually mark discussion posts as read (don't
 //    auto-mark as read).
-// # ReleaseNotesBadgeDisabled (Optional) If true, hide the badge for new release notes.
-// # CollapseGlobalNav (Optional) If true, the user's page loads with the global navigation collapsed
-// # HideDashcardColorOverlays (Optional) If true, images on course cards will be presented without being tinted
+// # Query.ReleaseNotesBadgeDisabled (Optional) If true, hide the badge for new release notes.
+// # Query.CollapseGlobalNav (Optional) If true, the user's page loads with the global navigation collapsed
+// # Query.HideDashcardColorOverlays (Optional) If true, images on course cards will be presented without being tinted
 //    to match the course color.
-// # CommentLibrarySuggestionsEnabled (Optional) If true, suggestions within the comment library will be shown.
-// # ElementaryDashboardDisabled (Optional) If true, will display the user's preferred class Canvas dashboard
+// # Query.CommentLibrarySuggestionsEnabled (Optional) If true, suggestions within the comment library will be shown.
+// # Query.ElementaryDashboardDisabled (Optional) If true, will display the user's preferred class Canvas dashboard
 //    view instead of the canvas for elementary view.
 //
 type UpdateUserSettings struct {
@@ -71,7 +71,7 @@ func (t *UpdateUserSettings) GetJSON() ([]byte, error) {
 func (t *UpdateUserSettings) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

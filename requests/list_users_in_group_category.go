@@ -17,12 +17,12 @@ import (
 // https://canvas.instructure.com/doc/api/group_categories.html
 //
 // Path Parameters:
-// # GroupCategoryID (Required) ID
+// # Path.GroupCategoryID (Required) ID
 //
 // Query Parameters:
-// # SearchTerm (Optional) The partial name or full ID of the users to match and return in the results
+// # Query.SearchTerm (Optional) The partial name or full ID of the users to match and return in the results
 //    list. Must be at least 3 characters.
-// # Unassigned (Optional) Set this value to true if you wish only to search unassigned users in the
+// # Query.Unassigned (Optional) Set this value to true if you wish only to search unassigned users in the
 //    group category.
 //
 type ListUsersInGroupCategory struct {
@@ -65,7 +65,7 @@ func (t *ListUsersInGroupCategory) GetJSON() ([]byte, error) {
 func (t *ListUsersInGroupCategory) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupCategoryID == "" {
-		errs = append(errs, "'GroupCategoryID' is required")
+		errs = append(errs, "'Path.GroupCategoryID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

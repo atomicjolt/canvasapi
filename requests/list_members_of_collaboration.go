@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/collaborations.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of collaborator_lti_id, avatar_image_url- "collaborator_lti_id": Optional information to include with each member.
+// # Query.Include (Optional) . Must be one of collaborator_lti_id, avatar_image_url- "collaborator_lti_id": Optional information to include with each member.
 //      Represents an identifier to be used for the member in an LTI context.
 //    - "avatar_image_url": Optional information to include with each member.
 //      The url for the avatar of a collaborator with type 'user'.
@@ -65,7 +65,7 @@ func (t *ListMembersOfCollaboration) GetJSON() ([]byte, error) {
 func (t *ListMembersOfCollaboration) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"collaborator_lti_id", "avatar_image_url"}, v) {

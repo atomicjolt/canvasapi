@@ -3,6 +3,6 @@ package models
 type QuizSubmissionUserList struct {
 }
 
-func (t *QuizSubmissionUserList) HasError() error {
+func (t *QuizSubmissionUserList) HasErrors() error {
 	return nil
 }

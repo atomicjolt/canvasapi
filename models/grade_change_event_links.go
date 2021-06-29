@@ -8,6 +8,6 @@ type GradeChangeEventLinks struct {
 	PageView   string `json:"page_view" url:"page_view,omitempty"`   // ID of the page view during the event if it exists..Example: e2b76430-27a5-0131-3ca1-48e0eb13f29b
 }
 
-func (t *GradeChangeEventLinks) HasError() error {
+func (t *GradeChangeEventLinks) HasErrors() error {
 	return nil
 }

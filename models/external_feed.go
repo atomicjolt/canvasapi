@@ -16,11 +16,12 @@ type ExternalFeed struct {
 	Verbosity   string    `json:"verbosity" url:"verbosity,omitempty"`       // The verbosity setting determines how much of the feed's content is imported into Canvas as part of the posting. 'link_only' means that only the title and a link to the item. 'truncate' means that a summary of the first portion of the item body will be used. 'full' means that the full item body will be used..Example: truncate
 }
 
-func (t *ExternalFeed) HasError() error {
+func (t *ExternalFeed) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"link_only", "truncate", "full"}
 	if t.Verbosity != "" && !string_utils.Include(s, t.Verbosity) {
-		return fmt.Errorf("expected 'verbosity' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'Verbosity' to be one of %v", s))
 	}
 	return nil
 }

@@ -18,15 +18,15 @@ import (
 // https://canvas.instructure.com/doc/api/blueprint_courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # TemplateID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.TemplateID (Required) ID
 //
 // Form Parameters:
-// # Comment (Optional) An optional comment to be included in the sync history.
-// # SendNotification (Optional) Send a notification to the calling user when the sync completes.
-// # CopySettings (Optional) Whether course settings should be copied over to associated courses.
+// # Form.Comment (Optional) An optional comment to be included in the sync history.
+// # Form.SendNotification (Optional) Send a notification to the calling user when the sync completes.
+// # Form.CopySettings (Optional) Whether course settings should be copied over to associated courses.
 //    Defaults to true for newly associated courses.
-// # PublishAfterInitialSync (Optional) If set, newly associated courses will be automatically published after the sync completes
+// # Form.PublishAfterInitialSync (Optional) If set, newly associated courses will be automatically published after the sync completes
 //
 type BeginMigrationToPushToAssociatedCourses struct {
 	Path struct {
@@ -72,10 +72,10 @@ func (t *BeginMigrationToPushToAssociatedCourses) GetJSON() ([]byte, error) {
 func (t *BeginMigrationToPushToAssociatedCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.TemplateID == "" {
-		errs = append(errs, "'TemplateID' is required")
+		errs = append(errs, "'Path.TemplateID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

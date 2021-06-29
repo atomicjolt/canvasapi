@@ -15,10 +15,10 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # Html (Optional) The html content to process
+// # Form.Html (Optional) The html content to process
 //
 type CoursesPreviewProcessedHtml struct {
 	Path struct {
@@ -59,7 +59,7 @@ func (t *CoursesPreviewProcessedHtml) GetJSON() ([]byte, error) {
 func (t *CoursesPreviewProcessedHtml) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

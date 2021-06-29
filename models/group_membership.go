@@ -16,11 +16,12 @@ type GroupMembership struct {
 	SISImportID   int64  `json:"sis_import_id" url:"sis_import_id,omitempty"`   // The id of the SIS import if created through SIS. Only included if the user has permission to manage SIS information..Example: 4
 }
 
-func (t *GroupMembership) HasError() error {
+func (t *GroupMembership) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"accepted", "invited", "requested"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	return nil
 }

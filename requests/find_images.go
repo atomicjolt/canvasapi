@@ -14,7 +14,7 @@ import (
 // https://canvas.instructure.com/doc/api/image_search.html
 //
 // Query Parameters:
-// # Query (Required) Search terms used for matching images (e.g. "cats").
+// # Query.Query (Required) Search terms used for matching images (e.g. "cats").
 //
 type FindImages struct {
 	Query struct {
@@ -49,7 +49,7 @@ func (t *FindImages) GetJSON() ([]byte, error) {
 func (t *FindImages) HasErrors() error {
 	errs := []string{}
 	if t.Query.Query == "" {
-		errs = append(errs, "'Query' is required")
+		errs = append(errs, "'Query.Query' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

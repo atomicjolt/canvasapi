@@ -6,6 +6,6 @@ type QuizIPFilter struct {
 	Filter  string `json:"filter" url:"filter,omitempty"`   // An IP address (or range mask) this filter embodies..Example: 192.168.1.1/24
 }
 
-func (t *QuizIPFilter) HasError() error {
+func (t *QuizIPFilter) HasErrors() error {
 	return nil
 }

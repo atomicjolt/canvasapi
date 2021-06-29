@@ -19,18 +19,18 @@ import (
 // https://canvas.instructure.com/doc/api/calendar_events.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # CourseSectionID (Optional) Events will be created for the course section specified by course_section_id.
+// # Form.CourseSectionID (Optional) Events will be created for the course section specified by course_section_id.
 //    If not present, events will be created for the entire course.
-// # Events (Optional) An array of event objects to use.
-// # Events (Optional) Start time for the event
-// # Events (Optional) End time for the event
-// # Events (Optional) Location name for the event
-// # Events (Optional) A unique identifier that can be used to update the event at a later time
+// # Form.Events (Optional) An array of event objects to use.
+// # Form.Events.StartAt (Optional) Start time for the event
+// # Form.Events.EndAt (Optional) End time for the event
+// # Form.Events.LocationName (Optional) Location name for the event
+// # Form.Events.Code (Optional) A unique identifier that can be used to update the event at a later time
 //    If one is not specified, an identifier will be generated based on the start and end times
-// # Events (Optional) Title for the meeting. If not present, will default to the associated course's name
+// # Form.Events.Title (Optional) Title for the meeting. If not present, will default to the associated course's name
 //
 type CreateOrUpdateEventsDirectlyForCourseTimetable struct {
 	Path struct {
@@ -72,7 +72,7 @@ func (t *CreateOrUpdateEventsDirectlyForCourseTimetable) GetJSON() ([]byte, erro
 func (t *CreateOrUpdateEventsDirectlyForCourseTimetable) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

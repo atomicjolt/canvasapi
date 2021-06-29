@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/roles.html
 //
 // Path Parameters:
-// # AccountID (Required) The id of the account to retrieve roles for.
+// # Path.AccountID (Required) The id of the account to retrieve roles for.
 //
 // Query Parameters:
-// # State (Optional) . Must be one of active, inactiveFilter by role state. If this argument is omitted, only 'active' roles are
+// # Query.State (Optional) . Must be one of active, inactiveFilter by role state. If this argument is omitted, only 'active' roles are
 //    returned.
-// # ShowInherited (Optional) If this argument is true, all roles inherited from parent accounts will
+// # Query.ShowInherited (Optional) If this argument is true, all roles inherited from parent accounts will
 //    be included.
 //
 type ListRoles struct {
@@ -66,7 +66,7 @@ func (t *ListRoles) GetJSON() ([]byte, error) {
 func (t *ListRoles) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	for _, v := range t.Query.State {
 		if v != "" && !string_utils.Include([]string{"active", "inactive"}, v) {

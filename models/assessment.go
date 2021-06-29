@@ -6,6 +6,6 @@ type Assessment struct {
 	Title string `json:"title" url:"title,omitempty"` // A human readable title for the assessment.Example: May 27th Reading Assessment
 }
 
-func (t *Assessment) HasError() error {
+func (t *Assessment) HasErrors() error {
 	return nil
 }

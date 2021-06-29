@@ -19,6 +19,6 @@ type SISImportCounts struct {
 	WarningCount            int64 `json:"warning_count" url:"warning_count,omitempty"`                         // Example: 0
 }
 
-func (t *SISImportCounts) HasError() error {
+func (t *SISImportCounts) HasErrors() error {
 	return nil
 }

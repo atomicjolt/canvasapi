@@ -12,11 +12,12 @@ type CompletionRequirement struct {
 	Completed bool   `json:"completed" url:"completed,omitempty"` // whether the calling user has met this requirement (Optional; present only if the caller is a student or if the optional parameter 'student_id' is included).Example: true
 }
 
-func (t *CompletionRequirement) HasError() error {
+func (t *CompletionRequirement) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"must_view", "must_submit", "must_contribute", "min_score", "must_mark_done"}
 	if t.Type != "" && !string_utils.Include(s, t.Type) {
-		return fmt.Errorf("expected 'type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'Type' to be one of %v", s))
 	}
 	return nil
 }

@@ -17,17 +17,17 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_questions.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # QuizID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.QuizID (Required) ID
 //
 // Query Parameters:
-// # QuizSubmissionID (Optional) If specified, the endpoint will return the questions that were presented
+// # Query.QuizSubmissionID (Optional) If specified, the endpoint will return the questions that were presented
 //    for that submission. This is useful if the quiz has been modified after
 //    the submission was created and the latest quiz version's set of questions
 //    does not match the submission's.
 //    NOTE: you must specify quiz_submission_attempt as well if you specify this
 //    parameter.
-// # QuizSubmissionAttempt (Optional) The attempt of the submission you want the questions for.
+// # Query.QuizSubmissionAttempt (Optional) The attempt of the submission you want the questions for.
 //
 type ListQuestionsInQuizOrSubmission struct {
 	Path struct {
@@ -71,10 +71,10 @@ func (t *ListQuestionsInQuizOrSubmission) GetJSON() ([]byte, error) {
 func (t *ListQuestionsInQuizOrSubmission) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.QuizID == "" {
-		errs = append(errs, "'QuizID' is required")
+		errs = append(errs, "'Path.QuizID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -18,25 +18,25 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # SearchTerm (Optional) The partial name or full ID of the users to match and return in the results list.
-// # Sort (Optional) . Must be one of username, last_login, email, sis_idWhen set, sort the results of the search based on the given field.
-// # EnrollmentType (Optional) . Must be one of teacher, student, student_view, ta, observer, designerWhen set, only return users where the user is enrolled as this type.
+// # Query.SearchTerm (Optional) The partial name or full ID of the users to match and return in the results list.
+// # Query.Sort (Optional) . Must be one of username, last_login, email, sis_idWhen set, sort the results of the search based on the given field.
+// # Query.EnrollmentType (Optional) . Must be one of teacher, student, student_view, ta, observer, designerWhen set, only return users where the user is enrolled as this type.
 //    "student_view" implies include[]=test_student.
 //    This argument is ignored if enrollment_role is given.
-// # EnrollmentRole (Optional) Deprecated
+// # Query.EnrollmentRole (Optional) Deprecated
 //    When set, only return users enrolled with the specified course-level role.  This can be
 //    a role created with the {api:RoleOverridesController#add_role Add Role API} or a
 //    base role type of 'StudentEnrollment', 'TeacherEnrollment', 'TaEnrollment',
 //    'ObserverEnrollment', or 'DesignerEnrollment'.
-// # EnrollmentRoleID (Optional) When set, only return courses where the user is enrolled with the specified
+// # Query.EnrollmentRoleID (Optional) When set, only return courses where the user is enrolled with the specified
 //    course-level role.  This can be a role created with the
 //    {api:RoleOverridesController#add_role Add Role API} or a built_in role id with type
 //    'StudentEnrollment', 'TeacherEnrollment', 'TaEnrollment', 'ObserverEnrollment',
 //    or 'DesignerEnrollment'.
-// # Include (Optional) . Must be one of enrollments, locked, avatar_url, test_student, bio, custom_links, current_grading_period_scores, uuid- "enrollments":
+// # Query.Include (Optional) . Must be one of enrollments, locked, avatar_url, test_student, bio, custom_links, current_grading_period_scores, uuid- "enrollments":
 //    Optionally include with each Course the user's current and invited
 //    enrollments. If the user is enrolled as a student, and the account has
 //    permission to manage or view all grades, each enrollment will include a
@@ -56,13 +56,13 @@ import (
 //    scores. if grading_period_id is nil there is no current grading
 //    period and the score is a total score.
 //    - "uuid": Optionally include the users uuid
-// # UserID (Optional) If this parameter is given and it corresponds to a user in the course,
+// # Query.UserID (Optional) If this parameter is given and it corresponds to a user in the course,
 //    the +page+ parameter will be ignored and the page containing the specified user
 //    will be returned instead.
-// # UserIDs (Optional) If included, the course users set will only include users with IDs
+// # Query.UserIDs (Optional) If included, the course users set will only include users with IDs
 //    specified by the param. Note: this will not work in conjunction
 //    with the "user_id" argument but multiple user_ids can be included.
-// # EnrollmentState (Optional) . Must be one of active, invited, rejected, completed, inactiveWhen set, only return users where the enrollment workflow state is of one of the given types.
+// # Query.EnrollmentState (Optional) . Must be one of active, invited, rejected, completed, inactiveWhen set, only return users where the enrollment workflow state is of one of the given types.
 //    "active" and "invited" enrollments are returned by default.
 //
 type ListUsersInCourseUsers struct {
@@ -78,7 +78,7 @@ type ListUsersInCourseUsers struct {
 		EnrollmentRoleID int64    `json:"enrollment_role_id" url:"enrollment_role_id,omitempty"` //  (Optional)
 		Include          []string `json:"include" url:"include,omitempty"`                       //  (Optional) . Must be one of enrollments, locked, avatar_url, test_student, bio, custom_links, current_grading_period_scores, uuid
 		UserID           string   `json:"user_id" url:"user_id,omitempty"`                       //  (Optional)
-		UserIDs          []int64  `json:"user_ids" url:"user_ids,omitempty"`                     //  (Optional)
+		UserIDs          []string `json:"user_ids" url:"user_ids,omitempty"`                     //  (Optional)
 		EnrollmentState  []string `json:"enrollment_state" url:"enrollment_state,omitempty"`     //  (Optional) . Must be one of active, invited, rejected, completed, inactive
 	} `json:"query"`
 }
@@ -112,7 +112,7 @@ func (t *ListUsersInCourseUsers) GetJSON() ([]byte, error) {
 func (t *ListUsersInCourseUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Query.Sort != "" && !string_utils.Include([]string{"username", "last_login", "email", "sis_id"}, t.Query.Sort) {
 		errs = append(errs, "Sort must be one of username, last_login, email, sis_id")

@@ -17,20 +17,20 @@ import (
 // https://canvas.instructure.com/doc/api/line_items.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # ScoreMaximum (Required) The maximum score for the line item. Scores created for the Line Item may exceed this value.
-// # Label (Required) The label for the Line Item. If no resourceLinkId is specified this value will also be used
+// # Form.ScoreMaximum (Required) The maximum score for the line item. Scores created for the Line Item may exceed this value.
+// # Form.Label (Required) The label for the Line Item. If no resourceLinkId is specified this value will also be used
 //    as the name of the placeholder assignment.
-// # ResourceID (Optional) A Tool Provider specified id for the Line Item. Multiple line items may
+// # Form.ResourceID (Optional) A Tool Provider specified id for the Line Item. Multiple line items may
 //    share the same resourceId within a given context.
-// # Tag (Optional) A value used to qualify a line Item beyond its ids. Line Items may be queried
+// # Form.Tag (Optional) A value used to qualify a line Item beyond its ids. Line Items may be queried
 //    by this value in the List endpoint. Multiple line items can share the same tag
 //    within a given context.
-// # ResourceLinkID (Optional) The resource link id the Line Item should be attached to. This value should
+// # Form.ResourceLinkID (Optional) The resource link id the Line Item should be attached to. This value should
 //    match the LTI id of the Canvas assignment associated with the tool.
-// # CanvasLTISubmissionType (Optional) (EXTENSION) - Optional block to set Assignment Submission Type when creating a new assignment is created.
+// # Form.CanvasLTISubmissionType (Optional) (EXTENSION) - Optional block to set Assignment Submission Type when creating a new assignment is created.
 //    type - 'none' or 'external_tool'::
 //    external_tool_url - Submission URL only used when type: 'external_tool'::
 //
@@ -40,12 +40,12 @@ type CreateLineItem struct {
 	} `json:"path"`
 
 	Form struct {
-		ScoreMaximum            float64 `json:"score_maximum" url:"score_maximum,omitempty"`                                                                           //  (Required)
-		Label                   string  `json:"label" url:"label,omitempty"`                                                                                           //  (Required)
-		ResourceID              string  `json:"resource_id" url:"resource_id,omitempty"`                                                                               //  (Optional)
-		Tag                     string  `json:"tag" url:"tag,omitempty"`                                                                                               //  (Optional)
-		ResourceLinkID          string  `json:"resource_link_id" url:"resource_link_id,omitempty"`                                                                     //  (Optional)
-		CanvasLTISubmissionType string  `json:"https://canvas.instructure.com/lti/submission_type" url:"https://canvas.instructure.com/lti/submission_type,omitempty"` //  (Optional)
+		ScoreMaximum            float64                  `json:"score_maximum" url:"score_maximum,omitempty"`                                                                           //  (Required)
+		Label                   string                   `json:"label" url:"label,omitempty"`                                                                                           //  (Required)
+		ResourceID              string                   `json:"resource_id" url:"resource_id,omitempty"`                                                                               //  (Optional)
+		Tag                     string                   `json:"tag" url:"tag,omitempty"`                                                                                               //  (Optional)
+		ResourceLinkID          string                   `json:"resource_link_id" url:"resource_link_id,omitempty"`                                                                     //  (Optional)
+		CanvasLTISubmissionType map[string](interface{}) `json:"https://canvas.instructure.com/lti/submission_type" url:"https://canvas.instructure.com/lti/submission_type,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -78,10 +78,10 @@ func (t *CreateLineItem) GetJSON() ([]byte, error) {
 func (t *CreateLineItem) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Form.Label == "" {
-		errs = append(errs, "'Label' is required")
+		errs = append(errs, "'Form.Label' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

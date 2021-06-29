@@ -19,13 +19,13 @@ import (
 // https://canvas.instructure.com/doc/api/modules.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # AssetType (Optional) . Must be one of ModuleItem, File, Page, Discussion, Assignment, Quiz, ExternalToolThe type of asset to find module sequence information for. Use the ModuleItem if it is known
+// # Query.AssetType (Optional) . Must be one of ModuleItem, File, Page, Discussion, Assignment, Quiz, ExternalToolThe type of asset to find module sequence information for. Use the ModuleItem if it is known
 //    (e.g., the user navigated from a module item), since this will avoid ambiguity if the asset
 //    appears more than once in the module sequence.
-// # AssetID (Optional) The id of the asset (or the url in the case of a Page)
+// # Query.AssetID (Optional) The id of the asset (or the url in the case of a Page)
 //
 type GetModuleItemSequence struct {
 	Path struct {
@@ -67,7 +67,7 @@ func (t *GetModuleItemSequence) GetJSON() ([]byte, error) {
 func (t *GetModuleItemSequence) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Query.AssetType != "" && !string_utils.Include([]string{"ModuleItem", "File", "Page", "Discussion", "Assignment", "Quiz", "ExternalTool"}, t.Query.AssetType) {
 		errs = append(errs, "AssetType must be one of ModuleItem, File, Page, Discussion, Assignment, Quiz, ExternalTool")

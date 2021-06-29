@@ -13,11 +13,12 @@ type NotificationPreference struct {
 	Frequency    string `json:"frequency" url:"frequency,omitempty"`       // How often to send notifications to this communication channel for the given notification. Possible values are 'immediately', 'daily', 'weekly', and 'never'.Example: daily
 }
 
-func (t *NotificationPreference) HasError() error {
+func (t *NotificationPreference) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"immediately", "daily", "weekly", "never"}
 	if t.Frequency != "" && !string_utils.Include(s, t.Frequency) {
-		return fmt.Errorf("expected 'frequency' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'Frequency' to be one of %v", s))
 	}
 	return nil
 }

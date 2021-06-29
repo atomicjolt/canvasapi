@@ -15,7 +15,7 @@ import (
 // https://canvas.instructure.com/doc/api/announcement_external_feeds.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 type ListExternalFeedsCourses struct {
 	Path struct {
@@ -48,7 +48,7 @@ func (t *ListExternalFeedsCourses) GetJSON() ([]byte, error) {
 func (t *ListExternalFeedsCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

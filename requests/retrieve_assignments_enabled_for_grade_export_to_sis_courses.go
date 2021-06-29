@@ -39,13 +39,13 @@ import (
 // https://canvas.instructure.com/doc/api/sis_integration.html
 //
 // Path Parameters:
-// # CourseID (Required) The ID of the course to query.
+// # Path.CourseID (Required) The ID of the course to query.
 //
 // Query Parameters:
-// # AccountID (Optional) The ID of the account to query.
-// # StartsBefore (Optional) When searching on an account,
-// # EndsAfter (Optional) When searching on an account,
-// # Include (Optional) . Must be one of student_overridesArray of additional
+// # Query.AccountID (Optional) The ID of the account to query.
+// # Query.StartsBefore (Optional) When searching on an account,
+// # Query.EndsAfter (Optional) When searching on an account,
+// # Query.Include (Optional) . Must be one of student_overridesArray of additional
 //
 type RetrieveAssignmentsEnabledForGradeExportToSISCourses struct {
 	Path struct {

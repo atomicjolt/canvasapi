@@ -29,11 +29,11 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # CourseIDs (Required) List of ids of courses to update. At most 500 courses may be updated in one call.
-// # Event (Required) . Must be one of offer, conclude, delete, undeleteno description
+// # Form.CourseIDs (Required) List of ids of courses to update. At most 500 courses may be updated in one call.
+// # Form.Event (Required) . Must be one of offer, conclude, delete, undeleteno description
 //
 type UpdateCourses struct {
 	Path struct {
@@ -75,13 +75,13 @@ func (t *UpdateCourses) GetJSON() ([]byte, error) {
 func (t *UpdateCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Form.CourseIDs == nil {
-		errs = append(errs, "'CourseIDs' is required")
+		errs = append(errs, "'Form.CourseIDs' is required")
 	}
 	if t.Form.Event == "" {
-		errs = append(errs, "'Event' is required")
+		errs = append(errs, "'Form.Event' is required")
 	}
 	if t.Form.Event != "" && !string_utils.Include([]string{"offer", "conclude", "delete", "undelete"}, t.Form.Event) {
 		errs = append(errs, "Event must be one of offer, conclude, delete, undelete")

@@ -18,6 +18,6 @@ type PlannerOverride struct {
 	DeletedAt      time.Time `json:"deleted_at" url:"deleted_at,omitempty"`           // The datetime of when the planner override was deleted, if applicable.Example: 2017-05-15T12:12:00Z
 }
 
-func (t *PlannerOverride) HasError() error {
+func (t *PlannerOverride) HasErrors() error {
 	return nil
 }

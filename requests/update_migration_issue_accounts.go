@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/content_migrations.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # ContentMigrationID (Required) ID
-// # ID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.ContentMigrationID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # WorkflowState (Required) . Must be one of active, resolvedSet the workflow_state of the issue.
+// # Form.WorkflowState (Required) . Must be one of active, resolvedSet the workflow_state of the issue.
 //
 type UpdateMigrationIssueAccounts struct {
 	Path struct {
@@ -68,16 +68,16 @@ func (t *UpdateMigrationIssueAccounts) GetJSON() ([]byte, error) {
 func (t *UpdateMigrationIssueAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.ContentMigrationID == "" {
-		errs = append(errs, "'ContentMigrationID' is required")
+		errs = append(errs, "'Path.ContentMigrationID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.WorkflowState == "" {
-		errs = append(errs, "'WorkflowState' is required")
+		errs = append(errs, "'Form.WorkflowState' is required")
 	}
 	if t.Form.WorkflowState != "" && !string_utils.Include([]string{"active", "resolved"}, t.Form.WorkflowState) {
 		errs = append(errs, "WorkflowState must be one of active, resolved")

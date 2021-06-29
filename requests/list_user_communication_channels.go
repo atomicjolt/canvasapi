@@ -16,7 +16,7 @@ import (
 // https://canvas.instructure.com/doc/api/communication_channels.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 type ListUserCommunicationChannels struct {
 	Path struct {
@@ -49,7 +49,7 @@ func (t *ListUserCommunicationChannels) GetJSON() ([]byte, error) {
 func (t *ListUserCommunicationChannels) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

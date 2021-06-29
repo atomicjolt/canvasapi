@@ -25,11 +25,12 @@ type AssignmentEvent struct {
 	AssignmentOverrides *AssignmentOverride `json:"assignment_overrides" url:"assignment_overrides,omitempty"` // The list of AssignmentOverrides that apply to this event (See the Assignments API). This information is useful for determining which students or sections this assignment-due event applies to..
 }
 
-func (t *AssignmentEvent) HasError() error {
+func (t *AssignmentEvent) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"published", "deleted"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	return nil
 }

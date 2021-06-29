@@ -12,11 +12,11 @@ import (
 // https://canvas.instructure.com/doc/api/search.html
 //
 // Query Parameters:
-// # Search (Optional) Search terms used for matching users/courses/groups (e.g. "bob smith"). If
+// # Query.Search (Optional) Search terms used for matching users/courses/groups (e.g. "bob smith"). If
 //    multiple terms are given (separated via whitespace), only results matching
 //    all terms will be returned.
-// # PublicOnly (Optional) Only return courses with public content. Defaults to false.
-// # OpenEnrollmentOnly (Optional) Only return courses that allow self enrollment. Defaults to false.
+// # Query.PublicOnly (Optional) Only return courses with public content. Defaults to false.
+// # Query.OpenEnrollmentOnly (Optional) Only return courses that allow self enrollment. Defaults to false.
 //
 type ListAllCourses struct {
 	Query struct {

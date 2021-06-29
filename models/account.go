@@ -9,6 +9,6 @@ type Account struct {
 	WorkflowState   string `json:"workflow_state" url:"workflow_state,omitempty"`       // The state of the account. Can be 'active' or 'deleted'..Example: active
 }
 
-func (t *Account) HasError() error {
+func (t *Account) HasErrors() error {
 	return nil
 }

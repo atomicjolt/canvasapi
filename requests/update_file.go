@@ -19,23 +19,23 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Name (Optional) The new display name of the file, with a limit of 255 characters.
-// # ParentFolderID (Optional) The id of the folder to move this file into.
+// # Form.Name (Optional) The new display name of the file, with a limit of 255 characters.
+// # Form.ParentFolderID (Optional) The id of the folder to move this file into.
 //    The new folder must be in the same context as the original parent folder.
 //    If the file is in a context without folders this does not apply.
-// # OnDuplicate (Optional) . Must be one of overwrite, renameIf the file is moved to a folder containing a file with the same name,
+// # Form.OnDuplicate (Optional) . Must be one of overwrite, renameIf the file is moved to a folder containing a file with the same name,
 //    or renamed to a name matching an existing file, the API call will fail
 //    unless this parameter is supplied.
 //
 //    "overwrite":: Replace the existing file with the same name
 //    "rename":: Add a qualifier to make the new filename unique
-// # LockAt (Optional) The datetime to lock the file at
-// # UnlockAt (Optional) The datetime to unlock the file at
-// # Locked (Optional) Flag the file as locked
-// # Hidden (Optional) Flag the file as hidden
+// # Form.LockAt (Optional) The datetime to lock the file at
+// # Form.UnlockAt (Optional) The datetime to unlock the file at
+// # Form.Locked (Optional) Flag the file as locked
+// # Form.Hidden (Optional) Flag the file as hidden
 //
 type UpdateFile struct {
 	Path struct {
@@ -82,7 +82,7 @@ func (t *UpdateFile) GetJSON() ([]byte, error) {
 func (t *UpdateFile) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.OnDuplicate != "" && !string_utils.Include([]string{"overwrite", "rename"}, t.Form.OnDuplicate) {
 		errs = append(errs, "OnDuplicate must be one of overwrite, rename")

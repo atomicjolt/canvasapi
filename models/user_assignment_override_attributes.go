@@ -13,6 +13,6 @@ type UserAssignmentOverrideAttributes struct {
 	Students []*StudentAttributes `json:"students" url:"students,omitempty"`   // Includes attributes of a student for convenience. For more details see Users API..
 }
 
-func (t *UserAssignmentOverrideAttributes) HasError() error {
+func (t *UserAssignmentOverrideAttributes) HasErrors() error {
 	return nil
 }

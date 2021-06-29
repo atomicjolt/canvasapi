@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/rubrics.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of assessments, graded_assessments, peer_assessments, associations, assignment_associations, course_associations, account_associationsRelated records to include in the response.
-// # Style (Optional) . Must be one of full, comments_onlyApplicable only if assessments are being returned. If included, returns either all criteria data associated with the assessment, or just the comments. If not included, both data and comments are omitted.
+// # Query.Include (Optional) . Must be one of assessments, graded_assessments, peer_assessments, associations, assignment_associations, course_associations, account_associationsRelated records to include in the response.
+// # Query.Style (Optional) . Must be one of full, comments_onlyApplicable only if assessments are being returned. If included, returns either all criteria data associated with the assessment, or just the comments. If not included, both data and comments are omitted.
 //
 type GetSingleRubricCourses struct {
 	Path struct {
@@ -67,10 +67,10 @@ func (t *GetSingleRubricCourses) GetJSON() ([]byte, error) {
 func (t *GetSingleRubricCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"assessments", "graded_assessments", "peer_assessments", "associations", "assignment_associations", "course_associations", "account_associations"}, v) {

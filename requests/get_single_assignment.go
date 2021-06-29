@@ -18,17 +18,17 @@ import (
 // https://canvas.instructure.com/doc/api/assignments.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of submission, assignment_visibility, overrides, observed_users, can_edit, score_statisticsAssociations to include with the assignment. The "assignment_visibility" option
+// # Query.Include (Optional) . Must be one of submission, assignment_visibility, overrides, observed_users, can_edit, score_statisticsAssociations to include with the assignment. The "assignment_visibility" option
 //    requires that the Differentiated Assignments course feature be turned on. If
 //    "observed_users" is passed, submissions for observed users will also be included.
 //    For "score_statistics" to be included, the "submission" option must also be set.
-// # OverrideAssignmentDates (Optional) Apply assignment overrides to the assignment, defaults to true.
-// # NeedsGradingCountBySection (Optional) Split up "needs_grading_count" by sections into the "needs_grading_count_by_section" key, defaults to false
-// # AllDates (Optional) All dates associated with the assignment, if applicable
+// # Query.OverrideAssignmentDates (Optional) Apply assignment overrides to the assignment, defaults to true.
+// # Query.NeedsGradingCountBySection (Optional) Split up "needs_grading_count" by sections into the "needs_grading_count_by_section" key, defaults to false
+// # Query.AllDates (Optional) All dates associated with the assignment, if applicable
 //
 type GetSingleAssignment struct {
 	Path struct {
@@ -74,10 +74,10 @@ func (t *GetSingleAssignment) GetJSON() ([]byte, error) {
 func (t *GetSingleAssignment) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"submission", "assignment_visibility", "overrides", "observed_users", "can_edit", "score_statistics"}, v) {

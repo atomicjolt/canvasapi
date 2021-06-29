@@ -19,12 +19,12 @@ import (
 // https://canvas.instructure.com/doc/api/grade_change_log.html
 //
 // Query Parameters:
-// # CourseID (Optional) Restrict query to events in the specified course.
-// # AssignmentID (Optional) Restrict query to the given assignment. If "override" is given, query the course final grade override instead.
-// # StudentID (Optional) User id of a student to search grading events for.
-// # GraderID (Optional) User id of a grader to search grading events for.
-// # StartTime (Optional) The beginning of the time range from which you want events.
-// # EndTime (Optional) The end of the time range from which you want events.
+// # Query.CourseID (Optional) Restrict query to events in the specified course.
+// # Query.AssignmentID (Optional) Restrict query to the given assignment. If "override" is given, query the course final grade override instead.
+// # Query.StudentID (Optional) User id of a student to search grading events for.
+// # Query.GraderID (Optional) User id of a grader to search grading events for.
+// # Query.StartTime (Optional) The beginning of the time range from which you want events.
+// # Query.EndTime (Optional) The end of the time range from which you want events.
 //
 type AdvancedQuery struct {
 	Query struct {

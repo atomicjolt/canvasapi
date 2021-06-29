@@ -13,6 +13,6 @@ type AssignmentDate struct {
 	LockAt   time.Time `json:"lock_at" url:"lock_at,omitempty"`     // The lock date for the assignment. Must be after the due date if there is a due date..Example: 2013-08-31T23:59:00-06:00
 }
 
-func (t *AssignmentDate) HasError() error {
+func (t *AssignmentDate) HasErrors() error {
 	return nil
 }

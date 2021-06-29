@@ -18,15 +18,15 @@ import (
 // https://canvas.instructure.com/doc/api/sections.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # CourseSection (Optional) The name of the section
-// # CourseSection (Optional) The sis ID of the section. Must have manage_sis permission to set.
-// # CourseSection (Optional) The integration_id of the section. Must have manage_sis permission to set.
-// # CourseSection (Optional) Section start date in ISO8601 format, e.g. 2011-01-01T01:00Z
-// # CourseSection (Optional) Section end date in ISO8601 format. e.g. 2011-01-01T01:00Z
-// # CourseSection (Optional) Set to true to restrict user enrollments to the start and end dates of the section.
+// # Form.CourseSection.Name (Optional) The name of the section
+// # Form.CourseSection.SISSectionID (Optional) The sis ID of the section. Must have manage_sis permission to set.
+// # Form.CourseSection.IntegrationID (Optional) The integration_id of the section. Must have manage_sis permission to set.
+// # Form.CourseSection.StartAt (Optional) Section start date in ISO8601 format, e.g. 2011-01-01T01:00Z
+// # Form.CourseSection.EndAt (Optional) Section end date in ISO8601 format. e.g. 2011-01-01T01:00Z
+// # Form.CourseSection.RestrictEnrollmentsToSectionDates (Optional) Set to true to restrict user enrollments to the start and end dates of the section.
 //
 type EditSection struct {
 	Path struct {
@@ -74,7 +74,7 @@ func (t *EditSection) GetJSON() ([]byte, error) {
 func (t *EditSection) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

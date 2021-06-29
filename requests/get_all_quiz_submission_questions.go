@@ -17,10 +17,10 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_submission_questions.html
 //
 // Path Parameters:
-// # QuizSubmissionID (Required) ID
+// # Path.QuizSubmissionID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of quiz_questionAssociations to include with the quiz submission question.
+// # Query.Include (Optional) . Must be one of quiz_questionAssociations to include with the quiz submission question.
 //
 type GetAllQuizSubmissionQuestions struct {
 	Path struct {
@@ -61,7 +61,7 @@ func (t *GetAllQuizSubmissionQuestions) GetJSON() ([]byte, error) {
 func (t *GetAllQuizSubmissionQuestions) HasErrors() error {
 	errs := []string{}
 	if t.Path.QuizSubmissionID == "" {
-		errs = append(errs, "'QuizSubmissionID' is required")
+		errs = append(errs, "'Path.QuizSubmissionID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"quiz_question"}, v) {

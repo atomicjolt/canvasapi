@@ -17,11 +17,11 @@ import (
 // https://canvas.instructure.com/doc/api/user_observees.html
 //
 // Path Parameters:
-// # UserID (Required) ID
-// # ObserveeID (Required) ID
+// # Path.UserID (Required) ID
+// # Path.ObserveeID (Required) ID
 //
 // Query Parameters:
-// # RootAccountID (Optional) If specified, only removes the link for the given root account
+// # Query.RootAccountID (Optional) If specified, only removes the link for the given root account
 //
 type RemoveObservee struct {
 	Path struct {
@@ -64,10 +64,10 @@ func (t *RemoveObservee) GetJSON() ([]byte, error) {
 func (t *RemoveObservee) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Path.ObserveeID == "" {
-		errs = append(errs, "'ObserveeID' is required")
+		errs = append(errs, "'Path.ObserveeID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

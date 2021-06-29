@@ -40,19 +40,20 @@ type Submission struct {
 	ReadStatus                    string               `json:"read_status" url:"read_status,omitempty"`                                           // The read status of this submission for the given user (optional). Including read_status will mark submission(s) as read..Example: read
 }
 
-func (t *Submission) HasError() error {
+func (t *Submission) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"online_text_entry", "online_url", "online_upload", "media_recording", "student_annotation"}
 	if t.SubmissionType != "" && !string_utils.Include(s, t.SubmissionType) {
-		return fmt.Errorf("expected 'submission_type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'SubmissionType' to be one of %v", s))
 	}
 	s = []string{"graded", "submitted", "unsubmitted", "pending_review"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	s = []string{"read", "unread"}
 	if t.ReadStatus != "" && !string_utils.Include(s, t.ReadStatus) {
-		return fmt.Errorf("expected 'read_status' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'ReadStatus' to be one of %v", s))
 	}
 	return nil
 }

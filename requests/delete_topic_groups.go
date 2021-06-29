@@ -13,8 +13,8 @@ import (
 // https://canvas.instructure.com/doc/api/discussion_topics.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # TopicID (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.TopicID (Required) ID
 //
 type DeleteTopicGroups struct {
 	Path struct {
@@ -49,10 +49,10 @@ func (t *DeleteTopicGroups) GetJSON() ([]byte, error) {
 func (t *DeleteTopicGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.TopicID == "" {
-		errs = append(errs, "'TopicID' is required")
+		errs = append(errs, "'Path.TopicID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

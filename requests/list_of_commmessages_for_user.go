@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/comm_messages.html
 //
 // Query Parameters:
-// # UserID (Required) The user id for whom you want to retrieve CommMessages
-// # StartTime (Optional) The beginning of the time range you want to retrieve message from.
+// # Query.UserID (Required) The user id for whom you want to retrieve CommMessages
+// # Query.StartTime (Optional) The beginning of the time range you want to retrieve message from.
 //    Up to a year prior to the current date is available.
-// # EndTime (Optional) The end of the time range you want to retrieve messages for.
+// # Query.EndTime (Optional) The end of the time range you want to retrieve messages for.
 //    Up to a year prior to the current date is available.
 //
 type ListOfCommmessagesForUser struct {
@@ -59,7 +59,7 @@ func (t *ListOfCommmessagesForUser) GetJSON() ([]byte, error) {
 func (t *ListOfCommmessagesForUser) HasErrors() error {
 	errs := []string{}
 	if t.Query.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Query.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

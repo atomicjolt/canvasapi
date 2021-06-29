@@ -15,12 +15,12 @@ import (
 // https://canvas.instructure.com/doc/api/poll_choices.html
 //
 // Path Parameters:
-// # PollID (Required) ID
+// # Path.PollID (Required) ID
 //
 // Form Parameters:
-// # PollChoices (Required) The descriptive text of the poll choice.
-// # PollChoices (Optional) Whether this poll choice is considered correct or not. Defaults to false.
-// # PollChoices (Optional) The order this poll choice should be returned in the context it's sibling poll choices.
+// # Form.PollChoices.Text (Required) The descriptive text of the poll choice.
+// # Form.PollChoices.IsCorrect (Optional) Whether this poll choice is considered correct or not. Defaults to false.
+// # Form.PollChoices.Position (Optional) The order this poll choice should be returned in the context it's sibling poll choices.
 //
 type CreateSinglePollChoice struct {
 	Path struct {
@@ -30,8 +30,8 @@ type CreateSinglePollChoice struct {
 	Form struct {
 		PollChoices struct {
 			Text      []string `json:"text" url:"text,omitempty"`             //  (Required)
-			IsCorrect []bool   `json:"is_correct" url:"is_correct,omitempty"` //  (Optional)
-			Position  []int64  `json:"position" url:"position,omitempty"`     //  (Optional)
+			IsCorrect []string `json:"is_correct" url:"is_correct,omitempty"` //  (Optional)
+			Position  []string `json:"position" url:"position,omitempty"`     //  (Optional)
 		} `json:"poll_choices" url:"poll_choices,omitempty"`
 	} `json:"form"`
 }
@@ -65,10 +65,10 @@ func (t *CreateSinglePollChoice) GetJSON() ([]byte, error) {
 func (t *CreateSinglePollChoice) HasErrors() error {
 	errs := []string{}
 	if t.Path.PollID == "" {
-		errs = append(errs, "'PollID' is required")
+		errs = append(errs, "'Path.PollID' is required")
 	}
 	if t.Form.PollChoices.Text == nil {
-		errs = append(errs, "'PollChoices' is required")
+		errs = append(errs, "'Form.PollChoices.Text' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

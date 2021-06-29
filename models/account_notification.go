@@ -14,14 +14,15 @@ type AccountNotification struct {
 	EndAt   time.Time `json:"end_at" url:"end_at,omitempty"`     // When to expire the notification..Example: 2013-08-29T23:59:00-06:00
 	Icon    string    `json:"icon" url:"icon,omitempty"`         // The icon to display with the message.  Defaults to warning..Example: information
 	Roles   []string  `json:"roles" url:"roles,omitempty"`       // (Deprecated) The roles to send the notification to.  If roles is not passed it defaults to all roles.Example: StudentEnrollment
-	RoleIDs []int64   `json:"role_ids" url:"role_ids,omitempty"` // The roles to send the notification to.  If roles is not passed it defaults to all roles.Example: 1
+	RoleIDs []string  `json:"role_ids" url:"role_ids,omitempty"` // The roles to send the notification to.  If roles is not passed it defaults to all roles.Example: 1
 }
 
-func (t *AccountNotification) HasError() error {
+func (t *AccountNotification) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"warning", "information", "question", "error", "calendar"}
 	if t.Icon != "" && !string_utils.Include(s, t.Icon) {
-		return fmt.Errorf("expected 'icon' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'Icon' to be one of %v", s))
 	}
 	return nil
 }

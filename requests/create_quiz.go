@@ -19,53 +19,53 @@ import (
 // https://canvas.instructure.com/doc/api/quizzes.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # Quiz (Required) The quiz title.
-// # Quiz (Optional) A description of the quiz.
-// # Quiz (Optional) . Must be one of practice_quiz, assignment, graded_survey, surveyThe type of quiz.
-// # Quiz (Optional) The assignment group id to put the assignment in. Defaults to the top
+// # Form.Quiz.Title (Required) The quiz title.
+// # Form.Quiz.Description (Optional) A description of the quiz.
+// # Form.Quiz.QuizType (Optional) . Must be one of practice_quiz, assignment, graded_survey, surveyThe type of quiz.
+// # Form.Quiz.AssignmentGroupID (Optional) The assignment group id to put the assignment in. Defaults to the top
 //    assignment group in the course. Only valid if the quiz is graded, i.e. if
 //    quiz_type is "assignment" or "graded_survey".
-// # Quiz (Optional) Time limit to take this quiz, in minutes. Set to null for no time limit.
+// # Form.Quiz.TimeLimit (Optional) Time limit to take this quiz, in minutes. Set to null for no time limit.
 //    Defaults to null.
-// # Quiz (Optional) If true, quiz answers for multiple choice questions will be randomized for
+// # Form.Quiz.ShuffleAnswers (Optional) If true, quiz answers for multiple choice questions will be randomized for
 //    each student. Defaults to false.
-// # Quiz (Optional) . Must be one of always, until_after_last_attemptDictates whether or not quiz results are hidden from students.
+// # Form.Quiz.HideResults (Optional) . Must be one of always, until_after_last_attemptDictates whether or not quiz results are hidden from students.
 //    If null, students can see their results after any attempt.
 //    If "always", students can never see their results.
 //    If "until_after_last_attempt", students can only see results after their
 //    last attempt. (Only valid if allowed_attempts > 1). Defaults to null.
-// # Quiz (Optional) Only valid if hide_results=null
+// # Form.Quiz.ShowCorrectAnswers (Optional) Only valid if hide_results=null
 //    If false, hides correct answers from students when quiz results are viewed.
 //    Defaults to true.
-// # Quiz (Optional) Only valid if show_correct_answers=true and allowed_attempts > 1
+// # Form.Quiz.ShowCorrectAnswersLastAttempt (Optional) Only valid if show_correct_answers=true and allowed_attempts > 1
 //    If true, hides correct answers from students when quiz results are viewed
 //    until they submit the last attempt for the quiz.
 //    Defaults to false.
-// # Quiz (Optional) Only valid if show_correct_answers=true
+// # Form.Quiz.ShowCorrectAnswersAt (Optional) Only valid if show_correct_answers=true
 //    If set, the correct answers will be visible by students only after this
 //    date, otherwise the correct answers are visible once the student hands in
 //    their quiz submission.
-// # Quiz (Optional) Only valid if show_correct_answers=true
+// # Form.Quiz.HideCorrectAnswersAt (Optional) Only valid if show_correct_answers=true
 //    If set, the correct answers will stop being visible once this date has
 //    passed. Otherwise, the correct answers will be visible indefinitely.
-// # Quiz (Optional) Number of times a student is allowed to take a quiz.
+// # Form.Quiz.AllowedAttempts (Optional) Number of times a student is allowed to take a quiz.
 //    Set to -1 for unlimited attempts.
 //    Defaults to 1.
-// # Quiz (Optional) . Must be one of keep_highest, keep_latestRequired and only valid if allowed_attempts > 1.
+// # Form.Quiz.ScoringPolicy (Optional) . Must be one of keep_highest, keep_latestRequired and only valid if allowed_attempts > 1.
 //    Scoring policy for a quiz that students can take multiple times.
 //    Defaults to "keep_highest".
-// # Quiz (Optional) If true, shows quiz to student one question at a time.
+// # Form.Quiz.OneQuestionAtATime (Optional) If true, shows quiz to student one question at a time.
 //    Defaults to false.
-// # Quiz (Optional) Only valid if one_question_at_a_time=true
+// # Form.Quiz.CantGoBack (Optional) Only valid if one_question_at_a_time=true
 //    If true, questions are locked after answering.
 //    Defaults to false.
-// # Quiz (Optional) Restricts access to the quiz with a password.
+// # Form.Quiz.AccessCode (Optional) Restricts access to the quiz with a password.
 //    For no access code restriction, set to null.
 //    Defaults to null.
-// # Quiz (Optional) Restricts access to the quiz to computers in a specified IP range.
+// # Form.Quiz.IpFilter (Optional) Restricts access to the quiz to computers in a specified IP range.
 //    Filters can be a comma-separated list of addresses, or an address followed by a mask
 //
 //    Examples:
@@ -75,21 +75,21 @@ import (
 //
 //    For no IP filter restriction, set to null.
 //    Defaults to null.
-// # Quiz (Optional) The day/time the quiz is due.
+// # Form.Quiz.DueAt (Optional) The day/time the quiz is due.
 //    Accepts times in ISO 8601 format, e.g. 2011-10-21T18:48Z.
-// # Quiz (Optional) The day/time the quiz is locked for students.
+// # Form.Quiz.LockAt (Optional) The day/time the quiz is locked for students.
 //    Accepts times in ISO 8601 format, e.g. 2011-10-21T18:48Z.
-// # Quiz (Optional) The day/time the quiz is unlocked for students.
+// # Form.Quiz.UnlockAt (Optional) The day/time the quiz is unlocked for students.
 //    Accepts times in ISO 8601 format, e.g. 2011-10-21T18:48Z.
-// # Quiz (Optional) Whether the quiz should have a draft state of published or unpublished.
+// # Form.Quiz.Published (Optional) Whether the quiz should have a draft state of published or unpublished.
 //    NOTE: If students have started taking the quiz, or there are any
 //    submissions for the quiz, you may not unpublish a quiz and will recieve
 //    an error.
-// # Quiz (Optional) Whether students should be prevented from viewing their quiz results past
+// # Form.Quiz.OneTimeResults (Optional) Whether students should be prevented from viewing their quiz results past
 //    the first time (right after they turn the quiz in.)
 //    Only valid if "hide_results" is not set to "always".
 //    Defaults to false.
-// # Quiz (Optional) Whether this quiz is only visible to overrides (Only useful if
+// # Form.Quiz.OnlyVisibleToOverrides (Optional) Whether this quiz is only visible to overrides (Only useful if
 //    'differentiated assignments' account setting is on)
 //    Defaults to false.
 //
@@ -156,10 +156,10 @@ func (t *CreateQuiz) GetJSON() ([]byte, error) {
 func (t *CreateQuiz) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Form.Quiz.Title == "" {
-		errs = append(errs, "'Quiz' is required")
+		errs = append(errs, "'Form.Quiz.Title' is required")
 	}
 	if t.Form.Quiz.QuizType != "" && !string_utils.Include([]string{"practice_quiz", "assignment", "graded_survey", "survey"}, t.Form.Quiz.QuizType) {
 		errs = append(errs, "Quiz must be one of practice_quiz, assignment, graded_survey, survey")

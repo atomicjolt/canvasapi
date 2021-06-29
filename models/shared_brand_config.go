@@ -13,6 +13,6 @@ type SharedBrandConfig struct {
 	UpdatedAt      time.Time `json:"updated_at" url:"updated_at,omitempty"`             // When this was last updated.Example: 2012-07-13T10:55:20-06:00
 }
 
-func (t *SharedBrandConfig) HasError() error {
+func (t *SharedBrandConfig) HasErrors() error {
 	return nil
 }

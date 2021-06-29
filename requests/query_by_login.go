@@ -15,12 +15,12 @@ import (
 // https://canvas.instructure.com/doc/api/authentications_log.html
 //
 // Path Parameters:
-// # LoginID (Required) ID
+// # Path.LoginID (Required) ID
 //
 // Query Parameters:
-// # StartTime (Optional) The beginning of the time range from which you want events.
+// # Query.StartTime (Optional) The beginning of the time range from which you want events.
 //    Events are stored for one year.
-// # EndTime (Optional) The end of the time range from which you want events.
+// # Query.EndTime (Optional) The end of the time range from which you want events.
 //
 type QueryByLogin struct {
 	Path struct {
@@ -62,7 +62,7 @@ func (t *QueryByLogin) GetJSON() ([]byte, error) {
 func (t *QueryByLogin) HasErrors() error {
 	errs := []string{}
 	if t.Path.LoginID == "" {
-		errs = append(errs, "'LoginID' is required")
+		errs = append(errs, "'Path.LoginID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

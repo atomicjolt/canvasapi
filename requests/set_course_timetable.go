@@ -21,16 +21,16 @@ import (
 // https://canvas.instructure.com/doc/api/calendar_events.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # Timetables (Optional) An array of timetable objects for the course section specified by course_section_id.
+// # Form.Timetables.CourseSectionID (Optional) An array of timetable objects for the course section specified by course_section_id.
 //    If course_section_id is set to "all", events will be created for the entire course.
-// # Timetables (Optional) A comma-separated list of abbreviated weekdays
+// # Form.Timetables.CourseSectionID.Weekdays (Optional) A comma-separated list of abbreviated weekdays
 //    (Mon-Monday, Tue-Tuesday, Wed-Wednesday, Thu-Thursday, Fri-Friday, Sat-Saturday, Sun-Sunday)
-// # Timetables (Optional) Time to start each event at (e.g. "9:00 am")
-// # Timetables (Optional) Time to end each event at (e.g. "9:00 am")
-// # Timetables (Optional) A location name to set for each event
+// # Form.Timetables.CourseSectionID.StartTime (Optional) Time to start each event at (e.g. "9:00 am")
+// # Form.Timetables.CourseSectionID.EndTime (Optional) Time to end each event at (e.g. "9:00 am")
+// # Form.Timetables.CourseSectionID.LocationName (Optional) A location name to set for each event
 //
 type SetCourseTimetable struct {
 	Path struct {
@@ -73,7 +73,7 @@ func (t *SetCourseTimetable) GetJSON() ([]byte, error) {
 func (t *SetCourseTimetable) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

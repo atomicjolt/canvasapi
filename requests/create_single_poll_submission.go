@@ -15,11 +15,11 @@ import (
 // https://canvas.instructure.com/doc/api/poll_submissions.html
 //
 // Path Parameters:
-// # PollID (Required) ID
-// # PollSessionID (Required) ID
+// # Path.PollID (Required) ID
+// # Path.PollSessionID (Required) ID
 //
 // Form Parameters:
-// # PollSubmissions (Required) The chosen poll choice for this submission.
+// # Form.PollSubmissions.PollChoiceID (Required) The chosen poll choice for this submission.
 //
 type CreateSinglePollSubmission struct {
 	Path struct {
@@ -29,7 +29,7 @@ type CreateSinglePollSubmission struct {
 
 	Form struct {
 		PollSubmissions struct {
-			PollChoiceID []int64 `json:"poll_choice_id" url:"poll_choice_id,omitempty"` //  (Required)
+			PollChoiceID []string `json:"poll_choice_id" url:"poll_choice_id,omitempty"` //  (Required)
 		} `json:"poll_submissions" url:"poll_submissions,omitempty"`
 	} `json:"form"`
 }
@@ -64,13 +64,13 @@ func (t *CreateSinglePollSubmission) GetJSON() ([]byte, error) {
 func (t *CreateSinglePollSubmission) HasErrors() error {
 	errs := []string{}
 	if t.Path.PollID == "" {
-		errs = append(errs, "'PollID' is required")
+		errs = append(errs, "'Path.PollID' is required")
 	}
 	if t.Path.PollSessionID == "" {
-		errs = append(errs, "'PollSessionID' is required")
+		errs = append(errs, "'Path.PollSessionID' is required")
 	}
 	if t.Form.PollSubmissions.PollChoiceID == nil {
-		errs = append(errs, "'PollSubmissions' is required")
+		errs = append(errs, "'Form.PollSubmissions.PollChoiceID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

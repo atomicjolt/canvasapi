@@ -18,21 +18,21 @@ import (
 // https://canvas.instructure.com/doc/api/pages.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Form Parameters:
-// # WikiPage (Optional) The title for the new page. NOTE: changing a page's title will change its
+// # Form.WikiPage.Title (Optional) The title for the new page. NOTE: changing a page's title will change its
 //    url. The updated url will be returned in the result.
-// # WikiPage (Optional) The content for the new page.
-// # WikiPage (Optional) . Must be one of teachers, students, members, publicWhich user roles are allowed to edit this page. Any combination
+// # Form.WikiPage.Body (Optional) The content for the new page.
+// # Form.WikiPage.EditingRoles (Optional) . Must be one of teachers, students, members, publicWhich user roles are allowed to edit this page. Any combination
 //    of these roles is allowed (separated by commas).
 //
 //    "teachers":: Allows editing by teachers in the course.
 //    "students":: Allows editing by students in the course.
 //    "members":: For group wikis, allows editing by members of the group.
 //    "public":: Allows editing by any user.
-// # WikiPage (Optional) Whether participants should be notified when this page changes.
-// # WikiPage (Optional) Whether the page is published (true) or draft state (false).
+// # Form.WikiPage.NotifyOfUpdate (Optional) Whether participants should be notified when this page changes.
+// # Form.WikiPage.Published (Optional) Whether the page is published (true) or draft state (false).
 //
 type UpdateCreateFrontPageGroups struct {
 	Path struct {
@@ -79,7 +79,7 @@ func (t *UpdateCreateFrontPageGroups) GetJSON() ([]byte, error) {
 func (t *UpdateCreateFrontPageGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Form.WikiPage.EditingRoles != "" && !string_utils.Include([]string{"teachers", "students", "members", "public"}, t.Form.WikiPage.EditingRoles) {
 		errs = append(errs, "WikiPage must be one of teachers, students, members, public")

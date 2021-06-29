@@ -17,46 +17,46 @@ import (
 // https://canvas.instructure.com/doc/api/accounts.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Account (Optional) Updates the account name
-// # Account (Optional) Updates the account sis_account_id
+// # Form.Account.Name (Optional) Updates the account name
+// # Form.Account.SISAccountID (Optional) Updates the account sis_account_id
 //    Must have manage_sis permission and must not be a root_account.
-// # Account (Optional) The default time zone of the account. Allowed time zones are
+// # Form.Account.DefaultTimeZone (Optional) The default time zone of the account. Allowed time zones are
 //    {http://www.iana.org/time-zones IANA time zones} or friendlier
 //    {http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html Ruby on Rails time zones}.
-// # Account (Optional) The default course storage quota to be used, if not otherwise specified.
-// # Account (Optional) The default user storage quota to be used, if not otherwise specified.
-// # Account (Optional) The default group storage quota to be used, if not otherwise specified.
-// # Account (Optional) The ID of a course to be used as a template for all newly created courses.
+// # Form.Account.DefaultStorageQuotaMb (Optional) The default course storage quota to be used, if not otherwise specified.
+// # Form.Account.DefaultUserStorageQuotaMb (Optional) The default user storage quota to be used, if not otherwise specified.
+// # Form.Account.DefaultGroupStorageQuotaMb (Optional) The default group storage quota to be used, if not otherwise specified.
+// # Form.Account.CourseTemplateID (Optional) The ID of a course to be used as a template for all newly created courses.
 //    Empty means to inherit the setting from parent account, 0 means to not
 //    use a template even if a parent account has one set. The course must be
 //    marked as a template.
-// # Account (Optional) Restrict students from viewing courses after end date
-// # Account (Optional) Lock this setting for sub-accounts and courses
-// # Account (Optional) Restrict students from viewing courses before start date
-// # Account (Optional) Determines whether this account has Microsoft Teams Sync enabled or not.
+// # Form.Account.Settings.RestrictStudentPastView.Value (Optional) Restrict students from viewing courses after end date
+// # Form.Account.Settings.RestrictStudentPastView.Locked (Optional) Lock this setting for sub-accounts and courses
+// # Form.Account.Settings.RestrictStudentFutureView.Value (Optional) Restrict students from viewing courses before start date
+// # Form.Account.Settings.MicrosoftSyncEnabled (Optional) Determines whether this account has Microsoft Teams Sync enabled or not.
 //
 //    Note that if you are altering Microsoft Teams sync settings you must enable
 //    the Microsoft Group enrollment syncing feature flag. In addition, if you are enabling
 //    Microsoft Teams sync, you must also specify a tenant and login attribute.
-// # Account (Optional) The tenant this account should use when using Microsoft Teams Sync.
+// # Form.Account.Settings.MicrosoftSyncTenant (Optional) The tenant this account should use when using Microsoft Teams Sync.
 //    This should be an Azure Active Directory domain name.
-// # Account (Optional) The attribute this account should use to lookup users when using Microsoft Teams Sync.
+// # Form.Account.Settings.MicrosoftSyncLoginAttribute (Optional) The attribute this account should use to lookup users when using Microsoft Teams Sync.
 //    Must be one of sub, email, oid, or preferred_username.
-// # Account (Optional) Lock this setting for sub-accounts and courses
-// # Account (Optional) Disable comments on announcements
-// # Account (Optional) Lock this setting for sub-accounts and courses
-// # Account (Optional) Copyright and license information must be provided for files before they are published.
-// # Account (Optional) Lock this setting for sub-accounts and courses
-// # Account (Optional) Restrict students from viewing future enrollments in course list
-// # Account (Optional) Lock this setting for sub-accounts and courses
-// # Account (Optional) [DEPRECATED] Restrict instructors from changing mastery scale
-// # Account (Optional) [DEPRECATED] Lock this setting for sub-accounts and courses
-// # Account (Optional) [DEPRECATED] Restrict instructors from changing proficiency calculation method
-// # Account (Optional) [DEPRECATED] Lock this setting for sub-accounts and courses
-// # Account (Optional) Give this a set of keys and boolean values to enable or disable services matching the keys
+// # Form.Account.Settings.RestrictStudentFutureView.Locked (Optional) Lock this setting for sub-accounts and courses
+// # Form.Account.Settings.LockAllAnnouncements.Value (Optional) Disable comments on announcements
+// # Form.Account.Settings.LockAllAnnouncements.Locked (Optional) Lock this setting for sub-accounts and courses
+// # Form.Account.Settings.UsageRightsRequired.Value (Optional) Copyright and license information must be provided for files before they are published.
+// # Form.Account.Settings.UsageRightsRequired.Locked (Optional) Lock this setting for sub-accounts and courses
+// # Form.Account.Settings.RestrictStudentFutureListing.Value (Optional) Restrict students from viewing future enrollments in course list
+// # Form.Account.Settings.RestrictStudentFutureListing.Locked (Optional) Lock this setting for sub-accounts and courses
+// # Form.Account.Settings.LockOutcomeProficiency.Value (Optional) [DEPRECATED] Restrict instructors from changing mastery scale
+// # Form.Account.LockOutcomeProficiency.Locked (Optional) [DEPRECATED] Lock this setting for sub-accounts and courses
+// # Form.Account.Settings.LockProficiencyCalculation.Value (Optional) [DEPRECATED] Restrict instructors from changing proficiency calculation method
+// # Form.Account.LockProficiencyCalculation.Locked (Optional) [DEPRECATED] Lock this setting for sub-accounts and courses
+// # Form.Account.Services (Optional) Give this a set of keys and boolean values to enable or disable services matching the keys
 //
 type UpdateAccount struct {
 	Path struct {
@@ -118,7 +118,7 @@ type UpdateAccount struct {
 				Locked bool `json:"locked" url:"locked,omitempty"` //  (Optional)
 			} `json:"lock_proficiency_calculation" url:"lock_proficiency_calculation,omitempty"`
 
-			Services string `json:"services" url:"services,omitempty"` //  (Optional)
+			Services map[string](interface{}) `json:"services" url:"services,omitempty"` //  (Optional)
 		} `json:"account" url:"account,omitempty"`
 	} `json:"form"`
 }
@@ -152,7 +152,7 @@ func (t *UpdateAccount) GetJSON() ([]byte, error) {
 func (t *UpdateAccount) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -10,6 +10,6 @@ type OutcomeLink struct {
 	CanUnlink    bool          `json:"can_unlink" url:"can_unlink,omitempty"`       // whether this outcome link is manageable and is not the last link to an aligned outcome.
 }
 
-func (t *OutcomeLink) HasError() error {
+func (t *OutcomeLink) HasErrors() error {
 	return nil
 }

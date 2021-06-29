@@ -18,18 +18,18 @@ import (
 // https://canvas.instructure.com/doc/api/enrollment_terms.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # EnrollmentTerm (Optional) The name of the term.
-// # EnrollmentTerm (Optional) The day/time the term starts.
+// # Form.EnrollmentTerm.Name (Optional) The name of the term.
+// # Form.EnrollmentTerm.StartAt (Optional) The day/time the term starts.
 //    Accepts times in ISO 8601 format, e.g. 2015-01-10T18:48:00Z.
-// # EnrollmentTerm (Optional) The day/time the term ends.
+// # Form.EnrollmentTerm.EndAt (Optional) The day/time the term ends.
 //    Accepts times in ISO 8601 format, e.g. 2015-01-10T18:48:00Z.
-// # EnrollmentTerm (Optional) The unique SIS identifier for the term.
-// # EnrollmentTerm (Optional) The day/time the term starts, overridden for the given enrollment type.
+// # Form.EnrollmentTerm.SISTermID (Optional) The unique SIS identifier for the term.
+// # Form.EnrollmentTerm.Overrides.EnrollmentType.StartAt (Optional) The day/time the term starts, overridden for the given enrollment type.
 //    *enrollment_type* can be one of StudentEnrollment, TeacherEnrollment, TaEnrollment, or DesignerEnrollment
-// # EnrollmentTerm (Optional) The day/time the term ends, overridden for the given enrollment type.
+// # Form.EnrollmentTerm.Overrides.EnrollmentType.EndAt (Optional) The day/time the term ends, overridden for the given enrollment type.
 //    *enrollment_type* can be one of StudentEnrollment, TeacherEnrollment, TaEnrollment, or DesignerEnrollment
 //
 type CreateEnrollmentTerm struct {
@@ -82,7 +82,7 @@ func (t *CreateEnrollmentTerm) GetJSON() ([]byte, error) {
 func (t *CreateEnrollmentTerm) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -16,7 +16,7 @@ import (
 // https://canvas.instructure.com/doc/api/plagiarism_detection_platform_users.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 type GetSingleUserLti struct {
 	Path struct {
@@ -49,7 +49,7 @@ func (t *GetSingleUserLti) GetJSON() ([]byte, error) {
 func (t *GetSingleUserLti) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -14,6 +14,6 @@ type File struct {
 	UpdatedAt   time.Time `json:"updated_at" url:"updated_at,omitempty"`     // Example: 2012-07-06T14:58:50Z
 }
 
-func (t *File) HasError() error {
+func (t *File) HasErrors() error {
 	return nil
 }

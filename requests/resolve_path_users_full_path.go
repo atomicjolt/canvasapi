@@ -20,7 +20,7 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 type ResolvePathUsersFullPath struct {
 	Path struct {
@@ -53,7 +53,7 @@ func (t *ResolvePathUsersFullPath) GetJSON() ([]byte, error) {
 func (t *ResolvePathUsersFullPath) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

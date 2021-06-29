@@ -20,10 +20,10 @@ import (
 // https://canvas.instructure.com/doc/api/group_categories.html
 //
 // Path Parameters:
-// # GroupCategoryID (Required) ID
+// # Path.GroupCategoryID (Required) ID
 //
 // Form Parameters:
-// # Attachment (Optional) There are two ways to post group category import data - either via a
+// # Form.Attachment (Optional) There are two ways to post group category import data - either via a
 //    multipart/form-data form-field-style attachment, or via a non-multipart
 //    raw post request.
 //
@@ -82,7 +82,7 @@ func (t *ImportCategoryGroups) GetJSON() ([]byte, error) {
 func (t *ImportCategoryGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupCategoryID == "" {
-		errs = append(errs, "'GroupCategoryID' is required")
+		errs = append(errs, "'Path.GroupCategoryID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

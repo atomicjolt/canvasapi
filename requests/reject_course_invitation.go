@@ -12,8 +12,8 @@ import (
 // https://canvas.instructure.com/doc/api/enrollments.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 type RejectCourseInvitation struct {
 	Path struct {
@@ -48,10 +48,10 @@ func (t *RejectCourseInvitation) GetJSON() ([]byte, error) {
 func (t *RejectCourseInvitation) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

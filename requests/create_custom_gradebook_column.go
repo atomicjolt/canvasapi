@@ -17,15 +17,15 @@ import (
 // https://canvas.instructure.com/doc/api/custom_gradebook_columns.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # Column (Required) no description
-// # Column (Optional) The position of the column relative to other custom columns
-// # Column (Optional) Hidden columns are not displayed in the gradebook
-// # Column (Optional) Set this if the column is created by a teacher.  The gradebook only
+// # Form.Column.Title (Required) no description
+// # Form.Column.Position (Optional) The position of the column relative to other custom columns
+// # Form.Column.Hidden (Optional) Hidden columns are not displayed in the gradebook
+// # Form.Column.TeacherNotes (Optional) Set this if the column is created by a teacher.  The gradebook only
 //    supports one teacher_notes column.
-// # Column (Optional) Set this to prevent the column from being editable in the gradebook ui
+// # Form.Column.ReadOnly (Optional) Set this to prevent the column from being editable in the gradebook ui
 //
 type CreateCustomGradebookColumn struct {
 	Path struct {
@@ -72,10 +72,10 @@ func (t *CreateCustomGradebookColumn) GetJSON() ([]byte, error) {
 func (t *CreateCustomGradebookColumn) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Form.Column.Title == "" {
-		errs = append(errs, "'Column' is required")
+		errs = append(errs, "'Form.Column.Title' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -27,6 +27,6 @@ type Folder struct {
 	ForSubmissions bool      `json:"for_submissions" url:"for_submissions,omitempty"`   // If true, indicates this is a read-only folder containing files submitted to assignments.
 }
 
-func (t *Folder) HasError() error {
+func (t *Folder) HasErrors() error {
 	return nil
 }

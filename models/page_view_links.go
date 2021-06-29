@@ -8,6 +8,6 @@ type PageViewLinks struct {
 	Account  int64 `json:"account" url:"account,omitempty"`     // The ID of the account context for this page view.Example: 1234
 }
 
-func (t *PageViewLinks) HasError() error {
+func (t *PageViewLinks) HasErrors() error {
 	return nil
 }

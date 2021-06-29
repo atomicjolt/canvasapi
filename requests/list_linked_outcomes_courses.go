@@ -17,11 +17,11 @@ import (
 // https://canvas.instructure.com/doc/api/outcome_groups.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # OutcomeStyle (Optional) The detail level of the outcomes. Defaults to "abbrev".
+// # Query.OutcomeStyle (Optional) The detail level of the outcomes. Defaults to "abbrev".
 //    Specify "full" for more information.
 //
 type ListLinkedOutcomesCourses struct {
@@ -65,10 +65,10 @@ func (t *ListLinkedOutcomesCourses) GetJSON() ([]byte, error) {
 func (t *ListLinkedOutcomesCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -16,10 +16,10 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # Permissions (Optional) List of permissions to check against the authenticated user.
+// # Query.Permissions (Optional) List of permissions to check against the authenticated user.
 //    Permission names are documented in the {api:RoleOverridesController#add_role Create a role} endpoint.
 //
 type CoursesPermissions struct {
@@ -61,7 +61,7 @@ func (t *CoursesPermissions) GetJSON() ([]byte, error) {
 func (t *CoursesPermissions) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

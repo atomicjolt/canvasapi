@@ -15,9 +15,9 @@ import (
 // https://canvas.instructure.com/doc/api/notification_preferences.html
 //
 // Path Parameters:
-// # UserID (Required) ID
-// # CommunicationChannelID (Required) ID
-// # Notification (Required) ID
+// # Path.UserID (Required) ID
+// # Path.CommunicationChannelID (Required) ID
+// # Path.Notification (Required) ID
 //
 type GetPreferenceCommunicationChannelID struct {
 	Path struct {
@@ -54,13 +54,13 @@ func (t *GetPreferenceCommunicationChannelID) GetJSON() ([]byte, error) {
 func (t *GetPreferenceCommunicationChannelID) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Path.CommunicationChannelID == "" {
-		errs = append(errs, "'CommunicationChannelID' is required")
+		errs = append(errs, "'Path.CommunicationChannelID' is required")
 	}
 	if t.Path.Notification == "" {
-		errs = append(errs, "'Notification' is required")
+		errs = append(errs, "'Path.Notification' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

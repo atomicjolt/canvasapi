@@ -19,23 +19,23 @@ import (
 // https://canvas.instructure.com/doc/api/calendar_events.html
 //
 // Query Parameters:
-// # Type (Optional) . Must be one of event, assignmentDefaults to "event"
-// # StartDate (Optional) Only return events since the start_date (inclusive).
+// # Query.Type (Optional) . Must be one of event, assignmentDefaults to "event"
+// # Query.StartDate (Optional) Only return events since the start_date (inclusive).
 //    Defaults to today. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
-// # EndDate (Optional) Only return events before the end_date (inclusive).
+// # Query.EndDate (Optional) Only return events before the end_date (inclusive).
 //    Defaults to start_date. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.
 //    If end_date is the same as start_date, then only events on that day are
 //    returned.
-// # Undated (Optional) Defaults to false (dated events only).
+// # Query.Undated (Optional) Defaults to false (dated events only).
 //    If true, only return undated events and ignore start_date and end_date.
-// # AllEvents (Optional) Defaults to false (uses start_date, end_date, and undated criteria).
+// # Query.AllEvents (Optional) Defaults to false (uses start_date, end_date, and undated criteria).
 //    If true, all events are returned, ignoring start_date, end_date, and undated criteria.
-// # ContextCodes (Optional) List of context codes of courses/groups/users whose events you want to see.
+// # Query.ContextCodes (Optional) List of context codes of courses/groups/users whose events you want to see.
 //    If not specified, defaults to the current user (i.e personal calendar,
 //    no course/group events). Limited to 10 context codes, additional ones are
 //    ignored. The format of this field is the context type, followed by an
 //    underscore, followed by the context id. For example: course_42
-// # Excludes (Optional) Array of attributes to exclude. Possible values are "description", "child_events" and "assignment"
+// # Query.Excludes (Optional) Array of attributes to exclude. Possible values are "description", "child_events" and "assignment"
 //
 type ListCalendarEvents struct {
 	Query struct {

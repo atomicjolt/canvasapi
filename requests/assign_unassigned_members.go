@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/group_categories.html
 //
 // Path Parameters:
-// # GroupCategoryID (Required) ID
+// # Path.GroupCategoryID (Required) ID
 //
 // Form Parameters:
-// # Sync (Optional) The assigning is done asynchronously by default. If you would like to
+// # Form.Sync (Optional) The assigning is done asynchronously by default. If you would like to
 //    override this and have the assigning done synchronously, set this value
 //    to true.
 //
@@ -64,7 +64,7 @@ func (t *AssignUnassignedMembers) GetJSON() ([]byte, error) {
 func (t *AssignUnassignedMembers) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupCategoryID == "" {
-		errs = append(errs, "'GroupCategoryID' is required")
+		errs = append(errs, "'Path.GroupCategoryID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

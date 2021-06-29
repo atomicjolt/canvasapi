@@ -19,11 +19,11 @@ import (
 // https://canvas.instructure.com/doc/api/enrollments.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Task (Optional) . Must be one of conclude, delete, inactivate, deactivateThe action to take on the enrollment.
+// # Query.Task (Optional) . Must be one of conclude, delete, inactivate, deactivateThe action to take on the enrollment.
 //    When inactive, a user will still appear in the course roster to admins, but be unable to participate.
 //    ("inactivate" and "deactivate" are equivalent tasks)
 //
@@ -68,10 +68,10 @@ func (t *ConcludeDeactivateOrDeleteEnrollment) GetJSON() ([]byte, error) {
 func (t *ConcludeDeactivateOrDeleteEnrollment) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Query.Task != "" && !string_utils.Include([]string{"conclude", "delete", "inactivate", "deactivate"}, t.Query.Task) {
 		errs = append(errs, "Task must be one of conclude, delete, inactivate, deactivate")

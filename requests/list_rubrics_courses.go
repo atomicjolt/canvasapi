@@ -12,7 +12,7 @@ import (
 // https://canvas.instructure.com/doc/api/rubrics.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 type ListRubricsCourses struct {
 	Path struct {
@@ -45,7 +45,7 @@ func (t *ListRubricsCourses) GetJSON() ([]byte, error) {
 func (t *ListRubricsCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

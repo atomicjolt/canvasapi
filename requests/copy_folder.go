@@ -24,10 +24,10 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # DestFolderID (Required) ID
+// # Path.DestFolderID (Required) ID
 //
 // Form Parameters:
-// # SourceFolderID (Required) The id of the source folder
+// # Form.SourceFolderID (Required) The id of the source folder
 //
 type CopyFolder struct {
 	Path struct {
@@ -68,10 +68,10 @@ func (t *CopyFolder) GetJSON() ([]byte, error) {
 func (t *CopyFolder) HasErrors() error {
 	errs := []string{}
 	if t.Path.DestFolderID == "" {
-		errs = append(errs, "'DestFolderID' is required")
+		errs = append(errs, "'Path.DestFolderID' is required")
 	}
 	if t.Form.SourceFolderID == "" {
-		errs = append(errs, "'SourceFolderID' is required")
+		errs = append(errs, "'Form.SourceFolderID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

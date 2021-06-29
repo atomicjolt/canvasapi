@@ -11,6 +11,6 @@ type CourseProgress struct {
 	CompletedAt               time.Time `json:"completed_at" url:"completed_at,omitempty"`                               // date the course was completed. null if the course has not been completed by this user.Example: 2013-06-01T00:00:00-06:00
 }
 
-func (t *CourseProgress) HasError() error {
+func (t *CourseProgress) HasErrors() error {
 	return nil
 }

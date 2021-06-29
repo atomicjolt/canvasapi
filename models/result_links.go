@@ -6,6 +6,6 @@ type ResultLinks struct {
 	Assessment string `json:"assessment" url:"assessment,omitempty"` // A unique identifier for the assessment that this result is for.Example: 5
 }
 
-func (t *ResultLinks) HasError() error {
+func (t *ResultLinks) HasErrors() error {
 	return nil
 }

@@ -15,12 +15,12 @@ import (
 // https://canvas.instructure.com/doc/api/poll_sessions.html
 //
 // Path Parameters:
-// # PollID (Required) ID
+// # Path.PollID (Required) ID
 //
 // Form Parameters:
-// # PollSessions (Required) The id of the course this session is associated with.
-// # PollSessions (Optional) The id of the course section this session is associated with.
-// # PollSessions (Optional) Whether or not results are viewable by students.
+// # Form.PollSessions.CourseID (Required) The id of the course this session is associated with.
+// # Form.PollSessions.CourseSectionID (Optional) The id of the course section this session is associated with.
+// # Form.PollSessions.HasPublicResults (Optional) Whether or not results are viewable by students.
 //
 type CreateSinglePollSession struct {
 	Path struct {
@@ -29,9 +29,9 @@ type CreateSinglePollSession struct {
 
 	Form struct {
 		PollSessions struct {
-			CourseID         []int64 `json:"course_id" url:"course_id,omitempty"`                   //  (Required)
-			CourseSectionID  []int64 `json:"course_section_id" url:"course_section_id,omitempty"`   //  (Optional)
-			HasPublicResults []bool  `json:"has_public_results" url:"has_public_results,omitempty"` //  (Optional)
+			CourseID         []string `json:"course_id" url:"course_id,omitempty"`                   //  (Required)
+			CourseSectionID  []string `json:"course_section_id" url:"course_section_id,omitempty"`   //  (Optional)
+			HasPublicResults []string `json:"has_public_results" url:"has_public_results,omitempty"` //  (Optional)
 		} `json:"poll_sessions" url:"poll_sessions,omitempty"`
 	} `json:"form"`
 }
@@ -65,10 +65,10 @@ func (t *CreateSinglePollSession) GetJSON() ([]byte, error) {
 func (t *CreateSinglePollSession) HasErrors() error {
 	errs := []string{}
 	if t.Path.PollID == "" {
-		errs = append(errs, "'PollID' is required")
+		errs = append(errs, "'Path.PollID' is required")
 	}
 	if t.Form.PollSessions.CourseID == nil {
-		errs = append(errs, "'PollSessions' is required")
+		errs = append(errs, "'Form.PollSessions.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

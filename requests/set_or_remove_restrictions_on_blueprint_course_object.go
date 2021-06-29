@@ -9,6 +9,7 @@ import (
 	"github.com/google/go-querystring/query"
 
 	"github.com/atomicjolt/canvasapi"
+	"github.com/atomicjolt/canvasapi/models"
 	"github.com/atomicjolt/string_utils"
 )
 
@@ -16,14 +17,14 @@ import (
 // https://canvas.instructure.com/doc/api/blueprint_courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # TemplateID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.TemplateID (Required) ID
 //
 // Form Parameters:
-// # ContentType (Optional) . Must be one of assignment, attachment, discussion_topic, external_tool, quiz, wiki_pageThe type of the object.
-// # ContentID (Optional) The ID of the object.
-// # Restricted (Optional) Whether to apply restrictions.
-// # Restrictions (Optional) (Optional) If the object is restricted, this specifies a set of restrictions. If not specified,
+// # Form.ContentType (Optional) . Must be one of assignment, attachment, discussion_topic, external_tool, quiz, wiki_pageThe type of the object.
+// # Form.ContentID (Optional) The ID of the object.
+// # Form.Restricted (Optional) Whether to apply restrictions.
+// # Form.Restrictions (Optional) (Optional) If the object is restricted, this specifies a set of restrictions. If not specified,
 //    the course-level restrictions will be used. See {api:CoursesController#update Course API update documentation}
 //
 type SetOrRemoveRestrictionsOnBlueprintCourseObject struct {
@@ -33,10 +34,10 @@ type SetOrRemoveRestrictionsOnBlueprintCourseObject struct {
 	} `json:"path"`
 
 	Form struct {
-		ContentType  string `json:"content_type" url:"content_type,omitempty"` //  (Optional) . Must be one of assignment, attachment, discussion_topic, external_tool, quiz, wiki_page
-		ContentID    int64  `json:"content_id" url:"content_id,omitempty"`     //  (Optional)
-		Restricted   bool   `json:"restricted" url:"restricted,omitempty"`     //  (Optional)
-		Restrictions string `json:"restrictions" url:"restrictions,omitempty"` //  (Optional)
+		ContentType  string                       `json:"content_type" url:"content_type,omitempty"` //  (Optional) . Must be one of assignment, attachment, discussion_topic, external_tool, quiz, wiki_page
+		ContentID    int64                        `json:"content_id" url:"content_id,omitempty"`     //  (Optional)
+		Restricted   bool                         `json:"restricted" url:"restricted,omitempty"`     //  (Optional)
+		Restrictions *models.BlueprintRestriction `json:"restrictions" url:"restrictions,omitempty"` //  (Optional)
 	} `json:"form"`
 }
 
@@ -70,10 +71,10 @@ func (t *SetOrRemoveRestrictionsOnBlueprintCourseObject) GetJSON() ([]byte, erro
 func (t *SetOrRemoveRestrictionsOnBlueprintCourseObject) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.TemplateID == "" {
-		errs = append(errs, "'TemplateID' is required")
+		errs = append(errs, "'Path.TemplateID' is required")
 	}
 	if t.Form.ContentType != "" && !string_utils.Include([]string{"assignment", "attachment", "discussion_topic", "external_tool", "quiz", "wiki_page"}, t.Form.ContentType) {
 		errs = append(errs, "ContentType must be one of assignment, attachment, discussion_topic, external_tool, quiz, wiki_page")

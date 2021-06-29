@@ -12,6 +12,6 @@ type LockInfo struct {
 	ManuallyLocked bool      `json:"manually_locked" url:"manually_locked,omitempty"` // Example: true
 }
 
-func (t *LockInfo) HasError() error {
+func (t *LockInfo) HasErrors() error {
 	return nil
 }

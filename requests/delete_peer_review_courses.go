@@ -17,12 +17,12 @@ import (
 // https://canvas.instructure.com/doc/api/peer_reviews.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # AssignmentID (Required) ID
-// # SubmissionID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.AssignmentID (Required) ID
+// # Path.SubmissionID (Required) ID
 //
 // Query Parameters:
-// # UserID (Required) user_id to delete as reviewer on this assignment
+// # Query.UserID (Required) user_id to delete as reviewer on this assignment
 //
 type DeletePeerReviewCourses struct {
 	Path struct {
@@ -67,13 +67,13 @@ func (t *DeletePeerReviewCourses) GetJSON() ([]byte, error) {
 func (t *DeletePeerReviewCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if t.Path.SubmissionID == "" {
-		errs = append(errs, "'SubmissionID' is required")
+		errs = append(errs, "'Path.SubmissionID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -7,6 +7,6 @@ type PollSubmission struct {
 	CreatedAt    string `json:"created_at" url:"created_at,omitempty"`         // The date and time the poll submission was submitted..Example: 2013-11-07T13:16:18Z
 }
 
-func (t *PollSubmission) HasError() error {
+func (t *PollSubmission) HasErrors() error {
 	return nil
 }

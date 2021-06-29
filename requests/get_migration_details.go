@@ -16,9 +16,9 @@ import (
 // https://canvas.instructure.com/doc/api/blueprint_courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # TemplateID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.TemplateID (Required) ID
+// # Path.ID (Required) ID
 //
 type GetMigrationDetails struct {
 	Path struct {
@@ -55,13 +55,13 @@ func (t *GetMigrationDetails) GetJSON() ([]byte, error) {
 func (t *GetMigrationDetails) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.TemplateID == "" {
-		errs = append(errs, "'TemplateID' is required")
+		errs = append(errs, "'Path.TemplateID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

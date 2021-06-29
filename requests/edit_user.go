@@ -17,33 +17,33 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # User (Optional) The full name of the user. This name will be used by teacher for grading.
-// # User (Optional) User's name as it will be displayed in discussions, messages, and comments.
-// # User (Optional) User's name as used to sort alphabetically in lists.
-// # User (Optional) The time zone for the user. Allowed time zones are
+// # Form.User.Name (Optional) The full name of the user. This name will be used by teacher for grading.
+// # Form.User.ShortName (Optional) User's name as it will be displayed in discussions, messages, and comments.
+// # Form.User.SortableName (Optional) User's name as used to sort alphabetically in lists.
+// # Form.User.TimeZone (Optional) The time zone for the user. Allowed time zones are
 //    {http://www.iana.org/time-zones IANA time zones} or friendlier
 //    {http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html Ruby on Rails time zones}.
-// # User (Optional) The default email address of the user.
-// # User (Optional) The user's preferred language, from the list of languages Canvas supports.
+// # Form.User.Email (Optional) The default email address of the user.
+// # Form.User.Locale (Optional) The user's preferred language, from the list of languages Canvas supports.
 //    This is in RFC-5646 format.
-// # User (Optional) A unique representation of the avatar record to assign as the user's
+// # Form.User.Avatar.Token (Optional) A unique representation of the avatar record to assign as the user's
 //    current avatar. This token can be obtained from the user avatars endpoint.
 //    This supersedes the user [avatar] [url] argument, and if both are included
 //    the url will be ignored. Note: this is an internal representation and is
 //    subject to change without notice. It should be consumed with this api
 //    endpoint and used in the user update endpoint, and should not be
 //    constructed by the client.
-// # User (Optional) To set the user's avatar to point to an external url, do not include a
+// # Form.User.Avatar.Url (Optional) To set the user's avatar to point to an external url, do not include a
 //    token and instead pass the url here. Warning: For maximum compatibility,
 //    please use 128 px square images.
-// # User (Optional) Sets a title on the user profile. (See {api:ProfileController#settings Get user profile}.)
+// # Form.User.Title (Optional) Sets a title on the user profile. (See {api:ProfileController#settings Get user profile}.)
 //    Profiles must be enabled on the root account.
-// # User (Optional) Sets a bio on the user profile. (See {api:ProfileController#settings Get user profile}.)
+// # Form.User.Bio (Optional) Sets a bio on the user profile. (See {api:ProfileController#settings Get user profile}.)
 //    Profiles must be enabled on the root account.
-// # User (Optional) Sets pronouns on the user profile.
+// # Form.User.Pronouns (Optional) Sets pronouns on the user profile.
 //    Passing an empty string will empty the user's pronouns
 //    Only Available Pronouns set on the root account are allowed
 //    Adding and changing pronouns must be enabled on the root account.
@@ -102,7 +102,7 @@ func (t *EditUser) GetJSON() ([]byte, error) {
 func (t *EditUser) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

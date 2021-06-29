@@ -17,6 +17,6 @@ type HistoryEntry struct {
 	InteractionSeconds    int64     `json:"interaction_seconds" url:"interaction_seconds,omitempty"`         // The estimated time spent on the page in seconds.Example: 400
 }
 
-func (t *HistoryEntry) HasError() error {
+func (t *HistoryEntry) HasErrors() error {
 	return nil
 }

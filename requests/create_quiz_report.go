@@ -26,14 +26,14 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_reports.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # QuizID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.QuizID (Required) ID
 //
 // Form Parameters:
-// # QuizReport (Required) . Must be one of student_analysis, item_analysisThe type of report to be generated.
-// # QuizReport (Optional) Whether the report should consider all submissions or only the most
+// # Form.QuizReport.ReportType (Required) . Must be one of student_analysis, item_analysisThe type of report to be generated.
+// # Form.QuizReport.IncludesAllVersions (Optional) Whether the report should consider all submissions or only the most
 //    recent. Defaults to false, ignored for item_analysis.
-// # Include (Optional) . Must be one of file, progressWhether the output should include documents for the file and/or progress
+// # Form.Include (Optional) . Must be one of file, progressWhether the output should include documents for the file and/or progress
 //    objects associated with this report. (Note: JSON-API only)
 //
 type CreateQuizReport struct {
@@ -48,7 +48,7 @@ type CreateQuizReport struct {
 			IncludesAllVersions bool   `json:"includes_all_versions" url:"includes_all_versions,omitempty"` //  (Optional)
 		} `json:"quiz_report" url:"quiz_report,omitempty"`
 
-		Include string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of file, progress
+		Include []string `json:"include" url:"include,omitempty"` //  (Optional) . Must be one of file, progress
 	} `json:"form"`
 }
 
@@ -82,19 +82,21 @@ func (t *CreateQuizReport) GetJSON() ([]byte, error) {
 func (t *CreateQuizReport) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.QuizID == "" {
-		errs = append(errs, "'QuizID' is required")
+		errs = append(errs, "'Path.QuizID' is required")
 	}
 	if t.Form.QuizReport.ReportType == "" {
-		errs = append(errs, "'QuizReport' is required")
+		errs = append(errs, "'Form.QuizReport.ReportType' is required")
 	}
 	if t.Form.QuizReport.ReportType != "" && !string_utils.Include([]string{"student_analysis", "item_analysis"}, t.Form.QuizReport.ReportType) {
 		errs = append(errs, "QuizReport must be one of student_analysis, item_analysis")
 	}
-	if t.Form.Include != "" && !string_utils.Include([]string{"file", "progress"}, t.Form.Include) {
-		errs = append(errs, "Include must be one of file, progress")
+	for _, v := range t.Form.Include {
+		if v != "" && !string_utils.Include([]string{"file", "progress"}, v) {
+			errs = append(errs, "Include must be one of file, progress")
+		}
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

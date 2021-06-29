@@ -5,6 +5,6 @@ type OutcomePath struct {
 	Parts *OutcomePathPart `json:"parts" url:"parts,omitempty"` // an array of OutcomePathPart objects.
 }
 
-func (t *OutcomePath) HasError() error {
+func (t *OutcomePath) HasErrors() error {
 	return nil
 }

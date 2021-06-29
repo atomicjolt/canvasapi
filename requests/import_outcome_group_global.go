@@ -28,11 +28,11 @@ import (
 // https://canvas.instructure.com/doc/api/outcome_groups.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # SourceOutcomeGroupID (Required) The ID of the source outcome group.
-// # Async (Optional) If true, perform action asynchronously.  In that case, this endpoint
+// # Form.SourceOutcomeGroupID (Required) The ID of the source outcome group.
+// # Form.Async (Optional) If true, perform action asynchronously.  In that case, this endpoint
 //    will return a Progress object instead of an OutcomeGroup.
 //    Use the {api:ProgressController#show progress endpoint}
 //    to query the status of the operation.  The imported outcome group id
@@ -79,7 +79,7 @@ func (t *ImportOutcomeGroupGlobal) GetJSON() ([]byte, error) {
 func (t *ImportOutcomeGroupGlobal) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

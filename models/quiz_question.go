@@ -14,6 +14,6 @@ type QuizQuestion struct {
 	Answers           []*Answer `json:"answers" url:"answers,omitempty"`                       // An array of available answers to display to the student..
 }
 
-func (t *QuizQuestion) HasError() error {
+func (t *QuizQuestion) HasErrors() error {
 	return nil
 }

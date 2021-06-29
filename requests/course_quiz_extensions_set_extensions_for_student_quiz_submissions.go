@@ -18,21 +18,21 @@ import (
 // https://canvas.instructure.com/doc/api/course_quiz_extensions.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # UserID (Required) The ID of the user we want to add quiz extensions for.
-// # ExtraAttempts (Optional) Number of times the student is allowed to re-take the quiz over the
+// # Form.UserID (Required) The ID of the user we want to add quiz extensions for.
+// # Form.ExtraAttempts (Optional) Number of times the student is allowed to re-take the quiz over the
 //    multiple-attempt limit. This is limited to 1000 attempts or less.
-// # ExtraTime (Optional) The number of extra minutes to allow for all attempts. This will
+// # Form.ExtraTime (Optional) The number of extra minutes to allow for all attempts. This will
 //    add to the existing time limit on the submission. This is limited to
 //    10080 minutes (1 week)
-// # ManuallyUnlocked (Optional) Allow the student to take the quiz even if it's locked for
+// # Form.ManuallyUnlocked (Optional) Allow the student to take the quiz even if it's locked for
 //    everyone else.
-// # ExtendFromNow (Optional) The number of minutes to extend the quiz from the current time. This is
+// # Form.ExtendFromNow (Optional) The number of minutes to extend the quiz from the current time. This is
 //    mutually exclusive to extend_from_end_at. This is limited to 1440
 //    minutes (24 hours)
-// # ExtendFromEndAt (Optional) The number of minutes to extend the quiz beyond the quiz's current
+// # Form.ExtendFromEndAt (Optional) The number of minutes to extend the quiz beyond the quiz's current
 //    ending time. This is mutually exclusive to extend_from_now. This is
 //    limited to 1440 minutes (24 hours)
 //
@@ -80,7 +80,7 @@ func (t *CourseQuizExtensionsSetExtensionsForStudentQuizSubmissions) GetJSON() (
 func (t *CourseQuizExtensionsSetExtensionsForStudentQuizSubmissions) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

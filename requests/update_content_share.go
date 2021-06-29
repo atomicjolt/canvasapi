@@ -18,11 +18,11 @@ import (
 // https://canvas.instructure.com/doc/api/content_shares.html
 //
 // Path Parameters:
-// # UserID (Required) ID
-// # ID (Required) ID
+// # Path.UserID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # ReadState (Optional) . Must be one of read, unreadRead state for the content share
+// # Form.ReadState (Optional) . Must be one of read, unreadRead state for the content share
 //
 type UpdateContentShare struct {
 	Path struct {
@@ -65,10 +65,10 @@ func (t *UpdateContentShare) GetJSON() ([]byte, error) {
 func (t *UpdateContentShare) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.ReadState != "" && !string_utils.Include([]string{"read", "unread"}, t.Form.ReadState) {
 		errs = append(errs, "ReadState must be one of read, unread")

@@ -17,10 +17,10 @@ import (
 // https://canvas.instructure.com/doc/api/outcomes.html
 //
 // Path Parameters:
-// # CourseID (Required) The id of the course
+// # Path.CourseID (Required) The id of the course
 //
 // Query Parameters:
-// # StudentID (Optional) The id of the student
+// # Query.StudentID (Optional) The id of the student
 //
 type GetAlignedAssignmentsForOutcomeInCourseForParticularStudent struct {
 	Path struct {

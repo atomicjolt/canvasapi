@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/announcement_external_feeds.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # ExternalFeedID (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.ExternalFeedID (Required) ID
 //
 type DeleteExternalFeedGroups struct {
 	Path struct {
@@ -51,10 +51,10 @@ func (t *DeleteExternalFeedGroups) GetJSON() ([]byte, error) {
 func (t *DeleteExternalFeedGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.ExternalFeedID == "" {
-		errs = append(errs, "'ExternalFeedID' is required")
+		errs = append(errs, "'Path.ExternalFeedID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

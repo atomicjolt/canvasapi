@@ -17,16 +17,16 @@ import (
 // https://canvas.instructure.com/doc/api/names_and_role.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # Rlid (Optional) If specified only NamesAndRoleMemberships with access to the LTI link references by this `rlid` will be included.
+// # Query.Rlid (Optional) If specified only NamesAndRoleMemberships with access to the LTI link references by this `rlid` will be included.
 //    Also causes the member array to be included for each returned NamesAndRoleMembership.
 //    If the `role` parameter is also present, it will be 'and-ed' together with this parameter
-// # Role (Optional) If specified only NamesAndRoleMemberships having this role in the given Course will be included.
+// # Query.Role (Optional) If specified only NamesAndRoleMemberships having this role in the given Course will be included.
 //    Value must be a fully-qualified LTI/LIS role URN.
 //    If the `rlid` parameter is also present, it will be 'and-ed' together with this parameter
-// # Limit (Optional) May be used to limit the number of NamesAndRoleMemberships returned in a page. Defaults to 50.
+// # Query.Limit (Optional) May be used to limit the number of NamesAndRoleMemberships returned in a page. Defaults to 50.
 //
 type ListCourseMemberships struct {
 	Path struct {
@@ -69,7 +69,7 @@ func (t *ListCourseMemberships) GetJSON() ([]byte, error) {
 func (t *ListCourseMemberships) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

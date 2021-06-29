@@ -69,11 +69,11 @@ import (
 // https://canvas.instructure.com/doc/api/content_migrations.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Type (Optional) . Must be one of context_modules, assignments, quizzes, assessment_question_banks, discussion_topics, wiki_pages, context_external_tools, tool_profiles, announcements, calendar_events, rubrics, groups, learning_outcomes, attachmentsThe type of content to enumerate.
+// # Query.Type (Optional) . Must be one of context_modules, assignments, quizzes, assessment_question_banks, discussion_topics, wiki_pages, context_external_tools, tool_profiles, announcements, calendar_events, rubrics, groups, learning_outcomes, attachmentsThe type of content to enumerate.
 //
 type ListItemsForSelectiveImportCourses struct {
 	Path struct {
@@ -116,10 +116,10 @@ func (t *ListItemsForSelectiveImportCourses) GetJSON() ([]byte, error) {
 func (t *ListItemsForSelectiveImportCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Query.Type != "" && !string_utils.Include([]string{"context_modules", "assignments", "quizzes", "assessment_question_banks", "discussion_topics", "wiki_pages", "context_external_tools", "tool_profiles", "announcements", "calendar_events", "rubrics", "groups", "learning_outcomes", "attachments"}, t.Query.Type) {
 		errs = append(errs, "Type must be one of context_modules, assignments, quizzes, assessment_question_banks, discussion_topics, wiki_pages, context_external_tools, tool_profiles, announcements, calendar_events, rubrics, groups, learning_outcomes, attachments")

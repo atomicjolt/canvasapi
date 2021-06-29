@@ -6,6 +6,6 @@ type CourseNickname struct {
 	Nickname string `json:"nickname" url:"nickname,omitempty"`   // the calling user's nickname for the course.Example: Physics
 }
 
-func (t *CourseNickname) HasError() error {
+func (t *CourseNickname) HasErrors() error {
 	return nil
 }

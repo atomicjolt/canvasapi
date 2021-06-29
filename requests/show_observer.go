@@ -17,8 +17,8 @@ import (
 // https://canvas.instructure.com/doc/api/user_observees.html
 //
 // Path Parameters:
-// # UserID (Required) ID
-// # ObserverID (Required) ID
+// # Path.UserID (Required) ID
+// # Path.ObserverID (Required) ID
 //
 type ShowObserver struct {
 	Path struct {
@@ -53,10 +53,10 @@ func (t *ShowObserver) GetJSON() ([]byte, error) {
 func (t *ShowObserver) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Path.ObserverID == "" {
-		errs = append(errs, "'ObserverID' is required")
+		errs = append(errs, "'Path.ObserverID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

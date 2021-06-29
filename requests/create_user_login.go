@@ -15,18 +15,18 @@ import (
 // https://canvas.instructure.com/doc/api/logins.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # User (Required) The ID of the user to create the login for.
-// # Login (Required) The unique ID for the new login.
-// # Login (Optional) The new login's password.
-// # Login (Optional) SIS ID for the login. To set this parameter, the caller must be able to
+// # Form.User.ID (Required) The ID of the user to create the login for.
+// # Form.Login.UniqueID (Required) The unique ID for the new login.
+// # Form.Login.Password (Optional) The new login's password.
+// # Form.Login.SISUserID (Optional) SIS ID for the login. To set this parameter, the caller must be able to
 //    manage SIS permissions on the account.
-// # Login (Optional) Integration ID for the login. To set this parameter, the caller must be able to
+// # Form.Login.IntegrationID (Optional) Integration ID for the login. To set this parameter, the caller must be able to
 //    manage SIS permissions on the account. The Integration ID is a secondary
 //    identifier useful for more complex SIS integrations.
-// # Login (Optional) The authentication provider this login is associated with. Logins
+// # Form.Login.AuthenticationProviderID (Optional) The authentication provider this login is associated with. Logins
 //    associated with a specific provider can only be used with that provider.
 //    Legacy providers (LDAP, CAS, SAML) will search for logins associated with
 //    them, or unassociated logins. New providers will only search for logins
@@ -83,13 +83,13 @@ func (t *CreateUserLogin) GetJSON() ([]byte, error) {
 func (t *CreateUserLogin) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Form.User.ID == "" {
-		errs = append(errs, "'User' is required")
+		errs = append(errs, "'Form.User.ID' is required")
 	}
 	if t.Form.Login.UniqueID == "" {
-		errs = append(errs, "'Login' is required")
+		errs = append(errs, "'Form.Login.UniqueID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

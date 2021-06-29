@@ -12,6 +12,6 @@ type RubricCriteria struct {
 	IgnoreForScoring  bool            `json:"ignore_for_scoring" url:"ignore_for_scoring,omitempty"`   // Example: true
 }
 
-func (t *RubricCriteria) HasError() error {
+func (t *RubricCriteria) HasErrors() error {
 	return nil
 }

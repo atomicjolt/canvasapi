@@ -18,20 +18,20 @@ import (
 // https://canvas.instructure.com/doc/api/rubrics.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) The id of the RubricAssociation to update
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) The id of the RubricAssociation to update
 //
 // Form Parameters:
-// # RubricAssociation (Optional) The id of the Rubric
-// # RubricAssociation (Optional) The id of the object with which this rubric is associated
-// # RubricAssociation (Optional) . Must be one of Assignment, Course, AccountThe type of object this rubric is associated with
-// # RubricAssociation (Optional) The name of the object this rubric is associated with
-// # RubricAssociation (Optional) Whether or not the associated rubric is used for grade calculation
-// # RubricAssociation (Optional) Whether or not the score total is displayed within the rubric.
+// # Form.RubricAssociation.RubricID (Optional) The id of the Rubric
+// # Form.RubricAssociation.AssociationID (Optional) The id of the object with which this rubric is associated
+// # Form.RubricAssociation.AssociationType (Optional) . Must be one of Assignment, Course, AccountThe type of object this rubric is associated with
+// # Form.RubricAssociation.Title (Optional) The name of the object this rubric is associated with
+// # Form.RubricAssociation.UseForGrading (Optional) Whether or not the associated rubric is used for grade calculation
+// # Form.RubricAssociation.HideScoreTotal (Optional) Whether or not the score total is displayed within the rubric.
 //    This option is only available if the rubric is not used for grading.
-// # RubricAssociation (Optional) . Must be one of grading, bookmarkWhether or not the association is for grading (and thus linked to an assignment)
+// # Form.RubricAssociation.Purpose (Optional) . Must be one of grading, bookmarkWhether or not the association is for grading (and thus linked to an assignment)
 //    or if it's to indicate the rubric should appear in its context
-// # RubricAssociation (Optional) Whether or not the associated rubric appears in its context
+// # Form.RubricAssociation.Bookmarked (Optional) Whether or not the associated rubric appears in its context
 //
 type UpdateRubricassociation struct {
 	Path struct {
@@ -83,7 +83,7 @@ func (t *UpdateRubricassociation) GetJSON() ([]byte, error) {
 func (t *UpdateRubricassociation) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Form.RubricAssociation.AssociationType != "" && !string_utils.Include([]string{"Assignment", "Course", "Account"}, t.Form.RubricAssociation.AssociationType) {
 		errs = append(errs, "RubricAssociation must be one of Assignment, Course, Account")

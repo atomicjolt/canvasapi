@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/api_token_scopes.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # GroupBy (Optional) . Must be one of resource_nameThe attribute to group the scopes by. By default no grouping is done.
+// # Query.GroupBy (Optional) . Must be one of resource_nameThe attribute to group the scopes by. By default no grouping is done.
 //
 type ListScopes struct {
 	Path struct {
@@ -62,7 +62,7 @@ func (t *ListScopes) GetJSON() ([]byte, error) {
 func (t *ListScopes) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Query.GroupBy != "" && !string_utils.Include([]string{"resource_name"}, t.Query.GroupBy) {
 		errs = append(errs, "GroupBy must be one of resource_name")

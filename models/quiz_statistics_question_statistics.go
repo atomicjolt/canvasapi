@@ -5,6 +5,6 @@ type QuizStatisticsQuestionStatistics struct {
 	Answers   *QuizStatisticsAnswerStatistics `json:"answers" url:"answers,omitempty"`     // Statistics related to each individual pre-defined answer..
 }
 
-func (t *QuizStatisticsQuestionStatistics) HasError() error {
+func (t *QuizStatisticsQuestionStatistics) HasErrors() error {
 	return nil
 }

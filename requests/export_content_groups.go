@@ -25,14 +25,14 @@ import (
 // https://canvas.instructure.com/doc/api/content_exports.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Form Parameters:
-// # ExportType (Required) . Must be one of common_cartridge, qti, zip"common_cartridge":: Export the contents of the course in the Common Cartridge (.imscc) format
+// # Form.ExportType (Required) . Must be one of common_cartridge, qti, zip"common_cartridge":: Export the contents of the course in the Common Cartridge (.imscc) format
 //    "qti":: Export quizzes from a course in the QTI format
 //    "zip":: Export files from a course, group, or user in a zip file
-// # SkipNotifications (Optional) Don't send the notifications about the export to the user. Default: false
-// # Select (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubricsThe select parameter allows exporting specific data. The keys are object types like 'files',
+// # Form.SkipNotifications (Optional) Don't send the notifications about the export to the user. Default: false
+// # Form.Select (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubricsThe select parameter allows exporting specific data. The keys are object types like 'files',
 //    'folders', 'pages', etc. The value for each key is a list of object ids. An id can be an
 //    integer or a string.
 //
@@ -50,9 +50,9 @@ type ExportContentGroups struct {
 	} `json:"path"`
 
 	Form struct {
-		ExportType        string `json:"export_type" url:"export_type,omitempty"`               //  (Required) . Must be one of common_cartridge, qti, zip
-		SkipNotifications bool   `json:"skip_notifications" url:"skip_notifications,omitempty"` //  (Optional)
-		Select            string `json:"select" url:"select,omitempty"`                         //  (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics
+		ExportType        string                   `json:"export_type" url:"export_type,omitempty"`               //  (Required) . Must be one of common_cartridge, qti, zip
+		SkipNotifications bool                     `json:"skip_notifications" url:"skip_notifications,omitempty"` //  (Optional)
+		Select            map[string](interface{}) `json:"select" url:"select,omitempty"`                         //  (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics
 	} `json:"form"`
 }
 
@@ -85,16 +85,13 @@ func (t *ExportContentGroups) GetJSON() ([]byte, error) {
 func (t *ExportContentGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Form.ExportType == "" {
-		errs = append(errs, "'ExportType' is required")
+		errs = append(errs, "'Form.ExportType' is required")
 	}
 	if t.Form.ExportType != "" && !string_utils.Include([]string{"common_cartridge", "qti", "zip"}, t.Form.ExportType) {
 		errs = append(errs, "ExportType must be one of common_cartridge, qti, zip")
-	}
-	if t.Form.Select != "" && !string_utils.Include([]string{"folders", "files", "attachments", "quizzes", "assignments", "announcements", "calendar_events", "discussion_topics", "modules", "module_items", "pages", "rubrics"}, t.Form.Select) {
-		errs = append(errs, "Select must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

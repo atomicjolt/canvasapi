@@ -18,17 +18,17 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # FolderID (Required) ID
+// # Path.FolderID (Required) ID
 //
 // Form Parameters:
-// # Name (Required) The name of the folder
-// # ParentFolderID (Optional) The id of the folder to store the file in. If this and parent_folder_path are sent an error will be returned. If neither is given, a default folder will be used.
-// # ParentFolderPath (Optional) The path of the folder to store the new folder in. The path separator is the forward slash `/`, never a back slash. The parent folder will be created if it does not already exist. This parameter only applies to new folders in a context that has folders, such as a user, a course, or a group. If this and parent_folder_id are sent an error will be returned. If neither is given, a default folder will be used.
-// # LockAt (Optional) The datetime to lock the folder at
-// # UnlockAt (Optional) The datetime to unlock the folder at
-// # Locked (Optional) Flag the folder as locked
-// # Hidden (Optional) Flag the folder as hidden
-// # Position (Optional) Set an explicit sort position for the folder
+// # Form.Name (Required) The name of the folder
+// # Form.ParentFolderID (Optional) The id of the folder to store the file in. If this and parent_folder_path are sent an error will be returned. If neither is given, a default folder will be used.
+// # Form.ParentFolderPath (Optional) The path of the folder to store the new folder in. The path separator is the forward slash `/`, never a back slash. The parent folder will be created if it does not already exist. This parameter only applies to new folders in a context that has folders, such as a user, a course, or a group. If this and parent_folder_id are sent an error will be returned. If neither is given, a default folder will be used.
+// # Form.LockAt (Optional) The datetime to lock the folder at
+// # Form.UnlockAt (Optional) The datetime to unlock the folder at
+// # Form.Locked (Optional) Flag the folder as locked
+// # Form.Hidden (Optional) Flag the folder as hidden
+// # Form.Position (Optional) Set an explicit sort position for the folder
 //
 type CreateFolderFolders struct {
 	Path struct {
@@ -76,10 +76,10 @@ func (t *CreateFolderFolders) GetJSON() ([]byte, error) {
 func (t *CreateFolderFolders) HasErrors() error {
 	errs := []string{}
 	if t.Path.FolderID == "" {
-		errs = append(errs, "'FolderID' is required")
+		errs = append(errs, "'Path.FolderID' is required")
 	}
 	if t.Form.Name == "" {
-		errs = append(errs, "'Name' is required")
+		errs = append(errs, "'Form.Name' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

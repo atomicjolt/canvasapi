@@ -15,16 +15,16 @@ import (
 // https://canvas.instructure.com/doc/api/late_policy.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # LatePolicy (Optional) Whether to enable the missing submission deduction late policy.
-// # LatePolicy (Optional) How many percentage points to deduct from a missing submission.
-// # LatePolicy (Optional) Whether to enable the late submission deduction late policy.
-// # LatePolicy (Optional) How many percentage points to deduct per the late submission interval.
-// # LatePolicy (Optional) The interval for late policies.
-// # LatePolicy (Optional) Whether to enable the late submission minimum percent for a late policy.
-// # LatePolicy (Optional) The minimum grade a submissions can have in percentage points.
+// # Form.LatePolicy.MissingSubmissionDeductionEnabled (Optional) Whether to enable the missing submission deduction late policy.
+// # Form.LatePolicy.MissingSubmissionDeduction (Optional) How many percentage points to deduct from a missing submission.
+// # Form.LatePolicy.LateSubmissionDeductionEnabled (Optional) Whether to enable the late submission deduction late policy.
+// # Form.LatePolicy.LateSubmissionDeduction (Optional) How many percentage points to deduct per the late submission interval.
+// # Form.LatePolicy.LateSubmissionInterval (Optional) The interval for late policies.
+// # Form.LatePolicy.LateSubmissionMinimumPercentEnabled (Optional) Whether to enable the late submission minimum percent for a late policy.
+// # Form.LatePolicy.LateSubmissionMinimumPercent (Optional) The minimum grade a submissions can have in percentage points.
 //
 type PatchLatePolicy struct {
 	Path struct {
@@ -73,7 +73,7 @@ func (t *PatchLatePolicy) GetJSON() ([]byte, error) {
 func (t *PatchLatePolicy) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

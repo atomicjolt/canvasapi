@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_assignment_overrides.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # QuizAssignmentOverrides (Optional) An array of quiz IDs. If omitted, overrides for all quizzes available to
+// # Query.QuizAssignmentOverrides (Optional) An array of quiz IDs. If omitted, overrides for all quizzes available to
 //    the operating user will be returned.
 //
 type RetrieveAssignmentOverriddenDatesForClassicQuizzes struct {
@@ -63,7 +63,7 @@ func (t *RetrieveAssignmentOverriddenDatesForClassicQuizzes) GetJSON() ([]byte, 
 func (t *RetrieveAssignmentOverriddenDatesForClassicQuizzes) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))
@@ -92,5 +92,5 @@ func (t *RetrieveAssignmentOverriddenDatesForClassicQuizzes) Do(c *canvasapi.Can
 }
 
 type RetrieveAssignmentOverriddenDatesForClassicQuizzesQuizAssignmentOverrides struct {
-	QuizIDs []int64 `json:"quiz_ids" url:"quiz_ids,omitempty"` //  (Optional)
+	QuizIDs []string `json:"quiz_ids" url:"quiz_ids,omitempty"` //  (Optional)
 }

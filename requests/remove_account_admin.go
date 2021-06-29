@@ -17,13 +17,13 @@ import (
 // https://canvas.instructure.com/doc/api/admins.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # UserID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Query Parameters:
-// # Role (Optional) [DEPRECATED] Account role to remove from the user. Defaults to
+// # Query.Role (Optional) [DEPRECATED] Account role to remove from the user. Defaults to
 //    'AccountAdmin'. Any other account role must be specified explicitly.
-// # RoleID (Optional) The user's admin relationship with the account will be created with the
+// # Query.RoleID (Optional) The user's admin relationship with the account will be created with the
 //    given role. Defaults to the built-in role for 'AccountAdmin'.
 //
 type RemoveAccountAdmin struct {
@@ -68,10 +68,10 @@ func (t *RemoveAccountAdmin) GetJSON() ([]byte, error) {
 func (t *RemoveAccountAdmin) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

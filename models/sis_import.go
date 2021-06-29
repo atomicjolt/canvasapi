@@ -30,8 +30,8 @@ type SISImport struct {
 	Progress                 string               `json:"progress" url:"progress,omitempty"`                                       // The progress of the SIS import. The progress will reset when using batch_mode and have a different progress for the cleanup stage.Example: 100
 	ErrorsAttachment         *File                `json:"errors_attachment" url:"errors_attachment,omitempty"`                     // The errors_attachment api object of the SIS import. Only available if there are errors or warning and import has completed..
 	User                     *User                `json:"user" url:"user,omitempty"`                                               // The user that initiated the sis_batch. See the Users API for details..
-	ProcessingWarnings       string               `json:"processing_warnings" url:"processing_warnings,omitempty"`                 // Only imports that are complete will get this data. An array of CSV_file/warning_message pairs..Example: students.csv, user John Doe has already claimed john_doe's requested login information, skipping
-	ProcessingErrors         string               `json:"processing_errors" url:"processing_errors,omitempty"`                     // An array of CSV_file/error_message pairs..Example: students.csv, Error while importing CSV. Please contact support.
+	ProcessingWarnings       []string             `json:"processing_warnings" url:"processing_warnings,omitempty"`                 // Only imports that are complete will get this data. An array of CSV_file/warning_message pairs..Example: students.csv, user John Doe has already claimed john_doe's requested login information, skipping
+	ProcessingErrors         []string             `json:"processing_errors" url:"processing_errors,omitempty"`                     // An array of CSV_file/error_message pairs..Example: students.csv, Error while importing CSV. Please contact support.
 	BatchMode                bool                 `json:"batch_mode" url:"batch_mode,omitempty"`                                   // Whether the import was run in batch mode..Example: true
 	BatchModeTermID          string               `json:"batch_mode_term_id" url:"batch_mode_term_id,omitempty"`                   // The term the batch was limited to..Example: 1234
 	MultiTermBatchMode       bool                 `json:"multi_term_batch_mode" url:"multi_term_batch_mode,omitempty"`             // Enables batch mode against all terms in term file. Requires change_threshold to be set..Example: false
@@ -41,14 +41,15 @@ type SISImport struct {
 	ClearSISStickiness       bool                 `json:"clear_sis_stickiness" url:"clear_sis_stickiness,omitempty"`               // Whether stickiness was cleared..Example: false
 	DiffingDataSetIDentifier string               `json:"diffing_data_set_identifier" url:"diffing_data_set_identifier,omitempty"` // The identifier of the data set that this SIS batch diffs against.Example: account-5-enrollments
 	DiffedAgainstImportID    int64                `json:"diffed_against_import_id" url:"diffed_against_import_id,omitempty"`       // The ID of the SIS Import that this import was diffed against.Example: 1
-	CsvAttachments           string               `json:"csv_attachments" url:"csv_attachments,omitempty"`                         // An array of CSV files for processing.
+	CsvAttachments           []string             `json:"csv_attachments" url:"csv_attachments,omitempty"`                         // An array of CSV files for processing.
 }
 
-func (t *SISImport) HasError() error {
+func (t *SISImport) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"initializing", "created", "importing", "cleanup_batch", "imported", "imported_with_messages", "aborted", "failed", "failed_with_messages", "restoring", "partially_restored", "restored"}
 	if t.WorkflowState != "" && !string_utils.Include(s, t.WorkflowState) {
-		return fmt.Errorf("expected 'workflow_state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'WorkflowState' to be one of %v", s))
 	}
 	return nil
 }

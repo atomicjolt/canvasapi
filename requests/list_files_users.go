@@ -18,25 +18,25 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Query Parameters:
-// # ContentTypes (Optional) Filter results by content-type. You can specify type/subtype pairs (e.g.,
+// # Query.ContentTypes (Optional) Filter results by content-type. You can specify type/subtype pairs (e.g.,
 //    'image/jpeg'), or simply types (e.g., 'image', which will match
 //    'image/gif', 'image/jpeg', etc.).
-// # ExcludeContentTypes (Optional) Exclude given content-types from your results. You can specify type/subtype pairs (e.g.,
+// # Query.ExcludeContentTypes (Optional) Exclude given content-types from your results. You can specify type/subtype pairs (e.g.,
 //    'image/jpeg'), or simply types (e.g., 'image', which will match
 //    'image/gif', 'image/jpeg', etc.).
-// # SearchTerm (Optional) The partial name of the files to match and return.
-// # Include (Optional) . Must be one of userArray of additional information to include.
+// # Query.SearchTerm (Optional) The partial name of the files to match and return.
+// # Query.Include (Optional) . Must be one of userArray of additional information to include.
 //
 //    "user":: the user who uploaded the file or last edited its content
 //    "usage_rights":: copyright and license information for the file (see UsageRights)
-// # Only (Optional) Array of information to restrict to. Overrides include[]
+// # Query.Only (Optional) Array of information to restrict to. Overrides include[]
 //
 //    "names":: only returns file name information
-// # Sort (Optional) . Must be one of name, size, created_at, updated_at, content_type, userSort results by this field. Defaults to 'name'. Note that `sort=user` implies `include[]=user`.
-// # Order (Optional) . Must be one of asc, descThe sorting order. Defaults to 'asc'.
+// # Query.Sort (Optional) . Must be one of name, size, created_at, updated_at, content_type, userSort results by this field. Defaults to 'name'. Note that `sort=user` implies `include[]=user`.
+// # Query.Order (Optional) . Must be one of asc, descThe sorting order. Defaults to 'asc'.
 //
 type ListFilesUsers struct {
 	Path struct {
@@ -83,7 +83,7 @@ func (t *ListFilesUsers) GetJSON() ([]byte, error) {
 func (t *ListFilesUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"user"}, v) {

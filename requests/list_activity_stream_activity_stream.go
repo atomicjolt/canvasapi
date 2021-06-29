@@ -110,7 +110,7 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Query Parameters:
-// # OnlyActiveCourses (Optional) If true, will only return objects for courses the user is actively participating in
+// # Query.OnlyActiveCourses (Optional) If true, will only return objects for courses the user is actively participating in
 //
 type ListActivityStreamActivityStream struct {
 	Query struct {

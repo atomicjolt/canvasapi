@@ -19,6 +19,6 @@ type QuizStatistics struct {
 	//NOTE: AVAILABLE ONLY IN JSON-API REQUESTS..
 }
 
-func (t *QuizStatistics) HasError() error {
+func (t *QuizStatistics) HasErrors() error {
 	return nil
 }

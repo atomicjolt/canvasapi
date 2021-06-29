@@ -16,7 +16,7 @@ import (
 // https://canvas.instructure.com/doc/api/favorites.html
 //
 // Path Parameters:
-// # ID (Required) The ID or SIS ID of the course to add.  The current user must be
+// # Path.ID (Required) The ID or SIS ID of the course to add.  The current user must be
 //    registered in the course.
 //
 type AddCourseToFavorites struct {
@@ -50,7 +50,7 @@ func (t *AddCourseToFavorites) GetJSON() ([]byte, error) {
 func (t *AddCourseToFavorites) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -14,6 +14,6 @@ type FederatedAttributesConfig struct {
 	Timezone      string `json:"timezone" url:"timezone,omitempty"`             // The user's preferred time zone.
 }
 
-func (t *FederatedAttributesConfig) HasError() error {
+func (t *FederatedAttributesConfig) HasErrors() error {
 	return nil
 }

@@ -17,13 +17,13 @@ import (
 // https://canvas.instructure.com/doc/api/bookmarks.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Name (Optional) The name of the bookmark
-// # Url (Optional) The url of the bookmark
-// # Position (Optional) The position of the bookmark. Defaults to the bottom.
-// # Data (Optional) The data associated with the bookmark
+// # Form.Name (Optional) The name of the bookmark
+// # Form.Url (Optional) The url of the bookmark
+// # Form.Position (Optional) The position of the bookmark. Defaults to the bottom.
+// # Form.Data (Optional) The data associated with the bookmark
 //
 type UpdateBookmark struct {
 	Path struct {
@@ -67,7 +67,7 @@ func (t *UpdateBookmark) GetJSON() ([]byte, error) {
 func (t *UpdateBookmark) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

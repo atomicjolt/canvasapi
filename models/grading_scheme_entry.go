@@ -5,6 +5,6 @@ type GradingSchemeEntry struct {
 	Value int64  `json:"value" url:"value,omitempty"` // The value for the name of the entry within a GradingStandard.  The entry represents the lower bound of the range for the entry. This range includes the value up to the next entry in the GradingStandard, or 100 if there is no upper bound. The lowest value will have a lower bound range of 0..Example: 0.9
 }
 
-func (t *GradingSchemeEntry) HasError() error {
+func (t *GradingSchemeEntry) HasErrors() error {
 	return nil
 }

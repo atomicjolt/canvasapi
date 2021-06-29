@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # SearchTerm (Required) Term used to find users.  Will search available share users with the search term in their name.
+// # Query.SearchTerm (Required) Term used to find users.  Will search available share users with the search term in their name.
 //
 type SearchForContentShareUsers struct {
 	Path struct {
@@ -62,10 +62,10 @@ func (t *SearchForContentShareUsers) GetJSON() ([]byte, error) {
 func (t *SearchForContentShareUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Query.SearchTerm == "" {
-		errs = append(errs, "'SearchTerm' is required")
+		errs = append(errs, "'Query.SearchTerm' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

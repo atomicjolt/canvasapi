@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/enrollments.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # ID (Required) The ID of the enrollment object
+// # Path.AccountID (Required) ID
+// # Path.ID (Required) The ID of the enrollment object
 //
 type EnrollmentByID struct {
 	Path struct {
@@ -51,7 +51,7 @@ func (t *EnrollmentByID) GetJSON() ([]byte, error) {
 func (t *EnrollmentByID) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

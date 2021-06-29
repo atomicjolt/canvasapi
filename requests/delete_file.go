@@ -21,10 +21,10 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Replace (Optional) This action is irreversible.
+// # Query.Replace (Optional) This action is irreversible.
 //    If replace is set to true the file contents will be replaced with a
 //    generic "file has been removed" file. This also destroys any previews
 //    that have been generated for the file.
@@ -69,7 +69,7 @@ func (t *DeleteFile) GetJSON() ([]byte, error) {
 func (t *DeleteFile) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

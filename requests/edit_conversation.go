@@ -16,20 +16,20 @@ import (
 // https://canvas.instructure.com/doc/api/conversations.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Conversation (Optional) . Must be one of read, unread, archivedChange the state of this conversation
-// # Conversation (Optional) Toggle the current user's subscription to the conversation (only valid for
+// # Form.Conversation.WorkflowState (Optional) . Must be one of read, unread, archivedChange the state of this conversation
+// # Form.Conversation.Subscribed (Optional) Toggle the current user's subscription to the conversation (only valid for
 //    group conversations). If unsubscribed, the user will still have access to
 //    the latest messages, but the conversation won't be automatically flagged
 //    as unread, nor will it jump to the top of the inbox.
-// # Conversation (Optional) Toggle the starred state of the current user's view of the conversation.
-// # Scope (Optional) . Must be one of unread, starred, archivedUsed when generating "visible" in the API response. See the explanation
+// # Form.Conversation.Starred (Optional) Toggle the starred state of the current user's view of the conversation.
+// # Form.Scope (Optional) . Must be one of unread, starred, archivedUsed when generating "visible" in the API response. See the explanation
 //    under the {api:ConversationsController#index index API action}
-// # Filter (Optional) Used when generating "visible" in the API response. See the explanation
+// # Form.Filter (Optional) Used when generating "visible" in the API response. See the explanation
 //    under the {api:ConversationsController#index index API action}
-// # FilterMode (Optional) . Must be one of and, or, default orUsed when generating "visible" in the API response. See the explanation
+// # Form.FilterMode (Optional) . Must be one of and, or, default orUsed when generating "visible" in the API response. See the explanation
 //    under the {api:ConversationsController#index index API action}
 //
 type EditConversation struct {
@@ -79,7 +79,7 @@ func (t *EditConversation) GetJSON() ([]byte, error) {
 func (t *EditConversation) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.Conversation.WorkflowState != "" && !string_utils.Include([]string{"read", "unread", "archived"}, t.Form.Conversation.WorkflowState) {
 		errs = append(errs, "Conversation must be one of read, unread, archived")

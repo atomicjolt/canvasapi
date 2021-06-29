@@ -10,6 +10,6 @@ type ErrorReport struct {
 	UserRoles             string `json:"user_roles" url:"user_roles,omitempty"`                           // comma seperated list of roles the reporting user holds.  Can be one [student], or many [teacher,admin].Example: user,teacher,admin
 }
 
-func (t *ErrorReport) HasError() error {
+func (t *ErrorReport) HasErrors() error {
 	return nil
 }

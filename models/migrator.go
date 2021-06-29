@@ -7,6 +7,6 @@ type Migrator struct {
 	RequiredSettings   []string `json:"required_settings" url:"required_settings,omitempty"`       // A list of fields this system requires.Example: source_course_id
 }
 
-func (t *Migrator) HasError() error {
+func (t *Migrator) HasErrors() error {
 	return nil
 }

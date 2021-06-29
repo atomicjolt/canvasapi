@@ -17,32 +17,32 @@ import (
 // https://canvas.instructure.com/doc/api/originality_reports.html
 //
 // Path Parameters:
-// # AssignmentID (Required) ID
-// # SubmissionID (Required) ID
+// # Path.AssignmentID (Required) ID
+// # Path.SubmissionID (Required) ID
 //
 // Form Parameters:
-// # OriginalityReport (Optional) The id of the file being given an originality score. Required
+// # Form.OriginalityReport.FileID (Optional) The id of the file being given an originality score. Required
 //    if creating a report associated with a file.
-// # OriginalityReport (Required) A number between 0 and 100 representing the measure of the
+// # Form.OriginalityReport.OriginalityScore (Required) A number between 0 and 100 representing the measure of the
 //    specified file's originality.
-// # OriginalityReport (Optional) The URL where the originality report for the specified
+// # Form.OriginalityReport.OriginalityReportUrl (Optional) The URL where the originality report for the specified
 //    file may be found.
-// # OriginalityReport (Optional) The ID of the file within Canvas that contains the originality
+// # Form.OriginalityReport.OriginalityReportFileID (Optional) The ID of the file within Canvas that contains the originality
 //    report for the submitted file provided in the request URL.
-// # OriginalityReport (Optional) The resource type code of the resource handler Canvas should use for the
+// # Form.OriginalityReport.ToolSetting.ResourceTypeCode (Optional) The resource type code of the resource handler Canvas should use for the
 //    LTI launch for viewing originality reports. If set Canvas will launch
 //    to the message with type 'basic-lti-launch-request' in the specified
 //    resource handler rather than using the originality_report_url.
-// # OriginalityReport (Optional) The URL Canvas should launch to when showing an LTI originality report.
+// # Form.OriginalityReport.ToolSetting.ResourceUrl (Optional) The URL Canvas should launch to when showing an LTI originality report.
 //    Note that this value is inferred from the specified resource handler's
 //    message "path" value (See `resource_type_code`) unless
 //    it is specified. If this parameter is used a `resource_type_code`
 //    must also be specified.
-// # OriginalityReport (Optional) May be set to "pending", "error", or "scored". If an originality score
+// # Form.OriginalityReport.WorkflowState (Optional) May be set to "pending", "error", or "scored". If an originality score
 //    is provided a workflow state of "scored" will be inferred.
-// # OriginalityReport (Optional) A message describing the error. If set, the "workflow_state"
+// # Form.OriginalityReport.ErrorMessage (Optional) A message describing the error. If set, the "workflow_state"
 //    will be set to "error."
-// # OriginalityReport (Optional) If no `file_id` is given, and no file is required for the assignment
+// # Form.OriginalityReport.Attempt (Optional) If no `file_id` is given, and no file is required for the assignment
 //    (that is, the assignment allows an online text entry), this parameter
 //    may be given to clarify which attempt number the report is for (in the
 //    case of resubmissions). If this field is omitted and no `file_id` is
@@ -103,10 +103,10 @@ func (t *CreateOriginalityReport) GetJSON() ([]byte, error) {
 func (t *CreateOriginalityReport) HasErrors() error {
 	errs := []string{}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if t.Path.SubmissionID == "" {
-		errs = append(errs, "'SubmissionID' is required")
+		errs = append(errs, "'Path.SubmissionID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

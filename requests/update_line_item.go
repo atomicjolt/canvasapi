@@ -17,16 +17,16 @@ import (
 // https://canvas.instructure.com/doc/api/line_items.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # ScoreMaximum (Optional) The maximum score for the line item. Scores created for the Line Item may exceed this value.
-// # Label (Optional) The label for the Line Item. If no resourceLinkId is specified this value will also be used
+// # Form.ScoreMaximum (Optional) The maximum score for the line item. Scores created for the Line Item may exceed this value.
+// # Form.Label (Optional) The label for the Line Item. If no resourceLinkId is specified this value will also be used
 //    as the name of the placeholder assignment.
-// # ResourceID (Optional) A Tool Provider specified id for the Line Item. Multiple line items may
+// # Form.ResourceID (Optional) A Tool Provider specified id for the Line Item. Multiple line items may
 //    share the same resourceId within a given context.
-// # Tag (Optional) A value used to qualify a line Item beyond its ids. Line Items may be queried
+// # Form.Tag (Optional) A value used to qualify a line Item beyond its ids. Line Items may be queried
 //    by this value in the List endpoint. Multiple line items can share the same tag
 //    within a given context.
 //
@@ -74,10 +74,10 @@ func (t *UpdateLineItem) GetJSON() ([]byte, error) {
 func (t *UpdateLineItem) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

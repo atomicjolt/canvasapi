@@ -16,8 +16,8 @@ import (
 // https://canvas.instructure.com/doc/api/analytics.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # StudentID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.StudentID (Required) ID
 //
 type GetUserInACourseLevelParticipationData struct {
 	Path struct {
@@ -52,10 +52,10 @@ func (t *GetUserInACourseLevelParticipationData) GetJSON() ([]byte, error) {
 func (t *GetUserInACourseLevelParticipationData) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.StudentID == "" {
-		errs = append(errs, "'StudentID' is required")
+		errs = append(errs, "'Path.StudentID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

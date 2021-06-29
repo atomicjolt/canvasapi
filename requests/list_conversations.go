@@ -19,25 +19,25 @@ import (
 // https://canvas.instructure.com/doc/api/conversations.html
 //
 // Query Parameters:
-// # Scope (Optional) . Must be one of unread, starred, archivedWhen set, only return conversations of the specified type. For example,
+// # Query.Scope (Optional) . Must be one of unread, starred, archivedWhen set, only return conversations of the specified type. For example,
 //    set to "unread" to return only conversations that haven't been read.
 //    The default behavior is to return all non-archived conversations (i.e.
 //    read and unread).
-// # Filter (Optional) When set, only return conversations for the specified courses, groups
+// # Query.Filter (Optional) When set, only return conversations for the specified courses, groups
 //    or users. The id should be prefixed with its type, e.g. "user_123" or
 //    "course_456". Can be an array (by setting "filter[]") or single value
 //    (by setting "filter")
-// # FilterMode (Optional) . Must be one of and, or, default orWhen filter[] contains multiple filters, combine them with this mode,
+// # Query.FilterMode (Optional) . Must be one of and, or, default orWhen filter[] contains multiple filters, combine them with this mode,
 //    filtering conversations that at have at least all of the contexts ("and")
 //    or at least one of the contexts ("or")
-// # InterleaveSubmissions (Optional) (Obsolete) Submissions are no
+// # Query.InterleaveSubmissions (Optional) (Obsolete) Submissions are no
 //    longer linked to conversations. This parameter is ignored.
-// # IncludeAllConversationIDs (Optional) Default is false. If true,
+// # Query.IncludeAllConversationIDs (Optional) Default is false. If true,
 //    the top-level element of the response will be an object rather than
 //    an array, and will have the keys "conversations" which will contain the
 //    paged conversation data, and "conversation_ids" which will contain the
 //    ids of all conversations under this scope/filter in the same order.
-// # Include (Optional) . Must be one of participant_avatars"participant_avatars":: Optionally include an "avatar_url" key for each user participanting in the conversation
+// # Query.Include (Optional) . Must be one of participant_avatars"participant_avatars":: Optionally include an "avatar_url" key for each user participanting in the conversation
 //
 type ListConversations struct {
 	Query struct {

@@ -16,10 +16,10 @@ import (
 // https://canvas.instructure.com/doc/api/content_security_policy_settings.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # Domain (Required) no description
+// # Form.Domain (Required) no description
 //
 type AddAllowedDomainToAccount struct {
 	Path struct {
@@ -60,10 +60,10 @@ func (t *AddAllowedDomainToAccount) GetJSON() ([]byte, error) {
 func (t *AddAllowedDomainToAccount) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Form.Domain == "" {
-		errs = append(errs, "'Domain' is required")
+		errs = append(errs, "'Form.Domain' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

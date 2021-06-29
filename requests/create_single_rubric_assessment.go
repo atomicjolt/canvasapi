@@ -17,14 +17,14 @@ import (
 // https://canvas.instructure.com/doc/api/rubrics.html
 //
 // Path Parameters:
-// # CourseID (Required) The id of the course
-// # RubricAssociationID (Required) The id of the object with which this rubric assessment is associated
+// # Path.CourseID (Required) The id of the course
+// # Path.RubricAssociationID (Required) The id of the object with which this rubric assessment is associated
 //
 // Form Parameters:
-// # Provisional (Optional) (optional) Indicates whether this assessment is provisional, defaults to false.
-// # Final (Optional) (optional) Indicates a provisional grade will be marked as final. It only takes effect if the provisional param is passed as true. Defaults to false.
-// # GradedAnonymously (Optional) (optional) Defaults to false
-// # RubricAssessment (Optional) A Hash of data to complement the rubric assessment:
+// # Form.Provisional (Optional) (optional) Indicates whether this assessment is provisional, defaults to false.
+// # Form.Final (Optional) (optional) Indicates a provisional grade will be marked as final. It only takes effect if the provisional param is passed as true. Defaults to false.
+// # Form.GradedAnonymously (Optional) (optional) Defaults to false
+// # Form.RubricAssessment (Optional) A Hash of data to complement the rubric assessment:
 //    The user id that refers to the person being assessed
 //      rubric_assessment[user_id]
 //    Assessment type. There are only three valid types:  'grading', 'peer_review', or 'provisional_grade'
@@ -43,10 +43,10 @@ type CreateSingleRubricAssessment struct {
 	} `json:"path"`
 
 	Form struct {
-		Provisional       string `json:"provisional" url:"provisional,omitempty"`               //  (Optional)
-		Final             string `json:"final" url:"final,omitempty"`                           //  (Optional)
-		GradedAnonymously bool   `json:"graded_anonymously" url:"graded_anonymously,omitempty"` //  (Optional)
-		RubricAssessment  string `json:"rubric_assessment" url:"rubric_assessment,omitempty"`   //  (Optional)
+		Provisional       string                   `json:"provisional" url:"provisional,omitempty"`               //  (Optional)
+		Final             string                   `json:"final" url:"final,omitempty"`                           //  (Optional)
+		GradedAnonymously bool                     `json:"graded_anonymously" url:"graded_anonymously,omitempty"` //  (Optional)
+		RubricAssessment  map[string](interface{}) `json:"rubric_assessment" url:"rubric_assessment,omitempty"`   //  (Optional)
 	} `json:"form"`
 }
 

@@ -21,19 +21,19 @@ import (
 // https://canvas.instructure.com/doc/api/assignments.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # AssignmentID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.AssignmentID (Required) ID
 //
 // Form Parameters:
-// # AssignmentOverride (Optional) The IDs of
+// # Form.AssignmentOverride.StudentIDs (Optional) The IDs of
 //    the override's target students. If present, the IDs must each identify a
 //    user with an active student enrollment in the course that is not already
 //    targetted by a different adhoc override.
-// # AssignmentOverride (Optional) The title of the adhoc
+// # Form.AssignmentOverride.Title (Optional) The title of the adhoc
 //    assignment override. Required if student_ids is present, ignored
 //    otherwise (the title is set to the name of the targetted group or section
 //    instead).
-// # AssignmentOverride (Optional) The ID of the
+// # Form.AssignmentOverride.GroupID (Optional) The ID of the
 //    override's target group. If present, the following conditions must be met
 //    for the override to be successful:
 //
@@ -42,21 +42,21 @@ import (
 //    3. the ID must not be targetted by a different override
 //
 //    See {Appendix: Group assignments} for more info.
-// # AssignmentOverride (Optional) The ID
+// # Form.AssignmentOverride.CourseSectionID (Optional) The ID
 //    of the override's target section. If present, must identify an active
 //    section of the assignment's course not already targetted by a different
 //    override.
-// # AssignmentOverride (Optional) The day/time
+// # Form.AssignmentOverride.DueAt (Optional) The day/time
 //    the overridden assignment is due. Accepts times in ISO 8601 format, e.g.
 //    2014-10-21T18:48:00Z. If absent, this override will not affect due date.
 //    May be present but null to indicate the override removes any previous due
 //    date.
-// # AssignmentOverride (Optional) The day/time
+// # Form.AssignmentOverride.UnlockAt (Optional) The day/time
 //    the overridden assignment becomes unlocked. Accepts times in ISO 8601
 //    format, e.g. 2014-10-21T18:48:00Z. If absent, this override will not
 //    affect the unlock date. May be present but null to indicate the override
 //    removes any previous unlock date.
-// # AssignmentOverride (Optional) The day/time
+// # Form.AssignmentOverride.LockAt (Optional) The day/time
 //    the overridden assignment becomes locked. Accepts times in ISO 8601
 //    format, e.g. 2014-10-21T18:48:00Z. If absent, this override will not
 //    affect the lock date. May be present but null to indicate the override
@@ -70,7 +70,7 @@ type CreateAssignmentOverride struct {
 
 	Form struct {
 		AssignmentOverride struct {
-			StudentIDs      []int64   `json:"student_ids" url:"student_ids,omitempty"`             //  (Optional)
+			StudentIDs      []string  `json:"student_ids" url:"student_ids,omitempty"`             //  (Optional)
 			Title           string    `json:"title" url:"title,omitempty"`                         //  (Optional)
 			GroupID         int64     `json:"group_id" url:"group_id,omitempty"`                   //  (Optional)
 			CourseSectionID int64     `json:"course_section_id" url:"course_section_id,omitempty"` //  (Optional)
@@ -111,10 +111,10 @@ func (t *CreateAssignmentOverride) GetJSON() ([]byte, error) {
 func (t *CreateAssignmentOverride) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

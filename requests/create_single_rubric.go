@@ -23,21 +23,21 @@ import (
 // https://canvas.instructure.com/doc/api/rubrics.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # ID (Optional) The id of the rubric
-// # RubricAssociationID (Optional) The id of the object with which this rubric is associated
-// # Rubric (Optional) The title of the rubric
-// # Rubric (Optional) Whether or not you can write custom comments in the ratings field for a rubric
-// # RubricAssociation (Optional) The id of the object with which this rubric is associated
-// # RubricAssociation (Optional) . Must be one of Assignment, Course, AccountThe type of object this rubric is associated with
-// # RubricAssociation (Optional) Whether or not the associated rubric is used for grade calculation
-// # RubricAssociation (Optional) Whether or not the score total is displayed within the rubric.
+// # Form.ID (Optional) The id of the rubric
+// # Form.RubricAssociationID (Optional) The id of the object with which this rubric is associated
+// # Form.Rubric.Title (Optional) The title of the rubric
+// # Form.Rubric.FreeFormCriterionComments (Optional) Whether or not you can write custom comments in the ratings field for a rubric
+// # Form.RubricAssociation.AssociationID (Optional) The id of the object with which this rubric is associated
+// # Form.RubricAssociation.AssociationType (Optional) . Must be one of Assignment, Course, AccountThe type of object this rubric is associated with
+// # Form.RubricAssociation.UseForGrading (Optional) Whether or not the associated rubric is used for grade calculation
+// # Form.RubricAssociation.HideScoreTotal (Optional) Whether or not the score total is displayed within the rubric.
 //    This option is only available if the rubric is not used for grading.
-// # RubricAssociation (Optional) Whether or not the association is for grading (and thus linked to an assignment)
+// # Form.RubricAssociation.Purpose (Optional) Whether or not the association is for grading (and thus linked to an assignment)
 //    or if it's to indicate the rubric should appear in its context
-// # Rubric (Optional) An indexed Hash of RubricCriteria objects where the keys are integer ids and the values are the RubricCriteria objects
+// # Form.Rubric.Criteria (Optional) An indexed Hash of RubricCriteria objects where the keys are integer ids and the values are the RubricCriteria objects
 //
 type CreateSingleRubric struct {
 	Path struct {
@@ -48,9 +48,9 @@ type CreateSingleRubric struct {
 		ID                  int64 `json:"id" url:"id,omitempty"`                                       //  (Optional)
 		RubricAssociationID int64 `json:"rubric_association_id" url:"rubric_association_id,omitempty"` //  (Optional)
 		Rubric              struct {
-			Title                     string `json:"title" url:"title,omitempty"`                                               //  (Optional)
-			FreeFormCriterionComments bool   `json:"free_form_criterion_comments" url:"free_form_criterion_comments,omitempty"` //  (Optional)
-			Criteria                  string `json:"criteria" url:"criteria,omitempty"`                                         //  (Optional)
+			Title                     string                   `json:"title" url:"title,omitempty"`                                               //  (Optional)
+			FreeFormCriterionComments bool                     `json:"free_form_criterion_comments" url:"free_form_criterion_comments,omitempty"` //  (Optional)
+			Criteria                  map[string](interface{}) `json:"criteria" url:"criteria,omitempty"`                                         //  (Optional)
 		} `json:"rubric" url:"rubric,omitempty"`
 
 		RubricAssociation struct {
@@ -92,7 +92,7 @@ func (t *CreateSingleRubric) GetJSON() ([]byte, error) {
 func (t *CreateSingleRubric) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Form.RubricAssociation.AssociationType != "" && !string_utils.Include([]string{"Assignment", "Course", "Account"}, t.Form.RubricAssociation.AssociationType) {
 		errs = append(errs, "RubricAssociation must be one of Assignment, Course, Account")

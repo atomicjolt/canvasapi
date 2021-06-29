@@ -30,6 +30,6 @@ type SubmissionVersion struct {
 	WorkflowState                 string    `json:"workflow_state" url:"workflow_state,omitempty"`                                     // the state of the submission at this version.Example: unsubmitted
 }
 
-func (t *SubmissionVersion) HasError() error {
+func (t *SubmissionVersion) HasErrors() error {
 	return nil
 }

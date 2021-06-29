@@ -12,9 +12,9 @@ import (
 // https://canvas.instructure.com/doc/api/poll_submissions.html
 //
 // Path Parameters:
-// # PollID (Required) ID
-// # PollSessionID (Required) ID
-// # ID (Required) ID
+// # Path.PollID (Required) ID
+// # Path.PollSessionID (Required) ID
+// # Path.ID (Required) ID
 //
 type GetSinglePollSubmission struct {
 	Path struct {
@@ -51,13 +51,13 @@ func (t *GetSinglePollSubmission) GetJSON() ([]byte, error) {
 func (t *GetSinglePollSubmission) HasErrors() error {
 	errs := []string{}
 	if t.Path.PollID == "" {
-		errs = append(errs, "'PollID' is required")
+		errs = append(errs, "'Path.PollID' is required")
 	}
 	if t.Path.PollSessionID == "" {
-		errs = append(errs, "'PollSessionID' is required")
+		errs = append(errs, "'Path.PollSessionID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

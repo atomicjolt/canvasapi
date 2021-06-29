@@ -12,7 +12,7 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 type GetQuotaInformationGroups struct {
 	Path struct {
@@ -45,7 +45,7 @@ func (t *GetQuotaInformationGroups) GetJSON() ([]byte, error) {
 func (t *GetQuotaInformationGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

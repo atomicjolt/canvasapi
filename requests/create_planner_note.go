@@ -16,16 +16,16 @@ import (
 // https://canvas.instructure.com/doc/api/planner.html
 //
 // Form Parameters:
-// # Title (Optional) The title of the planner note.
-// # Details (Optional) Text of the planner note.
-// # TodoDate (Optional) The date where this planner note should appear in the planner.
+// # Form.Title (Optional) The title of the planner note.
+// # Form.Details (Optional) Text of the planner note.
+// # Form.TodoDate (Optional) The date where this planner note should appear in the planner.
 //    The value should be formatted as: yyyy-mm-dd.
-// # CourseID (Optional) The ID of the course to associate with the planner note. The caller must be able to view the course in order to
+// # Form.CourseID (Optional) The ID of the course to associate with the planner note. The caller must be able to view the course in order to
 //    associate it with a planner note.
-// # LinkedObjectType (Optional) The type of a learning object to link to this planner note. Must be used in conjunction wtih linked_object_id
+// # Form.LinkedObjectType (Optional) The type of a learning object to link to this planner note. Must be used in conjunction wtih linked_object_id
 //    and course_id. Valid linked_object_type values are:
 //    'announcement', 'assignment', 'discussion_topic', 'wiki_page', 'quiz'
-// # LinkedObjectID (Optional) The id of a learning object to link to this planner note. Must be used in conjunction with linked_object_type
+// # Form.LinkedObjectID (Optional) The id of a learning object to link to this planner note. Must be used in conjunction with linked_object_type
 //    and course_id. The object must be in the same course as specified by course_id. If the title argument is not
 //    provided, the planner note will use the learning object's title as its title. Only one planner note may be
 //    linked to a specific learning object.

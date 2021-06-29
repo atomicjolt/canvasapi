@@ -6,6 +6,6 @@ type ExternalToolTagAttributes struct {
 	ResourceLinkID string `json:"resource_link_id" url:"resource_link_id,omitempty"` // the identifier for this tool_tag.Example: ab81173af98b8c33e66a
 }
 
-func (t *ExternalToolTagAttributes) HasError() error {
+func (t *ExternalToolTagAttributes) HasErrors() error {
 	return nil
 }

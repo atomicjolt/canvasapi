@@ -10,10 +10,10 @@ type RubricAssessment struct {
 	ArtifactAttempt     int64    `json:"artifact_attempt" url:"artifact_attempt,omitempty"`           // the current number of attempts made on the object of the assessment.Example: 2
 	AssessmentType      string   `json:"assessment_type" url:"assessment_type,omitempty"`             // the type of assessment. values will be either 'grading', 'peer_review', or 'provisional_grade'.Example: grading
 	AssessorID          int64    `json:"assessor_id" url:"assessor_id,omitempty"`                     // user id of the person who made the assessment.Example: 6
-	Data                string   `json:"data" url:"data,omitempty"`                                   // (Optional) If 'full' is included in the 'style' parameter, returned assessments will have their full details contained in their data hash. If the user does not request a style, this key will be absent..
+	Data                []string `json:"data" url:"data,omitempty"`                                   // (Optional) If 'full' is included in the 'style' parameter, returned assessments will have their full details contained in their data hash. If the user does not request a style, this key will be absent..
 	Comments            []string `json:"comments" url:"comments,omitempty"`                           // (Optional) If 'comments_only' is included in the 'style' parameter, returned assessments will include only the comments portion of their data hash. If the user does not request a style, this key will be absent..
 }
 
-func (t *RubricAssessment) HasError() error {
+func (t *RubricAssessment) HasErrors() error {
 	return nil
 }

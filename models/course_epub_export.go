@@ -6,6 +6,6 @@ type CourseEpubExport struct {
 	EpubExport *EpubExport `json:"epub_export" url:"epub_export,omitempty"` // ePub export API object.
 }
 
-func (t *CourseEpubExport) HasError() error {
+func (t *CourseEpubExport) HasErrors() error {
 	return nil
 }

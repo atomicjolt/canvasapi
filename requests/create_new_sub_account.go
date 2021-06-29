@@ -17,14 +17,14 @@ import (
 // https://canvas.instructure.com/doc/api/accounts.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # Account (Required) The name of the new sub-account.
-// # Account (Optional) The account's identifier in the Student Information System.
-// # Account (Optional) The default course storage quota to be used, if not otherwise specified.
-// # Account (Optional) The default user storage quota to be used, if not otherwise specified.
-// # Account (Optional) The default group storage quota to be used, if not otherwise specified.
+// # Form.Account.Name (Required) The name of the new sub-account.
+// # Form.Account.SISAccountID (Optional) The account's identifier in the Student Information System.
+// # Form.Account.DefaultStorageQuotaMb (Optional) The default course storage quota to be used, if not otherwise specified.
+// # Form.Account.DefaultUserStorageQuotaMb (Optional) The default user storage quota to be used, if not otherwise specified.
+// # Form.Account.DefaultGroupStorageQuotaMb (Optional) The default group storage quota to be used, if not otherwise specified.
 //
 type CreateNewSubAccount struct {
 	Path struct {
@@ -71,10 +71,10 @@ func (t *CreateNewSubAccount) GetJSON() ([]byte, error) {
 func (t *CreateNewSubAccount) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Form.Account.Name == "" {
-		errs = append(errs, "'Account' is required")
+		errs = append(errs, "'Form.Account.Name' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

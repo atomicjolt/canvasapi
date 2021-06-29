@@ -9,6 +9,6 @@ type TermsOfService struct {
 	SelfRegistrationType string `json:"self_registration_type" url:"self_registration_type,omitempty"` // The type of self registration allowed.Example: none, observer, all
 }
 
-func (t *TermsOfService) HasError() error {
+func (t *TermsOfService) HasErrors() error {
 	return nil
 }

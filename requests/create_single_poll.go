@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/polls.html
 //
 // Form Parameters:
-// # Polls (Required) The title of the poll.
-// # Polls (Optional) A brief description or instructions for the poll.
+// # Form.Polls.Question (Required) The title of the poll.
+// # Form.Polls.Description (Optional) A brief description or instructions for the poll.
 //
 type CreateSinglePoll struct {
 	Form struct {
@@ -54,7 +54,7 @@ func (t *CreateSinglePoll) GetJSON() ([]byte, error) {
 func (t *CreateSinglePoll) HasErrors() error {
 	errs := []string{}
 	if t.Form.Polls.Question == nil {
-		errs = append(errs, "'Polls' is required")
+		errs = append(errs, "'Form.Polls.Question' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

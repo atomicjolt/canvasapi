@@ -14,11 +14,11 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Query Parameters:
-// # FileIDs (Required) List of ids of files to remove associated usage rights from.
-// # FolderIDs (Optional) List of ids of folders. Usage rights will be removed from all files in these folders.
+// # Query.FileIDs (Required) List of ids of files to remove associated usage rights from.
+// # Query.FolderIDs (Optional) List of ids of folders. Usage rights will be removed from all files in these folders.
 //
 type RemoveUsageRightsUsers struct {
 	Path struct {
@@ -60,10 +60,10 @@ func (t *RemoveUsageRightsUsers) GetJSON() ([]byte, error) {
 func (t *RemoveUsageRightsUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Query.FileIDs == nil {
-		errs = append(errs, "'FileIDs' is required")
+		errs = append(errs, "'Query.FileIDs' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

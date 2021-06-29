@@ -15,6 +15,6 @@ type SubmissionComment struct {
 	MediaComment *MediaComment `json:"media_comment" url:"media_comment,omitempty"` //
 }
 
-func (t *SubmissionComment) HasError() error {
+func (t *SubmissionComment) HasErrors() error {
 	return nil
 }

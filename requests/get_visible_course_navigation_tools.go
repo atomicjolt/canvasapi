@@ -19,7 +19,7 @@ import (
 // https://canvas.instructure.com/doc/api/external_tools.html
 //
 // Query Parameters:
-// # ContextCodes (Required) List of context_codes to retrieve visible course nav tools for (for example, +course_123+). Only
+// # Query.ContextCodes (Required) List of context_codes to retrieve visible course nav tools for (for example, +course_123+). Only
 //    courses are presently supported.
 //
 type GetVisibleCourseNavigationTools struct {
@@ -55,7 +55,7 @@ func (t *GetVisibleCourseNavigationTools) GetJSON() ([]byte, error) {
 func (t *GetVisibleCourseNavigationTools) HasErrors() error {
 	errs := []string{}
 	if t.Query.ContextCodes == nil {
-		errs = append(errs, "'ContextCodes' is required")
+		errs = append(errs, "'Query.ContextCodes' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

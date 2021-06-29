@@ -7,6 +7,6 @@ type SSOSettings struct {
 	UnknownUserUrl    string `json:"unknown_user_url" url:"unknown_user_url,omitempty"`       // If an unknown user url is set, Canvas will forward to that url when a service authenticates a user, but that user does not exist in Canvas. The default behavior is to present an error..Example: https://example.com/register_for_canvas
 }
 
-func (t *SSOSettings) HasError() error {
+func (t *SSOSettings) HasErrors() error {
 	return nil
 }

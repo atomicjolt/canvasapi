@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/groups.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # MembershipID (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.MembershipID (Required) ID
 //
 // Form Parameters:
-// # WorkflowState (Optional) . Must be one of acceptedCurrently, the only allowed value is "accepted"
-// # Moderator (Optional) no description
+// # Form.WorkflowState (Optional) . Must be one of acceptedCurrently, the only allowed value is "accepted"
+// # Form.Moderator (Optional) no description
 //
 type UpdateMembershipMemberships struct {
 	Path struct {
@@ -67,10 +67,10 @@ func (t *UpdateMembershipMemberships) GetJSON() ([]byte, error) {
 func (t *UpdateMembershipMemberships) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.MembershipID == "" {
-		errs = append(errs, "'MembershipID' is required")
+		errs = append(errs, "'Path.MembershipID' is required")
 	}
 	if t.Form.WorkflowState != "" && !string_utils.Include([]string{"accepted"}, t.Form.WorkflowState) {
 		errs = append(errs, "WorkflowState must be one of accepted")

@@ -16,7 +16,7 @@ type SISAssignment struct {
 	UnlockAt            time.Time                           `json:"unlock_at" url:"unlock_at,omitempty"`                           // (Optional) Time at which this was/will be unlocked..Example: 2013-01-01T00:00:00-06:00
 	LockAt              time.Time                           `json:"lock_at" url:"lock_at,omitempty"`                               // (Optional) Time at which this was/will be locked..Example: 2013-02-01T00:00:00-06:00
 	PointsPossible      int64                               `json:"points_possible" url:"points_possible,omitempty"`               // The maximum points possible for the assignment.Example: 12
-	SubmissionTypes     string                              `json:"submission_types" url:"submission_types,omitempty"`             // the types of submissions allowed for this assignment list containing one or more of the following: 'discussion_topic', 'online_quiz', 'on_paper', 'none', 'external_tool', 'online_text_entry', 'online_url', 'online_upload', 'media_recording', 'student_annotation'.Example: online_text_entry
+	SubmissionTypes     []string                            `json:"submission_types" url:"submission_types,omitempty"`             // the types of submissions allowed for this assignment list containing one or more of the following: 'discussion_topic', 'online_quiz', 'on_paper', 'none', 'external_tool', 'online_text_entry', 'online_url', 'online_upload', 'media_recording', 'student_annotation'.Example: online_text_entry
 	IntegrationID       string                              `json:"integration_id" url:"integration_id,omitempty"`                 // Third Party integration id for assignment.Example: 12341234
 	IntegrationData     string                              `json:"integration_data" url:"integration_data,omitempty"`             // (optional, Third Party integration data for assignment).Example: other_data
 	IncludeInFinalGrade bool                                `json:"include_in_final_grade" url:"include_in_final_grade,omitempty"` // If false, the assignment will be omitted from the student's final grade.Example: true
@@ -25,11 +25,15 @@ type SISAssignment struct {
 	UserOverrides       []*UserAssignmentOverrideAttributes `json:"user_overrides" url:"user_overrides,omitempty"`                 // Includes attributes of a user assignment overrides. For more details see Assignments API..
 }
 
-func (t *SISAssignment) HasError() error {
+func (t *SISAssignment) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"discussion_topic", "online_quiz", "on_paper", "not_graded", "none", "external_tool", "online_text_entry", "online_url", "online_upload", "media_recording", "student_annotation"}
-	if t.SubmissionTypes != "" && !string_utils.Include(s, t.SubmissionTypes) {
-		return fmt.Errorf("expected 'submission_types' to be one of %v", s)
+
+	for _, v := range t.SubmissionTypes {
+		if v != "" && !string_utils.Include(s, v) {
+			errs = append(errs, fmt.Sprintf("expected 'SubmissionTypes' to be one of %v", s))
+		}
 	}
 	return nil
 }

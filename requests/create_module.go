@@ -18,17 +18,17 @@ import (
 // https://canvas.instructure.com/doc/api/modules.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # Module (Required) The name of the module
-// # Module (Optional) The date the module will unlock
-// # Module (Optional) The position of this module in the course (1-based)
-// # Module (Optional) Whether module items must be unlocked in order
-// # Module (Optional) IDs of Modules that must be completed before this one is unlocked.
+// # Form.Module.Name (Required) The name of the module
+// # Form.Module.UnlockAt (Optional) The date the module will unlock
+// # Form.Module.Position (Optional) The position of this module in the course (1-based)
+// # Form.Module.RequireSequentialProgress (Optional) Whether module items must be unlocked in order
+// # Form.Module.PrerequisiteModuleIDs (Optional) IDs of Modules that must be completed before this one is unlocked.
 //    Prerequisite modules must precede this module (i.e. have a lower position
 //    value), otherwise they will be ignored
-// # Module (Optional) Whether to publish the student's final grade for the course upon
+// # Form.Module.PublishFinalGrade (Optional) Whether to publish the student's final grade for the course upon
 //    completion of this module.
 //
 type CreateModule struct {
@@ -77,10 +77,10 @@ func (t *CreateModule) GetJSON() ([]byte, error) {
 func (t *CreateModule) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Form.Module.Name == "" {
-		errs = append(errs, "'Module' is required")
+		errs = append(errs, "'Form.Module.Name' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

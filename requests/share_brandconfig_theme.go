@@ -18,11 +18,11 @@ import (
 // https://canvas.instructure.com/doc/api/shared_brand_configs.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # SharedBrandConfig (Required) Name to share this BrandConfig (theme) as.
-// # SharedBrandConfig (Required) MD5 of brand_config to share
+// # Form.SharedBrandConfig.Name (Required) Name to share this BrandConfig (theme) as.
+// # Form.SharedBrandConfig.BrandConfigMd5 (Required) MD5 of brand_config to share
 //
 type ShareBrandconfigTheme struct {
 	Path struct {
@@ -66,13 +66,13 @@ func (t *ShareBrandconfigTheme) GetJSON() ([]byte, error) {
 func (t *ShareBrandconfigTheme) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Form.SharedBrandConfig.Name == "" {
-		errs = append(errs, "'SharedBrandConfig' is required")
+		errs = append(errs, "'Form.SharedBrandConfig.Name' is required")
 	}
 	if t.Form.SharedBrandConfig.BrandConfigMd5 == "" {
-		errs = append(errs, "'SharedBrandConfig' is required")
+		errs = append(errs, "'Form.SharedBrandConfig.BrandConfigMd5' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

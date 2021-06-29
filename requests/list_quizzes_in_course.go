@@ -17,10 +17,10 @@ import (
 // https://canvas.instructure.com/doc/api/quizzes.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # SearchTerm (Optional) The partial title of the quizzes to match and return.
+// # Query.SearchTerm (Optional) The partial title of the quizzes to match and return.
 //
 type ListQuizzesInCourse struct {
 	Path struct {
@@ -61,7 +61,7 @@ func (t *ListQuizzesInCourse) GetJSON() ([]byte, error) {
 func (t *ListQuizzesInCourse) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

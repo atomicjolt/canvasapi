@@ -17,10 +17,10 @@ import (
 // https://canvas.instructure.com/doc/api/accounts.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # Recursive (Optional) If true, the entire account tree underneath
+// # Query.Recursive (Optional) If true, the entire account tree underneath
 //    this account will be returned (though still paginated). If false, only
 //    direct sub-accounts of this account will be returned. Defaults to false.
 //
@@ -63,7 +63,7 @@ func (t *GetSubAccountsOfAccount) GetJSON() ([]byte, error) {
 func (t *GetSubAccountsOfAccount) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

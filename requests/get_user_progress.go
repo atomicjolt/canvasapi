@@ -18,8 +18,8 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # UserID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.UserID (Required) ID
 //
 type GetUserProgress struct {
 	Path struct {
@@ -54,10 +54,10 @@ func (t *GetUserProgress) GetJSON() ([]byte, error) {
 func (t *GetUserProgress) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

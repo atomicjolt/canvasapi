@@ -20,10 +20,10 @@ import (
 // https://canvas.instructure.com/doc/api/accounts.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # Permissions (Optional) List of permissions to check against the authenticated user.
+// # Query.Permissions (Optional) List of permissions to check against the authenticated user.
 //    Permission names are documented in the {api:RoleOverridesController#add_role Create a role} endpoint.
 //
 type Permissions struct {
@@ -65,7 +65,7 @@ func (t *Permissions) GetJSON() ([]byte, error) {
 func (t *Permissions) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

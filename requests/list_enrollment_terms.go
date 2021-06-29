@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/enrollment_terms.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # WorkflowState (Optional) . Must be one of active, deleted, allIf set, only returns terms that are in the given state.
+// # Query.WorkflowState (Optional) . Must be one of active, deleted, allIf set, only returns terms that are in the given state.
 //    Defaults to 'active'.
-// # Include (Optional) . Must be one of overridesArray of additional information to include.
+// # Query.Include (Optional) . Must be one of overridesArray of additional information to include.
 //
 //    "overrides":: term start/end dates overridden for different enrollment types
 //
@@ -67,7 +67,7 @@ func (t *ListEnrollmentTerms) GetJSON() ([]byte, error) {
 func (t *ListEnrollmentTerms) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	for _, v := range t.Query.WorkflowState {
 		if v != "" && !string_utils.Include([]string{"active", "deleted", "all"}, v) {

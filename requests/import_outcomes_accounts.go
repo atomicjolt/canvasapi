@@ -20,13 +20,13 @@ import (
 // https://canvas.instructure.com/doc/api/outcome_imports.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # ImportType (Optional) Choose the data format for reading outcome data. With a standard Canvas
+// # Form.ImportType (Optional) Choose the data format for reading outcome data. With a standard Canvas
 //    install, this option can only be 'instructure_csv', and if unprovided,
 //    will be assumed to be so. Can be part of the query string.
-// # Attachment (Optional) There are two ways to post outcome import data - either via a
+// # Form.Attachment (Optional) There are two ways to post outcome import data - either via a
 //    multipart/form-data form-field-style attachment, or via a non-multipart
 //    raw post request.
 //
@@ -51,7 +51,7 @@ import (
 //      curl -H 'Content-Type: text/csv' --data-binary @<filename>.csv \
 //          -H "Authorization: Bearer <token>" \
 //          'https://<canvas>/api/v1/courses/<course_id>/outcome_imports?import_type=instructure_csv'
-// # Extension (Optional) Recommended for raw post request style imports. This field will be used to
+// # Form.Extension (Optional) Recommended for raw post request style imports. This field will be used to
 //    distinguish between csv and other file format extensions that
 //    would usually be provided with the filename in the multipart post request
 //    scenario. If not provided, this value will be inferred from the
@@ -98,7 +98,7 @@ func (t *ImportOutcomesAccounts) GetJSON() ([]byte, error) {
 func (t *ImportOutcomesAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

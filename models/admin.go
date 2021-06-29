@@ -7,6 +7,6 @@ type Admin struct {
 	WorkflowState string `json:"workflow_state" url:"workflow_state,omitempty"` // The status of the account role/user assignment..Example: deleted
 }
 
-func (t *Admin) HasError() error {
+func (t *Admin) HasErrors() error {
 	return nil
 }

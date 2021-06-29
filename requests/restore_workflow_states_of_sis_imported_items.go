@@ -25,14 +25,14 @@ import (
 // https://canvas.instructure.com/doc/api/sis_imports.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # ID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # BatchMode (Optional) If set, will only restore items that were deleted from batch_mode.
-// # UndeleteOnly (Optional) If set, will only restore items that were deleted. This will ignore any
+// # Form.BatchMode (Optional) If set, will only restore items that were deleted from batch_mode.
+// # Form.UndeleteOnly (Optional) If set, will only restore items that were deleted. This will ignore any
 //    items that were created or modified.
-// # UnconcludeOnly (Optional) If set, will only restore enrollments that were concluded. This will
+// # Form.UnconcludeOnly (Optional) If set, will only restore enrollments that were concluded. This will
 //    ignore any items that were created or deleted.
 //
 type RestoreWorkflowStatesOfSISImportedItems struct {
@@ -78,10 +78,10 @@ func (t *RestoreWorkflowStatesOfSISImportedItems) GetJSON() ([]byte, error) {
 func (t *RestoreWorkflowStatesOfSISImportedItems) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

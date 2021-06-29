@@ -14,8 +14,8 @@ import (
 // https://canvas.instructure.com/doc/api/groups.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # MembershipID (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.MembershipID (Required) ID
 //
 type LeaveGroupMemberships struct {
 	Path struct {
@@ -50,10 +50,10 @@ func (t *LeaveGroupMemberships) GetJSON() ([]byte, error) {
 func (t *LeaveGroupMemberships) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.MembershipID == "" {
-		errs = append(errs, "'MembershipID' is required")
+		errs = append(errs, "'Path.MembershipID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -8,6 +8,6 @@ type PollChoice struct {
 	Position  int64  `json:"position" url:"position,omitempty"`     // The order of the poll choice in relation to it's sibling poll choices..Example: 1
 }
 
-func (t *PollChoice) HasError() error {
+func (t *PollChoice) HasErrors() error {
 	return nil
 }

@@ -15,12 +15,12 @@ import (
 // https://canvas.instructure.com/doc/api/external_tools.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Query Parameters:
-// # SearchTerm (Optional) The partial name of the tools to match and return.
-// # Selectable (Optional) If true, then only tools that are meant to be selectable are returned
-// # IncludeParents (Optional) If true, then include tools installed in all accounts above the current context
+// # Query.SearchTerm (Optional) The partial name of the tools to match and return.
+// # Query.Selectable (Optional) If true, then only tools that are meant to be selectable are returned
+// # Query.IncludeParents (Optional) If true, then include tools installed in all accounts above the current context
 //
 type ListExternalToolsGroups struct {
 	Path struct {
@@ -63,7 +63,7 @@ func (t *ListExternalToolsGroups) GetJSON() ([]byte, error) {
 func (t *ListExternalToolsGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

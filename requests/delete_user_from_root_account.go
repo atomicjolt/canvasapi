@@ -21,8 +21,8 @@ import (
 // https://canvas.instructure.com/doc/api/accounts.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # UserID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.UserID (Required) ID
 //
 type DeleteUserFromRootAccount struct {
 	Path struct {
@@ -57,10 +57,10 @@ func (t *DeleteUserFromRootAccount) GetJSON() ([]byte, error) {
 func (t *DeleteUserFromRootAccount) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

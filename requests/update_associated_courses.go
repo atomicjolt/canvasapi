@@ -19,12 +19,12 @@ import (
 // https://canvas.instructure.com/doc/api/blueprint_courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # TemplateID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.TemplateID (Required) ID
 //
 // Form Parameters:
-// # CourseIDsToAdd (Optional) Courses to add as associated courses
-// # CourseIDsToRemove (Optional) Courses to remove as associated courses
+// # Form.CourseIDsToAdd (Optional) Courses to add as associated courses
+// # Form.CourseIDsToRemove (Optional) Courses to remove as associated courses
 //
 type UpdateAssociatedCourses struct {
 	Path struct {
@@ -68,10 +68,10 @@ func (t *UpdateAssociatedCourses) GetJSON() ([]byte, error) {
 func (t *UpdateAssociatedCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.TemplateID == "" {
-		errs = append(errs, "'TemplateID' is required")
+		errs = append(errs, "'Path.TemplateID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

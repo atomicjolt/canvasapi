@@ -18,28 +18,28 @@ import (
 // https://canvas.instructure.com/doc/api/appointment_groups.html
 //
 // Form Parameters:
-// # AppointmentGroup (Required) Array of context codes (courses, e.g. course_1) this group should be
+// # Form.AppointmentGroup.ContextCodes (Required) Array of context codes (courses, e.g. course_1) this group should be
 //    linked to (1 or more). Users in the course(s) with appropriate permissions
 //    will be able to sign up for this appointment group.
-// # AppointmentGroup (Optional) Array of sub context codes (course sections or a single group category)
+// # Form.AppointmentGroup.SubContextCodes (Optional) Array of sub context codes (course sections or a single group category)
 //    this group should be linked to. Used to limit the appointment group to
 //    particular sections. If a group category is specified, students will sign
 //    up in groups and the participant_type will be "Group" instead of "User".
-// # AppointmentGroup (Required) Short title for the appointment group.
-// # AppointmentGroup (Optional) Longer text description of the appointment group.
-// # AppointmentGroup (Optional) Location name of the appointment group.
-// # AppointmentGroup (Optional) Location address.
-// # AppointmentGroup (Optional) Indicates whether this appointment group should be published (i.e. made
+// # Form.AppointmentGroup.Title (Required) Short title for the appointment group.
+// # Form.AppointmentGroup.Description (Optional) Longer text description of the appointment group.
+// # Form.AppointmentGroup.LocationName (Optional) Location name of the appointment group.
+// # Form.AppointmentGroup.LocationAddress (Optional) Location address.
+// # Form.AppointmentGroup.Publish (Optional) Indicates whether this appointment group should be published (i.e. made
 //    available for signup). Once published, an appointment group cannot be
 //    unpublished. Defaults to false.
-// # AppointmentGroup (Optional) Maximum number of participants that may register for each time slot.
+// # Form.AppointmentGroup.ParticipantsPerAppointment (Optional) Maximum number of participants that may register for each time slot.
 //    Defaults to null (no limit).
-// # AppointmentGroup (Optional) Minimum number of time slots a user must register for. If not set, users
+// # Form.AppointmentGroup.MinAppointmentsPerParticipant (Optional) Minimum number of time slots a user must register for. If not set, users
 //    do not need to sign up for any time slots.
-// # AppointmentGroup (Optional) Maximum number of time slots a user may register for.
-// # AppointmentGroup (Optional) Nested array of start time/end time pairs indicating time slots for this
+// # Form.AppointmentGroup.MaxAppointmentsPerParticipant (Optional) Maximum number of time slots a user may register for.
+// # Form.AppointmentGroup (Optional) Nested array of start time/end time pairs indicating time slots for this
 //    appointment group. Refer to the example request.
-// # AppointmentGroup (Optional) . Must be one of private, protected"private":: participants cannot see who has signed up for a particular
+// # Form.AppointmentGroup.ParticipantVisibility (Optional) . Must be one of private, protected"private":: participants cannot see who has signed up for a particular
 //                time slot
 //    "protected":: participants can see who has signed up.  Defaults to
 //                  "private".
@@ -93,10 +93,10 @@ func (t *CreateAppointmentGroup) GetJSON() ([]byte, error) {
 func (t *CreateAppointmentGroup) HasErrors() error {
 	errs := []string{}
 	if t.Form.AppointmentGroup.ContextCodes == nil {
-		errs = append(errs, "'AppointmentGroup' is required")
+		errs = append(errs, "'Form.AppointmentGroup.ContextCodes' is required")
 	}
 	if t.Form.AppointmentGroup.Title == "" {
-		errs = append(errs, "'AppointmentGroup' is required")
+		errs = append(errs, "'Form.AppointmentGroup.Title' is required")
 	}
 	if t.Form.AppointmentGroup.ParticipantVisibility != "" && !string_utils.Include([]string{"private", "protected"}, t.Form.AppointmentGroup.ParticipantVisibility) {
 		errs = append(errs, "AppointmentGroup must be one of private, protected")

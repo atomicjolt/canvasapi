@@ -18,16 +18,16 @@ import (
 // https://canvas.instructure.com/doc/api/modules.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ModuleID (Required) ID
-// # ID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ModuleID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of content_detailsIf included, will return additional details specific to the content
+// # Query.Include (Optional) . Must be one of content_detailsIf included, will return additional details specific to the content
 //    associated with this item. Refer to the {api:Modules:Module%20Item Module
 //    Item specification} for more details.
 //    Includes standard lock information for each item.
-// # StudentID (Optional) Returns module completion information for the student with this id.
+// # Query.StudentID (Optional) Returns module completion information for the student with this id.
 //
 type ShowModuleItem struct {
 	Path struct {
@@ -73,13 +73,13 @@ func (t *ShowModuleItem) GetJSON() ([]byte, error) {
 func (t *ShowModuleItem) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ModuleID == "" {
-		errs = append(errs, "'ModuleID' is required")
+		errs = append(errs, "'Path.ModuleID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"content_details"}, v) {

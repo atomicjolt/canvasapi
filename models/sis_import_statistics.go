@@ -17,6 +17,6 @@ type SISImportStatistics struct {
 	AccountUser          *SISImportStatistic `json:"account_user" url:"account_user,omitempty"`                   // This contains that statistics for account users..
 }
 
-func (t *SISImportStatistics) HasError() error {
+func (t *SISImportStatistics) HasErrors() error {
 	return nil
 }

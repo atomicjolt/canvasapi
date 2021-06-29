@@ -18,22 +18,22 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_extensions.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # QuizID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.QuizID (Required) ID
 //
 // Form Parameters:
-// # QuizExtensions (Required) The ID of the user we want to add quiz extensions for.
-// # QuizExtensions (Optional) Number of times the student is allowed to re-take the quiz over the
+// # Form.QuizExtensions.UserID (Required) The ID of the user we want to add quiz extensions for.
+// # Form.QuizExtensions.ExtraAttempts (Optional) Number of times the student is allowed to re-take the quiz over the
 //    multiple-attempt limit. This is limited to 1000 attempts or less.
-// # QuizExtensions (Optional) The number of extra minutes to allow for all attempts. This will
+// # Form.QuizExtensions.ExtraTime (Optional) The number of extra minutes to allow for all attempts. This will
 //    add to the existing time limit on the submission. This is limited to
 //    10080 minutes (1 week)
-// # QuizExtensions (Optional) Allow the student to take the quiz even if it's locked for
+// # Form.QuizExtensions.ManuallyUnlocked (Optional) Allow the student to take the quiz even if it's locked for
 //    everyone else.
-// # QuizExtensions (Optional) The number of minutes to extend the quiz from the current time. This is
+// # Form.QuizExtensions.ExtendFromNow (Optional) The number of minutes to extend the quiz from the current time. This is
 //    mutually exclusive to extend_from_end_at. This is limited to 1440
 //    minutes (24 hours)
-// # QuizExtensions (Optional) The number of minutes to extend the quiz beyond the quiz's current
+// # Form.QuizExtensions.ExtendFromEndAt (Optional) The number of minutes to extend the quiz beyond the quiz's current
 //    ending time. This is mutually exclusive to extend_from_now. This is
 //    limited to 1440 minutes (24 hours)
 //
@@ -45,12 +45,12 @@ type QuizExtensionsSetExtensionsForStudentQuizSubmissions struct {
 
 	Form struct {
 		QuizExtensions struct {
-			UserID           []int64 `json:"user_id" url:"user_id,omitempty"`                       //  (Required)
-			ExtraAttempts    []int64 `json:"extra_attempts" url:"extra_attempts,omitempty"`         //  (Optional)
-			ExtraTime        []int64 `json:"extra_time" url:"extra_time,omitempty"`                 //  (Optional)
-			ManuallyUnlocked []bool  `json:"manually_unlocked" url:"manually_unlocked,omitempty"`   //  (Optional)
-			ExtendFromNow    []int64 `json:"extend_from_now" url:"extend_from_now,omitempty"`       //  (Optional)
-			ExtendFromEndAt  []int64 `json:"extend_from_end_at" url:"extend_from_end_at,omitempty"` //  (Optional)
+			UserID           []string `json:"user_id" url:"user_id,omitempty"`                       //  (Required)
+			ExtraAttempts    []string `json:"extra_attempts" url:"extra_attempts,omitempty"`         //  (Optional)
+			ExtraTime        []string `json:"extra_time" url:"extra_time,omitempty"`                 //  (Optional)
+			ManuallyUnlocked []string `json:"manually_unlocked" url:"manually_unlocked,omitempty"`   //  (Optional)
+			ExtendFromNow    []string `json:"extend_from_now" url:"extend_from_now,omitempty"`       //  (Optional)
+			ExtendFromEndAt  []string `json:"extend_from_end_at" url:"extend_from_end_at,omitempty"` //  (Optional)
 		} `json:"quiz_extensions" url:"quiz_extensions,omitempty"`
 	} `json:"form"`
 }
@@ -85,13 +85,13 @@ func (t *QuizExtensionsSetExtensionsForStudentQuizSubmissions) GetJSON() ([]byte
 func (t *QuizExtensionsSetExtensionsForStudentQuizSubmissions) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.QuizID == "" {
-		errs = append(errs, "'QuizID' is required")
+		errs = append(errs, "'Path.QuizID' is required")
 	}
 	if t.Form.QuizExtensions.UserID == nil {
-		errs = append(errs, "'QuizExtensions' is required")
+		errs = append(errs, "'Form.QuizExtensions.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

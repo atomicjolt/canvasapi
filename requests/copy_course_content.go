@@ -22,13 +22,13 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # SourceCourse (Optional) ID or SIS-ID of the course to copy the content from
-// # Except (Optional) . Must be one of course_settings, assignments, external_tools, files, topics, calendar_events, quizzes, wiki_pages, modules, outcomesA list of the course content types to exclude, all areas not listed will
+// # Form.SourceCourse (Optional) ID or SIS-ID of the course to copy the content from
+// # Form.Except (Optional) . Must be one of course_settings, assignments, external_tools, files, topics, calendar_events, quizzes, wiki_pages, modules, outcomesA list of the course content types to exclude, all areas not listed will
 //    be copied.
-// # Only (Optional) . Must be one of course_settings, assignments, external_tools, files, topics, calendar_events, quizzes, wiki_pages, modules, outcomesA list of the course content types to copy, all areas not listed will not
+// # Form.Only (Optional) . Must be one of course_settings, assignments, external_tools, files, topics, calendar_events, quizzes, wiki_pages, modules, outcomesA list of the course content types to copy, all areas not listed will not
 //    be copied.
 //
 type CopyCourseContent struct {
@@ -72,7 +72,7 @@ func (t *CopyCourseContent) GetJSON() ([]byte, error) {
 func (t *CopyCourseContent) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	for _, v := range t.Form.Except {
 		if v != "" && !string_utils.Include([]string{"course_settings", "assignments", "external_tools", "files", "topics", "calendar_events", "quizzes", "wiki_pages", "modules", "outcomes"}, v) {

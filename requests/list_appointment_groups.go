@@ -16,10 +16,10 @@ import (
 // https://canvas.instructure.com/doc/api/appointment_groups.html
 //
 // Query Parameters:
-// # Scope (Optional) . Must be one of reservable, manageableDefaults to "reservable"
-// # ContextCodes (Optional) Array of context codes used to limit returned results.
-// # IncludePastAppointments (Optional) Defaults to false. If true, includes past appointment groups
-// # Include (Optional) . Must be one of appointments, child_events, participant_count, reserved_times, all_context_codesArray of additional information to include.
+// # Query.Scope (Optional) . Must be one of reservable, manageableDefaults to "reservable"
+// # Query.ContextCodes (Optional) Array of context codes used to limit returned results.
+// # Query.IncludePastAppointments (Optional) Defaults to false. If true, includes past appointment groups
+// # Query.Include (Optional) . Must be one of appointments, child_events, participant_count, reserved_times, all_context_codesArray of additional information to include.
 //
 //    "appointments":: calendar event time slots for this appointment group
 //    "child_events":: reservations of those time slots

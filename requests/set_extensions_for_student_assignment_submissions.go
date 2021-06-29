@@ -19,12 +19,12 @@ import (
 // https://canvas.instructure.com/doc/api/assignment_extensions.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # AssignmentID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.AssignmentID (Required) ID
 //
 // Form Parameters:
-// # AssignmentExtensions (Required) The ID of the user we want to add assignment extensions for.
-// # AssignmentExtensions (Required) Number of times the student is allowed to re-take the assignment over the
+// # Form.AssignmentExtensions.UserID (Required) The ID of the user we want to add assignment extensions for.
+// # Form.AssignmentExtensions.ExtraAttempts (Required) Number of times the student is allowed to re-take the assignment over the
 //    limit.
 //
 type SetExtensionsForStudentAssignmentSubmissions struct {
@@ -35,8 +35,8 @@ type SetExtensionsForStudentAssignmentSubmissions struct {
 
 	Form struct {
 		AssignmentExtensions struct {
-			UserID        []int64 `json:"user_id" url:"user_id,omitempty"`               //  (Required)
-			ExtraAttempts []int64 `json:"extra_attempts" url:"extra_attempts,omitempty"` //  (Required)
+			UserID        []string `json:"user_id" url:"user_id,omitempty"`               //  (Required)
+			ExtraAttempts []string `json:"extra_attempts" url:"extra_attempts,omitempty"` //  (Required)
 		} `json:"assignment_extensions" url:"assignment_extensions,omitempty"`
 	} `json:"form"`
 }
@@ -71,16 +71,16 @@ func (t *SetExtensionsForStudentAssignmentSubmissions) GetJSON() ([]byte, error)
 func (t *SetExtensionsForStudentAssignmentSubmissions) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if t.Form.AssignmentExtensions.UserID == nil {
-		errs = append(errs, "'AssignmentExtensions' is required")
+		errs = append(errs, "'Form.AssignmentExtensions.UserID' is required")
 	}
 	if t.Form.AssignmentExtensions.ExtraAttempts == nil {
-		errs = append(errs, "'AssignmentExtensions' is required")
+		errs = append(errs, "'Form.AssignmentExtensions.ExtraAttempts' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

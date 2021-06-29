@@ -19,6 +19,6 @@ type Section struct {
 	TotalStudents                     int64     `json:"total_students" url:"total_students,omitempty"`                                               // optional: the total number of active and invited students in the section.Example: 13
 }
 
-func (t *Section) HasError() error {
+func (t *Section) HasErrors() error {
 	return nil
 }

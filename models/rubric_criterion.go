@@ -9,6 +9,6 @@ type RubricCriterion struct {
 	Ratings           []*RubricRating `json:"ratings" url:"ratings,omitempty"`                         // the possible ratings for this Criterion.
 }
 
-func (t *RubricCriterion) HasError() error {
+func (t *RubricCriterion) HasErrors() error {
 	return nil
 }

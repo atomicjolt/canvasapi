@@ -19,22 +19,22 @@ import (
 // https://canvas.instructure.com/doc/api/search.html
 //
 // Query Parameters:
-// # Search (Optional) Search terms used for matching users/courses/groups (e.g. "bob smith"). If
+// # Query.Search (Optional) Search terms used for matching users/courses/groups (e.g. "bob smith"). If
 //    multiple terms are given (separated via whitespace), only results matching
 //    all terms will be returned.
-// # Context (Optional) Limit the search to a particular course/group (e.g. "course_3" or "group_4").
-// # Exclude (Optional) Array of ids to exclude from the search. These may be user ids or
+// # Query.Context (Optional) Limit the search to a particular course/group (e.g. "course_3" or "group_4").
+// # Query.Exclude (Optional) Array of ids to exclude from the search. These may be user ids or
 //    course/group ids prefixed with "course_" or "group_" respectively,
 //    e.g. exclude[]=1&exclude[]=2&exclude[]=course_3
-// # Type (Optional) . Must be one of user, contextLimit the search just to users or contexts (groups/courses).
-// # UserID (Optional) Search for a specific user id. This ignores the other above parameters,
+// # Query.Type (Optional) . Must be one of user, contextLimit the search just to users or contexts (groups/courses).
+// # Query.UserID (Optional) Search for a specific user id. This ignores the other above parameters,
 //    and will never return more than one result.
-// # FromConversationID (Optional) When searching by user_id, only users that could be normally messaged by
+// # Query.FromConversationID (Optional) When searching by user_id, only users that could be normally messaged by
 //    this user will be returned. This parameter allows you to specify a
 //    conversation that will be referenced for a shared context -- if both the
 //    current user and the searched user are in the conversation, the user will
 //    be returned. This is used to start new side conversations.
-// # Permissions (Optional) Array of permission strings to be checked for each matched context (e.g.
+// # Query.Permissions (Optional) Array of permission strings to be checked for each matched context (e.g.
 //    "send_messages"). This argument determines which permissions may be
 //    returned in the response; it won't prevent contexts from being returned if
 //    they don't grant the permission(s).

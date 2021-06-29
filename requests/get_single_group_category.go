@@ -16,7 +16,7 @@ import (
 // https://canvas.instructure.com/doc/api/group_categories.html
 //
 // Path Parameters:
-// # GroupCategoryID (Required) ID
+// # Path.GroupCategoryID (Required) ID
 //
 type GetSingleGroupCategory struct {
 	Path struct {
@@ -49,7 +49,7 @@ func (t *GetSingleGroupCategory) GetJSON() ([]byte, error) {
 func (t *GetSingleGroupCategory) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupCategoryID == "" {
-		errs = append(errs, "'GroupCategoryID' is required")
+		errs = append(errs, "'Path.GroupCategoryID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

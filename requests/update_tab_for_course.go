@@ -19,12 +19,12 @@ import (
 // https://canvas.instructure.com/doc/api/tabs.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # TabID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.TabID (Required) ID
 //
 // Form Parameters:
-// # Position (Optional) The new position of the tab, 1-based
-// # Hidden (Optional) no description
+// # Form.Position (Optional) The new position of the tab, 1-based
+// # Form.Hidden (Optional) no description
 //
 type UpdateTabForCourse struct {
 	Path struct {
@@ -68,10 +68,10 @@ func (t *UpdateTabForCourse) GetJSON() ([]byte, error) {
 func (t *UpdateTabForCourse) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.TabID == "" {
-		errs = append(errs, "'TabID' is required")
+		errs = append(errs, "'Path.TabID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

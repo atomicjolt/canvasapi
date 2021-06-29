@@ -15,10 +15,10 @@ import (
 // https://canvas.instructure.com/doc/api/courses.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # Event (Required) . Must be one of delete, concludeThe action to take on the course.
+// # Query.Event (Required) . Must be one of delete, concludeThe action to take on the course.
 //
 type DeleteConcludeCourse struct {
 	Path struct {
@@ -59,10 +59,10 @@ func (t *DeleteConcludeCourse) GetJSON() ([]byte, error) {
 func (t *DeleteConcludeCourse) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Query.Event == "" {
-		errs = append(errs, "'Event' is required")
+		errs = append(errs, "'Query.Event' is required")
 	}
 	if t.Query.Event != "" && !string_utils.Include([]string{"delete", "conclude"}, t.Query.Event) {
 		errs = append(errs, "Event must be one of delete, conclude")

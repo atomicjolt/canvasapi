@@ -16,32 +16,32 @@ import (
 // https://canvas.instructure.com/doc/api/outcome_results.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # Aggregate (Optional) . Must be one of courseIf specified, instead of returning one rollup for each user, all the user
+// # Query.Aggregate (Optional) . Must be one of courseIf specified, instead of returning one rollup for each user, all the user
 //    rollups will be combined into one rollup for the course that will contain
 //    the average (or median, see below) rollup score for each outcome.
-// # AggregateStat (Optional) . Must be one of mean, medianIf aggregate rollups requested, then this value determines what
+// # Query.AggregateStat (Optional) . Must be one of mean, medianIf aggregate rollups requested, then this value determines what
 //    statistic is used for the aggregate. Defaults to "mean" if this value
 //    is not specified.
-// # UserIDs (Optional) If specified, only the users whose ids are given will be included in the
+// # Query.UserIDs (Optional) If specified, only the users whose ids are given will be included in the
 //    results or used in an aggregate result. it is an error to specify an id
 //    for a user who is not a student in the context
-// # OutcomeIDs (Optional) If specified, only the outcomes whose ids are given will be included in the
+// # Query.OutcomeIDs (Optional) If specified, only the outcomes whose ids are given will be included in the
 //    results. it is an error to specify an id for an outcome which is not linked
 //    to the context.
-// # Include (Optional) [String, "courses"|"outcomes"|"outcomes.alignments"|"outcome_groups"|"outcome_links"|"outcome_paths"|"users"]
+// # Query.Include (Optional) [String, "courses"|"outcomes"|"outcomes.alignments"|"outcome_groups"|"outcome_links"|"outcome_paths"|"users"]
 //    Specify additional collections to be side loaded with the result.
-// # Exclude (Optional) . Must be one of missing_user_rollupsSpecify additional values to exclude. "missing_user_rollups" excludes
+// # Query.Exclude (Optional) . Must be one of missing_user_rollupsSpecify additional values to exclude. "missing_user_rollups" excludes
 //    rollups for users without results.
-// # SortBy (Optional) . Must be one of student, outcomeIf specified, sorts outcome result rollups. "student" sorting will sort
+// # Query.SortBy (Optional) . Must be one of student, outcomeIf specified, sorts outcome result rollups. "student" sorting will sort
 //    by a user's sortable name. "outcome" sorting will sort by the given outcome's
 //    rollup score. The latter requires specifying the "sort_outcome_id" parameter.
 //    By default, the sort order is ascending.
-// # SortOutcomeID (Optional) If outcome sorting requested, then this determines which outcome to use
+// # Query.SortOutcomeID (Optional) If outcome sorting requested, then this determines which outcome to use
 //    for rollup score sorting.
-// # SortOrder (Optional) . Must be one of asc, descIf sorting requested, then this allows changing the default sort order of
+// # Query.SortOrder (Optional) . Must be one of asc, descIf sorting requested, then this allows changing the default sort order of
 //    ascending to descending.
 //
 type GetOutcomeResultRollups struct {
@@ -52,8 +52,8 @@ type GetOutcomeResultRollups struct {
 	Query struct {
 		Aggregate     string   `json:"aggregate" url:"aggregate,omitempty"`             //  (Optional) . Must be one of course
 		AggregateStat string   `json:"aggregate_stat" url:"aggregate_stat,omitempty"`   //  (Optional) . Must be one of mean, median
-		UserIDs       []int64  `json:"user_ids" url:"user_ids,omitempty"`               //  (Optional)
-		OutcomeIDs    []int64  `json:"outcome_ids" url:"outcome_ids,omitempty"`         //  (Optional)
+		UserIDs       []string `json:"user_ids" url:"user_ids,omitempty"`               //  (Optional)
+		OutcomeIDs    []string `json:"outcome_ids" url:"outcome_ids,omitempty"`         //  (Optional)
 		Include       []string `json:"include" url:"include,omitempty"`                 //  (Optional)
 		Exclude       []string `json:"exclude" url:"exclude,omitempty"`                 //  (Optional) . Must be one of missing_user_rollups
 		SortBy        string   `json:"sort_by" url:"sort_by,omitempty"`                 //  (Optional) . Must be one of student, outcome
@@ -91,7 +91,7 @@ func (t *GetOutcomeResultRollups) GetJSON() ([]byte, error) {
 func (t *GetOutcomeResultRollups) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Query.Aggregate != "" && !string_utils.Include([]string{"course"}, t.Query.Aggregate) {
 		errs = append(errs, "Aggregate must be one of course")

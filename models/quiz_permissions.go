@@ -10,6 +10,6 @@ type QuizPermissions struct {
 	Update         bool `json:"update" url:"update,omitempty"`                   // whether the user may update the quiz.Example: true
 }
 
-func (t *QuizPermissions) HasError() error {
+func (t *QuizPermissions) HasErrors() error {
 	return nil
 }

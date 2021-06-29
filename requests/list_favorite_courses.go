@@ -18,7 +18,7 @@ import (
 // https://canvas.instructure.com/doc/api/favorites.html
 //
 // Query Parameters:
-// # ExcludeBlueprintCourses (Optional) When set, only return courses that are not configured as blueprint courses.
+// # Query.ExcludeBlueprintCourses (Optional) When set, only return courses that are not configured as blueprint courses.
 //
 type ListFavoriteCourses struct {
 	Query struct {

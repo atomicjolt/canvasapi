@@ -8,6 +8,6 @@ type SISImportStatistic struct {
 	Deleted     int64 `json:"deleted" url:"deleted,omitempty"`         // This is the number of items that were deleted..Example: 40
 }
 
-func (t *SISImportStatistic) HasError() error {
+func (t *SISImportStatistic) HasErrors() error {
 	return nil
 }

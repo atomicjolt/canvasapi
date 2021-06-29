@@ -15,13 +15,13 @@ import (
 // https://canvas.instructure.com/doc/api/calendar_events.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # ParticipantID (Optional) User or group id for whom you are making the reservation (depends on the
+// # Form.ParticipantID (Optional) User or group id for whom you are making the reservation (depends on the
 //    participant type). Defaults to the current user (or user's candidate group).
-// # Comments (Optional) Comments to associate with this reservation
-// # CancelExisting (Optional) Defaults to false. If true, cancel any previous reservation(s) for this
+// # Form.Comments (Optional) Comments to associate with this reservation
+// # Form.CancelExisting (Optional) Defaults to false. If true, cancel any previous reservation(s) for this
 //    participant and appointment group.
 //
 type ReserveTimeSlot struct {
@@ -65,7 +65,7 @@ func (t *ReserveTimeSlot) GetJSON() ([]byte, error) {
 func (t *ReserveTimeSlot) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -7,6 +7,6 @@ type ProficiencyRating struct {
 	Color       string  `json:"color" url:"color,omitempty"`             // The hex color code of the rating.Example: 127A1B
 }
 
-func (t *ProficiencyRating) HasError() error {
+func (t *ProficiencyRating) HasErrors() error {
 	return nil
 }

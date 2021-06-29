@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/account_reports.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # Report (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.Report (Required) ID
 //
 type IndexOfReports struct {
 	Path struct {
@@ -51,10 +51,10 @@ func (t *IndexOfReports) GetJSON() ([]byte, error) {
 func (t *IndexOfReports) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.Report == "" {
-		errs = append(errs, "'Report' is required")
+		errs = append(errs, "'Path.Report' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

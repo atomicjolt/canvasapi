@@ -20,10 +20,10 @@ import (
 // https://canvas.instructure.com/doc/api/content_security_policy_settings.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # Status (Required) . Must be one of enabled, disabled, inheritedIf set to "enabled" for an account, CSP will be enabled for all its courses and sub-accounts (that
+// # Form.Status (Required) . Must be one of enabled, disabled, inheritedIf set to "enabled" for an account, CSP will be enabled for all its courses and sub-accounts (that
 //    have not explicitly enabled or disabled it), using the allowed domains set on this account.
 //    If set to "disabled", CSP will be disabled for this account or course and for all sub-accounts
 //    that have not explicitly re-enabled it.
@@ -69,10 +69,10 @@ func (t *EnableDisableOrClearExplicitCspSettingAccounts) GetJSON() ([]byte, erro
 func (t *EnableDisableOrClearExplicitCspSettingAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Form.Status == "" {
-		errs = append(errs, "'Status' is required")
+		errs = append(errs, "'Form.Status' is required")
 	}
 	if t.Form.Status != "" && !string_utils.Include([]string{"enabled", "disabled", "inherited"}, t.Form.Status) {
 		errs = append(errs, "Status must be one of enabled, disabled, inherited")

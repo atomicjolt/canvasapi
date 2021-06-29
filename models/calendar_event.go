@@ -20,7 +20,7 @@ type CalendarEvent struct {
 	Hidden                     bool      `json:"hidden" url:"hidden,omitempty"`                                             // Whether this event should be displayed on the calendar. Only true for course-level events with section-level child events..
 	ParentEventID              int64     `json:"parent_event_id" url:"parent_event_id,omitempty"`                           // Normally null. If this is a reservation (see the Appointment Groups API), the id will indicate the time slot it is for. If this is a section-level event, this will be the course-level parent event..
 	ChildEventsCount           int64     `json:"child_events_count" url:"child_events_count,omitempty"`                     // The number of child_events. See child_events (and parent_event_id).Example: 0
-	ChildEvents                []int64   `json:"child_events" url:"child_events,omitempty"`                                 // Included by default, but may be excluded (see include[] option). If this is a time slot (see the Appointment Groups API) this will be a list of any reservations. If this is a course-level event, this will be a list of section-level events (if any).
+	ChildEvents                []string  `json:"child_events" url:"child_events,omitempty"`                                 // Included by default, but may be excluded (see include[] option). If this is a time slot (see the Appointment Groups API) this will be a list of any reservations. If this is a course-level event, this will be a list of section-level events (if any).
 	Url                        string    `json:"url" url:"url,omitempty"`                                                   // URL for this calendar event (to update, delete, etc.).Example: https://example.com/api/v1/calendar_events/234
 	HtmlUrl                    string    `json:"html_url" url:"html_url,omitempty"`                                         // URL for a user to view this event.Example: https://example.com/calendar?event_id=234&include_contexts=course_123
 	AllDayDate                 time.Time `json:"all_day_date" url:"all_day_date,omitempty"`                                 // The date of this event.Example: 2012-07-19
@@ -39,6 +39,6 @@ type CalendarEvent struct {
 	Group                      string    `json:"group" url:"group,omitempty"`                                               // If the event is a group-level reservation, this will contain the group participant JSON (refer to the Groups API)..
 }
 
-func (t *CalendarEvent) HasError() error {
+func (t *CalendarEvent) HasErrors() error {
 	return nil
 }

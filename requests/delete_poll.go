@@ -12,7 +12,7 @@ import (
 // https://canvas.instructure.com/doc/api/polls.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 type DeletePoll struct {
 	Path struct {
@@ -45,7 +45,7 @@ func (t *DeletePoll) GetJSON() ([]byte, error) {
 func (t *DeletePoll) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

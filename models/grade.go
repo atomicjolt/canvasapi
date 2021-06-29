@@ -14,6 +14,6 @@ type Grade struct {
 	UnpostedCurrentPoints int64  `json:"unposted_current_points" url:"unposted_current_points,omitempty"` // The total points the user has earned in the class, including muted/unposted assignments. Only included if user has permissions to view this score (typically teachers, TAs, and admins) and 'current_points' is passed in the request's 'include' parameter..Example: 150
 }
 
-func (t *Grade) HasError() error {
+func (t *Grade) HasErrors() error {
 	return nil
 }

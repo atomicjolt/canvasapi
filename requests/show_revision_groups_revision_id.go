@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/pages.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # Url (Required) ID
-// # RevisionID (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.Url (Required) ID
+// # Path.RevisionID (Required) ID
 //
 // Query Parameters:
-// # Summary (Optional) If set, exclude page content from results
+// # Query.Summary (Optional) If set, exclude page content from results
 //
 type ShowRevisionGroupsRevisionID struct {
 	Path struct {
@@ -68,13 +68,13 @@ func (t *ShowRevisionGroupsRevisionID) GetJSON() ([]byte, error) {
 func (t *ShowRevisionGroupsRevisionID) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.Url == "" {
-		errs = append(errs, "'Url' is required")
+		errs = append(errs, "'Path.Url' is required")
 	}
 	if t.Path.RevisionID == "" {
-		errs = append(errs, "'RevisionID' is required")
+		errs = append(errs, "'Path.RevisionID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

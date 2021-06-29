@@ -15,10 +15,10 @@ import (
 // https://canvas.instructure.com/doc/api/gradebook_history.html
 //
 // Path Parameters:
-// # CourseID (Required) The id of the contextual course for this API call
-// # Date (Required) The date for which you would like to see submissions
-// # GraderID (Required) The ID of the grader for which you want to see submissions
-// # AssignmentID (Required) The ID of the assignment for which you want to see submissions
+// # Path.CourseID (Required) The id of the contextual course for this API call
+// # Path.Date (Required) The date for which you would like to see submissions
+// # Path.GraderID (Required) The ID of the grader for which you want to see submissions
+// # Path.AssignmentID (Required) The ID of the assignment for which you want to see submissions
 //
 type ListsSubmissions struct {
 	Path struct {
@@ -57,7 +57,7 @@ func (t *ListsSubmissions) GetJSON() ([]byte, error) {
 func (t *ListsSubmissions) HasErrors() error {
 	errs := []string{}
 	if t.Path.Date == "" {
-		errs = append(errs, "'Date' is required")
+		errs = append(errs, "'Path.Date' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -15,13 +15,13 @@ import (
 // https://canvas.instructure.com/doc/api/poll_sessions.html
 //
 // Path Parameters:
-// # PollID (Required) ID
-// # ID (Required) ID
+// # Path.PollID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # PollSessions (Optional) The id of the course this session is associated with.
-// # PollSessions (Optional) The id of the course section this session is associated with.
-// # PollSessions (Optional) Whether or not results are viewable by students.
+// # Form.PollSessions.CourseID (Optional) The id of the course this session is associated with.
+// # Form.PollSessions.CourseSectionID (Optional) The id of the course section this session is associated with.
+// # Form.PollSessions.HasPublicResults (Optional) Whether or not results are viewable by students.
 //
 type UpdateSinglePollSession struct {
 	Path struct {
@@ -31,9 +31,9 @@ type UpdateSinglePollSession struct {
 
 	Form struct {
 		PollSessions struct {
-			CourseID         []int64 `json:"course_id" url:"course_id,omitempty"`                   //  (Optional)
-			CourseSectionID  []int64 `json:"course_section_id" url:"course_section_id,omitempty"`   //  (Optional)
-			HasPublicResults []bool  `json:"has_public_results" url:"has_public_results,omitempty"` //  (Optional)
+			CourseID         []string `json:"course_id" url:"course_id,omitempty"`                   //  (Optional)
+			CourseSectionID  []string `json:"course_section_id" url:"course_section_id,omitempty"`   //  (Optional)
+			HasPublicResults []string `json:"has_public_results" url:"has_public_results,omitempty"` //  (Optional)
 		} `json:"poll_sessions" url:"poll_sessions,omitempty"`
 	} `json:"form"`
 }
@@ -68,10 +68,10 @@ func (t *UpdateSinglePollSession) GetJSON() ([]byte, error) {
 func (t *UpdateSinglePollSession) HasErrors() error {
 	errs := []string{}
 	if t.Path.PollID == "" {
-		errs = append(errs, "'PollID' is required")
+		errs = append(errs, "'Path.PollID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

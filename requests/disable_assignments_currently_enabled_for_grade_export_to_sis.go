@@ -23,10 +23,10 @@ import (
 // https://canvas.instructure.com/doc/api/sis_integration.html
 //
 // Path Parameters:
-// # CourseID (Required) The ID of the course.
+// # Path.CourseID (Required) The ID of the course.
 //
 // Form Parameters:
-// # GradingPeriodID (Optional) The ID of the grading period.
+// # Form.GradingPeriodID (Optional) The ID of the grading period.
 //
 type DisableAssignmentsCurrentlyEnabledForGradeExportToSIS struct {
 	Path struct {

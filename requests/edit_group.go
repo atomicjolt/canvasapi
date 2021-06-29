@@ -22,22 +22,22 @@ import (
 // https://canvas.instructure.com/doc/api/groups.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Form Parameters:
-// # Name (Optional) The name of the group
-// # Description (Optional) A description of the group
-// # IsPublic (Optional) Whether the group is public (applies only to community groups). Currently
+// # Form.Name (Optional) The name of the group
+// # Form.Description (Optional) A description of the group
+// # Form.IsPublic (Optional) Whether the group is public (applies only to community groups). Currently
 //    you cannot set a group back to private once it has been made public.
-// # JoinLevel (Optional) . Must be one of parent_context_auto_join, parent_context_request, invitation_onlyno description
-// # AvatarID (Optional) The id of the attachment previously uploaded to the group that you would
+// # Form.JoinLevel (Optional) . Must be one of parent_context_auto_join, parent_context_request, invitation_onlyno description
+// # Form.AvatarID (Optional) The id of the attachment previously uploaded to the group that you would
 //    like to use as the avatar image for this group.
-// # StorageQuotaMb (Optional) The allowed file storage for the group, in megabytes. This parameter is
+// # Form.StorageQuotaMb (Optional) The allowed file storage for the group, in megabytes. This parameter is
 //    ignored if the caller does not have the manage_storage_quotas permission.
-// # Members (Optional) An array of user ids for users you would like in the group.
+// # Form.Members (Optional) An array of user ids for users you would like in the group.
 //    Users not in the group will be sent invitations. Existing group
 //    members who aren't in the list will be removed from the group.
-// # SISGroupID (Optional) The sis ID of the group. Must have manage_sis permission to set.
+// # Form.SISGroupID (Optional) The sis ID of the group. Must have manage_sis permission to set.
 //
 type EditGroup struct {
 	Path struct {
@@ -85,7 +85,7 @@ func (t *EditGroup) GetJSON() ([]byte, error) {
 func (t *EditGroup) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Form.JoinLevel != "" && !string_utils.Include([]string{"parent_context_auto_join", "parent_context_request", "invitation_only"}, t.Form.JoinLevel) {
 		errs = append(errs, "JoinLevel must be one of parent_context_auto_join, parent_context_request, invitation_only")

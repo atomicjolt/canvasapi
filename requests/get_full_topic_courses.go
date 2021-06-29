@@ -42,8 +42,8 @@ import (
 // https://canvas.instructure.com/doc/api/discussion_topics.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # TopicID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.TopicID (Required) ID
 //
 type GetFullTopicCourses struct {
 	Path struct {
@@ -78,10 +78,10 @@ func (t *GetFullTopicCourses) GetJSON() ([]byte, error) {
 func (t *GetFullTopicCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.TopicID == "" {
-		errs = append(errs, "'TopicID' is required")
+		errs = append(errs, "'Path.TopicID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

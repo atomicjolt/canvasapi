@@ -19,10 +19,10 @@ import (
 // https://canvas.instructure.com/doc/api/account_notifications.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # IncludePast (Optional) Include past and dismissed global announcements.
+// # Query.IncludePast (Optional) Include past and dismissed global announcements.
 //
 type IndexOfActiveGlobalNotificationForUser struct {
 	Path struct {
@@ -63,7 +63,7 @@ func (t *IndexOfActiveGlobalNotificationForUser) GetJSON() ([]byte, error) {
 func (t *IndexOfActiveGlobalNotificationForUser) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -5,6 +5,6 @@ type ColumnDatum struct {
 	UserID  int64  `json:"user_id" url:"user_id,omitempty"` // Example: 2
 }
 
-func (t *ColumnDatum) HasError() error {
+func (t *ColumnDatum) HasErrors() error {
 	return nil
 }

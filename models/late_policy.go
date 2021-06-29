@@ -18,6 +18,6 @@ type LatePolicy struct {
 	UpdatedAt                           time.Time `json:"updated_at" url:"updated_at,omitempty"`                                                           // the time at which this late policy was last modified in any way.Example: 2012-07-01T23:59:00-06:00
 }
 
-func (t *LatePolicy) HasError() error {
+func (t *LatePolicy) HasErrors() error {
 	return nil
 }

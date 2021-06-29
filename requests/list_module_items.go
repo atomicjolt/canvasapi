@@ -18,16 +18,16 @@ import (
 // https://canvas.instructure.com/doc/api/modules.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ModuleID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ModuleID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of content_detailsIf included, will return additional details specific to the content
+// # Query.Include (Optional) . Must be one of content_detailsIf included, will return additional details specific to the content
 //    associated with each item. Refer to the {api:Modules:Module%20Item Module
 //    Item specification} for more details.
 //    Includes standard lock information for each item.
-// # SearchTerm (Optional) The partial title of the items to match and return.
-// # StudentID (Optional) Returns module completion information for the student with this id.
+// # Query.SearchTerm (Optional) The partial title of the items to match and return.
+// # Query.StudentID (Optional) Returns module completion information for the student with this id.
 //
 type ListModuleItems struct {
 	Path struct {
@@ -72,10 +72,10 @@ func (t *ListModuleItems) GetJSON() ([]byte, error) {
 func (t *ListModuleItems) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ModuleID == "" {
-		errs = append(errs, "'ModuleID' is required")
+		errs = append(errs, "'Path.ModuleID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"content_details"}, v) {

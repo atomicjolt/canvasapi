@@ -17,27 +17,27 @@ import (
 // https://canvas.instructure.com/doc/api/calendar_events.html
 //
 // Form Parameters:
-// # CalendarEvent (Required) Context code of the course/group/user whose calendar this event should be
+// # Form.CalendarEvent.ContextCode (Required) Context code of the course/group/user whose calendar this event should be
 //    added to.
-// # CalendarEvent (Optional) Short title for the calendar event.
-// # CalendarEvent (Optional) Longer HTML description of the event.
-// # CalendarEvent (Optional) Start date/time of the event.
-// # CalendarEvent (Optional) End date/time of the event.
-// # CalendarEvent (Optional) Location name of the event.
-// # CalendarEvent (Optional) Location address
-// # CalendarEvent (Optional) Time zone of the user editing the event. Allowed time zones are
+// # Form.CalendarEvent.Title (Optional) Short title for the calendar event.
+// # Form.CalendarEvent.Description (Optional) Longer HTML description of the event.
+// # Form.CalendarEvent.StartAt (Optional) Start date/time of the event.
+// # Form.CalendarEvent.EndAt (Optional) End date/time of the event.
+// # Form.CalendarEvent.LocationName (Optional) Location name of the event.
+// # Form.CalendarEvent.LocationAddress (Optional) Location address
+// # Form.CalendarEvent.TimeZoneEdited (Optional) Time zone of the user editing the event. Allowed time zones are
 //    {http://www.iana.org/time-zones IANA time zones} or friendlier
 //    {http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html Ruby on Rails time zones}.
-// # CalendarEvent (Optional) When true event is considered to span the whole day and times are ignored.
-// # CalendarEvent (Optional) Section-level start time(s) if this is a course event. X can be any
+// # Form.CalendarEvent.AllDay (Optional) When true event is considered to span the whole day and times are ignored.
+// # Form.CalendarEvent (Optional) Section-level start time(s) if this is a course event. X can be any
 //    identifier, provided that it is consistent across the start_at, end_at
 //    and context_code
-// # CalendarEvent (Optional) Section-level end time(s) if this is a course event.
-// # CalendarEvent (Optional) Context code(s) corresponding to the section-level start and end time(s).
-// # CalendarEvent (Optional) Number of times to copy/duplicate the event.  Count cannot exceed 200.
-// # CalendarEvent (Optional) Defaults to 1 if duplicate `count` is set.  The interval between the duplicated events.
-// # CalendarEvent (Optional) . Must be one of daily, weekly, monthlyDefaults to "weekly".  The frequency at which to duplicate the event
-// # CalendarEvent (Optional) Defaults to false.  If set to `true`, an increasing counter number will be appended to the event title
+// # Form.CalendarEvent (Optional) Section-level end time(s) if this is a course event.
+// # Form.CalendarEvent (Optional) Context code(s) corresponding to the section-level start and end time(s).
+// # Form.CalendarEvent.Duplicate.Count (Optional) Number of times to copy/duplicate the event.  Count cannot exceed 200.
+// # Form.CalendarEvent.Duplicate.Interval (Optional) Defaults to 1 if duplicate `count` is set.  The interval between the duplicated events.
+// # Form.CalendarEvent.Duplicate.Frequency (Optional) . Must be one of daily, weekly, monthlyDefaults to "weekly".  The frequency at which to duplicate the event
+// # Form.CalendarEvent.Duplicate.AppendIterator (Optional) Defaults to false.  If set to `true`, an increasing counter number will be appended to the event title
 //    when the event is duplicated.  (e.g. Event 1, Event 2, Event 3, etc)
 //
 type CreateCalendarEvent struct {
@@ -90,7 +90,7 @@ func (t *CreateCalendarEvent) GetJSON() ([]byte, error) {
 func (t *CreateCalendarEvent) HasErrors() error {
 	errs := []string{}
 	if t.Form.CalendarEvent.ContextCode == "" {
-		errs = append(errs, "'CalendarEvent' is required")
+		errs = append(errs, "'Form.CalendarEvent.ContextCode' is required")
 	}
 	if t.Form.CalendarEvent.Duplicate.Frequency != "" && !string_utils.Include([]string{"daily", "weekly", "monthly"}, t.Form.CalendarEvent.Duplicate.Frequency) {
 		errs = append(errs, "CalendarEvent must be one of daily, weekly, monthly")

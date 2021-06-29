@@ -23,12 +23,12 @@ import (
 // https://canvas.instructure.com/doc/api/sis_imports.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # CreatedSince (Optional) If set, only shows imports created after the specified date (use ISO8601 format)
-// # CreatedBefore (Optional) If set, only shows imports created before the specified date (use ISO8601 format)
-// # WorkflowState (Optional) . Must be one of initializing, created, importing, cleanup_batch, imported, imported_with_messages, aborted, failed, failed_with_messages, restoring, partially_restored, restoredIf set, only returns imports that are in the given state.
+// # Query.CreatedSince (Optional) If set, only shows imports created after the specified date (use ISO8601 format)
+// # Query.CreatedBefore (Optional) If set, only shows imports created before the specified date (use ISO8601 format)
+// # Query.WorkflowState (Optional) . Must be one of initializing, created, importing, cleanup_batch, imported, imported_with_messages, aborted, failed, failed_with_messages, restoring, partially_restored, restoredIf set, only returns imports that are in the given state.
 //
 type GetSISImportList struct {
 	Path struct {
@@ -71,7 +71,7 @@ func (t *GetSISImportList) GetJSON() ([]byte, error) {
 func (t *GetSISImportList) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	for _, v := range t.Query.WorkflowState {
 		if v != "" && !string_utils.Include([]string{"initializing", "created", "importing", "cleanup_batch", "imported", "imported_with_messages", "aborted", "failed", "failed_with_messages", "restoring", "partially_restored", "restored"}, v) {

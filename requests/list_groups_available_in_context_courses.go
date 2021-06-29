@@ -18,11 +18,11 @@ import (
 // https://canvas.instructure.com/doc/api/groups.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # OnlyOwnGroups (Optional) Will only include groups that the user belongs to if this is set
-// # Include (Optional) . Must be one of tabs- "tabs": Include the list of tabs configured for each group.  See the
+// # Query.OnlyOwnGroups (Optional) Will only include groups that the user belongs to if this is set
+// # Query.Include (Optional) . Must be one of tabs- "tabs": Include the list of tabs configured for each group.  See the
 //      {api:TabsController#index List available tabs API} for more information.
 //
 type ListGroupsAvailableInContextCourses struct {
@@ -65,7 +65,7 @@ func (t *ListGroupsAvailableInContextCourses) GetJSON() ([]byte, error) {
 func (t *ListGroupsAvailableInContextCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"tabs"}, v) {

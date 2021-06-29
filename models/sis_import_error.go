@@ -8,6 +8,6 @@ type SISImportError struct {
 	Row         int64  `json:"row" url:"row,omitempty"`                     // The line number where the error occurred. Some Importers do not yet support this. This is a 1 based index starting with the header row..Example: 34
 }
 
-func (t *SISImportError) HasError() error {
+func (t *SISImportError) HasErrors() error {
 	return nil
 }

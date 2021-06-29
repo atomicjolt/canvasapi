@@ -26,10 +26,10 @@ import (
 // https://canvas.instructure.com/doc/api/sis_import_errors.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Query Parameters:
-// # Failure (Optional) If set, only shows errors on a sis import that would cause a failure.
+// # Query.Failure (Optional) If set, only shows errors on a sis import that would cause a failure.
 //
 type GetSISImportErrorListSISImportErrors struct {
 	Path struct {
@@ -70,7 +70,7 @@ func (t *GetSISImportErrorListSISImportErrors) GetJSON() ([]byte, error) {
 func (t *GetSISImportErrorListSISImportErrors) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

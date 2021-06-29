@@ -15,10 +15,10 @@ import (
 // https://canvas.instructure.com/doc/api/tabs.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Query Parameters:
-// # Include (Optional) . Must be one of course_subject_tabs- "course_subject_tabs": Optional flag to return the tabs associated with a canvas_for_elementary subject course's
+// # Query.Include (Optional) . Must be one of course_subject_tabs- "course_subject_tabs": Optional flag to return the tabs associated with a canvas_for_elementary subject course's
 //      home page instead of the typical sidebar navigation. Only takes effect if this request is for a course context
 //      in a canvas_for_elementary-enabled account or sub-account.
 //
@@ -61,7 +61,7 @@ func (t *ListAvailableTabsForCourseOrGroupUsers) GetJSON() ([]byte, error) {
 func (t *ListAvailableTabsForCourseOrGroupUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	for _, v := range t.Query.Include {
 		if v != "" && !string_utils.Include([]string{"course_subject_tabs"}, v) {

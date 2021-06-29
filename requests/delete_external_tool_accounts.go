@@ -12,8 +12,8 @@ import (
 // https://canvas.instructure.com/doc/api/external_tools.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # ExternalToolID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.ExternalToolID (Required) ID
 //
 type DeleteExternalToolAccounts struct {
 	Path struct {
@@ -48,10 +48,10 @@ func (t *DeleteExternalToolAccounts) GetJSON() ([]byte, error) {
 func (t *DeleteExternalToolAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.ExternalToolID == "" {
-		errs = append(errs, "'ExternalToolID' is required")
+		errs = append(errs, "'Path.ExternalToolID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -15,8 +15,8 @@ import (
 // https://canvas.instructure.com/doc/api/pages.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # Url (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.Url (Required) ID
 //
 type DeletePageGroups struct {
 	Path struct {
@@ -51,10 +51,10 @@ func (t *DeletePageGroups) GetJSON() ([]byte, error) {
 func (t *DeletePageGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.Url == "" {
-		errs = append(errs, "'Url' is required")
+		errs = append(errs, "'Path.Url' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

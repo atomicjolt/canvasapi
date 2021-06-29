@@ -17,11 +17,11 @@ import (
 // https://canvas.instructure.com/doc/api/planner.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # MarkedComplete (Optional) determines whether the planner item is marked as completed
-// # Dismissed (Optional) determines whether the planner item shows in the opportunities list
+// # Form.MarkedComplete (Optional) determines whether the planner item is marked as completed
+// # Form.Dismissed (Optional) determines whether the planner item shows in the opportunities list
 //
 type UpdatePlannerOverride struct {
 	Path struct {
@@ -63,7 +63,7 @@ func (t *UpdatePlannerOverride) GetJSON() ([]byte, error) {
 func (t *UpdatePlannerOverride) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

@@ -7,6 +7,6 @@ type QuizSubmissionQuestion struct {
 	Answers []string `json:"answers" url:"answers,omitempty"` // The possible answers for this question when those possible answers are necessary.  The presence of this parameter is dependent on permissions..
 }
 
-func (t *QuizSubmissionQuestion) HasError() error {
+func (t *QuizSubmissionQuestion) HasErrors() error {
 	return nil
 }

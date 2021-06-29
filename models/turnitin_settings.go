@@ -11,6 +11,6 @@ type TurnitinSettings struct {
 	ExcludeSmallMatchesValue    int64  `json:"exclude_small_matches_value" url:"exclude_small_matches_value,omitempty"`     // Example: 50
 }
 
-func (t *TurnitinSettings) HasError() error {
+func (t *TurnitinSettings) HasErrors() error {
 	return nil
 }

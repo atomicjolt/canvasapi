@@ -20,12 +20,12 @@ import (
 // https://canvas.instructure.com/doc/api/quiz_submission_files.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # QuizID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.QuizID (Required) ID
 //
 // Form Parameters:
-// # Name (Optional) The name of the quiz submission file
-// # OnDuplicate (Optional) How to handle duplicate names
+// # Form.Name (Optional) The name of the quiz submission file
+// # Form.OnDuplicate (Optional) How to handle duplicate names
 //
 type QuizSubmissionFilesUploadFile struct {
 	Path struct {
@@ -69,10 +69,10 @@ func (t *QuizSubmissionFilesUploadFile) GetJSON() ([]byte, error) {
 func (t *QuizSubmissionFilesUploadFile) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.QuizID == "" {
-		errs = append(errs, "'QuizID' is required")
+		errs = append(errs, "'Path.QuizID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

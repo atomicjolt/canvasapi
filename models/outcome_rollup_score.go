@@ -6,6 +6,6 @@ type OutcomeRollupScore struct {
 	Links *OutcomeRollupScoreLinks `json:"links" url:"links,omitempty"` // Example: 42
 }
 
-func (t *OutcomeRollupScore) HasError() error {
+func (t *OutcomeRollupScore) HasErrors() error {
 	return nil
 }

@@ -21,18 +21,18 @@ import (
 // https://canvas.instructure.com/doc/api/account_reports.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # Report (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.Report (Required) ID
 //
 // Form Parameters:
-// # Parameters (Optional) The parameters will vary for each report. To fetch a list
+// # Form.Parameters (Optional) The parameters will vary for each report. To fetch a list
 //    of available parameters for each report, see {api:AccountReportsController#available_reports List Available Reports}.
 //    A few example parameters have been provided below. Note that the example
 //    parameters provided below may not be valid for every report.
-// # Parameters (Optional) The id of the course to report on.
+// # Form.Parameters.CourseID (Optional) The id of the course to report on.
 //    Note: this parameter has been listed to serve as an example and may not be
 //    valid for every report.
-// # Parameters (Optional) If true, user data will be included. If
+// # Form.Parameters.Users (Optional) If true, user data will be included. If
 //    false, user data will be omitted. Note: this parameter has been listed to
 //    serve as an example and may not be valid for every report.
 //
@@ -77,10 +77,10 @@ func (t *StartReport) GetJSON() ([]byte, error) {
 func (t *StartReport) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.Report == "" {
-		errs = append(errs, "'Report' is required")
+		errs = append(errs, "'Path.Report' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

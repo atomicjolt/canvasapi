@@ -12,8 +12,8 @@ import (
 // https://canvas.instructure.com/doc/api/plagiarism_detection_submissions.html
 //
 // Path Parameters:
-// # AssignmentID (Required) ID
-// # SubmissionID (Required) ID
+// # Path.AssignmentID (Required) ID
+// # Path.SubmissionID (Required) ID
 //
 type GetHistoryOfSingleSubmission struct {
 	Path struct {
@@ -48,10 +48,10 @@ func (t *GetHistoryOfSingleSubmission) GetJSON() ([]byte, error) {
 func (t *GetHistoryOfSingleSubmission) HasErrors() error {
 	errs := []string{}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if t.Path.SubmissionID == "" {
-		errs = append(errs, "'SubmissionID' is required")
+		errs = append(errs, "'Path.SubmissionID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

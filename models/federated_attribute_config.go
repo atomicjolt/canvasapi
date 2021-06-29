@@ -5,6 +5,6 @@ type FederatedAttributeConfig struct {
 	ProvisioningOnly bool   `json:"provisioning_only" url:"provisioning_only,omitempty"` // If the attribute should be applied only when provisioning a new user, rather than all logins.
 }
 
-func (t *FederatedAttributeConfig) HasError() error {
+func (t *FederatedAttributeConfig) HasErrors() error {
 	return nil
 }

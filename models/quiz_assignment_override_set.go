@@ -6,6 +6,6 @@ type QuizAssignmentOverrideSet struct {
 	AllDates *QuizAssignmentOverride `json:"all_dates" url:"all_dates,omitempty"` // An array of all assignment overrides active for the quiz. This is visible only to teachers and staff..
 }
 
-func (t *QuizAssignmentOverrideSet) HasError() error {
+func (t *QuizAssignmentOverrideSet) HasErrors() error {
 	return nil
 }

@@ -20,15 +20,16 @@ type GroupCategory struct {
 	Progress           *Progress `json:"progress" url:"progress,omitempty"`                           // If the group category has not yet finished a randomly student assignment request, a progress object will be attached, which will contain information related to the progress of the assignment request. Refer to the Progress API for more information.
 }
 
-func (t *GroupCategory) HasError() error {
+func (t *GroupCategory) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"restricted", "enabled"}
 	if t.SelfSignup != "" && !string_utils.Include(s, t.SelfSignup) {
-		return fmt.Errorf("expected 'self_signup' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'SelfSignup' to be one of %v", s))
 	}
 	s = []string{"first", "random"}
 	if t.AutoLeader != "" && !string_utils.Include(s, t.AutoLeader) {
-		return fmt.Errorf("expected 'auto_leader' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'AutoLeader' to be one of %v", s))
 	}
 	return nil
 }

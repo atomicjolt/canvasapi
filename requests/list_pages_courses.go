@@ -18,13 +18,13 @@ import (
 // https://canvas.instructure.com/doc/api/pages.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # Sort (Optional) . Must be one of title, created_at, updated_atSort results by this field.
-// # Order (Optional) . Must be one of asc, descThe sorting order. Defaults to 'asc'.
-// # SearchTerm (Optional) The partial title of the pages to match and return.
-// # Published (Optional) If true, include only published paqes. If false, exclude published
+// # Query.Sort (Optional) . Must be one of title, created_at, updated_atSort results by this field.
+// # Query.Order (Optional) . Must be one of asc, descThe sorting order. Defaults to 'asc'.
+// # Query.SearchTerm (Optional) The partial title of the pages to match and return.
+// # Query.Published (Optional) If true, include only published paqes. If false, exclude published
 //    pages. If not present, do not filter on published status.
 //
 type ListPagesCourses struct {
@@ -69,7 +69,7 @@ func (t *ListPagesCourses) GetJSON() ([]byte, error) {
 func (t *ListPagesCourses) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Query.Sort != "" && !string_utils.Include([]string{"title", "created_at", "updated_at"}, t.Query.Sort) {
 		errs = append(errs, "Sort must be one of title, created_at, updated_at")

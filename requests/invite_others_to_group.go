@@ -16,10 +16,10 @@ import (
 // https://canvas.instructure.com/doc/api/groups.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Form Parameters:
-// # Invitees (Required) An array of email addresses to be sent invitations.
+// # Form.Invitees (Required) An array of email addresses to be sent invitations.
 //
 type InviteOthersToGroup struct {
 	Path struct {
@@ -60,10 +60,10 @@ func (t *InviteOthersToGroup) GetJSON() ([]byte, error) {
 func (t *InviteOthersToGroup) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Form.Invitees == nil {
-		errs = append(errs, "'Invitees' is required")
+		errs = append(errs, "'Form.Invitees' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

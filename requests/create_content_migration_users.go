@@ -45,50 +45,50 @@ import (
 // https://canvas.instructure.com/doc/api/content_migrations.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Form Parameters:
-// # MigrationType (Required) The type of the migration. Use the
+// # Form.MigrationType (Required) The type of the migration. Use the
 //    {api:ContentMigrationsController#available_migrators Migrator} endpoint to
 //    see all available migrators. Default allowed values:
 //    canvas_cartridge_importer, common_cartridge_importer,
 //    course_copy_importer, zip_file_importer, qti_converter, moodle_converter
-// # PreAttachment (Optional) Required if uploading a file. This is the first step in uploading a file
+// # Form.PreAttachment.Name (Optional) Required if uploading a file. This is the first step in uploading a file
 //    to the content migration. See the {file:file_uploads.html File Upload
 //    Documentation} for details on the file upload workflow.
-// # PreAttachment (Optional) Other file upload properties, See {file:file_uploads.html File Upload
+// # Form.PreAttachment.* (Optional) Other file upload properties, See {file:file_uploads.html File Upload
 //    Documentation}
-// # Settings (Optional) A URL to download the file from. Must not require authentication.
-// # Settings (Optional) The id of a ContentExport to import. This allows you to import content previously exported from Canvas
+// # Form.Settings.FileUrl (Optional) A URL to download the file from. Must not require authentication.
+// # Form.Settings.ContentExportID (Optional) The id of a ContentExport to import. This allows you to import content previously exported from Canvas
 //    without needing to download and re-upload it.
-// # Settings (Optional) The course to copy from for a course copy migration. (required if doing
+// # Form.Settings.SourceCourseID (Optional) The course to copy from for a course copy migration. (required if doing
 //    course copy)
-// # Settings (Optional) The folder to unzip the .zip file into for a zip_file_import.
-// # Settings (Optional) Whether to overwrite quizzes with the same identifiers between content
+// # Form.Settings.FolderID (Optional) The folder to unzip the .zip file into for a zip_file_import.
+// # Form.Settings.OverwriteQuizzes (Optional) Whether to overwrite quizzes with the same identifiers between content
 //    packages.
-// # Settings (Optional) The existing question bank ID to import questions into if not specified in
+// # Form.Settings.QuestionBankID (Optional) The existing question bank ID to import questions into if not specified in
 //    the content package.
-// # Settings (Optional) The question bank to import questions into if not specified in the content
+// # Form.Settings.QuestionBankName (Optional) The question bank to import questions into if not specified in the content
 //    package, if both bank id and name are set, id will take precedence.
-// # Settings (Optional) The id of a module in the target course. This will add all imported items
+// # Form.Settings.InsertIntoModuleID (Optional) The id of a module in the target course. This will add all imported items
 //    (that can be added to a module) to the given module.
-// # Settings (Optional) . Must be one of assignment, discussion_topic, file, page, quizIf provided (and +insert_into_module_id+ is supplied),
+// # Form.Settings.InsertIntoModuleType (Optional) . Must be one of assignment, discussion_topic, file, page, quizIf provided (and +insert_into_module_id+ is supplied),
 //    only add objects of the specified type to the module.
-// # Settings (Optional) The (1-based) position to insert the imported items into the course
+// # Form.Settings.InsertIntoModulePosition (Optional) The (1-based) position to insert the imported items into the course
 //    (if +insert_into_module_id+ is supplied). If this parameter
 //    is omitted, items will be added to the end of the module.
-// # Settings (Optional) The id of an assignment group in the target course. If provided, all
+// # Form.Settings.MoveToAssignmentGroupID (Optional) The id of an assignment group in the target course. If provided, all
 //    imported assignments will be moved to the given assignment group.
-// # DateShiftOptions (Optional) Whether to shift dates in the copied course
-// # DateShiftOptions (Optional) The original start date of the source content/course
-// # DateShiftOptions (Optional) The original end date of the source content/course
-// # DateShiftOptions (Optional) The new start date for the content/course
-// # DateShiftOptions (Optional) The new end date for the source content/course
-// # DateShiftOptions (Optional) Move anything scheduled for day 'X' to the specified day. (0-Sunday,
+// # Form.DateShiftOptions.ShiftDates (Optional) Whether to shift dates in the copied course
+// # Form.DateShiftOptions.OldStartDate (Optional) The original start date of the source content/course
+// # Form.DateShiftOptions.OldEndDate (Optional) The original end date of the source content/course
+// # Form.DateShiftOptions.NewStartDate (Optional) The new start date for the content/course
+// # Form.DateShiftOptions.NewEndDate (Optional) The new end date for the source content/course
+// # Form.DateShiftOptions (Optional) Move anything scheduled for day 'X' to the specified day. (0-Sunday,
 //    1-Monday, 2-Tuesday, 3-Wednesday, 4-Thursday, 5-Friday, 6-Saturday)
-// # DateShiftOptions (Optional) Whether to remove dates in the copied course. Cannot be used
+// # Form.DateShiftOptions.RemoveDates (Optional) Whether to remove dates in the copied course. Cannot be used
 //    in conjunction with *shift_dates*.
-// # SelectiveImport (Optional) If set, perform a selective import instead of importing all content.
+// # Form.SelectiveImport (Optional) If set, perform a selective import instead of importing all content.
 //    The migration will identify the contents of the package and then stop
 //    in the +waiting_for_select+ workflow state. At this point, use the
 //    {api:ContentMigrationsController#content_list List items endpoint}
@@ -96,7 +96,7 @@ import (
 //    parameters for the desired content. Then call the
 //    {api:ContentMigrationsController#update Update endpoint} and provide these
 //    copy parameters to start the import.
-// # Select (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubricsFor +course_copy_importer+ migrations, this parameter allows you to select
+// # Form.Select (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubricsFor +course_copy_importer+ migrations, this parameter allows you to select
 //    the objects to copy without using the +selective_import+ argument and
 //    +waiting_for_select+ state as is required for uploaded imports (though that
 //    workflow is also supported for course copy migrations).
@@ -143,8 +143,8 @@ type CreateContentMigrationUsers struct {
 			RemoveDates bool `json:"remove_dates" url:"remove_dates,omitempty"` //  (Optional)
 		} `json:"date_shift_options" url:"date_shift_options,omitempty"`
 
-		SelectiveImport bool   `json:"selective_import" url:"selective_import,omitempty"` //  (Optional)
-		Select          string `json:"select" url:"select,omitempty"`                     //  (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics
+		SelectiveImport bool                     `json:"selective_import" url:"selective_import,omitempty"` //  (Optional)
+		Select          map[string](interface{}) `json:"select" url:"select,omitempty"`                     //  (Optional) . Must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics
 	} `json:"form"`
 }
 
@@ -177,16 +177,13 @@ func (t *CreateContentMigrationUsers) GetJSON() ([]byte, error) {
 func (t *CreateContentMigrationUsers) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Form.MigrationType == "" {
-		errs = append(errs, "'MigrationType' is required")
+		errs = append(errs, "'Form.MigrationType' is required")
 	}
 	if t.Form.Settings.InsertIntoModuleType != "" && !string_utils.Include([]string{"assignment", "discussion_topic", "file", "page", "quiz"}, t.Form.Settings.InsertIntoModuleType) {
 		errs = append(errs, "Settings must be one of assignment, discussion_topic, file, page, quiz")
-	}
-	if t.Form.Select != "" && !string_utils.Include([]string{"folders", "files", "attachments", "quizzes", "assignments", "announcements", "calendar_events", "discussion_topics", "modules", "module_items", "pages", "rubrics"}, t.Form.Select) {
-		errs = append(errs, "Select must be one of folders, files, attachments, quizzes, assignments, announcements, calendar_events, discussion_topics, modules, module_items, pages, rubrics")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

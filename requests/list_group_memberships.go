@@ -18,10 +18,10 @@ import (
 // https://canvas.instructure.com/doc/api/groups.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
+// # Path.GroupID (Required) ID
 //
 // Query Parameters:
-// # FilterStates (Optional) . Must be one of accepted, invited, requestedOnly list memberships with the given workflow_states. By default it will
+// # Query.FilterStates (Optional) . Must be one of accepted, invited, requestedOnly list memberships with the given workflow_states. By default it will
 //    return all memberships.
 //
 type ListGroupMemberships struct {
@@ -63,7 +63,7 @@ func (t *ListGroupMemberships) GetJSON() ([]byte, error) {
 func (t *ListGroupMemberships) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	for _, v := range t.Query.FilterStates {
 		if v != "" && !string_utils.Include([]string{"accepted", "invited", "requested"}, v) {

@@ -17,10 +17,10 @@ import (
 // https://canvas.instructure.com/doc/api/conversations.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Recipients (Required) An array of recipient ids. These may be user ids or course/group ids
+// # Form.Recipients (Required) An array of recipient ids. These may be user ids or course/group ids
 //    prefixed with "course_" or "group_" respectively, e.g.
 //    recipients[]=1&recipients[]=2&recipients[]=course_3
 //
@@ -63,10 +63,10 @@ func (t *AddRecipients) GetJSON() ([]byte, error) {
 func (t *AddRecipients) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Form.Recipients == nil {
-		errs = append(errs, "'Recipients' is required")
+		errs = append(errs, "'Form.Recipients' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

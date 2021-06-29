@@ -24,11 +24,12 @@ type ModuleItem struct {
 	Published             bool                   `json:"published" url:"published,omitempty"`                           // (Optional) Whether this module item is published. This field is present only if the caller has permission to view unpublished items..Example: true
 }
 
-func (t *ModuleItem) HasError() error {
+func (t *ModuleItem) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"File", "Page", "Discussion", "Assignment", "Quiz", "SubHeader", "ExternalUrl", "ExternalTool"}
 	if t.Type != "" && !string_utils.Include(s, t.Type) {
-		return fmt.Errorf("expected 'type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'Type' to be one of %v", s))
 	}
 	return nil
 }

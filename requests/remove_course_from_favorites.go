@@ -15,7 +15,7 @@ import (
 // https://canvas.instructure.com/doc/api/favorites.html
 //
 // Path Parameters:
-// # ID (Required) the ID or SIS ID of the course to remove
+// # Path.ID (Required) the ID or SIS ID of the course to remove
 //
 type RemoveCourseFromFavorites struct {
 	Path struct {
@@ -48,7 +48,7 @@ func (t *RemoveCourseFromFavorites) GetJSON() ([]byte, error) {
 func (t *RemoveCourseFromFavorites) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

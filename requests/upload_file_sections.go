@@ -19,9 +19,9 @@ import (
 // https://canvas.instructure.com/doc/api/submissions.html
 //
 // Path Parameters:
-// # SectionID (Required) ID
-// # AssignmentID (Required) ID
-// # UserID (Required) ID
+// # Path.SectionID (Required) ID
+// # Path.AssignmentID (Required) ID
+// # Path.UserID (Required) ID
 //
 type UploadFileSections struct {
 	Path struct {
@@ -58,13 +58,13 @@ func (t *UploadFileSections) GetJSON() ([]byte, error) {
 func (t *UploadFileSections) HasErrors() error {
 	errs := []string{}
 	if t.Path.SectionID == "" {
-		errs = append(errs, "'SectionID' is required")
+		errs = append(errs, "'Path.SectionID' is required")
 	}
 	if t.Path.AssignmentID == "" {
-		errs = append(errs, "'AssignmentID' is required")
+		errs = append(errs, "'Path.AssignmentID' is required")
 	}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

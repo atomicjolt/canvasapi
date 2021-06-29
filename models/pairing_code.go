@@ -7,6 +7,6 @@ type PairingCode struct {
 	WorkflowState string `json:"workflow_state" url:"workflow_state,omitempty"` // The current status of the code.Example: active
 }
 
-func (t *PairingCode) HasError() error {
+func (t *PairingCode) HasErrors() error {
 	return nil
 }

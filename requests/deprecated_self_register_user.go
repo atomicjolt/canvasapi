@@ -20,21 +20,21 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
+// # Path.AccountID (Required) ID
 //
 // Form Parameters:
-// # User (Required) The full name of the user. This name will be used by teacher for grading.
-// # User (Optional) User's name as it will be displayed in discussions, messages, and comments.
-// # User (Optional) User's name as used to sort alphabetically in lists.
-// # User (Optional) The time zone for the user. Allowed time zones are
+// # Form.User.Name (Required) The full name of the user. This name will be used by teacher for grading.
+// # Form.User.ShortName (Optional) User's name as it will be displayed in discussions, messages, and comments.
+// # Form.User.SortableName (Optional) User's name as used to sort alphabetically in lists.
+// # Form.User.TimeZone (Optional) The time zone for the user. Allowed time zones are
 //    {http://www.iana.org/time-zones IANA time zones} or friendlier
 //    {http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html Ruby on Rails time zones}.
-// # User (Optional) The user's preferred language, from the list of languages Canvas supports.
+// # Form.User.Locale (Optional) The user's preferred language, from the list of languages Canvas supports.
 //    This is in RFC-5646 format.
-// # User (Required) Whether the user accepts the terms of use.
-// # Pseudonym (Required) User's login ID. Must be a valid email address.
-// # CommunicationChannel (Optional) The communication channel type, e.g. 'email' or 'sms'.
-// # CommunicationChannel (Optional) The communication channel address, e.g. the user's email address.
+// # Form.User.TermsOfUse (Required) Whether the user accepts the terms of use.
+// # Form.Pseudonym.UniqueID (Required) User's login ID. Must be a valid email address.
+// # Form.CommunicationChannel.Type (Optional) The communication channel type, e.g. 'email' or 'sms'.
+// # Form.CommunicationChannel.Address (Optional) The communication channel address, e.g. the user's email address.
 //
 type DeprecatedSelfRegisterUser struct {
 	Path struct {
@@ -91,13 +91,13 @@ func (t *DeprecatedSelfRegisterUser) GetJSON() ([]byte, error) {
 func (t *DeprecatedSelfRegisterUser) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Form.User.Name == "" {
-		errs = append(errs, "'User' is required")
+		errs = append(errs, "'Form.User.Name' is required")
 	}
 	if t.Form.Pseudonym.UniqueID == "" {
-		errs = append(errs, "'Pseudonym' is required")
+		errs = append(errs, "'Form.Pseudonym.UniqueID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

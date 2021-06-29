@@ -14,15 +14,16 @@ type FeatureFlag struct {
 	Locked      bool   `json:"locked" url:"locked,omitempty"`             // If set, this feature flag cannot be changed in the caller's context because the flag is set 'off' or 'on' in a higher context.
 }
 
-func (t *FeatureFlag) HasError() error {
+func (t *FeatureFlag) HasErrors() error {
 	var s []string
+	errs := []string{}
 	s = []string{"Course", "Account", "User"}
 	if t.ContextType != "" && !string_utils.Include(s, t.ContextType) {
-		return fmt.Errorf("expected 'context_type' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'ContextType' to be one of %v", s))
 	}
 	s = []string{"off", "allowed", "allowed_on", "on"}
 	if t.State != "" && !string_utils.Include(s, t.State) {
-		return fmt.Errorf("expected 'state' to be one of %v", s)
+		errs = append(errs, fmt.Sprintf("expected 'State' to be one of %v", s))
 	}
 	return nil
 }

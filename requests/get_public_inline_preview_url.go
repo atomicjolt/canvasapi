@@ -14,10 +14,10 @@ import (
 // https://canvas.instructure.com/doc/api/files.html
 //
 // Path Parameters:
-// # ID (Required) ID
+// # Path.ID (Required) ID
 //
 // Query Parameters:
-// # SubmissionID (Optional) The id of the submission the file is associated with.  Provide this argument to gain access to a file
+// # Query.SubmissionID (Optional) The id of the submission the file is associated with.  Provide this argument to gain access to a file
 //    that has been submitted to an assignment (Canvas will verify that the file belongs to the submission
 //    and the calling user has rights to view the submission).
 //
@@ -60,7 +60,7 @@ func (t *GetPublicInlinePreviewUrl) GetJSON() ([]byte, error) {
 func (t *GetPublicInlinePreviewUrl) HasErrors() error {
 	errs := []string{}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

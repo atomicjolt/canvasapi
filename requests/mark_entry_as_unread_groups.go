@@ -18,12 +18,12 @@ import (
 // https://canvas.instructure.com/doc/api/discussion_topics.html
 //
 // Path Parameters:
-// # GroupID (Required) ID
-// # TopicID (Required) ID
-// # EntryID (Required) ID
+// # Path.GroupID (Required) ID
+// # Path.TopicID (Required) ID
+// # Path.EntryID (Required) ID
 //
 // Query Parameters:
-// # ForcedReadState (Optional) A boolean value to set the entry's forced_read_state. No change is made if
+// # Query.ForcedReadState (Optional) A boolean value to set the entry's forced_read_state. No change is made if
 //    this argument is not specified.
 //
 type MarkEntryAsUnreadGroups struct {
@@ -69,13 +69,13 @@ func (t *MarkEntryAsUnreadGroups) GetJSON() ([]byte, error) {
 func (t *MarkEntryAsUnreadGroups) HasErrors() error {
 	errs := []string{}
 	if t.Path.GroupID == "" {
-		errs = append(errs, "'GroupID' is required")
+		errs = append(errs, "'Path.GroupID' is required")
 	}
 	if t.Path.TopicID == "" {
-		errs = append(errs, "'TopicID' is required")
+		errs = append(errs, "'Path.TopicID' is required")
 	}
 	if t.Path.EntryID == "" {
-		errs = append(errs, "'EntryID' is required")
+		errs = append(errs, "'Path.EntryID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

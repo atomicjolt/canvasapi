@@ -24,10 +24,10 @@ import (
 // https://canvas.instructure.com/doc/api/users.html
 //
 // Path Parameters:
-// # UserID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Query Parameters:
-// # Ns (Required) The namespace from which to retrieve the data.  This should be something other
+// # Query.Ns (Required) The namespace from which to retrieve the data.  This should be something other
 //    Canvas API apps aren't likely to use, such as a reverse DNS for your organization.
 //
 type LoadCustomData struct {
@@ -69,10 +69,10 @@ func (t *LoadCustomData) GetJSON() ([]byte, error) {
 func (t *LoadCustomData) HasErrors() error {
 	errs := []string{}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Query.Ns == "" {
-		errs = append(errs, "'Ns' is required")
+		errs = append(errs, "'Query.Ns' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

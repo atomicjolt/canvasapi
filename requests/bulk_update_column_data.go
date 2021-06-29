@@ -32,10 +32,10 @@ import (
 // https://canvas.instructure.com/doc/api/custom_gradebook_columns.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Form Parameters:
-// # ColumnData (Required) Column content. Setting this to an empty string will delete the data object.
+// # Form.ColumnData (Required) Column content. Setting this to an empty string will delete the data object.
 //
 type BulkUpdateColumnData struct {
 	Path struct {
@@ -76,10 +76,10 @@ func (t *BulkUpdateColumnData) GetJSON() ([]byte, error) {
 func (t *BulkUpdateColumnData) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Form.ColumnData == nil {
-		errs = append(errs, "'ColumnData' is required")
+		errs = append(errs, "'Form.ColumnData' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

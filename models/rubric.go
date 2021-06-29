@@ -15,6 +15,6 @@ type Rubric struct {
 	Associations              []*RubricAssociation `json:"associations" url:"associations,omitempty"`                                 // If an association type is included in the 'include' parameter, includes an array of rubric association objects for a given rubric, based on the association type requested. If the user does not request an association type this key will be absent..
 }
 
-func (t *Rubric) HasError() error {
+func (t *Rubric) HasErrors() error {
 	return nil
 }

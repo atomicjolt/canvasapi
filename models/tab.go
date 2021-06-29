@@ -10,6 +10,6 @@ type Tab struct {
 	Position   int64  `json:"position" url:"position,omitempty"`     // 1 based.Example: 2
 }
 
-func (t *Tab) HasError() error {
+func (t *Tab) HasErrors() error {
 	return nil
 }

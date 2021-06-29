@@ -17,12 +17,12 @@ import (
 // https://canvas.instructure.com/doc/api/custom_gradebook_columns.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
-// # ID (Required) ID
-// # UserID (Required) ID
+// # Path.CourseID (Required) ID
+// # Path.ID (Required) ID
+// # Path.UserID (Required) ID
 //
 // Form Parameters:
-// # ColumnData (Required) Column content.  Setting this to blank will delete the datum object.
+// # Form.ColumnData.Content (Required) Column content.  Setting this to blank will delete the datum object.
 //
 type UpdateColumnData struct {
 	Path struct {
@@ -69,16 +69,16 @@ func (t *UpdateColumnData) GetJSON() ([]byte, error) {
 func (t *UpdateColumnData) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if t.Path.UserID == "" {
-		errs = append(errs, "'UserID' is required")
+		errs = append(errs, "'Path.UserID' is required")
 	}
 	if t.Form.ColumnData.Content == "" {
-		errs = append(errs, "'ColumnData' is required")
+		errs = append(errs, "'Form.ColumnData.Content' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

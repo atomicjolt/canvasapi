@@ -7,6 +7,6 @@ type CourseAttributes struct {
 	IntegrationID string `json:"integration_id" url:"integration_id,omitempty"` // The integration ID of the origin_course..Example: I-2
 }
 
-func (t *CourseAttributes) HasError() error {
+func (t *CourseAttributes) HasErrors() error {
 	return nil
 }

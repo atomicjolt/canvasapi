@@ -22,14 +22,14 @@ import (
 // https://canvas.instructure.com/doc/api/outcome_groups.html
 //
 // Path Parameters:
-// # AccountID (Required) ID
-// # ID (Required) ID
+// # Path.AccountID (Required) ID
+// # Path.ID (Required) ID
 //
 // Form Parameters:
-// # Title (Optional) The new outcome group title.
-// # Description (Optional) The new outcome group description.
-// # VendorGuid (Optional) A custom GUID for the learning standard.
-// # ParentOutcomeGroupID (Optional) The id of the new parent outcome group.
+// # Form.Title (Optional) The new outcome group title.
+// # Form.Description (Optional) The new outcome group description.
+// # Form.VendorGuid (Optional) A custom GUID for the learning standard.
+// # Form.ParentOutcomeGroupID (Optional) The id of the new parent outcome group.
 //
 type UpdateOutcomeGroupAccounts struct {
 	Path struct {
@@ -75,10 +75,10 @@ func (t *UpdateOutcomeGroupAccounts) GetJSON() ([]byte, error) {
 func (t *UpdateOutcomeGroupAccounts) HasErrors() error {
 	errs := []string{}
 	if t.Path.AccountID == "" {
-		errs = append(errs, "'AccountID' is required")
+		errs = append(errs, "'Path.AccountID' is required")
 	}
 	if t.Path.ID == "" {
-		errs = append(errs, "'ID' is required")
+		errs = append(errs, "'Path.ID' is required")
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf(strings.Join(errs, ", "))

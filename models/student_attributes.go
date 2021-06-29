@@ -5,6 +5,6 @@ type StudentAttributes struct {
 	SISUserID string `json:"sis_user_id" url:"sis_user_id,omitempty"` // The SIS ID associated with the user.  This field is only included if the user came from a SIS import and has permissions to view SIS information..Example: SHEL93921
 }
 
-func (t *StudentAttributes) HasError() error {
+func (t *StudentAttributes) HasErrors() error {
 	return nil
 }

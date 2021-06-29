@@ -22,11 +22,11 @@ import (
 // https://canvas.instructure.com/doc/api/analytics.html
 //
 // Path Parameters:
-// # CourseID (Required) ID
+// # Path.CourseID (Required) ID
 //
 // Query Parameters:
-// # SortColumn (Optional) . Must be one of name, name_descending, score, score_descending, participations, participations_descending, page_views, page_views_descendingThe order results in which results are returned.  Defaults to "name".
-// # StudentID (Optional) If set, returns only the specified student.
+// # Query.SortColumn (Optional) . Must be one of name, name_descending, score, score_descending, participations, participations_descending, page_views, page_views_descendingThe order results in which results are returned.  Defaults to "name".
+// # Query.StudentID (Optional) If set, returns only the specified student.
 //
 type GetCourseLevelStudentSummaryData struct {
 	Path struct {
@@ -68,7 +68,7 @@ func (t *GetCourseLevelStudentSummaryData) GetJSON() ([]byte, error) {
 func (t *GetCourseLevelStudentSummaryData) HasErrors() error {
 	errs := []string{}
 	if t.Path.CourseID == "" {
-		errs = append(errs, "'CourseID' is required")
+		errs = append(errs, "'Path.CourseID' is required")
 	}
 	if t.Query.SortColumn != "" && !string_utils.Include([]string{"name", "name_descending", "score", "score_descending", "participations", "participations_descending", "page_views", "page_views_descending"}, t.Query.SortColumn) {
 		errs = append(errs, "SortColumn must be one of name, name_descending, score, score_descending, participations, participations_descending, page_views, page_views_descending")
