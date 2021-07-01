@@ -57,22 +57,27 @@ func (t *ListContentExportsCourses) HasErrors() error {
 	return nil
 }
 
-func (t *ListContentExportsCourses) Do(c *canvasapi.Canvas) ([]*models.ContentExport, error) {
+func (t *ListContentExportsCourses) Do(c *canvasapi.Canvas) ([]*models.ContentExport, *canvasapi.PagedResource, error) {
 	response, err := c.SendRequest(t)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	response.Body.Close()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	ret := []*models.ContentExport{}
 	err = json.Unmarshal(body, &ret)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return ret, nil
+	pagedResource, err := canvasapi.ExtractPagedResource(response.Header)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return ret, pagedResource, nil
 }

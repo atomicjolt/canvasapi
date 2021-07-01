@@ -102,22 +102,27 @@ func (t *ListAssignmentsAssignments) HasErrors() error {
 	return nil
 }
 
-func (t *ListAssignmentsAssignments) Do(c *canvasapi.Canvas) ([]*models.Assignment, error) {
+func (t *ListAssignmentsAssignments) Do(c *canvasapi.Canvas) ([]*models.Assignment, *canvasapi.PagedResource, error) {
 	response, err := c.SendRequest(t)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	response.Body.Close()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	ret := []*models.Assignment{}
 	err = json.Unmarshal(body, &ret)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return ret, nil
+	pagedResource, err := canvasapi.ExtractPagedResource(response.Header)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return ret, pagedResource, nil
 }

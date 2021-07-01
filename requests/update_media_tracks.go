@@ -76,22 +76,27 @@ func (t *UpdateMediaTracks) HasErrors() error {
 	return nil
 }
 
-func (t *UpdateMediaTracks) Do(c *canvasapi.Canvas) ([]*models.MediaTrack, error) {
+func (t *UpdateMediaTracks) Do(c *canvasapi.Canvas) ([]*models.MediaTrack, *canvasapi.PagedResource, error) {
 	response, err := c.SendRequest(t)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	response.Body.Close()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	ret := []*models.MediaTrack{}
 	err = json.Unmarshal(body, &ret)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return ret, nil
+	pagedResource, err := canvasapi.ExtractPagedResource(response.Header)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return ret, pagedResource, nil
 }

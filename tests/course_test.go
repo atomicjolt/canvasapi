@@ -59,11 +59,14 @@ func TestCreateNewCourse(t *testing.T) {
 	listAssignments := requests.ListAssignmentsAssignments{}
 	listAssignments.Path.CourseID = courseID
 	listAssignments.Query.Include = []string{"submission", "can_edit"}
-	assignments, laerr := listAssignments.Do(&canvas)
+	assignments, pager, laerr := listAssignments.Do(&canvas)
 	if laerr != nil {
 		t.Errorf("ListAssignmentsAssignments failed: %v", laerr)
 	} else {
 		t.Logf("ListAssignmentsAssignments returned: %v", assignments[0])
+	}
+	if pager.Current.Page != 1 {
+		t.Errorf("Expected pager to be on page 1")
 	}
 
 	// Delete the course

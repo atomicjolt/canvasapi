@@ -59,22 +59,27 @@ func (t *ListConferencesCourses) HasErrors() error {
 	return nil
 }
 
-func (t *ListConferencesCourses) Do(c *canvasapi.Canvas) ([]*models.Conference, error) {
+func (t *ListConferencesCourses) Do(c *canvasapi.Canvas) ([]*models.Conference, *canvasapi.PagedResource, error) {
 	response, err := c.SendRequest(t)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	response.Body.Close()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	ret := []*models.Conference{}
 	err = json.Unmarshal(body, &ret)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return ret, nil
+	pagedResource, err := canvasapi.ExtractPagedResource(response.Header)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return ret, pagedResource, nil
 }
