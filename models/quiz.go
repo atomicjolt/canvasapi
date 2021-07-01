@@ -28,7 +28,7 @@ type Quiz struct {
 	AllowedAttempts               int64             `json:"allowed_attempts" url:"allowed_attempts,omitempty"`                                   // how many times a student can take the quiz -1 = unlimited attempts.Example: 3
 	OneQuestionAtATime            bool              `json:"one_question_at_a_time" url:"one_question_at_a_time,omitempty"`                       // show one question at a time?.
 	QuestionCount                 int64             `json:"question_count" url:"question_count,omitempty"`                                       // the number of questions in the quiz.Example: 12
-	PointsPossible                int64             `json:"points_possible" url:"points_possible,omitempty"`                                     // The total point value given to the quiz.Example: 20
+	PointsPossible                float64           `json:"points_possible" url:"points_possible,omitempty"`                                     // The total point value given to the quiz.Example: 20
 	CantGoBack                    bool              `json:"cant_go_back" url:"cant_go_back,omitempty"`                                           // lock questions after answering? only valid if one_question_at_a_time=true.
 	AccessCode                    string            `json:"access_code" url:"access_code,omitempty"`                                             // access code to restrict quiz access.Example: 2beornot2be
 	IpFilter                      string            `json:"ip_filter" url:"ip_filter,omitempty"`                                                 // IP address or range that quiz access is limited to.Example: 123.123.123.123

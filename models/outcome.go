@@ -15,7 +15,7 @@ type Outcome struct {
 	DisplayName          string          `json:"display_name" url:"display_name,omitempty"`                     // Optional friendly name for reporting.Example: My Favorite Outcome
 	Description          string          `json:"description" url:"description,omitempty"`                       // description of the outcome. omitted in the abbreviated form..Example: Outcome description
 	VendorGuid           string          `json:"vendor_guid" url:"vendor_guid,omitempty"`                       // A custom GUID for the learning standard..Example: customid9000
-	PointsPossible       int64           `json:"points_possible" url:"points_possible,omitempty"`               // maximum points possible. included only if the outcome embeds a rubric criterion. omitted in the abbreviated form..Example: 5
+	PointsPossible       float64         `json:"points_possible" url:"points_possible,omitempty"`               // maximum points possible. included only if the outcome embeds a rubric criterion. omitted in the abbreviated form..Example: 5
 	MasteryPoints        int64           `json:"mastery_points" url:"mastery_points,omitempty"`                 // points necessary to demonstrate mastery outcomes. included only if the outcome embeds a rubric criterion. omitted in the abbreviated form..Example: 3
 	CalculationMethod    string          `json:"calculation_method" url:"calculation_method,omitempty"`         // the method used to calculate a students score.Example: decaying_average
 	CalculationInt       int64           `json:"calculation_int" url:"calculation_int,omitempty"`               // this defines the variable value used by the calculation_method. included only if calculation_method uses it.Example: 65

@@ -47,7 +47,7 @@ type CreateSingleQuizQuestion struct {
 			QuizGroupID       int64            `json:"quiz_group_id" url:"quiz_group_id,omitempty"`           //  (Optional)
 			QuestionType      string           `json:"question_type" url:"question_type,omitempty"`           //  (Optional) . Must be one of calculated_question, essay_question, file_upload_question, fill_in_multiple_blanks_question, matching_question, multiple_answers_question, multiple_choice_question, multiple_dropdowns_question, numerical_question, short_answer_question, text_only_question, true_false_question
 			Position          int64            `json:"position" url:"position,omitempty"`                     //  (Optional)
-			PointsPossible    int64            `json:"points_possible" url:"points_possible,omitempty"`       //  (Optional)
+			PointsPossible    float64          `json:"points_possible" url:"points_possible,omitempty"`       //  (Optional)
 			CorrectComments   string           `json:"correct_comments" url:"correct_comments,omitempty"`     //  (Optional)
 			IncorrectComments string           `json:"incorrect_comments" url:"incorrect_comments,omitempty"` //  (Optional)
 			NeutralComments   string           `json:"neutral_comments" url:"neutral_comments,omitempty"`     //  (Optional)

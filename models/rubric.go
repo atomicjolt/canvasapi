@@ -5,7 +5,7 @@ type Rubric struct {
 	Title                     string               `json:"title" url:"title,omitempty"`                                               // title of the rubric.Example: some title
 	ContextID                 int64                `json:"context_id" url:"context_id,omitempty"`                                     // the context owning the rubric.Example: 1
 	ContextType               string               `json:"context_type" url:"context_type,omitempty"`                                 // Example: Course
-	PointsPossible            int64                `json:"points_possible" url:"points_possible,omitempty"`                           // Example: 10.0
+	PointsPossible            float64              `json:"points_possible" url:"points_possible,omitempty"`                           // Example: 10.0
 	Reusable                  bool                 `json:"reusable" url:"reusable,omitempty"`                                         // Example: false
 	ReadOnly                  bool                 `json:"read_only" url:"read_only,omitempty"`                                       // Example: true
 	FreeFormCriterionComments bool                 `json:"free_form_criterion_comments" url:"free_form_criterion_comments,omitempty"` // whether or not free-form comments are used.Example: true

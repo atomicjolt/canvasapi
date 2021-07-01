@@ -5,7 +5,7 @@ import (
 )
 
 type ContentDetails struct {
-	PointsPossible  int64     `json:"points_possible" url:"points_possible,omitempty"`   // Example: 20
+	PointsPossible  float64   `json:"points_possible" url:"points_possible,omitempty"`   // Example: 20
 	DueAt           time.Time `json:"due_at" url:"due_at,omitempty"`                     // Example: 2012-12-31T06:00:00-06:00
 	UnlockAt        time.Time `json:"unlock_at" url:"unlock_at,omitempty"`               // Example: 2012-12-31T06:00:00-06:00
 	LockAt          time.Time `json:"lock_at" url:"lock_at,omitempty"`                   // Example: 2012-12-31T06:00:00-06:00

@@ -65,7 +65,6 @@ func (t *AbortAllPendingSISImports) Do(c *canvasapi.Canvas) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	// TODO. I doubt these conversions to string and int below really work. Figure what Canvas returns and test against that return value
 	ret := string(body) == "true"
 
 	return ret, nil

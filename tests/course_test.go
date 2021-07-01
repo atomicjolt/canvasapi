@@ -12,7 +12,7 @@ import (
 func TestCreateNewCourse(t *testing.T) {
 	token := os.Getenv("CANVAS_API_TOKEN")
 	canvasURL := "atomicjolt.instructure.com"
-	testAccountID := "578"
+	testAccountID := os.Getenv("CANVAS_ACCOUNT_ID")
 	canvas := canvasapi.New(token, canvasURL)
 
 	// Create the course
@@ -69,6 +69,34 @@ func TestCreateNewCourse(t *testing.T) {
 		t.Errorf("Expected pager to be on page 1")
 	}
 
+	accessCode := "atestcode"
+	createQuiz := requests.CreateQuiz{}
+	createQuiz.Path.CourseID = courseID
+	createQuiz.Form.Quiz.Title = "a test quiz"
+	createQuiz.Form.Quiz.AccessCode = accessCode
+	quiz, qerr := createQuiz.Do(&canvas)
+	if qerr != nil {
+		t.Errorf("CreateQuiz failed: %v", qerr)
+		return
+	} else {
+		t.Logf("CreateQuiz returned: %v", course)
+	}
+	quizID := strconv.FormatInt(quiz.ID, 10)
+
+	// Test validate access code
+	validateCode := requests.ValidateQuizAccessCode{}
+	validateCode.Path.CourseID = courseID
+	validateCode.Path.ID = quizID
+	validateCode.Form.AccessCode = accessCode
+	valid, verr := validateCode.Do(&canvas)
+	if verr != nil {
+		t.Errorf("ValidateQuizAccessCode failed: %v", verr)
+	} else {
+		if !valid {
+			t.Errorf("ValidateQuizAccessCode expected access code %v to be valid.", accessCode)
+		}
+	}
+
 	// Delete the course
 	deleteCourse := requests.DeleteConcludeCourse{}
 	deleteCourse.Path.ID = courseID
@@ -79,5 +107,4 @@ func TestCreateNewCourse(t *testing.T) {
 	} else {
 		t.Logf("DeleteConcludeCourse returned: %v", course)
 	}
-
 }
