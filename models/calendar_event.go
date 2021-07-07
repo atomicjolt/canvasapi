@@ -37,6 +37,7 @@ type CalendarEvent struct {
 	AvailableSlots             int64     `json:"available_slots" url:"available_slots,omitempty"`                           // If the event is a time slot and it has a participant limit, an integer indicating how many slots are available.
 	User                       string    `json:"user" url:"user,omitempty"`                                                 // If the event is a user-level reservation, this will contain the user participant JSON (refer to the Users API)..
 	Group                      string    `json:"group" url:"group,omitempty"`                                               // If the event is a group-level reservation, this will contain the group participant JSON (refer to the Groups API)..
+	ImportantDates             bool      `json:"important_dates" url:"important_dates,omitempty"`                           // Boolean indicating whether this has important dates. Only present if the Important Dates feature flag is enabled.Example: true
 }
 
 func (t *CalendarEvent) HasErrors() error {

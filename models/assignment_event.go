@@ -23,6 +23,7 @@ type AssignmentEvent struct {
 	UpdatedAt           time.Time           `json:"updated_at" url:"updated_at,omitempty"`                     // When the assignment was last updated.Example: 2012-07-12T10:55:20-06:00
 	Assignment          *Assignment         `json:"assignment" url:"assignment,omitempty"`                     // The full assignment JSON data (See the Assignments API).
 	AssignmentOverrides *AssignmentOverride `json:"assignment_overrides" url:"assignment_overrides,omitempty"` // The list of AssignmentOverrides that apply to this event (See the Assignments API). This information is useful for determining which students or sections this assignment-due event applies to..
+	ImportantDates      bool                `json:"important_dates" url:"important_dates,omitempty"`           // Boolean indicating whether this has important dates. Only present if the Important Dates feature flag is enabled.Example: true
 }
 
 func (t *AssignmentEvent) HasErrors() error {

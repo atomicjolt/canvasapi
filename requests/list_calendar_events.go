@@ -36,16 +36,20 @@ import (
 //    ignored. The format of this field is the context type, followed by an
 //    underscore, followed by the context id. For example: course_42
 // # Query.Excludes (Optional) Array of attributes to exclude. Possible values are "description", "child_events" and "assignment"
+// # Query.ImportantDates (Optional) Defaults to false
+//    If true, only events with important dates set to true will be returned. This requires the Important Dates
+//    feature flag to be turned on or it will be ignored.
 //
 type ListCalendarEvents struct {
 	Query struct {
-		Type         string    `json:"type" url:"type,omitempty"`                   //  (Optional) . Must be one of event, assignment
-		StartDate    time.Time `json:"start_date" url:"start_date,omitempty"`       //  (Optional)
-		EndDate      time.Time `json:"end_date" url:"end_date,omitempty"`           //  (Optional)
-		Undated      bool      `json:"undated" url:"undated,omitempty"`             //  (Optional)
-		AllEvents    bool      `json:"all_events" url:"all_events,omitempty"`       //  (Optional)
-		ContextCodes []string  `json:"context_codes" url:"context_codes,omitempty"` //  (Optional)
-		Excludes     []string  `json:"excludes" url:"excludes,omitempty"`           //  (Optional)
+		Type           string    `json:"type" url:"type,omitempty"`                       //  (Optional) . Must be one of event, assignment
+		StartDate      time.Time `json:"start_date" url:"start_date,omitempty"`           //  (Optional)
+		EndDate        time.Time `json:"end_date" url:"end_date,omitempty"`               //  (Optional)
+		Undated        bool      `json:"undated" url:"undated,omitempty"`                 //  (Optional)
+		AllEvents      bool      `json:"all_events" url:"all_events,omitempty"`           //  (Optional)
+		ContextCodes   []string  `json:"context_codes" url:"context_codes,omitempty"`     //  (Optional)
+		Excludes       []string  `json:"excludes" url:"excludes,omitempty"`               //  (Optional)
+		ImportantDates bool      `json:"important_dates" url:"important_dates,omitempty"` //  (Optional)
 	} `json:"query"`
 }
 

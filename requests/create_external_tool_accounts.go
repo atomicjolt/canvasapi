@@ -48,7 +48,7 @@ import (
 // # Form.AccountNavigation.SelectionWidth (Optional) The width of the dialog the tool is launched in
 // # Form.AccountNavigation.SelectionHeight (Optional) The height of the dialog the tool is launched in
 // # Form.AccountNavigation.DisplayType (Optional) The layout type to use when launching the tool. Must be
-//    "full_width", "full_width_in_context", "borderless", or "default"
+//    "full_width", "full_width_in_context", "in_nav_context", "borderless", or "default"
 // # Form.UserNavigation.Url (Optional) The url of the external tool for user navigation
 // # Form.UserNavigation.Enabled (Optional) Set this to enable this feature
 // # Form.UserNavigation.Text (Optional) The text that will show on the left-tab in the user navigation
@@ -73,7 +73,7 @@ import (
 //
 //    defaults to "enabled"
 // # Form.CourseNavigation.DisplayType (Optional) The layout type to use when launching the tool. Must be
-//    "full_width", "full_width_in_context", "borderless", or "default"
+//    "full_width", "full_width_in_context", "in_nav_context", "borderless", or "default"
 // # Form.EditorButton.Url (Optional) The url of the external tool
 // # Form.EditorButton.Enabled (Optional) Set this to enable this feature
 // # Form.EditorButton.IconUrl (Optional) The url of the icon to show in the WYSIWYG editor

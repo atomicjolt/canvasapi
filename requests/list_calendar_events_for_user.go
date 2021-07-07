@@ -45,6 +45,9 @@ import (
 //    Ignored if type is not "assignment" or if exclude_submission_types is provided.
 // # Query.ExcludeSubmissionTypes (Optional) When type is "assignment", specifies the submission types to be excluded from the returned
 //    assignments. Ignored if type is not "assignment".
+// # Query.ImportantDates (Optional) Defaults to false
+//    If true, only events with important dates set to true will be returned. This requires the Important Dates
+//    feature flag to be turned on or it will be ignored.
 //
 type ListCalendarEventsForUser struct {
 	Path struct {
@@ -61,6 +64,7 @@ type ListCalendarEventsForUser struct {
 		Excludes               []string  `json:"excludes" url:"excludes,omitempty"`                                 //  (Optional)
 		SubmissionTypes        []string  `json:"submission_types" url:"submission_types,omitempty"`                 //  (Optional)
 		ExcludeSubmissionTypes []string  `json:"exclude_submission_types" url:"exclude_submission_types,omitempty"` //  (Optional)
+		ImportantDates         bool      `json:"important_dates" url:"important_dates,omitempty"`                   //  (Optional)
 	} `json:"query"`
 }
 
