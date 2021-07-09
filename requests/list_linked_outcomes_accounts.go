@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"net/url"
 	"strings"
 
@@ -76,8 +77,18 @@ func (t *ListLinkedOutcomesAccounts) HasErrors() error {
 	return nil
 }
 
-func (t *ListLinkedOutcomesAccounts) Do(c *canvasapi.Canvas) ([]*models.OutcomeLink, *canvasapi.PagedResource, error) {
-	response, err := c.SendRequest(t)
+func (t *ListLinkedOutcomesAccounts) Do(c *canvasapi.Canvas, next *url.URL) ([]*models.OutcomeLink, *canvasapi.PagedResource, error) {
+	var err error
+	var response *http.Response
+	if next != nil {
+		response, err = c.Send(next, t.GetMethod(), nil)
+	} else {
+		response, err = c.SendRequest(t)
+	}
+
+	if err != nil {
+		return nil, nil, err
+	}
 	if err != nil {
 		return nil, nil, err
 	}

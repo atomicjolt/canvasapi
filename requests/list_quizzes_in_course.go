@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"net/url"
 	"strings"
 
@@ -69,8 +70,18 @@ func (t *ListQuizzesInCourse) HasErrors() error {
 	return nil
 }
 
-func (t *ListQuizzesInCourse) Do(c *canvasapi.Canvas) ([]*models.Quiz, *canvasapi.PagedResource, error) {
-	response, err := c.SendRequest(t)
+func (t *ListQuizzesInCourse) Do(c *canvasapi.Canvas, next *url.URL) ([]*models.Quiz, *canvasapi.PagedResource, error) {
+	var err error
+	var response *http.Response
+	if next != nil {
+		response, err = c.Send(next, t.GetMethod(), nil)
+	} else {
+		response, err = c.SendRequest(t)
+	}
+
+	if err != nil {
+		return nil, nil, err
+	}
 	if err != nil {
 		return nil, nil, err
 	}

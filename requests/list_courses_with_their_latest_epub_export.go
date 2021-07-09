@@ -3,6 +3,7 @@ package requests
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/http"
 	"net/url"
 
 	"github.com/atomicjolt/canvasapi"
@@ -40,8 +41,18 @@ func (t *ListCoursesWithTheirLatestEpubExport) HasErrors() error {
 	return nil
 }
 
-func (t *ListCoursesWithTheirLatestEpubExport) Do(c *canvasapi.Canvas) ([]*models.CourseEpubExport, *canvasapi.PagedResource, error) {
-	response, err := c.SendRequest(t)
+func (t *ListCoursesWithTheirLatestEpubExport) Do(c *canvasapi.Canvas, next *url.URL) ([]*models.CourseEpubExport, *canvasapi.PagedResource, error) {
+	var err error
+	var response *http.Response
+	if next != nil {
+		response, err = c.Send(next, t.GetMethod(), nil)
+	} else {
+		response, err = c.SendRequest(t)
+	}
+
+	if err != nil {
+		return nil, nil, err
+	}
 	if err != nil {
 		return nil, nil, err
 	}

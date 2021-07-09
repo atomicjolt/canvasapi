@@ -48,8 +48,13 @@ func (c *Canvas) SendRequest(canvasRequest CanvasRequest) (*http.Response, error
 		RawQuery: query,
 	}
 
+	return c.Send(canvasUrl, canvasRequest.GetMethod(), &body)
+}
+
+func (c *Canvas) Send(canvasUrl *url.URL, method string, body *url.Values) (*http.Response, error) {
+
 	request := http.Request{
-		Method: canvasRequest.GetMethod(),
+		Method: method,
 		Proto:  "HTTP/1.1",
 		URL:    canvasUrl,
 		Host:   canvasUrl.Host,

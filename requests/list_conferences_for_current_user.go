@@ -3,6 +3,7 @@ package requests
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/http"
 	"net/url"
 
 	"github.com/google/go-querystring/query"
@@ -57,8 +58,18 @@ func (t *ListConferencesForCurrentUser) HasErrors() error {
 	return nil
 }
 
-func (t *ListConferencesForCurrentUser) Do(c *canvasapi.Canvas) ([]*models.Conference, *canvasapi.PagedResource, error) {
-	response, err := c.SendRequest(t)
+func (t *ListConferencesForCurrentUser) Do(c *canvasapi.Canvas, next *url.URL) ([]*models.Conference, *canvasapi.PagedResource, error) {
+	var err error
+	var response *http.Response
+	if next != nil {
+		response, err = c.Send(next, t.GetMethod(), nil)
+	} else {
+		response, err = c.SendRequest(t)
+	}
+
+	if err != nil {
+		return nil, nil, err
+	}
 	if err != nil {
 		return nil, nil, err
 	}

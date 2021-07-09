@@ -3,6 +3,7 @@ package requests
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/http"
 	"net/url"
 
 	"github.com/atomicjolt/canvasapi"
@@ -39,8 +40,18 @@ func (t *ListBookmarks) HasErrors() error {
 	return nil
 }
 
-func (t *ListBookmarks) Do(c *canvasapi.Canvas) ([]*models.Bookmark, *canvasapi.PagedResource, error) {
-	response, err := c.SendRequest(t)
+func (t *ListBookmarks) Do(c *canvasapi.Canvas, next *url.URL) ([]*models.Bookmark, *canvasapi.PagedResource, error) {
+	var err error
+	var response *http.Response
+	if next != nil {
+		response, err = c.Send(next, t.GetMethod(), nil)
+	} else {
+		response, err = c.SendRequest(t)
+	}
+
+	if err != nil {
+		return nil, nil, err
+	}
 	if err != nil {
 		return nil, nil, err
 	}

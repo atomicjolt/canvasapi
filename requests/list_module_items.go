@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"net/url"
 	"strings"
 
@@ -88,8 +89,18 @@ func (t *ListModuleItems) HasErrors() error {
 	return nil
 }
 
-func (t *ListModuleItems) Do(c *canvasapi.Canvas) ([]*models.ModuleItem, *canvasapi.PagedResource, error) {
-	response, err := c.SendRequest(t)
+func (t *ListModuleItems) Do(c *canvasapi.Canvas, next *url.URL) ([]*models.ModuleItem, *canvasapi.PagedResource, error) {
+	var err error
+	var response *http.Response
+	if next != nil {
+		response, err = c.Send(next, t.GetMethod(), nil)
+	} else {
+		response, err = c.SendRequest(t)
+	}
+
+	if err != nil {
+		return nil, nil, err
+	}
 	if err != nil {
 		return nil, nil, err
 	}

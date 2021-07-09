@@ -59,7 +59,7 @@ func TestCreateNewCourse(t *testing.T) {
 	listAssignments := requests.ListAssignmentsAssignments{}
 	listAssignments.Path.CourseID = courseID
 	listAssignments.Query.Include = []string{"submission", "can_edit"}
-	assignments, pager, laerr := listAssignments.Do(&canvas)
+	assignments, pager, laerr := listAssignments.Do(&canvas, nil)
 	if laerr != nil {
 		t.Errorf("ListAssignmentsAssignments failed: %v", laerr)
 	} else {
@@ -67,6 +67,17 @@ func TestCreateNewCourse(t *testing.T) {
 	}
 	if pager.Current.Page != 1 {
 		t.Errorf("Expected pager to be on page 1")
+	}
+	if pager.Next != nil {
+		moreAssignments, pager2, laerr2 := listAssignments.Do(&canvas, pager.Next.URL)
+		if laerr2 != nil {
+			t.Errorf("ListAssignmentsAssignments failed: %v", laerr)
+		} else {
+			t.Logf("ListAssignmentsAssignments returned: %v", moreAssignments[0])
+		}
+		if pager2.Next != nil {
+			t.Errorf("Didn't expect so many pages")
+		}
 	}
 
 	accessCode := "atestcode"
